@@ -13,7 +13,6 @@ extension Image {
     static let x = Image("x")
     static let meta = Image("meta")
     static let reddit = Image("reddit")
-    static let appIcon = Image("AppIconRaw")
     static let referral = Image(systemName: "person.2")
     
     // MARK: - Price change
@@ -67,17 +66,10 @@ extension Image {
     static let alert = Image("alert")
     static let star = Image(systemName: "star")
     static let starFill = Image(systemName: "star.fill")
-    static let exclamationMark = Image(systemName: "exclamationmark.circle")
     static let bannerTransparent = Image("bannerTransparent")
-    static let shield = Image(systemName: "shield")
-    static let eyeFill = Image(systemName: "eye.fill")
-    static let eyeSlashFill = Image(systemName: "eye.slash.fill")
     static let trashFill = Image(systemName: "trash.fill")
     static let refresh = Image(systemName: "arrow.triangle.2.circlepath")
     static let pencil = Image(systemName: "pencil")
-    static let checkmarkSquare = Image(systemName: "checkmark.square")
-    static let square = Image(systemName: "square")
-    static let ellipsis = Image(systemName: "ellipsis")
     
     static let checkCircle = Image("checkCircle")
     static let xCircle = Image("xCircle")
@@ -110,19 +102,13 @@ extension Image {
     static let search = Image("search")
     static let heatmap = Image(systemName: "square.grid.2x2")
     
-    static let closeButton = Image(systemName: "multiply.circle.fill")
     static let arrowUp = Image("arrowUp")
     static let arrowLeft = Image(systemName: "arrow.left")
     static let arrowRight = Image(systemName: "arrow.right")
     static let sync = Image(systemName: "arrow.triangle.2.circlepath")
-    static let help = Image(systemName: "questionmark.circle")
     static let save = Image(systemName: "star")
-    static let saved = Image(systemName: "star.fill")
     
     // MARK: - Enjoy the app
-    static let diamondLogo = Image("diamond")
-    static let appStoreLogo = Image("app_store_logo")
-    static let redditLogo = Image("reddit_logo")
     static let discordLogo = Image("discord")
     static let explorerLogo = Image("explorer")
     
@@ -138,10 +124,6 @@ extension Image {
     static let market = Image("market")
     static let news = Image("news")
     static let settings = Image("settings")
-}
-
-extension String {
-    static let twitterLogoName = "logo-white"
 }
 
 #if IS_WIDGET

@@ -73,8 +73,6 @@ extension Color {
     static let surfaceContainerLowest = theme(lightHex: "#C9C6C5", darkHex: "#111111", assetName: "surfaceContainerLowest")
     static let onPrimary = theme(lightHex: "#FFFFFF", darkHex: "#1B0E00", assetName: "onPrimary")
     static let primary = theme(lightHex: "#8F5F00", darkHex: "#EA9A00", assetName: "primary")
-    static let primary15 = theme(lightHex: "#452B00", darkHex: "#452B00", assetName: "primary15")
-    static let primary15_inverse = theme(lightHex: "#452B00", darkHex: "#452B00", assetName: "primary15_inverse")
     static let primary20 = theme(lightHex: "#452B00", darkHex: "#452B00", assetName: "primary20")
     static let primary50 = theme(lightHex: "#A46B00", darkHex: "#A46B00", assetName: "primary50")
     static let primary90 = theme(lightHex: "#FFEEDD", darkHex: "#FFDDB5", assetName: "primary90")

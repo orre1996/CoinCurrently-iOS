@@ -1,0 +1,12 @@
+{
+    "aps": {
+        "alert": {
+            "title": "🚨 Price Alert 🚨",
+            "body": "Bitcoin is up 8.06% in the last 24 hours. Currently $76,321.31"
+        },
+        "category": "PriceAlert",
+        "thread-id": "5280"
+    },
+    "cryptoID": "bitcoin",
+    "Simulator Target Bundle": "Cryptium.Cryptocurrently1.watchkitapp"
+}

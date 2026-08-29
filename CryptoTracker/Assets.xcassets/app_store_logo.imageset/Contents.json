@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "app_store_logo.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

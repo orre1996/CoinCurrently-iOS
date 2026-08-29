@@ -1,0 +1,65 @@
+//
+//  CryptoListView.swift
+//  CoinCurrently
+//
+//  Created by Oscar Berggren on 2024-07-22.
+//
+
+import SwiftUI
+
+struct SearchListView: View {
+    @Environment(\.colorScheme) var scheme
+    
+    @ScaledMetric private var scale: CGFloat = 1
+    
+    let coin: Toplist?
+    let currencySelected: (Toplist) -> Void
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            ShimmeringImage(
+                imageUrl: coin?.image,
+                downloading: coin == nil,
+                size: 24 * min(scale, 1.5)
+            )
+
+            VStack(alignment: .leading, spacing: 4) {
+                NewShimmeringText(
+                    text: coin == nil ? "00000000" : rankName,
+                    isDownloading: coin == nil
+                )
+                .font(.satoshiBold(14))
+                
+                NewShimmeringText(
+                    text: coin?.name ?? "0000",
+                    isDownloading: coin?.name == nil
+                )
+                .font(.satoshiBold(16))
+            }
+        }
+        .padding(8)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.surfaceContainerHigh)
+        .cornerRadius(10)
+        .foregroundColor(Color.onSurface)
+        .onTapGesture {
+            if let coin {
+                currencySelected(coin)
+            }
+        }
+    }
+    
+    private var rankName: String {
+        var text = ""
+        
+        if let rank = coin?.market_cap_rank {
+            text += "#\(rank)"
+        }
+        
+        if let symbol = coin?.symbol {
+            text += " \(symbol.uppercased())"
+        }
+        
+        return text
+    }
+}

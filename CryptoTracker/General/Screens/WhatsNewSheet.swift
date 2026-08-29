@@ -1,0 +1,152 @@
+//
+//  FearGreedHelpSheet.swift
+//  CoinCurrently
+//
+//  Created by Oscar Berggren on 2021-12-25.
+//
+
+import SwiftUI
+
+
+struct WhatsNewSection: Hashable {
+    let title: String
+    let icon: Image
+    let bulletPoints: [String]
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+    }
+}
+
+struct WhatsNewSheet: View {
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
+    @Environment(\.presentationMode) var presentationMode
+    
+    @State private var headerHeight: CGFloat = 0
+    @State private var contentHeight: CGFloat = 0
+    @State private var buttonsHeight: CGFloat = 0
+    
+    @ScaledMetric private var scale: CGFloat = 1
+    
+    private let sections: [WhatsNewSection] = [
+        WhatsNewSection(
+            title: "Markets Upgrades",
+            icon: .market,
+            bulletPoints: [
+                "Faster market data and cleaner charts",
+                "More detailed coin pages"
+            ]
+        ),
+        WhatsNewSection(
+            title: "Portfolio Upgrades",
+            icon: .portfolio,
+            bulletPoints: [
+                "Track your portfolio value over time",
+                "Full transaction history with filters"
+            ]
+        ),
+        WhatsNewSection(
+            title: "Alerts & News Upgrades",
+            icon: .alert,
+            bulletPoints: [
+                "Improved price alerts",
+                "Cleaner crypto news experience"
+            ]
+        ),
+        WhatsNewSection(
+            title: "Faster & Cleaner",
+            icon: .lightning,
+            bulletPoints: [
+                "Faster performance across the app",
+                "Cleaner navigation and updated design"
+            ]
+        )
+    ]
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            DragHandle(
+                title: "What's New"
+            )
+            .readSize {
+                headerHeight = $0.height
+            }
+            
+            Separator()
+                .padding(.horizontal, 16)
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 32) {
+                    ForEach(sections, id: \.self) {
+                        whatsNewSectionView(section: $0)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(
+                    EdgeInsets(
+                        top: 24,
+                        leading: 16,
+                        bottom: 24,
+                        trailing: 16
+                    )
+                )
+                .readSize {
+                    contentHeight = $0.height
+                }
+            }
+            
+            VStack(spacing: 0) {
+                Separator()
+                    .padding(.horizontal, 16)
+                
+                PrimaryButton(
+                    text: "Explore",
+                    fullWidth: true,
+                    action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                )
+                .padding(
+                    EdgeInsets(
+                        top: 24,
+                        leading: 16,
+                        bottom: 24,
+                        trailing: 16
+                    )
+                )
+            }
+            .readSize {
+                buttonsHeight = $0.height
+            }
+        }
+        .presentationDetents([.height(max(1, headerHeight + contentHeight + buttonsHeight - safeAreaInsets.resolvedBottom))])
+        .presentationBackground(Color.surfaceContainerLow)
+        .ignoresSafeArea(edges: .bottom)
+    }
+    
+    private func whatsNewSectionView(section: WhatsNewSection) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .top, spacing: 4) {
+                section.icon
+                    .resizable()
+                    .frame(width: 16 * min(scale, 1.5), height: 16 * min(scale, 1.5))
+                    .foregroundStyle(Color.primary)
+                
+                Text(section.title)
+                    .font(.satoshiBold(16))
+                    .foregroundStyle(Color.onSurface)
+            }
+            
+            ForEach(section.bulletPoints, id: \.self) { point in
+                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    Text("·")
+                    
+                    Text(point)
+                }
+                .font(.satoshiRegular(16))
+                .foregroundStyle(Color.onSurfaceDim)
+            }
+        }
+    }
+}
+

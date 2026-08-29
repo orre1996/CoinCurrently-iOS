@@ -1,0 +1,29 @@
+CoinCurrently Source-Available License
+
+Copyright (c) 2026 CoinCurrently
+
+Permission is hereby granted to any person obtaining a copy of this software
+and associated documentation files (the "Software") to view, study, explore,
+and use the Software for personal and educational purposes, subject to the
+following conditions:
+
+Contributions are warmly welcome. If you improve the Software, fix bugs, or
+add features, please open a pull request or otherwise share your work with the
+project so others can benefit. By submitting a contribution, you agree that it
+may be included in the Software under this license.
+
+1. You may not publish, redistribute, sublicense, sell, or otherwise make the
+   Software or any derivative work available to the public. This includes, without
+   limitation, publishing an application based on the Software to any app store,
+   distributing binaries, or hosting a public fork intended for redistribution.
+
+2. You may not use the CoinCurrently name, logos, or other trademarks in a way
+   that implies endorsement or affiliation without prior written permission.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

@@ -143,9 +143,11 @@ struct HomeScreen: View {
                 }
                 .onChange(of: viewModel.selectedFilter) {
                     Task {
-                        AnalyticsManager.shared.log(
-                            HomeFilterSelected(fromScreen: .home, filter: viewModel.selectedFilter ?? .topCoins)
-                        )
+                        if !viewModel.consumeSkipNextHomeFilterAnalytics() {
+                            AnalyticsManager.shared.log(
+                                HomeFilterSelected(fromScreen: .home, filter: viewModel.selectedFilter ?? .topCoins)
+                            )
+                        }
                         await viewModel.downloadData()
                     }
                 }

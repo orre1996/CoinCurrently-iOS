@@ -67,6 +67,8 @@ class HomeViewModelImp: HomeViewModel {
     private let analyticsManager: AnalyticsManager
     
     var selectedFilter: CarouselFilter? = .topCoins
+    private var didApplyDefaultHomeFilter = false
+    private var skipNextHomeFilterAnalytics = false
     var toplist: [Toplist]?
     var favoritesList = [Toplist]()
     var winnersList: [Toplist]?
@@ -144,6 +146,7 @@ class HomeViewModelImp: HomeViewModel {
          if let favorites = await toplistRepository.cachedFavorites?.data {
              self.favoritesList = favorites.sorted(by: { $0.market_cap_rank ?? 9999 < $1.market_cap_rank ?? 9999 })
          }
+         applyDefaultHomeFilterIfNeeded()
          
           let timeFrame = "7"
          
@@ -356,6 +359,21 @@ class HomeViewModelImp: HomeViewModel {
         }
     }
     
+    func consumeSkipNextHomeFilterAnalytics() -> Bool {
+        let skip = skipNextHomeFilterAnalytics
+        skipNextHomeFilterAnalytics = false
+        return skip
+    }
+
+    private func applyDefaultHomeFilterIfNeeded() {
+        guard !didApplyDefaultHomeFilter else { return }
+        didApplyDefaultHomeFilter = true
+        let filter = CarouselFilter.defaultHomeFilter(hasFavorites: !favoritesList.isEmpty)
+        guard filter != (selectedFilter ?? .topCoins) else { return }
+        skipNextHomeFilterAnalytics = true
+        selectedFilter = filter
+    }
+
     func favouriteButtonPressed(toplistItem: Toplist?) async {
         guard let toplistItem else { return }
 

@@ -555,6 +555,8 @@ struct BuyProScreen: View {
             isLoading: viewModel.isLoading || viewModel.buttons == nil,
             fullWidth: true
         ) {
+            guard !viewModel.isLoading else { return }
+
             AnalyticsManager.shared.log(
                 BuyProPressed(fromScreen: .buyPro, subscription: viewModel.selectedProduct?.id ?? "")
             )

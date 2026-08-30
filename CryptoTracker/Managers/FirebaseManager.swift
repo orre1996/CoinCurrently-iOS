@@ -96,7 +96,9 @@ final actor FirebaseManagerImp: FirebaseManager {
     
     func syncRevenueCatCustomerInfo() async {
         guard !uid.isEmpty else { return }
-        
+
+        RevenueCatConfigurator.configureIfNeeded()
+
         do {
             let (customerInfo, _) = try await Purchases.shared.logIn(uid)
             await storeKitManager.applyCustomerInfo(customerInfo)

@@ -119,6 +119,7 @@ class BuyProViewModelImp: BuyProViewModel {
     }
     
     func buyProduct() async -> Bool {
+        guard !isLoading else { return false }
         guard let product = selectedProduct else {
             return false
         }
@@ -132,7 +133,10 @@ class BuyProViewModelImp: BuyProViewModel {
         let productId = product.id
         let status = await storeKitManager.purchase(product)
 
+        var hasLoggedPurchaseOutcome = false
         func logPurchase(_ outcome: SubscriptionPurchaseOutcome) {
+            guard !hasLoggedPurchaseOutcome else { return }
+            hasLoggedPurchaseOutcome = true
             AnalyticsManager.shared.log(
                 SubscriptionPurchaseCompleted(fromScreen: .buyPro, productId: productId, outcome: outcome)
             )

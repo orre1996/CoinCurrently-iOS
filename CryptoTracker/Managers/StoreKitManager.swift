@@ -22,7 +22,14 @@ let welcomeName = "com.welcome.subscription.2"
 let proEntitlementIdentifier = "CoinCurrently: Crypto Tracker Pro"
 
 enum RevenueCatConfigurator {
+    /// Serializes first-time configure so concurrent callers cannot read
+    /// `Purchases.shared` while `Purchases.configure` is still initializing.
+    private static let configureLock = NSLock()
+
     static func configureIfNeeded() {
+        configureLock.lock()
+        defer { configureLock.unlock() }
+
         guard !Purchases.isConfigured else { return }
 
         #if DEBUG

@@ -73,6 +73,11 @@ enum CarouselFilter: Equatable, Hashable {
     static var homeFilters: [CarouselFilter] {
         return [.topCoins, .favorites, .trending, .timeframeWinners, .timeframeLosers, .newlyListed]
     }
+
+    /// Home opens on Favorites when the user already has a list; otherwise Top Coins.
+    static func defaultHomeFilter(hasFavorites: Bool) -> CarouselFilter {
+        hasFavorites ? .favorites : .topCoins
+    }
     
     static var newsFilters: [CarouselFilter] {
         return [.general, .positive, .neutral, .negative, .coins(nil), .exchanges(nil), .nfts, .technicalAnalysis]

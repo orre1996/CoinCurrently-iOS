@@ -95,12 +95,14 @@ final actor FirebaseManagerImp: FirebaseManager {
     }
     
     func syncRevenueCatCustomerInfo() async {
-        guard !uid.isEmpty else { return }
-
         RevenueCatConfigurator.configureIfNeeded()
 
         do {
-            let (customerInfo, _) = try await Purchases.shared.logIn(uid)
+            if !uid.isEmpty {
+                _ = try await Purchases.shared.logIn(uid)
+            }
+
+            let customerInfo = try await Purchases.shared.customerInfo(fetchPolicy: .fetchCurrent)
             await storeKitManager.applyCustomerInfo(customerInfo)
         } catch {}
     }

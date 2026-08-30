@@ -27,6 +27,7 @@ enum AchievementMetric: String, CaseIterable, Codable {
     case converterUses
     case authenticationEnabled
     case referralsCompleted
+    case selfRedeems
 }
 
 enum AchievementCounterKey: String, CaseIterable, Codable {
@@ -42,6 +43,7 @@ enum AchievementCounterKey: String, CaseIterable, Codable {
     case treasuryVisits
     case candleChartToggles
     case referralsCompleted
+    case selfRedeems
     case portfolioExports
 
     var metric: AchievementMetric {

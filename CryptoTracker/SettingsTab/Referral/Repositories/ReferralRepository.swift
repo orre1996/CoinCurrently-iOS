@@ -12,7 +12,7 @@ protocol ReferralRepository: Actor {
     var cachedReferralCode: CachedData<CachedReferralCodeData>? { get }
     func ensureCacheLoaded() async
     func getReferralCode() async -> ReferralCodeResult?
-    func redeemCode(refCode: String) async -> Bool
+    func redeemCode(refCode: String) async -> RedeemCodeResult
     func getUser(ignoreCache: Bool) async -> UserResponse?
 }
 
@@ -69,21 +69,21 @@ final actor ReferralRepositoryImp: ReferralRepository {
         return result
     }
 
-    func redeemCode(refCode: String) async -> Bool {
+    func redeemCode(refCode: String) async -> RedeemCodeResult {
         let (_, status): (EmptyResponse?, Int) = await networkManager.post(
             endpoint: .redeemCode,
             bodyStruct: RedeemCodeRequest(refCode: refCode)
         )
 
-        let succeeded = status == 200
+        let result = RedeemCodeResult(statusCode: status)
 
 #if IS_APP
-        if succeeded {
+        if result == .success {
             await FirebaseManagerImp.shared.syncRevenueCatCustomerInfo()
         }
 #endif
 
-        return succeeded
+        return result
     }
 
     func getUser(ignoreCache: Bool = false) async -> UserResponse? {

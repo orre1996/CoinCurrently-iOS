@@ -18,7 +18,12 @@ final class ReferralViewModel {
     var isLoadingReferralCode = false
     var isRedeemingCode = false
     var redeemSucceeded = false
-    var showError = false
+    var redeemErrorMessage: String?
+
+    var showError: Bool {
+        redeemErrorMessage != nil
+    }
+
     var user: UserResponse?
     
     var currentReferrals: Int = 0
@@ -73,8 +78,13 @@ final class ReferralViewModel {
         isRedeemingCode = true
         defer { isRedeemingCode = false }
 
-        redeemSucceeded = await referralRepository.redeemCode(refCode: trimmedCode)
-        showError = !redeemSucceeded
+        let result = await referralRepository.redeemCode(refCode: trimmedCode)
+        redeemSucceeded = result == .success
+        redeemErrorMessage = result.errorMessage
+
+        if result == .selfRedeem {
+            AchievementManager.shared.increment(.selfRedeems)
+        }
 
         if redeemSucceeded {
             redeemCodeInput = ""

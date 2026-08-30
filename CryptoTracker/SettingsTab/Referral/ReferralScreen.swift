@@ -166,8 +166,8 @@ struct ReferralScreen: View {
                     Text("Referral code redeemed successfully.")
                         .font(.satoshiMedium(14))
                         .foregroundStyle(Color.trendUp)
-                } else if viewModel.showError {
-                    Text("Referral code is invalid or already used.")
+                } else if let errorMessage = viewModel.redeemErrorMessage {
+                    Text(errorMessage)
                         .font(.satoshiMedium(14))
                         .foregroundStyle(Color.trendDown)
                 }

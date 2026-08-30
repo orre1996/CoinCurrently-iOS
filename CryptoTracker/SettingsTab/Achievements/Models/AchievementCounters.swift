@@ -18,6 +18,7 @@ struct AchievementCounters: Codable, Equatable {
     var treasuryVisits: Int = 0
     var candleChartToggles: Int = 0
     var referralsCompleted: Int = 0
+    var selfRedeems: Int = 0
     var portfolioExports: Int = 0
 
     mutating func increment(_ key: AchievementCounterKey) {
@@ -46,6 +47,8 @@ struct AchievementCounters: Codable, Equatable {
             candleChartToggles += 1
         case .referralsCompleted:
             referralsCompleted += 1
+        case .selfRedeems:
+            selfRedeems += 1
         case .portfolioExports:
             portfolioExports += 1
         }
@@ -77,8 +80,47 @@ struct AchievementCounters: Codable, Equatable {
             candleChartToggles
         case .referralsCompleted:
             referralsCompleted
+        case .selfRedeems:
+            selfRedeems
         case .portfolioExports:
             portfolioExports
         }
+    }
+}
+
+extension AchievementCounters {
+    enum CodingKeys: String, CodingKey {
+        case cryptoDetailsViewed
+        case compareSessions
+        case converterUses
+        case newsArticlesOpened
+        case nftDetailsViewed
+        case exchangeDetailsViewed
+        case sectorDetailsViewed
+        case fearGreedVisits
+        case gasFeesVisits
+        case treasuryVisits
+        case candleChartToggles
+        case referralsCompleted
+        case selfRedeems
+        case portfolioExports
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        cryptoDetailsViewed = try container.decodeIfPresent(Int.self, forKey: .cryptoDetailsViewed) ?? 0
+        compareSessions = try container.decodeIfPresent(Int.self, forKey: .compareSessions) ?? 0
+        converterUses = try container.decodeIfPresent(Int.self, forKey: .converterUses) ?? 0
+        newsArticlesOpened = try container.decodeIfPresent(Int.self, forKey: .newsArticlesOpened) ?? 0
+        nftDetailsViewed = try container.decodeIfPresent(Int.self, forKey: .nftDetailsViewed) ?? 0
+        exchangeDetailsViewed = try container.decodeIfPresent(Int.self, forKey: .exchangeDetailsViewed) ?? 0
+        sectorDetailsViewed = try container.decodeIfPresent(Int.self, forKey: .sectorDetailsViewed) ?? 0
+        fearGreedVisits = try container.decodeIfPresent(Int.self, forKey: .fearGreedVisits) ?? 0
+        gasFeesVisits = try container.decodeIfPresent(Int.self, forKey: .gasFeesVisits) ?? 0
+        treasuryVisits = try container.decodeIfPresent(Int.self, forKey: .treasuryVisits) ?? 0
+        candleChartToggles = try container.decodeIfPresent(Int.self, forKey: .candleChartToggles) ?? 0
+        referralsCompleted = try container.decodeIfPresent(Int.self, forKey: .referralsCompleted) ?? 0
+        selfRedeems = try container.decodeIfPresent(Int.self, forKey: .selfRedeems) ?? 0
+        portfolioExports = try container.decodeIfPresent(Int.self, forKey: .portfolioExports) ?? 0
     }
 }

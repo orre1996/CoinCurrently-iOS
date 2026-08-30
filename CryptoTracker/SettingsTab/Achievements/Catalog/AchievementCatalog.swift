@@ -27,7 +27,8 @@ enum AchievementCatalog {
         chartAnalyst,
         converterPro,
         securitySentinel,
-        referralChampion
+        referralChampion,
+        imATeapot
     ]
 
     static func achievements(in category: AchievementCategory) -> [AchievementDefinition] {
@@ -381,5 +382,18 @@ enum AchievementCatalog {
             AchievementLevel(name: AchievementLevelTier.gold, threshold: 3, description: "3 referrals")
         ],
         valueFormat: .integer
+    )
+
+    private static let imATeapot = AchievementDefinition(
+        id: "418_im_a_teapot",
+        title: "418 I'm a teapot",
+        description: "Try to redeem your own referral code",
+        category: .security,
+        icon: "cup.and.saucer.fill",
+        metric: .selfRedeems,
+        levels: [
+            AchievementLevel(name: AchievementLevelTier.gold, threshold: 1, description: "Tried to redeem yourself")
+        ],
+        valueFormat: .boolean
     )
 }

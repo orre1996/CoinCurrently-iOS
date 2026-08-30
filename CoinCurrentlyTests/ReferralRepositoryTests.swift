@@ -170,8 +170,8 @@ struct ReferralRepositoryTests {
         #expect(result == nil)
     }
 
-    @Test("redeemCode returns true on 200")
-    func redeemCodeReturnsTrueOnSuccess() async {
+    @Test("redeemCode returns success on 200")
+    func redeemCodeReturnsSuccess() async {
         let mock = MockRepoNetworkManager(postResult: (EmptyResponse(), 200))
 
         let repo = ReferralRepositoryImp(networkManager: mock)
@@ -179,16 +179,49 @@ struct ReferralRepositoryTests {
 
         let callCount = await mock.postCallCount
         #expect(callCount == 1)
-        #expect(result == true)
+        #expect(result == .success)
     }
 
-    @Test("redeemCode returns false on failure")
-    func redeemCodeReturnsFalseOnFailure() async {
+    @Test("redeemCode maps 404 to invalid code")
+    func redeemCodeReturnsInvalidCode() async {
+        let mock = MockRepoNetworkManager(postResult: (nil, 404))
+
+        let repo = ReferralRepositoryImp(networkManager: mock)
+        let result = await repo.redeemCode(refCode: "ABC1234567")
+
+        #expect(result == .invalidCode)
+        #expect(result.errorMessage == "Invalid code")
+    }
+
+    @Test("redeemCode maps 400 to already referred")
+    func redeemCodeReturnsAlreadyReferred() async {
         let mock = MockRepoNetworkManager(postResult: (nil, 400))
 
         let repo = ReferralRepositoryImp(networkManager: mock)
         let result = await repo.redeemCode(refCode: "ABC1234567")
 
-        #expect(result == false)
+        #expect(result == .alreadyReferred)
+        #expect(result.errorMessage == "You've already been referred by someone else.")
+    }
+
+    @Test("redeemCode maps 418 to self redeem")
+    func redeemCodeReturnsSelfRedeem() async {
+        let mock = MockRepoNetworkManager(postResult: (nil, 418))
+
+        let repo = ReferralRepositoryImp(networkManager: mock)
+        let result = await repo.redeemCode(refCode: "ABC1234567")
+
+        #expect(result == .selfRedeem)
+        #expect(result.errorMessage == "You can't redeem yourself, silly.")
+    }
+
+    @Test("redeemCode maps unknown status to failure")
+    func redeemCodeReturnsFailure() async {
+        let mock = MockRepoNetworkManager(postResult: (nil, 500))
+
+        let repo = ReferralRepositoryImp(networkManager: mock)
+        let result = await repo.redeemCode(refCode: "ABC1234567")
+
+        #expect(result == .failure)
     }
 }

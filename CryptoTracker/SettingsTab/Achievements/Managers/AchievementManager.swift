@@ -354,7 +354,8 @@ final class AchievementManager {
             .converterUses: Double(counters.converterUses),
             .portfolioExports: Double(counters.portfolioExports),
             .authenticationEnabled: authEnabled ? 1 : 0,
-            .referralsCompleted: referralCount
+            .referralsCompleted: referralCount,
+            .selfRedeems: Double(counters.selfRedeems)
         ]
     }
 }

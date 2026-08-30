@@ -53,6 +53,44 @@ struct RedeemCodeRequest: Codable {
     let refCode: String
 }
 
+enum RedeemCodeResult: Equatable {
+    case success
+    case invalidCode
+    case alreadyReferred
+    case selfRedeem
+    case failure
+
+    init(statusCode: Int) {
+        switch statusCode {
+        case 200:
+            self = .success
+        case 404:
+            self = .invalidCode
+        case 400:
+            self = .alreadyReferred
+        case 418:
+            self = .selfRedeem
+        default:
+            self = .failure
+        }
+    }
+
+    var errorMessage: String? {
+        switch self {
+        case .success:
+            nil
+        case .invalidCode:
+            "Invalid code"
+        case .alreadyReferred:
+            "You've already been referred by someone else."
+        case .selfRedeem:
+            "You can't redeem yourself, silly."
+        case .failure:
+            "Something went wrong. Please try again."
+        }
+    }
+}
+
 private extension HTTPURLResponse {
     func headerValue(for name: String) -> String? {
         let match = allHeaderFields.first { key, _ in

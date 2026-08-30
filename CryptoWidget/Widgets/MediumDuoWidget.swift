@@ -51,6 +51,7 @@ struct MediumDuoWidget: View {
                     coinID: selectedCoinIDs[safely: 1]
                 )
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }

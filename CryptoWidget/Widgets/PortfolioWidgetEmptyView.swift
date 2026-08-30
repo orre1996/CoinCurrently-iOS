@@ -10,6 +10,7 @@ import WidgetKit
 
 struct PortfolioWidgetEmptyView: View {
     @Environment(\.widgetRenderingMode) private var widgetRenderingMode
+    @Environment(\.widgetFamily) private var family
 
     var body: some View {
         ZStack {
@@ -20,17 +21,24 @@ struct PortfolioWidgetEmptyView: View {
         .widgetURL(URL(string: "portfolio"))
     }
 
+    private var isSmallWidget: Bool {
+        family == .systemSmall
+    }
+
     @ViewBuilder
     private var addTransactionButton: some View {
-        let label = Text("Add Transaction")
+        let label = Text(family == .systemSmall ? "Add\nTransaction" : "Add Transaction")
             .font(.satoshiBold(18))
-            .fixedSize()
+            .multilineTextAlignment(.center)
+            .lineLimit(2)
+            .minimumScaleFactor(0.8)
+            .fixedSize(horizontal: !isSmallWidget, vertical: true)
             .padding(
                 EdgeInsets(
                     top: 12,
-                    leading: 24,
+                    leading: isSmallWidget ? 16 : 24,
                     bottom: 12,
-                    trailing: 24
+                    trailing: isSmallWidget ? 16 : 24
                 )
             )
 

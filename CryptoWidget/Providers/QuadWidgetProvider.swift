@@ -21,28 +21,28 @@ struct QuadWidgetProvider: AppIntentTimelineProvider {
     }
     
     func snapshot(for configuration: Intent, in context: Context) async -> CryptoEntry {
-        await viewModel.fetchSnapshotEntry()
+        if context.isPreview {
+            return await viewModel.fetchSnapshotEntry()
+        }
+
+        let ids = await displayCoinIDs(for: configuration)
+        return await viewModel.fetchDisplayEntry(ids: ids)
     }
     
     func timeline(for configuration: Intent, in context: Context) async -> Timeline<CryptoEntry> {
+        let ids = await displayCoinIDs(for: configuration)
+        let entry = await viewModel.fetchDisplayEntry(ids: ids)
+        let minutes = ids.isEmpty ? 2.0 : (entry.hasPro ? 3.0 : 15.0)
+        return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * minutes)))
+    }
+
+    private func displayCoinIDs(for configuration: Intent) async -> [String] {
         let configured = await configuration.coinIDs(limit: 4)
-        let ids = await WidgetCoinStorage.displayCoinIDs(
+        return await WidgetCoinStorage.displayCoinIDs(
             configured: configured,
             limit: 4,
             requiresPro: true
         )
-        return await withCheckedContinuation { continuation in
-            viewModel.getCoinsWithSparkline(ids: ids) { result in
-                switch result {
-                case .success(let entry):
-                    let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * (entry.hasPro ? 3 : 15))))
-                    continuation.resume(returning: timeline)
-                case .failure(_):
-                    let timeline = Timeline(entries: [CryptoEntry.empty(selectedCoinIDs: ids)], policy: .after(Date().addingTimeInterval(60 * 2)))
-                    continuation.resume(returning: timeline)
-                }
-            }
-        }
     }
 }
 

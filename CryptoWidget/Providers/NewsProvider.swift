@@ -70,10 +70,6 @@ struct NewsWidgetEntryView: View {
             MediumNewsWidget(entry: entry)
                 .widgetContainerBackground()
             
-        case .systemLarge:
-            LargeNewsWidget(entry: entry, hasBoughtPro: entry.hasPro)
-                .widgetContainerBackground()
-            
         case .accessoryRectangular:
             RectangularLockScreenNewsWidget(entry: entry.newsModel.first)
                 .widgetBackground(Color.clear)
@@ -100,7 +96,7 @@ struct NewsWidget: Widget {
         )
         .configurationDisplayName("News widgets")
         .description("Keep track of the latest crypto news. All in one widget")
-        .supportedFamilies([.accessoryRectangular, .systemSmall, .systemMedium, .systemLarge])
+        .supportedFamilies([.accessoryRectangular, .systemSmall, .systemMedium])
         .contentMarginsDisabled()
     }
 }

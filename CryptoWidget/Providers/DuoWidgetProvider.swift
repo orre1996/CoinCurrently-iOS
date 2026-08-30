@@ -21,28 +21,28 @@ struct DuoWidgetProvider: AppIntentTimelineProvider {
     }
     
     func snapshot(for configuration: Intent, in context: Context) async -> CryptoEntry {
-        await viewModel.fetchSnapshotEntry()
+        if context.isPreview {
+            return await viewModel.fetchSnapshotEntry()
+        }
+
+        let ids = await displayCoinIDs(for: configuration, family: context.family)
+        return await viewModel.fetchDisplayEntry(ids: ids)
     }
     
     func timeline(for configuration: Intent, in context: Context) async -> Timeline<CryptoEntry> {
+        let ids = await displayCoinIDs(for: configuration, family: context.family)
+        let entry = await viewModel.fetchDisplayEntry(ids: ids)
+        let minutes = ids.isEmpty ? 2.0 : (entry.hasPro ? 3.0 : 15.0)
+        return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * minutes)))
+    }
+
+    private func displayCoinIDs(for configuration: Intent, family: WidgetFamily) async -> [String] {
         let configured = await configuration.coinIDs(limit: 2)
-        let ids = await WidgetCoinStorage.displayCoinIDs(
+        return await WidgetCoinStorage.displayCoinIDs(
             configured: configured,
             limit: 2,
-            requiresPro: context.family == .accessoryRectangular
+            requiresPro: family == .accessoryRectangular
         )
-        return await withCheckedContinuation { continuation in
-            viewModel.getCoinsWithSparkline(ids: ids) { result in
-                switch result {
-                case .success(let entry):
-                    let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * (entry.hasPro ? 3 : 15))))
-                    continuation.resume(returning: timeline)
-                case .failure(_):
-                    let timeline = Timeline(entries: [CryptoEntry.empty(selectedCoinIDs: ids)], policy: .after(Date().addingTimeInterval(60 * 5)))
-                    continuation.resume(returning: timeline)
-                }
-            }
-        }
     }
 }
 
@@ -60,14 +60,6 @@ struct DuoWidgetEntryView: View {
                 image: entry.currencyLogos,
                 selectedCurrency: entry.selectedCurrency,
                 selectedCoinIDs: entry.selectedCoinIDs
-            )
-            .widgetContainerBackground()
-            
-        case .systemLarge:
-            LargeDuoWidget(
-                data: entry.cryptoInfos,
-                image: entry.currencyLogos,
-                selectedCurrency: entry.selectedCurrency
             )
             .widgetContainerBackground()
             
@@ -102,7 +94,7 @@ struct DuoWidget: Widget {
         )
         .configurationDisplayName("Duo widgets")
         .description("Track your favourite cryptocurrencies. All in one widget")
-        .supportedFamilies([.accessoryRectangular, .systemMedium, .systemLarge])
+        .supportedFamilies([.accessoryRectangular, .systemMedium])
         .contentMarginsDisabled()
     }
 }

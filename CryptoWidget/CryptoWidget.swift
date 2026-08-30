@@ -12,25 +12,16 @@ import AppIntents
 import FirebaseCore
 import RevenueCat
 
-private enum WidgetExtensionBootstrap {
-    static func configure() {
-        RevenueCatConfigurator.configureIfNeeded()
-    }
-
-    static func warmUp() {
-        Task {
-            await WidgetViewModelImp().prefetchSnapshotCoins()
-        }
-    }
-}
-
 @main
-struct MyWidgetBundle: WidgetBundle {
+struct MainWidgetBundle: WidgetBundle {
 
     init() {
         _ = WidgetConfigurationIntentRegistry.supportedIntents
-        WidgetExtensionBootstrap.configure()
-        WidgetExtensionBootstrap.warmUp()
+        RevenueCatConfigurator.configureIfNeeded()
+        
+        Task {
+            await WidgetViewModelImp().prefetchSnapshotCoins()
+        }
     }
 
     @WidgetBundleBuilder
@@ -38,24 +29,16 @@ struct MyWidgetBundle: WidgetBundle {
         SingleWidget()
         DuoWidget()
         QuadWidget()
-        MyWidgetBundle1().body
+        MultiWidget()
+        RemainingWidgets().body
     }
 }
 
-struct MyWidgetBundle1: WidgetBundle {
+struct RemainingWidgets: WidgetBundle {
     @WidgetBundleBuilder
     var body: some Widget {
-        MultiWidget()
         PortfolioWidget()
         NewsWidget()
-        MyWidgetBundle2().body
-    }
-}
-
-struct MyWidgetBundle2: WidgetBundle {
-    @WidgetBundleBuilder
-    var body: some Widget {
         FearGreedWidget()
-        GasFeesWidget()
     }
 }

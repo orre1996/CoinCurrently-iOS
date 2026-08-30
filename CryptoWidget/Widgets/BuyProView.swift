@@ -32,23 +32,35 @@ struct BuyProView: View {
     var body: some View {
         ZStack {
             if !hasBoughtPro {
-                VStack(spacing: contentSpacing) {
-                    Text("Available with\nCoinCurrently Pro")
-                        .font(.satoshiBold(16))
-                        .foregroundStyle(Color.onSurface(for: .dark))
-                        .fixedSize()
-                        .multilineTextAlignment(.center)
-                    
-                    if !fromLockScreen {
-                        upgradeButton
+                if let url = URL(string: "buyPro") {
+                    Link(destination: url) {
+                        overlayContent
                     }
+                    .widgetURL(url)
+                } else {
+                    overlayContent
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(
-                    Color.black.opacity(widgetRenderingMode == .fullColor ? 0.6 : 0.35)
-                )
             }
         }
+    }
+
+    private var overlayContent: some View {
+        VStack(spacing: contentSpacing) {
+            Text("Available with\nCoinCurrently Pro")
+                .font(.satoshiBold(16))
+                .foregroundStyle(Color.onSurface(for: .dark))
+                .fixedSize()
+                .multilineTextAlignment(.center)
+            
+            if !fromLockScreen {
+                upgradeButton
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(
+            Color.black.opacity(widgetRenderingMode == .fullColor ? 0.6 : 0.35)
+        )
+        .contentShape(Rectangle())
     }
 
     @ViewBuilder

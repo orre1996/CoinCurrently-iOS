@@ -55,57 +55,31 @@ struct PortfolioWidgetEntryView: View {
     let entry: PortfolioProvider.Entry
     
     var body: some View {
-        /* if GlobalFunctions.shared.getHidePortfolioWidgets() {
-         let text = family == .accessoryInline ? "Portfolio widgets disabled" : family == .accessoryRectangular ? "Portfolio widgets are disabled" : "Portfolio widgets are disabled.\n\nEnable in app settings."
-         
-         ZStack {
-         AccessoryWidgetBackground()
-         .cornerRadius(8)
-         
-         Text(text)
-         .if(family != .accessoryInline && family != .accessoryRectangular) { view in
-         view.foregroundColor(Color.onSurface(for: scheme))
-         .font(.regular16)
-         }
-         .if(family == .accessoryRectangular) { view in
-         view.font(.system(size: 11, weight: .medium))
-         }
-         .multilineTextAlignment(.center)
-         .frame(maxWidth: .infinity, maxHeight: .infinity)
-         .padding(4)
-         }
-         .containerBackground(Color.widgetBackground(for: scheme), for: .widget)
-         
-         } else {*/
         if entry.portfolioCoins.isEmpty {
             PortfolioWidgetEmptyView()
                 .widgetContainerBackground()
         } else {
-        switch family {
-        case .systemSmall:
-            SmallPortfolioWidget(entry: entry)
-                .widgetContainerBackground()
-            
-        case .systemMedium:
-            MediumPortfolioWidget(entry: entry)
-                .widgetContainerBackground()
-            
-        case .systemLarge:
-            LargePortfolioWidget(entry: entry)
-                .widgetContainerBackground()
-            
-        case .accessoryInline:
-            InlinePortfolioWidget(entry: entry)
-                .widgetBackground(Color.clear)
-            
-        case .accessoryRectangular:
-            RectangularPortfolioWidget(entry: entry)
-                .widgetContainerBackground(Color.clear)
-            
-        default:
-            Text("")
-                .widgetBackground(Color.clear)
-        }
+            switch family {
+            case .systemSmall:
+                SmallPortfolioWidget(entry: entry)
+                    .widgetContainerBackground()
+                
+            case .systemMedium:
+                MediumPortfolioWidget(entry: entry)
+                    .widgetContainerBackground()
+                
+            case .accessoryInline:
+                InlinePortfolioWidget(entry: entry)
+                    .widgetBackground(Color.clear)
+                
+            case .accessoryRectangular:
+                RectangularPortfolioWidget(entry: entry)
+                    .widgetContainerBackground(Color.clear)
+                
+            default:
+                Text("")
+                    .widgetBackground(Color.clear)
+            }
         }
     }
 }
@@ -125,7 +99,7 @@ struct PortfolioWidget: Widget {
             })
         .configurationDisplayName("Portfolio widgets")
         .description("Keep track of your crypto portfolio. All in one widget")
-        .supportedFamilies([.accessoryInline, .accessoryRectangular, .systemSmall, .systemMedium, .systemLarge])
+        .supportedFamilies([.accessoryInline, .accessoryRectangular, .systemSmall, .systemMedium])
         .contentMarginsDisabled()
     }
 }

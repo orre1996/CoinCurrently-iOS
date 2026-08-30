@@ -300,12 +300,21 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
 
     func fetchSnapshotEntry() async -> CryptoEntry {
         let ids = await WidgetCoinStorage.snapshotCoinIDs()
+        let entry = await fetchDisplayEntry(ids: ids)
+        return entry.selectedCoinIDs.isEmpty ? entry : entry.copyWithPlaceholder()
+    }
+
+    func fetchDisplayEntry(ids: [String]) async -> CryptoEntry {
+        guard !ids.isEmpty else {
+            return CryptoEntry.empty()
+        }
+
         return await withCheckedContinuation { continuation in
             getCoinsWithSparkline(ids: ids) { result in
                 switch result {
                 case .success(let entry):
-                    continuation.resume(returning: entry.copyWithPlaceholder())
-                case .failure(_):
+                    continuation.resume(returning: entry)
+                case .failure:
                     continuation.resume(returning: CryptoEntry.empty(selectedCoinIDs: ids))
                 }
             }

@@ -309,6 +309,16 @@
 		8E6DCA1F2DAD65AC00F23DF5 /* Satoshi-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E6DCA0E2DAD65AC00F23DF5 /* Satoshi-Medium.otf */; };
 		8E6DCA202DAD65AC00F23DF5 /* Satoshi-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E6DCA0D2DAD65AC00F23DF5 /* Satoshi-Light.otf */; };
 		8E6DCA212DAD65AC00F23DF5 /* Satoshi-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E6DCA0F2DAD65AC00F23DF5 /* Satoshi-Regular.otf */; };
+		8EWGFT012F6000000095B111 /* Satoshi-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B101 /* Satoshi-Black.otf */; };
+		8EWGFT012F6000000095B112 /* Satoshi-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B102 /* Satoshi-Bold.otf */; };
+		8EWGFT012F6000000095B113 /* Satoshi-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B103 /* Satoshi-Italic.otf */; };
+		8EWGFT012F6000000095B114 /* Satoshi-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B104 /* Satoshi-Light.otf */; };
+		8EWGFT012F6000000095B115 /* Satoshi-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B105 /* Satoshi-Medium.otf */; };
+		8EWGFT012F6000000095B116 /* Satoshi-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B106 /* Satoshi-Regular.otf */; };
+		8EWGFT012F6000000095B117 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B107 /* Poppins-Medium.ttf */; };
+		8EWGFT012F6000000095B118 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B108 /* Poppins-Regular.ttf */; };
+		8EWGFT012F6000000095B119 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B109 /* Poppins-SemiBold.ttf */; };
+		8EWGFT012F6000000095B11A /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B10A /* Poppins-Light.ttf */; };
 		8E7C7BC42E13982D00D53FB4 /* CryptoDetailAlertCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7C7BC32E13982D00D53FB4 /* CryptoDetailAlertCellView.swift */; };
 		8E7C7BC62E139D3300D53FB4 /* PriceAlertsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F93F82C28B26CE3008A3B15 /* PriceAlertsRepository.swift */; };
 		8E8048E92F0720630093FF60 /* DeleteWalletPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8048E82F0720630093FF60 /* DeleteWalletPopup.swift */; };
@@ -449,9 +459,6 @@
 		8EB2D7B43019376E0069FD57 /* TreasurySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB2D7B33019376E0069FD57 /* TreasurySummaryView.swift */; };
 		8EB2D8A2301A00010069FD57 /* HeatmapScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB2D8A1301A00010069FD57 /* HeatmapScreen.swift */; };
 		8EB2D8A3301A00010069FD58 /* HeatmapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB2D8A4301A00010069FD58 /* HeatmapViewModel.swift */; };
-		8EWG00102F6000000095B010 /* WidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00022F6000000095B001 /* WidgetConfigurationIntent.swift */; };
-		8EWG00112F6000000095B011 /* NewsWidgetCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00042F6000000095B002 /* NewsWidgetCategory.swift */; };
-		8EWG00122F6000000095B012 /* CoinEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00062F6000000095B003 /* CoinEntity.swift */; };
 		8EB2D8A4301A00020069FD57 /* HeatmapGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB2D8A3301A00020069FD57 /* HeatmapGridView.swift */; };
 		8EB2D8B7301B55890069FD57 /* ReferralScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB2D8B6301B55890069FD57 /* ReferralScreen.swift */; };
 		8EB2D8C1301B55890069FD58 /* ReferralRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB2D8C0301B55890069FD58 /* ReferralRepository.swift */; };
@@ -621,14 +628,17 @@
 		8ERCAT012F6000000095B2E1 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = RC001REVENUECAT00000001 /* RevenueCat */; };
 		8ERCAT022F6000000095B2E2 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = RC001REVENUECAT00000001 /* RevenueCat */; };
 		8ERCAT032F6000000095B2E3 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = RC001REVENUECAT00000001 /* RevenueCat */; };
-		8EWG000D2F6000000095B007 /* BuyProView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG000E2F6000000095B007 /* BuyProView.swift */; };
-		8EWG000B2F6000000095B006 /* WidgetContainerBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG000C2F6000000095B006 /* WidgetContainerBackgroundModifier.swift */; };
+		8ETAX0022F99AB040055B0C7 /* PortfolioTaxExportBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ETAX0012F99AB040055B0C7 /* PortfolioTaxExportBuilder.swift */; };
 		8EWG00012F6000000095B001 /* WidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00022F6000000095B001 /* WidgetConfigurationIntent.swift */; };
 		8EWG00032F6000000095B002 /* NewsWidgetCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00042F6000000095B002 /* NewsWidgetCategory.swift */; };
 		8EWG00052F6000000095B003 /* CoinEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00062F6000000095B003 /* CoinEntity.swift */; };
 		8EWG00072F6000000095B004 /* WidgetEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00082F6000000095B004 /* WidgetEmptyView.swift */; };
 		8EWG00092F6000000095B005 /* PortfolioWidgetEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG000A2F6000000095B005 /* PortfolioWidgetEmptyView.swift */; };
-		8ETAX0022F99AB040055B0C7 /* PortfolioTaxExportBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ETAX0012F99AB040055B0C7 /* PortfolioTaxExportBuilder.swift */; };
+		8EWG000B2F6000000095B006 /* WidgetContainerBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG000C2F6000000095B006 /* WidgetContainerBackgroundModifier.swift */; };
+		8EWG000D2F6000000095B007 /* BuyProView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG000E2F6000000095B007 /* BuyProView.swift */; };
+		8EWG00102F6000000095B010 /* WidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00022F6000000095B001 /* WidgetConfigurationIntent.swift */; };
+		8EWG00112F6000000095B011 /* NewsWidgetCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00042F6000000095B002 /* NewsWidgetCategory.swift */; };
+		8EWG00122F6000000095B012 /* CoinEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00062F6000000095B003 /* CoinEntity.swift */; };
 		8FAB0AB32F54100000AAB001 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FAB0AB42F54100000AAB001 /* AnalyticsManager.swift */; };
 		8FAB0AB62F54100000AAB002 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FAB0AB42F54100000AAB001 /* AnalyticsManager.swift */; };
 		9F0C3A00288F3CDC007C4D68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F0C39FF288F3CDC007C4D68 /* Assets.xcassets */; };
@@ -833,12 +843,6 @@
 		9FEC77F82C3C7A13001AC954 /* TimeCharts+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77F72C3C7A13001AC954 /* TimeCharts+Extensions.swift */; };
 		9FED52D82BA0E1E60046FA4A /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9881C72A0824DB00A30E62 /* StoreKitManager.swift */; };
 		9FED52D92BA0E1E80046FA4A /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9881C72A0824DB00A30E62 /* StoreKitManager.swift */; };
-		CC0A00162F6000000000006 /* AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0A00142F6000000000004 /* AppSecrets.swift */; };
-		CC0A00172F6000000000007 /* AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0A00142F6000000000004 /* AppSecrets.swift */; };
-		CC0A00182F6000000000008 /* AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0A00142F6000000000004 /* AppSecrets.swift */; };
-		CC0A00192F6000000000009 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC0A00112F6000000000001 /* Secrets.plist */; };
-		CC0A001A2F600000000000A /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC0A00112F6000000000001 /* Secrets.plist */; };
-		CC0A001B2F600000000000B /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC0A00112F6000000000001 /* Secrets.plist */; };
 		9FF0CED32A7C38800064C50E /* LocalStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF0CED22A7C38800064C50E /* LocalStorageManager.swift */; };
 		9FF0CED42A7C3A210064C50E /* LocalStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF0CED22A7C38800064C50E /* LocalStorageManager.swift */; };
 		9FF0CED52A7C3A210064C50E /* LocalStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF0CED22A7C38800064C50E /* LocalStorageManager.swift */; };
@@ -872,6 +876,12 @@
 		B0010025301B55900069FD57 /* AchievementUnlockEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010020301B55900069FD57 /* AchievementUnlockEvent.swift */; };
 		B0010026301B55900069FD57 /* AchievementSnackbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010023301B55900069FD57 /* AchievementSnackbarView.swift */; };
 		B0010027301B55900069FD57 /* AchievementNavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010028301B55900069FD57 /* AchievementNavigationManager.swift */; };
+		CC0A00162F6000000000006 /* AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0A00142F6000000000004 /* AppSecrets.swift */; };
+		CC0A00172F6000000000007 /* AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0A00142F6000000000004 /* AppSecrets.swift */; };
+		CC0A00182F6000000000008 /* AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0A00142F6000000000004 /* AppSecrets.swift */; };
+		CC0A00192F6000000000009 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC0A00112F6000000000001 /* Secrets.plist */; };
+		CC0A001A2F600000000000A /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC0A00112F6000000000001 /* Secrets.plist */; };
+		CC0A001B2F600000000000B /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC0A00112F6000000000001 /* Secrets.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1200,8 +1210,8 @@
 		8EB2D6B83013BD650069FD58 /* TreasuryTransactionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreasuryTransactionItemView.swift; sourceTree = "<group>"; };
 		8EB2D7B33019376E0069FD57 /* TreasurySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreasurySummaryView.swift; sourceTree = "<group>"; };
 		8EB2D8A1301A00010069FD57 /* HeatmapScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatmapScreen.swift; sourceTree = "<group>"; };
-		8EB2D8A4301A00010069FD58 /* HeatmapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatmapViewModel.swift; sourceTree = "<group>"; };
 		8EB2D8A3301A00020069FD57 /* HeatmapGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatmapGridView.swift; sourceTree = "<group>"; };
+		8EB2D8A4301A00010069FD58 /* HeatmapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatmapViewModel.swift; sourceTree = "<group>"; };
 		8EB2D8B6301B55890069FD57 /* ReferralScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralScreen.swift; sourceTree = "<group>"; };
 		8EB2D8C0301B55890069FD58 /* ReferralRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralRepository.swift; sourceTree = "<group>"; };
 		8EB2D8C2301B55890069FD58 /* ReferralCodeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralCodeResponse.swift; sourceTree = "<group>"; };
@@ -1298,14 +1308,24 @@
 		8EF912F72E10EE4000596F6D /* ChangeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeButton.swift; sourceTree = "<group>"; };
 		8EF912FA2E10EFBA00596F6D /* ChangeDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeDirection.swift; sourceTree = "<group>"; };
 		8EFF6D9D2FBE9C0B006E2552 /* StoreKitTestCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = StoreKitTestCertificate.cer; sourceTree = "<group>"; };
-		8EWG000E2F6000000095B007 /* BuyProView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyProView.swift; sourceTree = "<group>"; };
-		8EWG000C2F6000000095B006 /* WidgetContainerBackgroundModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetContainerBackgroundModifier.swift; sourceTree = "<group>"; };
+		8ETAX0012F99AB040055B0C7 /* PortfolioTaxExportBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioTaxExportBuilder.swift; sourceTree = "<group>"; };
 		8EWG00022F6000000095B001 /* WidgetConfigurationIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfigurationIntent.swift; sourceTree = "<group>"; };
 		8EWG00042F6000000095B002 /* NewsWidgetCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsWidgetCategory.swift; sourceTree = "<group>"; };
 		8EWG00062F6000000095B003 /* CoinEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinEntity.swift; sourceTree = "<group>"; };
 		8EWG00082F6000000095B004 /* WidgetEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetEmptyView.swift; sourceTree = "<group>"; };
 		8EWG000A2F6000000095B005 /* PortfolioWidgetEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioWidgetEmptyView.swift; sourceTree = "<group>"; };
-		8ETAX0012F99AB040055B0C7 /* PortfolioTaxExportBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioTaxExportBuilder.swift; sourceTree = "<group>"; };
+		8EWG000C2F6000000095B006 /* WidgetContainerBackgroundModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetContainerBackgroundModifier.swift; sourceTree = "<group>"; };
+		8EWG000E2F6000000095B007 /* BuyProView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyProView.swift; sourceTree = "<group>"; };
+		8EWGFT012F6000000095B101 /* Satoshi-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-Black.otf"; sourceTree = "<group>"; };
+		8EWGFT012F6000000095B102 /* Satoshi-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-Bold.otf"; sourceTree = "<group>"; };
+		8EWGFT012F6000000095B103 /* Satoshi-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-Italic.otf"; sourceTree = "<group>"; };
+		8EWGFT012F6000000095B104 /* Satoshi-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-Light.otf"; sourceTree = "<group>"; };
+		8EWGFT012F6000000095B105 /* Satoshi-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-Medium.otf"; sourceTree = "<group>"; };
+		8EWGFT012F6000000095B106 /* Satoshi-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-Regular.otf"; sourceTree = "<group>"; };
+		8EWGFT012F6000000095B107 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		8EWGFT012F6000000095B108 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		8EWGFT012F6000000095B109 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
+		8EWGFT012F6000000095B10A /* Poppins-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Light.ttf"; sourceTree = "<group>"; };
 		8FAB0AB42F54100000AAB001 /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		9F0C39FF288F3CDC007C4D68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F10EC032A35297C007637C0 /* ViewRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRect.swift; sourceTree = "<group>"; };
@@ -1417,10 +1437,6 @@
 		9F9881C42A0823D700A30E62 /* Product.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Product.storekit; sourceTree = "<group>"; };
 		9F9881C52A08246F00A30E62 /* PropertyList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PropertyList.plist; sourceTree = "<group>"; };
 		9F9881C72A0824DB00A30E62 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
-		CC0A00112F6000000000001 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
-		CC0A00122F6000000000002 /* Secrets.example.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.example.plist; sourceTree = "<group>"; };
-		CC0A00132F6000000000003 /* GoogleService-Info.example.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.example.plist"; sourceTree = "<group>"; };
-		CC0A00142F6000000000004 /* AppSecrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecrets.swift; sourceTree = "<group>"; };
 		9F9D874F2C4335DC0082608D /* CurrencyPricesAllCurrencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPricesAllCurrencies.swift; sourceTree = "<group>"; };
 		9F9D87532C4336C10082608D /* DynamicCodingKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicCodingKeys.swift; sourceTree = "<group>"; };
 		9F9D87572C446F490082608D /* CalculatorRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorRepository.swift; sourceTree = "<group>"; };
@@ -1504,6 +1520,10 @@
 		B0010020301B55900069FD57 /* AchievementUnlockEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementUnlockEvent.swift; sourceTree = "<group>"; };
 		B0010023301B55900069FD57 /* AchievementSnackbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSnackbarView.swift; sourceTree = "<group>"; };
 		B0010028301B55900069FD57 /* AchievementNavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementNavigationManager.swift; sourceTree = "<group>"; };
+		CC0A00112F6000000000001 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
+		CC0A00122F6000000000002 /* Secrets.example.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.example.plist; sourceTree = "<group>"; };
+		CC0A00132F6000000000003 /* GoogleService-Info.example.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.example.plist"; sourceTree = "<group>"; };
+		CC0A00142F6000000000004 /* AppSecrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecrets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -1590,24 +1610,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CC0A00102F6000000000001 /* Config */ = {
-			isa = PBXGroup;
-			children = (
-				CC0A00112F6000000000001 /* Secrets.plist */,
-				CC0A00122F6000000000002 /* Secrets.example.plist */,
-				CC0A00132F6000000000003 /* GoogleService-Info.example.plist */,
-			);
-			path = Config;
-			sourceTree = "<group>";
-		};
-		CC0A00152F6000000000005 /* Config */ = {
-			isa = PBXGroup;
-			children = (
-				CC0A00142F6000000000004 /* AppSecrets.swift */,
-			);
-			path = Config;
-			sourceTree = "<group>";
-		};
 		100193C126D3CAC700ACBCD9 /* CoinCurrentlyWatch */ = {
 			isa = PBXGroup;
 			children = (
@@ -1714,6 +1716,7 @@
 		10347B212543489100BCC77E /* CryptoWidget */ = {
 			isa = PBXGroup;
 			children = (
+				8EWGFT012F6000000095B120 /* Fonts */,
 				8E8048EC2F09E6950093FF60 /* Color+Extensions.swift */,
 				8E9AE7B62D3CA6FD0066CC09 /* GoogleService-Info.plist */,
 				8EC16FB227A9D6EF0053EA2D /* Modifiers */,
@@ -3348,6 +3351,23 @@
 			path = Modifiers;
 			sourceTree = "<group>";
 		};
+		8EWGFT012F6000000095B120 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8EWGFT012F6000000095B101 /* Satoshi-Black.otf */,
+				8EWGFT012F6000000095B102 /* Satoshi-Bold.otf */,
+				8EWGFT012F6000000095B103 /* Satoshi-Italic.otf */,
+				8EWGFT012F6000000095B104 /* Satoshi-Light.otf */,
+				8EWGFT012F6000000095B105 /* Satoshi-Medium.otf */,
+				8EWGFT012F6000000095B106 /* Satoshi-Regular.otf */,
+				8EWGFT012F6000000095B107 /* Poppins-Medium.ttf */,
+				8EWGFT012F6000000095B108 /* Poppins-Regular.ttf */,
+				8EWGFT012F6000000095B109 /* Poppins-SemiBold.ttf */,
+				8EWGFT012F6000000095B10A /* Poppins-Light.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		8EC75A012F132F21004256BD /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -3835,6 +3855,24 @@
 			path = Screens;
 			sourceTree = "<group>";
 		};
+		CC0A00102F6000000000001 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				CC0A00112F6000000000001 /* Secrets.plist */,
+				CC0A00122F6000000000002 /* Secrets.example.plist */,
+				CC0A00132F6000000000003 /* GoogleService-Info.example.plist */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		CC0A00152F6000000000005 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				CC0A00142F6000000000004 /* AppSecrets.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -4065,6 +4103,16 @@
 				8E9AE7B72D3CA6FD0066CC09 /* GoogleService-Info.plist in Resources */,
 				CC0A001A2F600000000000A /* Secrets.plist in Resources */,
 				9F0C3A00288F3CDC007C4D68 /* Assets.xcassets in Resources */,
+				8EWGFT012F6000000095B111 /* Satoshi-Black.otf in Resources */,
+				8EWGFT012F6000000095B112 /* Satoshi-Bold.otf in Resources */,
+				8EWGFT012F6000000095B113 /* Satoshi-Italic.otf in Resources */,
+				8EWGFT012F6000000095B114 /* Satoshi-Light.otf in Resources */,
+				8EWGFT012F6000000095B115 /* Satoshi-Medium.otf in Resources */,
+				8EWGFT012F6000000095B116 /* Satoshi-Regular.otf in Resources */,
+				8EWGFT012F6000000095B117 /* Poppins-Medium.ttf in Resources */,
+				8EWGFT012F6000000095B118 /* Poppins-Regular.ttf in Resources */,
+				8EWGFT012F6000000095B119 /* Poppins-SemiBold.ttf in Resources */,
+				8EWGFT012F6000000095B11A /* Poppins-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4961,6 +5009,7 @@
 				CODE_SIGN_ENTITLEMENTS = "CoinCurrentlyWatch Extension/CoinCurrentlyWatch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				"EXCLUDED_ARCHS[sdk=watchos*]" = armv7k;
 				INFOPLIST_FILE = CoinCurrentlyWatch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4998,6 +5047,7 @@
 				CODE_SIGN_ENTITLEMENTS = "CoinCurrentlyWatch Extension/CoinCurrentlyWatch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				"EXCLUDED_ARCHS[sdk=watchos*]" = armv7k;
 				INFOPLIST_FILE = CoinCurrentlyWatch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5166,6 +5216,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = CryptoTracker/Info.plist;
@@ -5206,6 +5257,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = CryptoTracker/Info.plist;
@@ -5245,6 +5297,7 @@
 				CODE_SIGN_ENTITLEMENTS = CryptoWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = CryptoWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -5277,6 +5330,7 @@
 				CODE_SIGN_ENTITLEMENTS = CryptoWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = CryptoWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;

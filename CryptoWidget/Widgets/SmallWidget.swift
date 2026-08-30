@@ -27,31 +27,46 @@ struct SmallCryptoWidget: View {
         if !hasSelectedCoin {
             WidgetEmptyView(plural: false)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-        } else if let url = URL(string: data?.symbol == nil ? .appName : "\(data?.id ?? ""),\(data?.symbol ?? "")" ) {
-            Link(destination: url) {
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 8) {
-                        coinImageView
-                        
-                        coinInfoView
+        } else {
+            Group {
+                if hasBoughtPro, let url = coinURL {
+                    Link(destination: url) {
+                        coinContent
                     }
-                    
-                    Spacer(minLength: 8)
-                    
-                    coinPriceView
-                    
-                    Spacer(minLength: 8)
-                    
-                    timeframeChangeView
+                } else {
+                    coinContent
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .blur(radius: hasBoughtPro ? 0 : 5)
-                .padding(16)
             }
-            .widgetURL(url)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .widgetURL(hasBoughtPro ? coinURL : URL(string: "buyPro"))
         }
     }
     
+    private var coinURL: URL? {
+        URL(string: data?.symbol == nil ? .appName : "\(data?.id ?? ""),\(data?.symbol ?? "")")
+    }
+
+    private var coinContent: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 8) {
+                coinImageView
+                
+                coinInfoView
+            }
+            
+            Spacer(minLength: 8)
+            
+            coinPriceView
+            
+            Spacer(minLength: 8)
+            
+            timeframeChangeView
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .padding(16)
+        .blur(radius: hasBoughtPro ? 0 : 5)
+    }
+
     private var coinImageView: some View {
         ShimmeringImageWithUIImage(
             image: image,

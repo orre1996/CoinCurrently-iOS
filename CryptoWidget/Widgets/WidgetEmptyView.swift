@@ -13,15 +13,11 @@ struct WidgetEmptyView: View {
     var plural: Bool = true
     
     var body: some View {
-        Text("Long press to\nselect \(plural ? "coins" : "coin") to\ndisplay here.")
-            .font(.satoshiRegular(16))
-            .foregroundStyle(Color.onSurface(for: scheme))
-            .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
-            .padding(16)
+        Text("Long press and \"Edit Widget\" to\nselect \(plural ? "coins" : "a coin") to display here.")
+        .font(.satoshiRegular(16))
+        .foregroundStyle(Color.onSurface(for: scheme))
+        .multilineTextAlignment(.center)
+        .fixedSize(horizontal: false, vertical: true)
+        .padding(16)
     }
-}
-
-#Preview {
-    WidgetEmptyView()
 }

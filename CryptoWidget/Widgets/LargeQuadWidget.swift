@@ -66,6 +66,7 @@ struct LargeQuadWidget: View {
                     hasBoughtPro: hasBoughtPro
                 )
             )
+            .widgetURL(hasBoughtPro ? nil : URL(string: "buyPro"))
         }
     }
     

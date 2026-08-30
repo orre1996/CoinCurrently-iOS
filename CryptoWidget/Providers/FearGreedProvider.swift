@@ -57,20 +57,9 @@ struct FearGreedEntryView: View {
     let entry: FearGreedProvider.Entry
     
     var body: some View {
-        let proGatedModel =
-        entry.fearModel 
-        
         switch family {
         case .systemSmall:
             SmallFearGreedWidget(fearGreedModel: entry.fearModel)
-                .widgetContainerBackground()
-            
-        case .systemMedium:
-            MediumFearGreedWidget(fearGreedModel: proGatedModel, hasBoughtPro: entry.hasPro)
-                .widgetContainerBackground()
-            
-        case .systemLarge:
-            LargeFearGreedWidget(fearGreedModel: proGatedModel, hasBoughtPro: entry.hasPro)
                 .widgetContainerBackground()
             
         case .accessoryInline:
@@ -108,7 +97,7 @@ struct FearGreedWidget: Widget {
         )
         .configurationDisplayName("Fear and Greed widgets")
         .description("Keep track of the Fear and Greed index. All in one widget")
-        .supportedFamilies([.accessoryInline, .accessoryCircular, .accessoryRectangular, .systemSmall, .systemMedium, .systemLarge])
+        .supportedFamilies([.accessoryInline, .accessoryCircular, .accessoryRectangular, .systemSmall])
         .contentMarginsDisabled()
     }
 }

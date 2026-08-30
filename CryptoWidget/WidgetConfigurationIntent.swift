@@ -53,11 +53,7 @@ enum WidgetCoinStorage {
             return await toplistCoinIDs(limit: limit)
         }
 
-        let ids = configured.isEmpty ? await coinIDs() : configured
-        if ids.isEmpty {
-            return await toplistCoinIDs(limit: limit)
-        }
-        return Array(ids.prefix(limit))
+        return Array(configured.prefix(limit))
     }
 
     static func multiWidgetCoinLimit(for family: WidgetFamily) -> Int {
@@ -130,9 +126,9 @@ struct SingleCoinWidgetConfigurationIntent: WidgetConfigurationIntent {
 
     func coinIDs(limit: Int = 1) async -> [String] {
         if let id = coin?.id, !id.isEmpty {
-            return [id]
+            return Array([id].prefix(limit))
         }
-        return Array(await WidgetCoinStorage.coinIDs().prefix(limit))
+        return []
     }
 }
 
@@ -164,8 +160,7 @@ struct DuoCoinWidgetConfigurationIntent: WidgetConfigurationIntent {
 
     func coinIDs(limit: Int = 2) async -> [String] {
         let configured = [firstCoin?.id, secondCoin?.id].compactMap { $0 }.filter { !$0.isEmpty }
-        let ids = configured.isEmpty ? await WidgetCoinStorage.coinIDs() : configured
-        return Array(ids.prefix(limit))
+        return Array(configured.prefix(limit))
     }
 }
 
@@ -193,15 +188,10 @@ struct QuadCoinWidgetConfigurationIntent: WidgetConfigurationIntent {
     }
 
     func coinIDs(limit: Int = 4) async -> [String] {
-        guard await WidgetProAccess.hasPro() else {
-            return await WidgetCoinStorage.toplistCoinIDs(limit: limit)
-        }
-
         let configured = [firstCoin?.id, secondCoin?.id, thirdCoin?.id, fourthCoin?.id]
             .compactMap { $0 }
             .filter { !$0.isEmpty }
-        let ids = configured.isEmpty ? await WidgetCoinStorage.coinIDs() : configured
-        return Array(ids.prefix(limit))
+        return Array(configured.prefix(limit))
     }
 }
 
@@ -226,16 +216,7 @@ struct MultiCoinWidgetConfigurationIntent: WidgetConfigurationIntent {
 
     func coinIDs(limit: Int) async -> [String] {
         let configured = coins?.map(\.id).filter { !$0.isEmpty } ?? []
-        if !configured.isEmpty {
-            return Array(configured.prefix(limit))
-        }
-
-        let stored = await WidgetCoinStorage.coinIDs()
-        if !stored.isEmpty {
-            return Array(stored.prefix(limit))
-        }
-
-        return await WidgetCoinStorage.toplistCoinIDs(limit: limit)
+        return Array(configured.prefix(limit))
     }
 }
 

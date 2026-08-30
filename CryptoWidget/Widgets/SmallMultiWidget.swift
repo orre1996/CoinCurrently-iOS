@@ -43,80 +43,78 @@ struct MultiWidgetCell: View {
     
     var body: some View {
         
-        if let url = URL(string: hasPro ? data == nil ? .appName : "\(data?.id ?? ""),\(data?.symbol ?? "")" : "buyPro") {
-            
-            Link(destination: url) {
-                
-                GeometryReader { reader in
-                    
-                    VStack(alignment: .center, spacing: 0) {
-                        
-                        HStack(alignment: .top, spacing: 0) {
-                            
-                            VStack(alignment: .leading, spacing: 0) {
-                                
-                                Text(data?.name ?? "CoinCurrently")
-                                    .font(.regularWidget14)
-                                    .lineLimit(1)
-                                    .truncationMode(.tail)
-                                    .minimumScaleFactor(0.7)
-                                    .frame(height: reader.size.height / 3)
-                                
-                                coinPrice
-                                    .frame(height: reader.size.height / 3)
-                                
-                            }
-                            .foregroundColor(Color.onSurface(for: scheme))
-                            
-                            Spacer(minLength: 8)
-                            
-                            coinImage
-                            
-                        }
-                        
-                        HStack(alignment: .center, spacing: 0) {
-                            Text("7d: ")
-                                .font(.regularWidget12)
-                                .foregroundStyle(Color.onSurface(for: scheme))
-                            
-                            NewPriceChangePercentView(
-                                change: data?.price_change_percentage_7d_in_currency ?? 0,
-                                size: .small,
-                                accessibleTimeframe: "7 days",
-                                isDownloading: false
-                            )
-                            
-                            Spacer(minLength: 0)
-                            
-                            VStack {
-                                
-                                Spacer()
-                                
-                                NewChartView(
-                                    prices: data?.sparkline_in_7d?.price ?? getRandomPoints(),
-                                    color: data?.price_change_percentage_7d_in_currency?.changeColor(for: scheme),
-                                )
-                                .frame(width: 40, height: 13)
-                                
-                                Spacer()
-                                
-                            }
-                            .frame(maxHeight: 15)
-                            
-                        }
-                        .frame(height: reader.size.height / 3)
-                        
-                    }
-                    .frame(maxHeight: reader.size.height)
-                    
+        Group {
+            if hasPro, let url = coinURL {
+                Link(destination: url) {
+                    cellContent
                 }
-                .padding(.horizontal, horizontalPadding)
-                
+            } else {
+                cellContent
             }
-            .widgetURL(url)
-            
         }
+        .widgetURL(hasPro ? coinURL : nil)
         
+    }
+
+    private var coinURL: URL? {
+        URL(string: data == nil ? .appName : "\(data?.id ?? ""),\(data?.symbol ?? "")")
+    }
+
+    private var cellContent: some View {
+        GeometryReader { reader in
+            VStack(alignment: .center, spacing: 0) {
+                HStack(alignment: .top, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text(data?.name ?? "CoinCurrently")
+                            .font(.regularWidget14)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                            .minimumScaleFactor(0.7)
+                            .frame(height: reader.size.height / 3)
+                        
+                        coinPrice
+                            .frame(height: reader.size.height / 3)
+                    }
+                    .foregroundColor(Color.onSurface(for: scheme))
+                    
+                    Spacer(minLength: 8)
+                    
+                    coinImage
+                }
+                
+                HStack(alignment: .center, spacing: 0) {
+                    Text("7d: ")
+                        .font(.regularWidget12)
+                        .foregroundStyle(Color.onSurface(for: scheme))
+                    
+                    NewPriceChangePercentView(
+                        change: data?.price_change_percentage_7d_in_currency ?? 0,
+                        size: .small,
+                        accessibleTimeframe: "7 days",
+                        isDownloading: false
+                    )
+                    
+                    Spacer(minLength: 0)
+                    
+                    VStack {
+                        Spacer()
+                        
+                        NewChartView(
+                            prices: data?.sparkline_in_7d?.price ?? getRandomPoints(),
+                            color: data?.price_change_percentage_7d_in_currency?.changeColor(for: scheme),
+                        )
+                        .frame(width: 40, height: 13)
+                        
+                        Spacer()
+                    }
+                    .frame(maxHeight: 15)
+                }
+                .frame(height: reader.size.height / 3)
+            }
+            .frame(maxHeight: reader.size.height)
+        }
+        .padding(.horizontal, horizontalPadding)
+        .blur(radius: hasPro ? 0 : 5)
     }
     
     private var coinImage: some View {

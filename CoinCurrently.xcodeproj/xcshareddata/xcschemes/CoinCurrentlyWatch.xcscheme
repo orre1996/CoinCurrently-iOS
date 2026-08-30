@@ -88,7 +88,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "100193BF26D3CAC700ACBCD9"
             BuildableName = "CoinCurrentlyWatch.app"
-            BlueprintName = "CoinCurrentlyWatch"
             ReferencedContainer = "container:CoinCurrently.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -105,7 +104,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "100193BF26D3CAC700ACBCD9"
             BuildableName = "CoinCurrentlyWatch.app"
-            BlueprintName = "CoinCurrentlyWatch"
             ReferencedContainer = "container:CoinCurrently.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

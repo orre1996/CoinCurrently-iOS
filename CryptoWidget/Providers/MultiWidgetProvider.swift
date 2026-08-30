@@ -21,29 +21,29 @@ struct MultiWidgetProvider: AppIntentTimelineProvider {
     }
     
     func snapshot(for configuration: Intent, in context: Context) async -> CryptoEntry {
-        await viewModel.fetchSnapshotEntry()
+        if context.isPreview {
+            return await viewModel.fetchSnapshotEntry()
+        }
+
+        let ids = await displayCoinIDs(for: configuration, family: context.family)
+        return await viewModel.fetchDisplayEntry(ids: ids)
     }
     
     func timeline(for configuration: Intent, in context: Context) async -> Timeline<CryptoEntry> {
-        let limit = WidgetCoinStorage.multiWidgetCoinLimit(for: context.family)
+        let ids = await displayCoinIDs(for: configuration, family: context.family)
+        let entry = await viewModel.fetchDisplayEntry(ids: ids)
+        let minutes = ids.isEmpty ? 2.0 : (entry.hasPro ? 3.0 : 15.0)
+        return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * minutes)))
+    }
+
+    private func displayCoinIDs(for configuration: Intent, family: WidgetFamily) async -> [String] {
+        let limit = WidgetCoinStorage.multiWidgetCoinLimit(for: family)
         let configured = await configuration.coinIDs(limit: limit)
-        let ids = await WidgetCoinStorage.displayCoinIDs(
+        return await WidgetCoinStorage.displayCoinIDs(
             configured: configured,
             limit: limit,
-            requiresPro: Self.requiresPro(for: context.family)
+            requiresPro: Self.requiresPro(for: family)
         )
-        return await withCheckedContinuation { continuation in
-            viewModel.getCoinsWithSparkline(ids: ids) { result in
-                switch result {
-                case .success(let entry):
-                    let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * (entry.hasPro ? 3 : 15))))
-                    continuation.resume(returning: timeline)
-                case .failure(_):
-                    let timeline = Timeline(entries: [CryptoEntry.empty(selectedCoinIDs: ids)], policy: .after(Date().addingTimeInterval(60 * 2)))
-                    continuation.resume(returning: timeline)
-                }
-            }
-        }
     }
 
     private static func requiresPro(for family: WidgetFamily) -> Bool {
@@ -62,28 +62,12 @@ struct MultiWidgetEntryView: View {
     
     var body: some View {
         switch family {
-        case .systemSmall:
-            SmallMultiWidget(
-                data: entry.cryptoInfos,
-                image: entry.currencyLogos,
-                selectedCurrency: entry.selectedCurrency
-            )
-            .widgetContainerBackground()
-            
-        case .systemMedium:
-            MediumMultiWidget(
-                data: entry.cryptoInfos,
-                image: entry.currencyLogos,
-                selectedCurrency: entry.selectedCurrency,
-                hasBoughtPro: entry.hasPro
-            )
-            .widgetContainerBackground()
-            
         case .systemLarge:
             LargeMultiWidget(
                 data: entry.cryptoInfos,
                 image: entry.currencyLogos,
                 selectedCurrency: entry.selectedCurrency,
+                selectedCoinIDs: entry.selectedCoinIDs,
                 hasBoughtPro: entry.hasPro
             )
             .widgetContainerBackground()
@@ -118,7 +102,7 @@ struct MultiWidget: Widget {
             })
             .configurationDisplayName("Multi widgets")
             .description("Track your favourite cryptocurrencies. All in one widget")
-            .supportedFamilies([.accessoryRectangular, .systemSmall, .systemMedium, .systemLarge])
+            .supportedFamilies([.accessoryRectangular, .systemLarge])
             .contentMarginsDisabled()
     }
 }

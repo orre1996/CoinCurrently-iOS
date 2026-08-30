@@ -198,7 +198,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject {
         coinColors: [String: String] = [:]
     ) async -> [Pie] {
         await Task.detached(priority: .userInitiated) {
-            var resolvedDataPies = dataPies.map { pie -> Pie in
+            let resolvedDataPies = dataPies.map { pie -> Pie in
                 var pie = pie
                 guard let id = pie.data?.id, needsPieColor(pie.color) else {
                     return pie

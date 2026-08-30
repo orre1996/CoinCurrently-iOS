@@ -309,16 +309,6 @@
 		8E6DCA1F2DAD65AC00F23DF5 /* Satoshi-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E6DCA0E2DAD65AC00F23DF5 /* Satoshi-Medium.otf */; };
 		8E6DCA202DAD65AC00F23DF5 /* Satoshi-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E6DCA0D2DAD65AC00F23DF5 /* Satoshi-Light.otf */; };
 		8E6DCA212DAD65AC00F23DF5 /* Satoshi-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E6DCA0F2DAD65AC00F23DF5 /* Satoshi-Regular.otf */; };
-		8EWGFT012F6000000095B111 /* Satoshi-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B101 /* Satoshi-Black.otf */; };
-		8EWGFT012F6000000095B112 /* Satoshi-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B102 /* Satoshi-Bold.otf */; };
-		8EWGFT012F6000000095B113 /* Satoshi-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B103 /* Satoshi-Italic.otf */; };
-		8EWGFT012F6000000095B114 /* Satoshi-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B104 /* Satoshi-Light.otf */; };
-		8EWGFT012F6000000095B115 /* Satoshi-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B105 /* Satoshi-Medium.otf */; };
-		8EWGFT012F6000000095B116 /* Satoshi-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B106 /* Satoshi-Regular.otf */; };
-		8EWGFT012F6000000095B117 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B107 /* Poppins-Medium.ttf */; };
-		8EWGFT012F6000000095B118 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B108 /* Poppins-Regular.ttf */; };
-		8EWGFT012F6000000095B119 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B109 /* Poppins-SemiBold.ttf */; };
-		8EWGFT012F6000000095B11A /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B10A /* Poppins-Light.ttf */; };
 		8E7C7BC42E13982D00D53FB4 /* CryptoDetailAlertCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7C7BC32E13982D00D53FB4 /* CryptoDetailAlertCellView.swift */; };
 		8E7C7BC62E139D3300D53FB4 /* PriceAlertsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F93F82C28B26CE3008A3B15 /* PriceAlertsRepository.swift */; };
 		8E8048E92F0720630093FF60 /* DeleteWalletPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8048E82F0720630093FF60 /* DeleteWalletPopup.swift */; };
@@ -639,6 +629,16 @@
 		8EWG00102F6000000095B010 /* WidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00022F6000000095B001 /* WidgetConfigurationIntent.swift */; };
 		8EWG00112F6000000095B011 /* NewsWidgetCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00042F6000000095B002 /* NewsWidgetCategory.swift */; };
 		8EWG00122F6000000095B012 /* CoinEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EWG00062F6000000095B003 /* CoinEntity.swift */; };
+		8EWGFT012F6000000095B111 /* Satoshi-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B101 /* Satoshi-Black.otf */; };
+		8EWGFT012F6000000095B112 /* Satoshi-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B102 /* Satoshi-Bold.otf */; };
+		8EWGFT012F6000000095B113 /* Satoshi-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B103 /* Satoshi-Italic.otf */; };
+		8EWGFT012F6000000095B114 /* Satoshi-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B104 /* Satoshi-Light.otf */; };
+		8EWGFT012F6000000095B115 /* Satoshi-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B105 /* Satoshi-Medium.otf */; };
+		8EWGFT012F6000000095B116 /* Satoshi-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B106 /* Satoshi-Regular.otf */; };
+		8EWGFT012F6000000095B117 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B107 /* Poppins-Medium.ttf */; };
+		8EWGFT012F6000000095B118 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B108 /* Poppins-Regular.ttf */; };
+		8EWGFT012F6000000095B119 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B109 /* Poppins-SemiBold.ttf */; };
+		8EWGFT012F6000000095B11A /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B10A /* Poppins-Light.ttf */; };
 		8FAB0AB32F54100000AAB001 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FAB0AB42F54100000AAB001 /* AnalyticsManager.swift */; };
 		8FAB0AB62F54100000AAB002 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FAB0AB42F54100000AAB001 /* AnalyticsManager.swift */; };
 		9F0C3A00288F3CDC007C4D68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F0C39FF288F3CDC007C4D68 /* Assets.xcassets */; };
@@ -3351,23 +3351,6 @@
 			path = Modifiers;
 			sourceTree = "<group>";
 		};
-		8EWGFT012F6000000095B120 /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				8EWGFT012F6000000095B101 /* Satoshi-Black.otf */,
-				8EWGFT012F6000000095B102 /* Satoshi-Bold.otf */,
-				8EWGFT012F6000000095B103 /* Satoshi-Italic.otf */,
-				8EWGFT012F6000000095B104 /* Satoshi-Light.otf */,
-				8EWGFT012F6000000095B105 /* Satoshi-Medium.otf */,
-				8EWGFT012F6000000095B106 /* Satoshi-Regular.otf */,
-				8EWGFT012F6000000095B107 /* Poppins-Medium.ttf */,
-				8EWGFT012F6000000095B108 /* Poppins-Regular.ttf */,
-				8EWGFT012F6000000095B109 /* Poppins-SemiBold.ttf */,
-				8EWGFT012F6000000095B10A /* Poppins-Light.ttf */,
-			);
-			path = Fonts;
-			sourceTree = "<group>";
-		};
 		8EC75A012F132F21004256BD /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -3489,6 +3472,23 @@
 				8ETAX0012F99AB040055B0C7 /* PortfolioTaxExportBuilder.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		8EWGFT012F6000000095B120 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8EWGFT012F6000000095B101 /* Satoshi-Black.otf */,
+				8EWGFT012F6000000095B102 /* Satoshi-Bold.otf */,
+				8EWGFT012F6000000095B103 /* Satoshi-Italic.otf */,
+				8EWGFT012F6000000095B104 /* Satoshi-Light.otf */,
+				8EWGFT012F6000000095B105 /* Satoshi-Medium.otf */,
+				8EWGFT012F6000000095B106 /* Satoshi-Regular.otf */,
+				8EWGFT012F6000000095B107 /* Poppins-Medium.ttf */,
+				8EWGFT012F6000000095B108 /* Poppins-Regular.ttf */,
+				8EWGFT012F6000000095B109 /* Poppins-SemiBold.ttf */,
+				8EWGFT012F6000000095B10A /* Poppins-Light.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		9F13D2BF2C777C5200A04278 /* ViewModels */ = {

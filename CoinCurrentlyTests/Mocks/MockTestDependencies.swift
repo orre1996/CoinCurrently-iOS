@@ -115,10 +115,8 @@ actor MockFirebaseManager: FirebaseManager {
     func login() async -> (needsToUpdate: Bool, isBanned: Bool) { (false, false) }
     func sendFeedback(rating: Int, feedback: String) async -> Bool { false }
     func isUserBanned() async -> Bool { false }
-    func getFirebaseInformationMessage() async -> FirebaseInformation? { nil }
     func compareVersions(_ v1: String, _ v2: String) -> ComparisonResult { .orderedSame }
     func compareAppVersion(with version: String?) -> ComparisonResult { .orderedSame }
-    func compareiOSVersion(with version: String) async -> ComparisonResult { .orderedSame }
     func removeUser() async {}
 }
 

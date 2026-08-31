@@ -522,9 +522,6 @@
 		8EC75A312F173EA0004256BD /* SelectTypesSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC75A302F173EA0004256BD /* SelectTypesSheet.swift */; };
 		8ECA7B0B2DB70B1B00E3214E /* WatchConnectivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B0C3A226D8CFE500023AF5 /* WatchConnectivityViewModel.swift */; };
 		8ECA7B0C2DB70B1B00E3214E /* WatchConnectivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B0C3A226D8CFE500023AF5 /* WatchConnectivityViewModel.swift */; };
-		8ECA7B0E2DB745D800E3214E /* FirebaseInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA7B0D2DB745D800E3214E /* FirebaseInformation.swift */; };
-		8ECA7B0F2DB745D800E3214E /* FirebaseInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA7B0D2DB745D800E3214E /* FirebaseInformation.swift */; };
-		8ECA7B102DB745D800E3214E /* FirebaseInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA7B0D2DB745D800E3214E /* FirebaseInformation.swift */; };
 		8ECA7B162DB7461000E3214E /* RemoteConfigKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA7B152DB7461000E3214E /* RemoteConfigKeys.swift */; };
 		8ECA7B172DB7461000E3214E /* RemoteConfigKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA7B152DB7461000E3214E /* RemoteConfigKeys.swift */; };
 		8ECA7B182DB7461000E3214E /* RemoteConfigKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA7B152DB7461000E3214E /* RemoteConfigKeys.swift */; };
@@ -1246,7 +1243,6 @@
 		8EC75A282F172BC5004256BD /* DateOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateOption.swift; sourceTree = "<group>"; };
 		8EC75A2E2F173D32004256BD /* SelectCoinsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCoinsSheet.swift; sourceTree = "<group>"; };
 		8EC75A302F173EA0004256BD /* SelectTypesSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTypesSheet.swift; sourceTree = "<group>"; };
-		8ECA7B0D2DB745D800E3214E /* FirebaseInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseInformation.swift; sourceTree = "<group>"; };
 		8ECA7B152DB7461000E3214E /* RemoteConfigKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigKeys.swift; sourceTree = "<group>"; };
 		8ECFLG2F710000000000001 /* CountryFlagEmojis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryFlagEmojis.swift; sourceTree = "<group>"; };
 		8ECGS1MP2F70000000000001 /* CGSimplePriceUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSimplePriceUpdate.swift; sourceTree = "<group>"; };
@@ -2600,7 +2596,6 @@
 				10654A7A25CD9B1C005E7744 /* ChartButton.swift */,
 				9F9D874F2C4335DC0082608D /* CurrencyPricesAllCurrencies.swift */,
 				9F9D87532C4336C10082608D /* DynamicCodingKeys.swift */,
-				8ECA7B0D2DB745D800E3214E /* FirebaseInformation.swift */,
 				8E87629F2DBBDDE40026BB4C /* DeeplinkHandler.swift */,
 				8E9A72C92E5573600031C011 /* RadioButton.swift */,
 				8E9A72E32E5A4F330031C011 /* CustomProgressBarView.swift */,
@@ -4240,7 +4235,6 @@
 				10B0C3D726D9096300023AF5 /* ComplicationView.swift in Sources */,
 				8EA769052DAF5EF300F6660E /* StoreKitSubscriptionPeriod.swift in Sources */,
 				8EC75A242F149AB6004256BD /* SearchListView.swift in Sources */,
-				8ECA7B102DB745D800E3214E /* FirebaseInformation.swift in Sources */,
 				8E5B9CA12EA346E500F260E9 /* CompareWrapper.swift in Sources */,
 				100193FE26D3D4F900ACBCD9 /* Array+Extensions.swift in Sources */,
 				8EC75A222F14994C004256BD /* SearchRepository.swift in Sources */,
@@ -4715,7 +4709,6 @@
 				8E9A72D92E58C7010031C011 /* CandleChartHoverStatsView.swift in Sources */,
 				8E05548B2EDFF529000A7E09 /* NFTsHeaderView.swift in Sources */,
 				8E8762972DBA8B3C0026BB4C /* GasFeesScreen.swift in Sources */,
-				8ECA7B0E2DB745D800E3214E /* FirebaseInformation.swift in Sources */,
 				9F87C9D12C260D3F00A13D17 /* ArticleNewsView.swift in Sources */,
 				8EB949A62E6BDA3F0017A83C /* CompareHoverStats.swift in Sources */,
 				9FE974E22C11145600CF69B5 /* AppIconShortcutsManager.swift in Sources */,
@@ -4951,7 +4944,6 @@
 				8EC7153F30256C1100FEE248 /* AchievementCounters.swift in Sources */,
 				8EC759EA2F0C1A55004256BD /* NewPriceChangePercentView.swift in Sources */,
 				9FEC77EA2C3B6474001AC954 /* SnackBarTypes.swift in Sources */,
-				8ECA7B0F2DB745D800E3214E /* FirebaseInformation.swift in Sources */,
 				8EE043F22F2876580055B0C6 /* NFTPlatform.swift in Sources */,
 				8E5B9A7D2E7BB60500D61032 /* KeyValueModel.xcdatamodeld in Sources */,
 				10C96CD6258E4D600023153A /* PortfolioProvider.swift in Sources */,

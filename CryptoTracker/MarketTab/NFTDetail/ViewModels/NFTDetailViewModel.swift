@@ -27,7 +27,6 @@ protocol NFTDetailViewModel {
     var prices24h: [Double] { get set }
     var onlyPrices: [Double] { get set }
     var timeStamps: [Double] { get set }
-    var showDetailNews: Bool { get set }
     var isDragging: Bool { get set }
     var hoverHelper: HoverHelper { get set }
     var hoverPriceWidthSize: CGFloat { get set }
@@ -108,8 +107,7 @@ final class NFTDetailViewModelImp: NFTDetailViewModel {
     var prices24h = [Double]()
     var onlyPrices = [Double]()
     var timeStamps = [Double]()
-    
-    var showDetailNews = false
+
     var isDragging = false
     
     var selectedSortOption: SortOption = .priceDesc
@@ -181,9 +179,7 @@ final class NFTDetailViewModelImp: NFTDetailViewModel {
         if let news = await newsRepository.cachedNews[NewsType.exchange(id: String(name?.split(separator: " ").first ?? ""))] {
             self.news = news.data.data
         }
-    
-        showDetailNews = await FirebaseManagerImp.shared.getConfigBool(key: .showDetailNews) ?? false
-        
+
         if let bitcoin = await cryptoDetailRepository.cachedBitcoin?.data {
             self.bitcoin = bitcoin
             self.setPriceMultiplier()
@@ -279,7 +275,7 @@ final class NFTDetailViewModelImp: NFTDetailViewModel {
     }
     
     func getNews() async {
-        guard let showNews = await FirebaseManagerImp.shared.getConfigBool(key: .showDetailNews), showNews, let id = nftDetailInfo.name?.split(separator: " ").first?.description else { return }
+        guard let id = nftDetailInfo.name?.split(separator: " ").first?.description else { return }
         
         showNewsError = false
 

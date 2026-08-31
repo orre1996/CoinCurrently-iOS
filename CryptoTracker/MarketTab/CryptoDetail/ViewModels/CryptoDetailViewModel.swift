@@ -42,7 +42,6 @@ protocol CryptoDetailViewModel {
     var selectedTimeFrame: TimeCharts { get set }
     var widgetCurrencies: [Toplist] { get set }
     var isDragging: Bool { get set }
-    var showDetailNews: Bool { get set }
     var selectedSortOption: SortOption { get set }
     var exchangeMarketItems: [ExchangeMarketItem]? { get set }
     var pie: Pie? { get set }
@@ -123,7 +122,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
     private let storageManager: CachedStorageManager
     private let storeKitManager: StoreKitManager
     private let priceAlertsRepository: PriceAlertsRepository
-    private let firebaseManager: FirebaseManager
     private let analyticsManager: AnalyticsManager
     private let settingsManager: SettingsManager
     
@@ -177,9 +175,7 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
     var selectedTimeFrame = TimeCharts.getStartTimeFrame(between: .anHour, and: .max)
     var widgetCurrencies = [Toplist]()
     var isDragging = false
-    
-    var showDetailNews = false
-    
+
     var selectedSortOption: SortOption = .volumeDesc
     var exchangeMarketItems: [ExchangeMarketItem]? = nil
     
@@ -202,7 +198,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
         storageManager: CachedStorageManager = CachedStorageManagerImp.shared,
         storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
         priceAlertsRepository: PriceAlertsRepository = PriceAlertsRepositoryImp.shared,
-        firebaseManager: FirebaseManager = FirebaseManagerImp.shared,
         analyticsManager: AnalyticsManager = AnalyticsManager.shared,
         settingsManager: SettingsManager = SettingsManager.shared
     ) {
@@ -215,7 +210,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
         self.storageManager = storageManager
         self.storeKitManager = storeKitManager
         self.priceAlertsRepository = priceAlertsRepository
-        self.firebaseManager = firebaseManager
         self.analyticsManager = analyticsManager
         self.settingsManager = settingsManager
         
@@ -263,8 +257,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
         }
         
         inFavoritesList = await toplistRepository.cachedFavorites?.data.contains { $0.id == cryptoInfo?.id } ?? false
-
-        showDetailNews = await firebaseManager.getConfigBool(key: .showDetailNews) ?? false
 
         if let symbol = cryptoInfo?.symbol?.uppercased(),
            let newsData = await newsRepository.cachedNews[.coin(symbol: symbol)]?.data.data {
@@ -556,7 +548,7 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
     }
     
     func getNews(forceSymbol: String? = nil) async {
-        guard let showNews = await FirebaseManagerImp.shared.getConfigBool(key: .showDetailNews), showNews, let id = forceSymbol?.uppercased() ?? cryptoInfo?.symbol?.uppercased() else { return }
+        guard let id = forceSymbol?.uppercased() ?? cryptoInfo?.symbol?.uppercased() else { return }
         
         showNewsError = false
         

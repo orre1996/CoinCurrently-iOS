@@ -29,10 +29,8 @@ protocol FirebaseManager: Actor {
 #if IS_APP
     func login() async -> Bool
     func syncRevenueCatCustomerInfo() async
-    func getFirebaseInformationMessage() async -> FirebaseInformation?
     func compareVersions(_ v1: String, _ v2: String) -> ComparisonResult
     func compareAppVersion(with version: String?) async -> ComparisonResult
-    func compareiOSVersion(with version: String) async -> ComparisonResult
     func removeUser() async
 #else
     func login() async
@@ -102,22 +100,6 @@ final actor FirebaseManagerImp: FirebaseManager {
     
     // MARK: - User
 
-    func getFirebaseInformationMessage() async -> FirebaseInformation? {
-        guard let configValue = await getConfig(key: .information_message)?.dataValue else {
-            return nil
-        }
-        
-        do {
-            let result = try JSONDecoder().decode(FirebaseInformation.self, from: configValue)
-            let isAboveMin = await compareiOSVersion(with: result.minVersion) != .orderedAscending
-            let isBelowMax = await compareiOSVersion(with: result.maxVersion) != .orderedDescending
-            
-            return (isAboveMin && isBelowMax) ? result : nil
-        } catch {
-            return nil
-        }
-    }
-    
     func compareVersions(_ v1: String, _ v2: String) -> ComparisonResult {
         let paddedV1 = padVersion(v1)
         let paddedV2 = padVersion(v2)
@@ -131,11 +113,6 @@ final actor FirebaseManagerImp: FirebaseManager {
         }
         
         return compareVersions(currentAppVersion, version)
-    }
-    
-    func compareiOSVersion(with version: String) async -> ComparisonResult {
-        let currentiOSVersion = await MainActor.run { UIDevice.current.systemVersion }
-        return compareVersions(currentiOSVersion, version)
     }
     
     // MARK: - Helper Functions

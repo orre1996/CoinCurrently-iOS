@@ -30,7 +30,6 @@ protocol ExchangeDetailViewModel {
     var isDragging: Bool { get set }
     var prices: [Double] { get set }
     var timeStamps: [Double] { get set }
-    var showDetailNews: Bool { get set }
     var days: String { get set }
     var mainGraphStats: [String?] { get }
     var differenceValue: String { get }
@@ -97,9 +96,7 @@ final class ExchangeDetailViewModelImp: ExchangeDetailViewModel {
     
     var prices = [Double]()
     var timeStamps = [Double]()
-    
-    var showDetailNews = false
-    
+
     var days = TimeCharts.getStartTimeFrame(between: .aDay, and: .aYear).days
     
     var selectedSortOption: SortOption = .volumeDesc
@@ -160,9 +157,6 @@ final class ExchangeDetailViewModelImp: ExchangeDetailViewModel {
         if let bitcoin = await cryptoDetailRepository.cachedBitcoin?.data {
             self.bitcoin = bitcoin
         }
-
-        showDetailNews = await FirebaseManagerImp.shared.getConfigBool(key: .showDetailNews) ?? false
-
 
         let newsId = String(exchangeInfo.name?.split(separator: " ").first ?? "")
         
@@ -380,10 +374,6 @@ final class ExchangeDetailViewModelImp: ExchangeDetailViewModel {
     }
 
     func getNews() async {
-        guard let showNews = await FirebaseManagerImp.shared.getConfigBool(key: .showDetailNews), showNews else {
-            return
-        }
-        
         showNewsError = false
 
         let id = String(exchangeInfo.name?.split(separator: " ").first ?? "")

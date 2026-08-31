@@ -35,8 +35,6 @@ protocol HomeViewModel {
     var winnersList: [Toplist]? { get }
     var losersList: [Toplist]? { get }
 
-    var informationMessage: String? { get }
-    var informationKey: String? { get }
     var promotionTitle: String? { get }
     var promotionMessage: String? { get }
     var promotionMessageAccessible: String? { get }
@@ -79,9 +77,7 @@ class HomeViewModelImp: HomeViewModel {
     var fearGreed: FearGreed?
     var gasFees: GasFees?
     
-    // Promotions and Information
-    var informationMessage: String?
-    var informationKey: String?
+    // Promotions
     var promotionTitle: String?
     var promotionMessage: String?
     var promotionMessageAccessible: String?
@@ -194,8 +190,6 @@ class HomeViewModelImp: HomeViewModel {
         }
         await setShowFreeTrial()
 
-        await setFirebaseInformationMessage()
-        
         let products = await storeKitManager.requestProducts()
         let isEligibleForTrial = await storeKitManager.isEligableForTrial(using: products)
         
@@ -297,11 +291,6 @@ class HomeViewModelImp: HomeViewModel {
         
         timer?.invalidate()
         timer = nil
-    }
-
-    func informationClosed(message: String, key: String) {
-        SettingsManager.shared.setKey(key: key)
-        informationMessage = nil
     }
 
     // MARK: - Toplist
@@ -518,15 +507,7 @@ class HomeViewModelImp: HomeViewModel {
             promotionMessageAccessible = "Try CoinCurrently Pro for free"
         }
     }
-    
-    private func setFirebaseInformationMessage() async {
-        guard let information = await firebaseManger.getFirebaseInformationMessage(),
-              !SettingsManager.shared.getKeyExists(key: information.messageId) else { return }
-        
-        informationMessage = information.message
-        informationKey = information.messageId
-    }
-    
+
     private func formattedOfferMessage(period: Int, description: String, price: String) -> String {
         "Get \(period) \(description) of CoinCurrently Pro for only \(price)!"
     }

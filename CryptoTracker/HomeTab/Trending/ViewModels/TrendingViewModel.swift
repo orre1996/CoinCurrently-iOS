@@ -44,37 +44,6 @@ final class TrendingViewModelImp: TrendingViewModel {
     func getTrendingCoins() async {
         if let trendingList = await trendingRepository.getTrendingList() {
             self.trendingList = trendingList
-            
-            if
-                let secret: HiddenSecret = await FirebaseManagerImp.shared.getConfigJsonValue(key: .show_secret_message),
-                secret.secret_number == "6",
-                var list = self.trendingList
-            {
-                var coins = list.coins ?? []
-                
-                coins.insert(
-                    TrendingCoin(
-                        item: CoinItem(
-                            id: secret.secret_url,
-                            coin_id: nil,
-                            name: "CoinCurrently",
-                            symbol: "Secret message",
-                            market_cap_rank: 0,
-                            thumb: secret.secret_image,
-                            small: secret.secret_image,
-                            large: secret.secret_image,
-                            slug: nil,
-                            price_btc: nil,
-                            score: nil,
-                            data: nil
-                        )
-                    ),
-                    at: min(4, coins.count)
-                )
-                
-                list.coins = coins
-                self.trendingList = list
-            }
         }
     }
     

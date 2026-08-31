@@ -12,5 +12,4 @@ enum RemoteConfigKeys: String {
     case showPromotionalOffer
     case minimumVersion
     case information_message
-    case show_secret_message
 }

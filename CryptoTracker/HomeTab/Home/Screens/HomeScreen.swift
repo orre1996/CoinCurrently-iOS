@@ -13,7 +13,6 @@ struct HomeScreen: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @Environment(\.sizeCategory) private var category
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(\.openURL) private var openURL
     
     @State private var viewModel = HomeViewModelImp()
     @State private var id = UUID()
@@ -82,16 +81,6 @@ struct HomeScreen: View {
                                                     await viewModel.favouriteButtonPressed(toplistItem: $0)
                                                 },
                                                 navigateToCryptoDetail: { coin in
-                                                    if coin.symbol == "Secret message" {
-                                                        Task {
-                                                            let secret: HiddenSecret? = await FirebaseManagerImp.shared.getConfigJsonValue(key: .show_secret_message)
-                                                            if let urlString = secret?.secret_url, let url = URL(string: urlString) {
-                                                                openURL(url)
-                                                            }
-                                                        }
-                                                        return
-                                                    }
-                                                    
                                                     AnalyticsManager.shared.log(
                                                         Navigate(fromScreen: .home, toScreen: .cryptoDetail, coinName: coin.name)
                                                     )

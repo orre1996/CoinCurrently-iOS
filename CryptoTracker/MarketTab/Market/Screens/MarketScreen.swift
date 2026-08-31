@@ -11,7 +11,6 @@ import SwiftUI
 struct MarketScreen: View {
     @Environment(NavigationViewModel.self) private var navigationViewModel
     @Environment(\.safeAreaInsets) private var safeAreaInsets
-    @Environment(\.openURL) private var openURL
     
     @State private var currentPage: Int? = 0
     @State private var viewID = UUID()
@@ -171,15 +170,6 @@ struct MarketScreen: View {
                     ExchangesView(
                         currentPage: currentPage,
                         exchangeClicked: { exchange in
-                            if
-                                exchange.name?.contains("You found the secret message") ?? false,
-                                let urlString = exchange.url,
-                                let url = URL(string: urlString)
-                            {
-                                openURL(url)
-                                return
-                            }
-                            
                             AnalyticsManager.shared.log(
                                 Navigate(
                                     fromScreen: .exchanges,

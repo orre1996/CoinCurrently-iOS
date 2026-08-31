@@ -287,25 +287,7 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
             return
         }
         
-        var items = tickers.map { ExchangeMarketItem.from($0) }.sorted(by: selectedSortOption)
-        
-            if
-                let secret: HiddenSecret = await FirebaseManagerImp.shared.getConfigJsonValue(key: .show_secret_message),
-                secret.secret_number == "8"
-            {
-                items.insert(
-                    ExchangeMarketItem(
-                        name: "Secret message",
-                        imageUrl: secret.secret_image,
-                        tradeUrl: secret.secret_url,
-                        price: 12345,
-                        volume: 12345
-                    ),
-                    at: min(11, items.count)
-                )
-            }
-        
-        exchangeMarketItems = items
+        exchangeMarketItems = tickers.map { ExchangeMarketItem.from($0) }.sorted(by: selectedSortOption)
     }
     
     // MARK: - Computed properties
@@ -580,21 +562,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
         
         if let news = await newsRepository.getNews(type: .coin(symbol: id), count: 25), !news.isEmpty {
             self.news = news
-            
-            if
-                let secret: HiddenSecret = await FirebaseManagerImp.shared.getConfigJsonValue(key: .show_secret_message),
-                secret.secret_number == "5"
-            {
-                self.news.insert(
-                    NewsItem(
-                        news_url: secret.secret_url,
-                        image_url: secret.secret_image,
-                        title: "You found the secret message. Click here to join the raffle!",
-                        source_name: "CoinCurrently",
-                        date: "Thu, 30 Jul 2026 15:24:35 -0400",
-                        sentiment: "Positive"
-                    ), at: 13)
-            }
         } else {
             showNewsError = true
         }

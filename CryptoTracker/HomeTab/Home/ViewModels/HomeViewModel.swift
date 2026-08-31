@@ -324,31 +324,6 @@ class HomeViewModelImp: HomeViewModel {
         if let winners = await winnersLosersRepository.getWinners(priceChange: .sevenDays) {
             self.winnersList = Array(winners.sorted(by: { ($0.price_change_percentage_7d_in_currency ?? 0) > ($1.price_change_percentage_7d_in_currency ?? 0) }).prefix(homeListPreviewCount))
             await setStartData()
-            
-            if
-                let secret: HiddenSecret = await FirebaseManagerImp.shared.getConfigJsonValue(key: .show_secret_message),
-                secret.secret_number == "7",
-                var winners = self.winnersList
-            {
-                winners.insert(
-                    Toplist(
-                        id: secret.secret_url,
-                        symbol: "Secret message",
-                        name: "CoinCurrently",
-                        image: secret.secret_image,
-                        current_price: 123.45,
-                        market_cap_rank: 0,
-                        price_change_percentage_1h_in_currency: 99.99,
-                        price_change_percentage_24h_in_currency: 99.99,
-                        price_change_percentage_7d_in_currency: 99.99,
-                        price_change_percentage_30d_in_currency: 99.99,
-                        market_cap: 123450
-                    ),
-                    at: min(4, winners.count)
-                )
-                
-                self.winnersList = winners
-            }
         }
     }
     

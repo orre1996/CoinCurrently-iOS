@@ -16,13 +16,6 @@ import RevenueCat
 import WidgetKit
 #endif
 
-struct HiddenSecret: Codable {
-    let secret_number: String
-    let secret_url: String
-    /// Optional image URL from Remote Config (avoids hardcoding Firebase Storage tokens in source).
-    let secret_image: String?
-}
-
 protocol FirebaseManager: Actor {
     var fcmToken: String { get set }
     var user: User? { get set }

@@ -12,7 +12,6 @@ struct CategoryDetailScreen: View {
     @Environment(NavigationViewModel.self) private var navigationViewModel
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @Environment(\.presentationMode) var presentationMode
-    @Environment(\.openURL) private var openURL
     
     @ScaledMetric private var scale: CGFloat = 1
     
@@ -31,17 +30,6 @@ struct CategoryDetailScreen: View {
                 currentPage: .constant(0),
                 category: category,
                 handleCurrencyClick: { coin in
-                    if coin.symbol == "Secret message" {
-                        Task {
-                            let secret: HiddenSecret? = await FirebaseManagerImp.shared.getConfigJsonValue(key: .show_secret_message)
-                            if let urlString = secret?.secret_url, let url = URL(string: urlString) {
-                                openURL(url)
-                            }
-                        }
-                        
-                        return
-                    }
-
                     AnalyticsManager.shared.log(
                         Navigate(
                             fromScreen: .categoryDetail,

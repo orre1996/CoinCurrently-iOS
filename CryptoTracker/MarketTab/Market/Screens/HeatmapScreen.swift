@@ -179,7 +179,7 @@ struct HeatmapScreen: View {
         
         return Array(
             sourceCoins
-                .filter { $0.id != nil && $0.symbol != "Secret message" }
+                .filter { $0.id != nil }
                 .sorted { ($0.market_cap ?? 0) > ($1.market_cap ?? 0) }
                 // 249 divides evenly by the phone equal-grid column count (3).
                 .prefix(249)

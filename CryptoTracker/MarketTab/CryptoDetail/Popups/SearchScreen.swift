@@ -15,7 +15,6 @@ struct SearchScreen: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @Environment(\.sizeCategory) private var category
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(\.openURL) private var openURL
     
     @ScaledMetric private var scale: CGFloat = 1
     
@@ -422,17 +421,6 @@ struct SearchScreen: View {
                     index: index,
                     totalCount: searchHistory.count,
                     onClick: {
-                        if coin.symbol == "Secret message" {
-                            Task {
-                                let secret: HiddenSecret? = await FirebaseManagerImp.shared.getConfigJsonValue(key: .show_secret_message)
-                                if let urlString = secret?.secret_url, let url = URL(string: urlString) {
-                                    openURL(url)
-                                }
-                            }
-                            
-                            return
-                        }
-                        
                         presentationMode.wrappedValue.dismiss()
 
                         logNavigateFromSearch(for: searchCase, itemName: coin.name)
@@ -490,16 +478,6 @@ struct SearchScreen: View {
 
                         switch searchCase {
                         case .onlyCoins, .coins:
-                            if coin.symbol == "Secret message" {
-                                Task {
-                                    let secret: HiddenSecret? = await FirebaseManagerImp.shared.getConfigJsonValue(key: .show_secret_message)
-                                    if let urlString = secret?.secret_url, let url = URL(string: urlString) {
-                                        openURL(url)
-                                    }
-                                }
-                                return
-                            }
-                            
                             navigationViewModel.navPath.append(
                                 NavigationScreens.CryptoDetail(
                                     currencyDataModel: coin.toCryptoDetail

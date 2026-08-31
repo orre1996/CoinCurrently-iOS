@@ -13,7 +13,6 @@ struct DerivativeDetailScreen: View {
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.sizeCategory) private var category
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(\.openURL) private var openURL
     
     @Environment(\.accessibilityVoiceOverEnabled) private var accessibilityVoiceOverEnabled
     
@@ -435,15 +434,6 @@ struct DerivativeDetailScreen: View {
                 imageUrl: viewModel.toplist?.first(where: { $0.symbol?.lowercased() == derivative.base?.lowercased() })?.image,
                 hasToplist: viewModel.toplist != nil,
                 derivativeSelected: {
-                    if derivative.symbol == "You found the secret message. Click here to join the raffle!" {
-                        Task {
-                            if let urlString = derivative.trade_url, let url = URL(string: urlString) {
-                                openURL(url)
-                            }
-                        }
-                        return
-                    }
-                    
                     AnalyticsManager.shared.log(
                         SheetOpened(fromScreen: .derivativeDetail, sheet: .derivativeDetailSheet)
                     )

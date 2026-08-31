@@ -78,20 +78,6 @@ final class ExchangesViewModelImp: ExchangesViewModel, ObservableObject {
                 exchanges: exchanges,
                 newSortOption: selectedSortOption
             )
-            
-            if
-                let secret: HiddenSecret = await FirebaseManagerImp.shared.getConfigJsonValue(key: .show_secret_message),
-                secret.secret_number == "2"
-            {
-                self.exchanges.insert(
-                    ExchangeModel(
-                        name: "You found the secret message. Click here to join the raffle!",
-                        url: secret.secret_url,
-                        image: secret.secret_image,
-                        trust_score: 10,
-                        trade_volume_24h_btc: 1,
-                    ), at: 23)
-            }
         }
     }
     

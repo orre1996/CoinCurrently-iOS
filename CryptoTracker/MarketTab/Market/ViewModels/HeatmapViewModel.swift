@@ -62,7 +62,7 @@ final class HeatmapViewModelImp: HeatmapViewModel {
             priceChange: .sevenDays,
             platformId: category?.id
         ) {
-            self.toplist = toplist.filter { $0.symbol != "Secret message" }
+            self.toplist = toplist
         }
     }
     

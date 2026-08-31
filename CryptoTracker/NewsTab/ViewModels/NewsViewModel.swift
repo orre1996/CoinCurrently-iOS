@@ -98,21 +98,6 @@ final class NewsViewModelImp: NewsViewModel, ObservableObject {
     func getNewsVideos() async {
         if let news = await newsRepository.getNews(type: .video, count: 25) {
             newsVideos = news
-            
-            if
-                let secret: HiddenSecret = await FirebaseManagerImp.shared.getConfigJsonValue(key: .show_secret_message),
-                secret.secret_number == "1"
-            {
-                newsVideos?.insert(
-                    NewsItem(
-                        news_url: secret.secret_url,
-                        image_url: secret.secret_image,
-                        title: "You found the secret message. Click here to join the raffle!",
-                        source_name: "CoinCurrently",
-                        date: "Thu, 30 Jul 2026 15:24:35 -0400",
-                        sentiment: "Positive"
-                    ), at: 8)
-            }
         }
     }
     

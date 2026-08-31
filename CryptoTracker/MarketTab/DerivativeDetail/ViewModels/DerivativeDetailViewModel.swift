@@ -113,21 +113,6 @@ final class DerivativeDetailViewModelImp: DerivativeDetailViewModel {
             derivatives: futures,
             newSortOption: selectedSortOption
         )
-        
-        Task {
-            if
-                let secret: HiddenSecret = await FirebaseManagerImp.shared.getConfigJsonValue(key: .show_secret_message),
-                secret.secret_number == "4"
-            {
-                self.futuresList.insert(
-                    DerivativeDetail(
-                        symbol: "You found the secret message. Click here to join the raffle!",
-                        trade_url: secret.secret_url,
-                        open_interest_usd: 12345,
-                        converted_last: ConvertedLastString(btc: "12345", eth: "12345", usd: "12345")
-                    ), at: 31)
-            }
-        }
     }
     
     func getBitcoin() async {

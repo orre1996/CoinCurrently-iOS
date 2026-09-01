@@ -30,6 +30,36 @@ extension Int {
         }
     }
 
+    var tabToScreenLabel: ScreenLabel? {
+        switch self {
+        case 0:
+            return .home
+        case 1:
+            return .portfolio
+        case 2:
+            return .market
+        case 3:
+            return .news
+        case 4:
+            return .settings
+        default:
+            return nil
+        }
+    }
+
+    var newsTab: String {
+        switch self {
+        case 0:
+            return "Articles"
+        case 1:
+            return "Video"
+        case 2:
+            return "Podcasts"
+        default:
+            return "Invalid"
+        }
+    }
+
     /// Page-selector titles on ``CryptoDetailScreen`` (analytics).
     var cryptoDetailPageTabName: String {
         switch self {

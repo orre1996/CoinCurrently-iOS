@@ -248,6 +248,18 @@ func candleBinIndex(x: CGFloat, width: CGFloat, candleCount: Int) -> Int {
 }
 
 /// Data index for an axis label in column `labelIndex` of `labelCount` (1-based slots, centers like `ChartTimeStamps`).
+func getPriceXPosition(position: CGFloat, textSize: CGFloat, readerWidthSize: CGFloat) -> CGFloat {
+    if position < textSize / 2 {
+        return textSize / 2
+    }
+
+    if position + textSize / 2 > readerWidthSize {
+        return readerWidthSize - textSize / 2
+    }
+
+    return position
+}
+
 func chartAxisTimestampIndex(labelIndex: Int, labelCount: Int, dataCount: Int) -> Int {
     guard dataCount > 0 else { return 0 }
     if dataCount == 1 { return 0 }

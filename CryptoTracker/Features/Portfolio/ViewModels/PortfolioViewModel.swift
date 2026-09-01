@@ -1032,8 +1032,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject {
         }
         
         let selectedCurrency: CurrencyModel = settingsManager.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
-        profitLossPercent = GlobalFunctions.shared.getPortfolioProfitLossPercent(
-            of: portfolio,
+        profitLossPercent = portfolio.getProfitLossPercent(
             coinPrices: allPrices,
             showCurrency: selectedCurrency.code
         )
@@ -1047,8 +1046,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject {
 
         let selectedCurrency: CurrencyModel = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
         
-        profitLossValue = GlobalFunctions.shared.getPortfolioProfitLossValue(
-            of: portfolio,
+        profitLossValue = portfolio.getProfitLossValue(
             coinPrices: allPrices,
             showCurrency: selectedCurrency.code
         )

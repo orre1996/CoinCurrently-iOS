@@ -429,6 +429,64 @@ extension Array where Element == Pie {
         
         return transactions + buySwapTransactions + swapSellTransactions + importTransactions + tokensTransactions
     }
+
+    func getProfitLossValue(
+        coinPrices: [Cryptocurrency],
+        showCurrency: String
+    ) -> Double? {
+        if isEmpty || coinPrices.isEmpty {
+            return 0
+        }
+
+        var profitLoss = 0.0
+        var hasEntryPrices = false
+
+        for pie in self {
+            let transactions = getAllTransactions(of: pie.data?.id)
+            let prices = coinPrices.first(where: { $0.id == pie.data?.id })?.prices
+
+            if let profit = transactions.getProfitValue(prices: prices, showCurrency: showCurrency) {
+                profitLoss += profit
+                hasEntryPrices = true
+            }
+        }
+
+        if !hasEntryPrices {
+            return 0.0
+        }
+
+        return profitLoss
+    }
+
+    func getProfitLossPercent(
+        coinPrices: [Cryptocurrency],
+        showCurrency: String
+    ) -> Double {
+        if isEmpty || coinPrices.isEmpty {
+            return 0.0
+        }
+
+        var totalProfit = 0.0
+        var totalSpent = 0.0
+
+        for pie in self {
+            let transactions = getAllTransactions(of: pie.data?.id)
+            let prices = coinPrices.first(where: { $0.id == pie.data?.id })?.prices
+
+            if transactions.getProfitPercent(prices: prices, showCurrency: showCurrency) != nil {
+                totalProfit += transactions.getProfitValue(prices: prices, showCurrency: showCurrency, withTransfers: false) ?? 0.0
+                totalSpent += transactions.totalBuyAmount * (transactions.getAverageCost(prices: prices, showCurrency: showCurrency) ?? 0.0)
+            }
+        }
+
+        let percent = totalProfit / totalSpent
+
+        if percent.isNaN || percent.isInfinite {
+            return 0.0
+        }
+
+        return percent * 100
+    }
     
     func swapSellTransactions(for id: String?) -> [NewTransaction] {
         return flatMap { $0.swaps }

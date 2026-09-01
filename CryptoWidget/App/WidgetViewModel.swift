@@ -123,13 +123,11 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
                 allPrices: allPrices,
                 currencyCode: selectedCurrency.code
             )
-            let profitLossValue = GlobalFunctions.shared.getPortfolioProfitLossValue(
-                of: portfolioData,
+            let profitLossValue = portfolioData.getProfitLossValue(
                 coinPrices: allPrices,
                 showCurrency: selectedCurrency.code
             )
-            let profitLossPercent = GlobalFunctions.shared.getPortfolioProfitLossPercent(
-                of: portfolioData,
+            let profitLossPercent = portfolioData.getProfitLossPercent(
                 coinPrices: allPrices,
                 showCurrency: selectedCurrency.code
             )

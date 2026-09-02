@@ -9,6 +9,7 @@ import Foundation
 
 enum LocalStorageKeys: Keyable {
     case proStatus
+    case proExpirationDate
     case freeForAll
     case lastVersion
     case toplist
@@ -68,6 +69,8 @@ enum LocalStorageKeys: Keyable {
         switch self {
         case .proStatus:
             return "proStatus-1"
+        case .proExpirationDate:
+            return "proExpirationDate"
         case .freeForAll:
             return "freeForAll"
         case .lastVersion:

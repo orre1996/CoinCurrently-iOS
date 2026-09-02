@@ -53,6 +53,7 @@ struct SettingsScreen: View {
     @State private var isSelectingTheme = false
     @State private var isSelectingCurrency = false
     @State private var currentSubscription: String?
+    @State private var subscriptionExpirationDate: Date?
     
     @State private var isManagingSubscription = false
 
@@ -119,7 +120,11 @@ struct SettingsScreen: View {
         .task {
             AchievementManager.shared.preloadProgress()
         }
-        .syncSubscriptionStatus($currentSubscription, storeKitManager: storeKitManager)
+        .syncSubscriptionStatus(
+            $currentSubscription,
+            expirationDate: $subscriptionExpirationDate,
+            storeKitManager: storeKitManager
+        )
         .onChange(of: currentSubscription, initial: true) { _, subscription in
             webSocketEnabled = SettingsManager.shared.isWebSocketEnabled(hasPro: subscription != nil)
         }
@@ -197,15 +202,25 @@ struct SettingsScreen: View {
         }
     }
     
-    private var subscriptionStatusSubtitle: String {
-        guard let id = currentSubscription else { return "Inactive" }
-        switch id {
-        case monthlyName:
-            return "Active · Monthly Plan"
-        case yearlyName, promotionalName, welcomeName:
-            return "Active · Annual Plan"
-        default:
-            return "Active"
+    private var subscriptionStatusAccessibilityLabel: String {
+        guard currentSubscription != nil else { return "Inactive" }
+        guard let expirationDate = subscriptionExpirationDate else { return "Active" }
+        return "Active · Expires \(expirationDate.formatted(date: .abbreviated, time: .omitted))"
+    }
+
+    @ViewBuilder
+    private var subscriptionStatusSubtitle: some View {
+        if currentSubscription == nil {
+            Text("Inactive")
+                .foregroundStyle(Color.onSurfaceDimmer)
+        } else if let expirationDate = subscriptionExpirationDate {
+            Text("Active")
+                .foregroundStyle(Color.primary)
+            + Text(" · Expires \(expirationDate.formatted(date: .abbreviated, time: .omitted))")
+                .foregroundStyle(Color.onSurfaceDimmer)
+        } else {
+            Text("Active")
+                .foregroundStyle(Color.primary)
         }
     }
     
@@ -230,9 +245,11 @@ struct SettingsScreen: View {
                             .foregroundStyle(Color.onSurface)
                             .multilineTextAlignment(.leading)
                         
-                        Text(subscriptionStatusSubtitle)
+                        subscriptionStatusSubtitle
                             .font(.satoshiBold(12))
-                            .foregroundStyle(currentSubscription != nil ? Color.primary : Color.onSurfaceDimmer)
+                            .multilineTextAlignment(.leading)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .accessibilityLabel(subscriptionStatusAccessibilityLabel)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     

@@ -65,6 +65,7 @@ protocol StoreKitManager: Actor {
     var storeProducts: [Product]? { get }
     var updateListenerTask: Task<Void, Error>? { get }
     var currentSubscription: String? { get }
+    var subscriptionExpirationDate: Date? { get }
     
     func setStartData(downloadSubscriptions: Bool) async
     func fetchStoreProducts() async
@@ -97,6 +98,7 @@ actor StoreKitManagerImp: StoreKitManager {
     var updateListenerTask: Task<Void, Error>? = nil
     var storeProducts: [Product]?
     var currentSubscription: String?
+    var subscriptionExpirationDate: Date?
     
     init(
         storageManager: CachedStorageManager = CachedStorageManagerImp.shared
@@ -107,6 +109,7 @@ actor StoreKitManagerImp: StoreKitManager {
     func setStartData(downloadSubscriptions: Bool = true) async {
         RevenueCatConfigurator.configureIfNeeded()
         currentSubscription = await storageManager.load(type: LocalStorageKeys.proStatus)
+        subscriptionExpirationDate = await storageManager.load(type: LocalStorageKeys.proExpirationDate)
         startSubscriptionMonitoringIfNeeded()
         warmOfferingsCache()
 
@@ -154,6 +157,7 @@ actor StoreKitManagerImp: StoreKitManager {
         } catch {
             print("Failed to refresh RevenueCat customer info: \(error)")
             currentSubscription = await storageManager.load(type: LocalStorageKeys.proStatus)
+            subscriptionExpirationDate = await storageManager.load(type: LocalStorageKeys.proExpirationDate)
         }
     }
 
@@ -474,7 +478,13 @@ actor StoreKitManagerImp: StoreKitManager {
 
     func applyCustomerInfo(_ customerInfo: CustomerInfo?) async {
         let newSubscriptionId = customerInfo.flatMap(subscriptionProductId(from:))
-        await persistSubscriptionState(newSubscriptionId: newSubscriptionId)
+        let newExpirationDate = newSubscriptionId == nil
+            ? nil
+            : customerInfo.flatMap(subscriptionExpirationDate(from:))
+        await persistSubscriptionState(
+            newSubscriptionId: newSubscriptionId,
+            newExpirationDate: newExpirationDate
+        )
     }
 
     private func hasActiveProEntitlement(_ customerInfo: CustomerInfo) -> Bool {
@@ -507,6 +517,17 @@ actor StoreKitManagerImp: StoreKitManager {
         return customerInfo.activeSubscriptions.first
     }
 
+    private func subscriptionExpirationDate(from customerInfo: CustomerInfo) -> Date? {
+        if let configuredEntitlement = customerInfo.entitlements[proEntitlementIdentifier],
+           configuredEntitlement.isActive {
+            return configuredEntitlement.expirationDate
+        }
+
+        return customerInfo.entitlements.active.values
+            .compactMap(\.expirationDate)
+            .max()
+    }
+
     private var runsInMainIOSApplication: Bool {
         #if os(iOS)
         guard Bundle.main.bundleURL.pathExtension == "app" else { return false }
@@ -516,7 +537,7 @@ actor StoreKitManagerImp: StoreKitManager {
         #endif
     }
 
-    private func persistSubscriptionState(newSubscriptionId: String?) async {
+    private func persistSubscriptionState(newSubscriptionId: String?, newExpirationDate: Date?) async {
         #if os(iOS)
         if newSubscriptionId == nil, runsInMainIOSApplication {
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
@@ -528,7 +549,9 @@ actor StoreKitManagerImp: StoreKitManager {
         }
 
         let previousSubscription = currentSubscription
+        let previousExpirationDate = subscriptionExpirationDate
         currentSubscription = newSubscriptionId
+        subscriptionExpirationDate = newExpirationDate
 
         if let newSubscriptionId {
             await storageManager.save(type: LocalStorageKeys.proStatus, data: newSubscriptionId)
@@ -536,9 +559,15 @@ actor StoreKitManagerImp: StoreKitManager {
             _ = await storageManager.clear(type: LocalStorageKeys.proStatus)
         }
 
+        if let newExpirationDate {
+            await storageManager.save(type: LocalStorageKeys.proExpirationDate, data: newExpirationDate)
+        } else {
+            _ = await storageManager.clear(type: LocalStorageKeys.proExpirationDate)
+        }
+
         publish(newSubscriptionId != nil)
 
-        if previousSubscription != newSubscriptionId {
+        if previousSubscription != newSubscriptionId || previousExpirationDate != newExpirationDate {
             asyncMain {
                 NotificationCenter.default.post(name: .subscriptionStatusDidChange, object: nil)
             }

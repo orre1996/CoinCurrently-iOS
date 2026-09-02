@@ -72,11 +72,13 @@ actor MockRepoNetworkManager: NetworkManager {
 
 actor MockRepoStoreKitManager: StoreKitManager {
     var currentSubscription: String?
+    var subscriptionExpirationDate: Date?
     var storeProducts: [Product]? { nil }
     var updateListenerTask: Task<Void, Error>? { nil }
 
-    init(currentSubscription: String? = nil) {
+    init(currentSubscription: String? = nil, subscriptionExpirationDate: Date? = nil) {
         self.currentSubscription = currentSubscription
+        self.subscriptionExpirationDate = subscriptionExpirationDate
     }
 
     func setStartData(downloadSubscriptions: Bool) async {}

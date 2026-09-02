@@ -4,6 +4,10 @@ iOS, Apple Watch, and widget app for following crypto markets, news, and a perso
 
 The iOS app lives in `CryptoTracker`. Watch and widget extensions reuse the same domain types and repositories where they need shared data.
 
+## Why this is open source
+
+CoinCurrently is focused on privacy. The source is public so anyone can see what the app does with their data.
+
 ## Architecture
 
 The app uses **MVVM + repositories**.
@@ -93,6 +97,30 @@ Features/News/
 ```
 
 Smaller features may keep a few files at the feature root. Shared types used by many features belong in `Core/Domain` or `SharedUI`, not in the first feature that happened to need them.
+
+## Networking
+
+Market data, news, and the fear and greed index each come from a different API. `NetworkManager` and `Endpoint` in `Core/Networking` own the requests; screens never call these APIs directly.
+
+### CoinGecko
+
+Crypto market data is based on [CoinGecko's API](https://www.coingecko.com/en/api). Most endpoints work on the free or Basic plans. These require the [Analyst plan](https://www.coingecko.com/en/api/pricing) (or higher):
+
+- `/coins/list/new` — recently listed coins
+- `/coins/top_gainers_losers` — top gainers and losers
+- `/global/market_cap_chart` — historical global market cap and volume
+- `/nfts/markets` — NFT collection market data
+- `/nfts/{id}/market_chart` — NFT floor price, market cap, and volume history
+- `/nfts/{id}/tickers` — NFT floor price and volume per marketplace
+- CGSimplePrice WebSocket — live coin prices
+
+### News
+
+News (articles, videos, and podcasts) is based on [cryptonews-api.com](https://cryptonews-api.com).
+
+### Fear and Greed
+
+The fear and greed index is based on [alternative.me](https://alternative.me/crypto/fear-and-greed-index/).
 
 ## Targets
 

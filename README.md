@@ -2,11 +2,37 @@
 
 iOS, Apple Watch, and widget app for following crypto markets, news, and a personal portfolio.
 
+- [Website](https://coincurrently.app)
+- [App Store](https://apps.apple.com/app/coincurrently/id1543974454)
+- [Privacy Policy](https://coincurrently.app/privacy)
+- [Android](https://github.com/orre1996/CoinCurrentlyAndroid)
+
 The iOS app lives in `CryptoTracker`. Watch and widget extensions reuse the same domain types and repositories where they need shared data.
+
+## What it does
+
+- Markets — coins, NFTs, exchanges, derivatives, and categories
+- Personal portfolio
+- Price alerts
+- News (articles, videos, and podcasts)
+- Home Screen and Lock Screen widgets
+- Apple Watch
 
 ## Why this is open source
 
-CoinCurrently is focused on privacy. The source is public so anyone can see what the app does with their data.
+CoinCurrently is focused on privacy. The source is public so anyone can see what the app does with their data. The license is source-available, not OSI open source — see [License](#license).
+
+## Privacy
+
+CoinCurrently does not ask for an email or password. Portfolio holdings, transactions, and settings stay on the device.
+
+The app uses a few third-party SDKs. None of them require a name, email, or phone number, so there is still no personal account.
+
+- **[Aptabase](https://aptabase.com)** is a privacy-focused analytics service. The app sends named product events (for example which screen opened). It is not an advertising SDK and does not build a marketing profile.
+- **[RevenueCat](https://www.revenuecat.com)** manages App Store subscriptions. Pro status comes from the store receipt through RevenueCat, not from Firebase.
+- **[Firebase](https://firebase.google.com)** signs in anonymously — a random ID on the device, not an email. Price alerts need that so Firebase Cloud Messaging can issue an FCM token. The backend uses the token to send a push when a price hits; without it, the phone cannot receive alert notifications.
+
+See the [Privacy Policy](https://coincurrently.app/privacy).
 
 ## Architecture
 
@@ -122,6 +148,14 @@ News (articles, videos, and podcasts) is based on [cryptonews-api.com](https://c
 
 The fear and greed index is based on [alternative.me](https://alternative.me/crypto/fear-and-greed-index/).
 
+### CoinCurrently backend
+
+`API_BASE_URL` is the app's own API. It proxies CoinGecko and news so third-party keys stay off the client, and it hosts first-party routes for price alerts, big-mover notifications, wallet import, gas fees, referrals, redeem codes, user, and feedback. Those routes send a bearer token. The backend itself is not in this repo.
+
+## Pro
+
+Subscriptions go through RevenueCat and StoreKit. Free users get markets, news, a small portfolio, and widgets. Pro unlocks live prices (WebSocket), extra price alerts, more portfolio transactions, wallet import, portfolio export, and some news filters (coin, exchange, NFT, technical analysis).
+
 ## Targets
 
 | Target | Role |
@@ -133,11 +167,27 @@ The fear and greed index is based on [alternative.me](https://alternative.me/cry
 
 `CryptoTracker` is a synchronized Xcode group, so new files under that folder join the iOS target automatically. Watch and widget still compile shared Swift files through explicit project references.
 
+## Requirements
+
+- iOS 18 and watchOS 10
+- Xcode 16 or later
+
 ## Local setup
 
 1. Open `CoinCurrently.xcodeproj` in Xcode.
-2. Copy `Config/Secrets.example.plist` to `Config/Secrets.plist` and fill in local values. That file is gitignored.
-3. Add `Config/Secrets.plist` to the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets if Xcode does not already include it.
-4. Leave `DEVELOPMENT_TEAM` empty in the project unless you are signing locally. Do not commit a team ID or real keys.
+2. Copy `Config/Secrets.example.plist` to `Config/Secrets.plist` and fill in local values. That file is gitignored. Keys are `API_BASE_URL`, `BACKEND_API_KEY`, `REVENUECAT_PRODUCTION_API_KEY`, `REVENUECAT_TEST_API_KEY`, and `APTABASE_APP_KEY`.
+3. Add `Config/Secrets.plist` to the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets if Xcode does not already include it. Widgets and Watch read the same secrets.
+4. Copy `Config/GoogleService-Info.example.plist` to `GoogleService-Info.plist` in each target folder (`CryptoTracker`, `CryptoWidget`, `CoinCurrentlyWatch`) and replace the placeholders from the Firebase console. Those files are gitignored.
+5. Leave `DEVELOPMENT_TEAM` empty in the project unless you are signing locally. Do not commit a team ID or real keys.
 
-See [LICENSE](LICENSE) for terms.
+## Tests
+
+`CoinCurrentlyTests` uses Swift Testing. Suites mostly cover repositories and inject a mock `NetworkManager`. Run the **CoinCurrentlyTests** scheme in Xcode.
+
+## Contributing
+
+Pull requests are welcome. Match the existing MVVM + repository layout. Do not commit secrets, signing material, a team ID, or a live Firebase config. Keep `DEVELOPMENT_TEAM` empty in the project file.
+
+## License
+
+This repository is source-available under the [CoinCurrently Source-Available License](LICENSE). You may view, study, and use it for personal and educational purposes, and contributions are welcome. You may not republish it, ship a public fork, or publish a derived app to an app store.

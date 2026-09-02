@@ -371,6 +371,11 @@ actor StoreKitManagerImp: StoreKitManager {
     func restorePurchase() async -> RestorePurchaseResult {
         RevenueCatConfigurator.configureIfNeeded()
 
+        await refreshSubscriptionStatusFromRevenueCat()
+        if currentSubscription != nil {
+            return .restored
+        }
+
         do {
             let customerInfo = try await Purchases.shared.restorePurchases()
             await applyCustomerInfo(customerInfo)

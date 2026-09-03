@@ -251,6 +251,8 @@
 		8E5B9AA52E8251C800D61032 /* NewPortfolioModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5B9AA42E8251C800D61032 /* NewPortfolioModel.swift */; };
 		8E5B9AA62E8251C800D61032 /* NewPortfolioModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5B9AA42E8251C800D61032 /* NewPortfolioModel.swift */; };
 		8E5B9AA72E8251C800D61032 /* NewPortfolioModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5B9AA42E8251C800D61032 /* NewPortfolioModel.swift */; };
+		8EF0A10102B0000100000002 /* PortfolioMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF0A10102B0000100000001 /* PortfolioMath.swift */; };
+		8EF0A10102B0000100000003 /* PortfolioMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF0A10102B0000100000001 /* PortfolioMath.swift */; };
 		8E5B9AA92E84F33F00D61032 /* Collection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5B9AA82E84F33F00D61032 /* Collection+Extensions.swift */; };
 		8E5B9AAA2E84F33F00D61032 /* Collection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5B9AA82E84F33F00D61032 /* Collection+Extensions.swift */; };
 		8E5B9AAB2E84F33F00D61032 /* Collection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5B9AA82E84F33F00D61032 /* Collection+Extensions.swift */; };
@@ -1111,6 +1113,7 @@
 		8E5B9A9A2E7F7ABC00D61032 /* CustomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/SharedUI/Modifiers/CustomSheet.swift; sourceTree = SOURCE_ROOT; };
 		8E5B9AA02E824EAA00D61032 /* NewTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/Features/Portfolio/Models/NewTransaction.swift; sourceTree = SOURCE_ROOT; };
 		8E5B9AA42E8251C800D61032 /* NewPortfolioModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/Features/Portfolio/Models/NewPortfolioModel.swift; sourceTree = SOURCE_ROOT; };
+		8EF0A10102B0000100000001 /* PortfolioMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/Features/Portfolio/Utilities/PortfolioMath.swift; sourceTree = SOURCE_ROOT; };
 		8E5B9AA82E84F33F00D61032 /* Collection+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoTracker/Core/Extensions/Collection+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		8E5B9AAC2E84F35A00D61032 /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoTracker/Core/Extensions/Sequence+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		8E5B9AB02E84F37500D61032 /* MutableCollection+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoTracker/Core/Extensions/MutableCollection+Extensions.swift"; sourceTree = SOURCE_ROOT; };
@@ -2333,6 +2336,7 @@
 				8EC75A252F1555E6004256BD /* ChartTimeStamps.swift in Sources */,
 				8EC75A022F1332E8004256BD /* CustomTextField.swift in Sources */,
 				8E5B9AA62E8251C800D61032 /* NewPortfolioModel.swift in Sources */,
+				8EF0A10102B0000100000003 /* PortfolioMath.swift in Sources */,
 				10B0C3DD26D90ABE00023AF5 /* CryptoDataStore.swift in Sources */,
 				8EB2D47C30115D410069FD57 /* PublicTreasuryModel.swift in Sources */,
 				1001942426D3D59100ACBCD9 /* ToplistModel.swift in Sources */,
@@ -2441,6 +2445,7 @@
 				8E48473C2FE4385B0051DB45 /* ShimmeringImage.swift in Sources */,
 				8EA769032DAF5ECA00F6660E /* Product+Extensions.swift in Sources */,
 				8E5B9AA72E8251C800D61032 /* NewPortfolioModel.swift in Sources */,
+				8EF0A10102B0000100000002 /* PortfolioMath.swift in Sources */,
 				8EE043EF2F28746C0055B0C6 /* NFTRepository.swift in Sources */,
 				8EE0440C2F32FDCB0055B0C6 /* NFTToplist.swift in Sources */,
 				10715D5C254F46FD00FC0975 /* String+Extensions.swift in Sources */,

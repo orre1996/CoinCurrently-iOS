@@ -7,25 +7,6 @@
 
 import SwiftUI
 
-enum PortfolioExportFormat {
-    case csv
-    case json
-    case plainText
-    case koinly
-    case coinTracker
-    case tokenTax
-    case zenLedger
-    
-    var isTaxSoftware: Bool {
-        switch self {
-        case .koinly, .coinTracker, .tokenTax, .zenLedger:
-            return true
-        case .csv, .json, .plainText:
-            return false
-        }
-    }
-}
-
 struct SelectExportFormatSheet: View {
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.safeAreaInsets) private var safeAreaInsets

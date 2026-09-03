@@ -66,13 +66,7 @@ protocol PortfolioViewModel: ChartHoverHosting {
     func updateHoverStats(touches: [CGPoint])
     func setProfitLossPercent()
     func setProfitLossValue()
-    func exportPortfolioCSV(onComplete: @escaping (Bool) -> Void)
-    func exportPortfolioJSON(onComplete: @escaping (Bool) -> Void)
-    func exportPortfolioText(onComplete: @escaping (Bool) -> Void)
-    func exportPortfolioKoinly(onComplete: @escaping (Bool) -> Void)
-    func exportPortfolioCoinTracker(onComplete: @escaping (Bool) -> Void)
-    func exportPortfolioTokenTax(onComplete: @escaping (Bool) -> Void)
-    func exportPortfolioZenLedger(onComplete: @escaping (Bool) -> Void)
+    func export(_ format: PortfolioExportFormat, onComplete: @escaping (Bool) -> Void)
     func refreshPortfolioData() async
     func refreshImportWallets() async
     func getCoinColors() async
@@ -932,330 +926,46 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
         )
     }
     
-    func exportPortfolioCSV(onComplete: @escaping (Bool) -> Void = { _ in }) {
-        guard let portfolio else {
+    func export(_ format: PortfolioExportFormat, onComplete: @escaping (Bool) -> Void = { _ in }) {
+        guard let portfolio,
+              let content = PortfolioExportBuilder.content(for: format, from: portfolio) else {
             onComplete(false)
             return
         }
-        
-        var rows = ["Date (UTC),Coin,Type,Amount,Price per coin,Fee,Value traded,Currency,Note,Address"]
-        var entries: [(date: Date, row: String)] = []
-        
-        for pie in portfolio {
-            let coin = pie.data?.symbol?.uppercased() ?? pie.data?.name ?? ""
-            
-            for transaction in pie.transactions {
-                entries.append((transaction.date, csvRow(coin: coin, transaction: transaction)))
-            }
-            
-            for swap in pie.swaps {
-                entries.append((swap.date, csvSwapRow(swap: swap)))
-            }
-            
-            for importEvent in pie.imports {
-                entries.append((importEvent.date, csvImportRow(coin: coin, importEvent: importEvent)))
-            }
-        }
-        
-        rows += entries
-            .sorted { $0.date > $1.date }
-            .map(\.row)
-        
-        shareExport(content: rows.joined(separator: "\n"), extensionName: "csv", onComplete: onComplete)
+
+        shareExport(content: content, format: format, onComplete: onComplete)
     }
-    
-    func exportPortfolioJSON(onComplete: @escaping (Bool) -> Void = { _ in }) {
-        guard let portfolio else {
-            onComplete(false)
-            return
-        }
-        
-        let models = portfolio.compactMap(\.toPortfolioExportModel)
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        
-        guard
-            let jsonData = try? encoder.encode(models),
-            let jsonString = String(data: jsonData, encoding: .utf8)
-        else {
-            onComplete(false)
-            return
-        }
-        
-        shareExport(content: jsonString, extensionName: "json", onComplete: onComplete)
-    }
-    
-    func exportPortfolioText(onComplete: @escaping (Bool) -> Void = { _ in }) {
-        guard let portfolio else {
-            onComplete(false)
-            return
-        }
-        
-        let text = portfolio
-            .map(textExportSection(for:))
-            .joined()
-            .trimmingCharacters(in: .newlines)
-        
-        guard !text.isEmpty else {
-            onComplete(false)
-            return
-        }
-        
-        shareExport(content: text, extensionName: "txt", onComplete: onComplete)
-    }
-    
-    func exportPortfolioKoinly(onComplete: @escaping (Bool) -> Void = { _ in }) {
-        guard let portfolio else {
-            onComplete(false)
-            return
-        }
-        
-        exportTaxCSV(
-            content: PortfolioTaxExportBuilder.koinlyCSV(from: portfolio),
-            fileName: "CoinCurrently-Portfolio-Koinly",
-            onComplete: onComplete
-        )
-    }
-    
-    func exportPortfolioCoinTracker(onComplete: @escaping (Bool) -> Void = { _ in }) {
-        guard let portfolio else {
-            onComplete(false)
-            return
-        }
-        
-        exportTaxCSV(
-            content: PortfolioTaxExportBuilder.coinTrackerCSV(from: portfolio),
-            fileName: "CoinCurrently-Portfolio-CoinTracker",
-            onComplete: onComplete
-        )
-    }
-    
-    func exportPortfolioTokenTax(onComplete: @escaping (Bool) -> Void = { _ in }) {
-        guard let portfolio else {
-            onComplete(false)
-            return
-        }
-        
-        exportTaxCSV(
-            content: PortfolioTaxExportBuilder.tokenTaxCSV(from: portfolio),
-            fileName: "CoinCurrently-Portfolio-TokenTax",
-            onComplete: onComplete
-        )
-    }
-    
-    func exportPortfolioZenLedger(onComplete: @escaping (Bool) -> Void = { _ in }) {
-        guard let portfolio else {
-            onComplete(false)
-            return
-        }
-        
-        exportTaxCSV(
-            content: PortfolioTaxExportBuilder.zenLedgerCSV(from: portfolio),
-            fileName: "CoinCurrently-Portfolio-ZenLedger",
-            onComplete: onComplete
-        )
-    }
-    
-    private func exportTaxCSV(content: String, fileName: String, onComplete: @escaping (Bool) -> Void) {
-        shareExport(content: content, extensionName: "csv", fileName: fileName, onComplete: onComplete)
-    }
-    
-    private func shareExport(content: String, extensionName: String, onComplete: @escaping (Bool) -> Void) {
-        shareExport(content: content, extensionName: extensionName, fileName: "CoinCurrently-Portfolio", onComplete: onComplete)
-    }
-    
+
     private func shareExport(
         content: String,
-        extensionName: String,
-        fileName: String,
+        format: PortfolioExportFormat,
         onComplete: @escaping (Bool) -> Void
     ) {
-        let fileURL = content.createFile(fileName, extensionName: extensionName)
-        
+        let fileURL = content.createFile(format.fileName, extensionName: format.fileExtension)
+
         guard FileManager.default.fileExists(atPath: fileURL.path) else {
             onComplete(false)
             return
         }
-        
+
         let activityViewController = UIActivityViewController(
             activityItems: [fileURL],
             applicationActivities: nil
         )
-        
+
         activityViewController.completionWithItemsHandler = { _, completed, _, _ in
             try? FileManager.default.removeItem(at: fileURL)
             onComplete(completed)
         }
-        
+
         if let popover = activityViewController.popoverPresentationController,
            let rootView = UIApplication.shared.window?.rootViewController?.view {
             popover.sourceView = rootView
             popover.sourceRect = .zero
             popover.permittedArrowDirections = []
         }
-        
+
         UIApplication.shared.window?.rootViewController?.present(activityViewController, animated: true)
-    }
-    
-    private func csvField(_ value: String) -> String {
-        value.replacingOccurrences(of: ",", with: ".")
-    }
-    
-    private func csvNumericField(_ value: Double?) -> String {
-        guard let value else { return "" }
-        return csvField(value.description)
-    }
-    
-    private func csvRow(coin: String, transaction: NewTransaction) -> String {
-        let isTransfer = transaction.transactionType.isTransfer
-        let value = (transaction.amount * (transaction.pricePerCoin ?? 0)) + transaction.fee
-        
-        return [
-            transaction.date.portfolioExportDateTimeUTC,
-            coin,
-            transaction.transactionType.rawValue,
-            csvField("\(transaction.amount)"),
-            isTransfer ? "" : csvNumericField(transaction.pricePerCoin),
-            isTransfer ? "" : csvNumericField(transaction.fee),
-            isTransfer || value == 0 ? "" : csvNumericField(value),
-            isTransfer ? "" : csvField(transaction.currency),
-            csvField(transaction.note),
-            csvField(transaction.address ?? "")
-        ].joined(separator: ",")
-    }
-    
-    private func csvSwapRow(swap: NewSwapTransaction) -> String {
-        let coin = "\(swap.fromCurrencySymbol.uppercased()) → \(swap.toCurrencySymbol.uppercased())"
-        let value = (swap.fromAmount * swap.fromUnitPrice) + swap.fee
-        
-        return [
-            swap.date.portfolioExportDateTimeUTC,
-            coin,
-            NewTransactionType.swap.rawValue,
-            csvField("\(swap.fromAmount)"),
-            csvNumericField(swap.fromUnitPrice),
-            csvNumericField(swap.fee),
-            value == 0 ? "" : csvNumericField(value),
-            csvField(swap.selectedCurrency),
-            csvField(swap.note),
-            ""
-        ].joined(separator: ",")
-    }
-    
-    private func csvImportRow(coin: String, importEvent: AddressImport) -> String {
-        [
-            importEvent.date.portfolioExportDateTimeUTC,
-            coin,
-            NewTransactionType.importAddress.rawValue,
-            csvField(importEvent.balance),
-            "",
-            "",
-            "",
-            "",
-            csvField(importEvent.walletName ?? ""),
-            csvField(importEvent.address)
-        ].joined(separator: ",")
-    }
-    
-    private func textExportSection(for pie: Pie) -> String {
-        let coinName = pie.data?.name ?? pie.data?.symbol?.uppercased() ?? "Coin"
-        var section = "• \(coinName)\n\n"
-        
-        let transactionsByType = Dictionary(grouping: pie.transactions, by: \.transactionType)
-        
-        for type in [NewTransactionType.buy, .sell, .transferIn, .transferOut] {
-            guard let transactions = transactionsByType[type], !transactions.isEmpty else { continue }
-            section += "-- \(type.rawValue) Transactions --\n"
-            section += transactions
-                .sorted { $0.date > $1.date }
-                .map { textExportBlock(for: $0) }
-                .joined()
-        }
-        
-        if !pie.swaps.isEmpty {
-            section += "-- Swap Transactions --\n"
-            section += pie.swaps
-                .sorted { $0.date > $1.date }
-                .map(textExportBlock(for:))
-                .joined()
-        }
-        
-        if !pie.imports.isEmpty {
-            section += "-- Wallet Imports --\n"
-            section += pie.imports
-                .sorted { $0.date > $1.date }
-                .map(textExportBlock(for:))
-                .joined()
-        }
-        
-        return section
-    }
-    
-    private func textExportBlock(for transaction: NewTransaction) -> String {
-        let selectedCurrency = CurrencyModel.allCurrencies.first {
-            $0.code.lowercased() == transaction.currency.lowercased()
-        }
-        var block = "Date (UTC): \(transaction.date.portfolioExportDateTimeUTC)\n"
-        block += "Amount: \(transaction.amount)\n"
-        
-        if !transaction.transactionType.isTransfer, let pricePerCoin = transaction.pricePerCoin {
-            block += "Price per coin: \(pricePerCoin.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))\n"
-        }
-        
-        if !transaction.transactionType.isTransfer, transaction.fee != 0 {
-            block += "Fee: \(transaction.fee.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))\n"
-        }
-        
-        let value = (transaction.amount * (transaction.pricePerCoin ?? 0)) + transaction.fee
-        if !transaction.transactionType.isTransfer, value != 0 {
-            block += "Value traded: \(value.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))\n"
-        }
-        
-        if !transaction.transactionType.isTransfer {
-            block += "Currency: \(transaction.currency)\n"
-        }
-        
-        if !transaction.note.isEmpty {
-            block += "Note: \(transaction.note)\n"
-        }
-        
-        if let address = transaction.address, !address.isEmpty {
-            block += "Address: \(address)\n"
-        }
-        
-        return block + "\n"
-    }
-    
-    private func textExportBlock(for swap: NewSwapTransaction) -> String {
-        let selectedCurrency = CurrencyModel.allCurrencies.first {
-            $0.code.lowercased() == swap.selectedCurrency.lowercased()
-        }
-        var block = "Date (UTC): \(swap.date.portfolioExportDateTimeUTC)\n"
-        block += "From: \(swap.fromAmount) \(swap.fromCurrencySymbol.uppercased()) @ \(swap.fromUnitPrice.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))\n"
-        block += "To: \(swap.toAmount) \(swap.toCurrencySymbol.uppercased()) @ \(swap.toUnitPrice.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))\n"
-        
-        if swap.fee != 0 {
-            block += "Fee: \(swap.fee.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))\n"
-        }
-        
-        if !swap.note.isEmpty {
-            block += "Note: \(swap.note)\n"
-        }
-        
-        return block + "\n"
-    }
-    
-    private func textExportBlock(for importEvent: AddressImport) -> String {
-        var block = "Date (UTC): \(importEvent.date.portfolioExportDateTimeUTC)\n"
-        
-        if let walletName = importEvent.walletName, !walletName.isEmpty {
-            block += "Wallet: \(walletName)\n"
-        }
-        
-        block += "Address: \(importEvent.address)\n"
-        block += "Balance: \(importEvent.balance)\n"
-        return block + "\n"
     }
 
     func refreshPortfolioData() async {

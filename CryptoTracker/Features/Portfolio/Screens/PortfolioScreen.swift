@@ -1228,22 +1228,7 @@ struct PortfolioScreen: View {
             AchievementManager.shared.increment(.portfolioExports)
         }
         
-        switch format {
-        case .csv:
-            viewModel.exportPortfolioCSV(onComplete: onComplete)
-        case .json:
-            viewModel.exportPortfolioJSON(onComplete: onComplete)
-        case .plainText:
-            viewModel.exportPortfolioText(onComplete: onComplete)
-        case .koinly:
-            viewModel.exportPortfolioKoinly(onComplete: onComplete)
-        case .coinTracker:
-            viewModel.exportPortfolioCoinTracker(onComplete: onComplete)
-        case .tokenTax:
-            viewModel.exportPortfolioTokenTax(onComplete: onComplete)
-        case .zenLedger:
-            viewModel.exportPortfolioZenLedger(onComplete: onComplete)
-        }
+        viewModel.export(format, onComplete: onComplete)
     }
     
     private func focusAddTransactionButton() {

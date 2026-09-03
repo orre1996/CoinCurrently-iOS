@@ -16,18 +16,13 @@ enum GasUnits: Double {
 }
 
 @MainActor
-protocol GasFeesViewModel {
+protocol GasFeesViewModel: ChartHoverHosting {
     var gasFees: GasFees? { get }
     var gasFeePrices: GasFees? { get }
     var ethereum: Toplist? { get }
     
     func setStartData() async
 
-    var isDragging: Bool { get }
-    var hoverHelper: HoverHelper { get }
-    var chartSize: CGSize { get set }
-    var hoverPriceWidthSize: CGFloat { get set }
-    var hoverTimeWidthSize: CGFloat { get set }
     var prices: [Double] { get }
     var allPrices: [Double] { get }
     var timeStamps: [Double] { get }
@@ -35,12 +30,8 @@ protocol GasFeesViewModel {
     var currentTimeFrames: [(String?, String)] { get }
     var graphColor: Color { get }
     var dragPositions: [CGPoint] { get }
-    var hoverTime: String { get }
-    var hoverPrice: String { get }
     var hoverTimePosition: CGFloat { get }
     var hoverPricePosition: CGFloat { get }
-    var differenceValue: String { get }
-    var differencePercent: String { get }
     var getChangeColor: Color { get }
     var graphStats: [String?] { get }
     
@@ -55,7 +46,7 @@ protocol GasFeesViewModel {
 }
 
 @MainActor @Observable
-class GasFeesViewModelImp: GasFeesViewModel {
+class GasFeesViewModelImp: GasFeesViewModel, ChartHoverHosting {
     private let gasFeesRepository: GasFeesRepository
     private let toplistRepository: ToplistRepository
     private let cryptoDetailRepository: CryptoDetailRepository
@@ -64,11 +55,7 @@ class GasFeesViewModelImp: GasFeesViewModel {
     var gasFeePrices: GasFees?
     var ethereum: Toplist?
     
-    var isDragging = false
-    var hoverHelper = HoverHelper()
-    var chartSize: CGSize = .zero
-    var hoverPriceWidthSize: CGFloat = 0.0
-    var hoverTimeWidthSize: CGFloat = 0.0
+    var hover = ChartHoverState(valueStyle: .decimal(fractionLength: 2))
     var prices = [Double]()
     var allPrices = [Double]()
     var timeStamps = [Double]()
@@ -89,8 +76,6 @@ class GasFeesViewModelImp: GasFeesViewModel {
             (30, "Last month")
         ]
     }
-    
-    private var timer: Timer?
     
     init(
         gasFeesRepository: GasFeesRepository = GasFeesRepositoryImp.shared,
@@ -121,84 +106,26 @@ class GasFeesViewModelImp: GasFeesViewModel {
         }
     }
     
-    // MARK: - Private variables
-    
-    private var currentHoverIndex: Int {
-        guard chartSize.width > 0 else { return 0 }
-        
-        let offsets = hoverHelper.offset
-        let hoverPoint = hoverHelper.hoverPrices.count == 2 ? offsets.map({ $0.x }).reduce(0, +) / 2 : offsets.first?.x ?? 0
-        
-        return Int(CGFloat(prices.count - 2) / (chartSize.width / hoverPoint))
-    }
-    
     // MARK: - Variables
     
     var graphColor: Color {
-        guard hoverHelper.hoverPrices.count == 2, isDragging else {
-            return getGasIndexColor(indexValue: gasFeePrices?.gasFeeData?.first?.proposeGasPrice ?? "0")
-        }
-        
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0
-        let difference = second - first
-        let change = difference.roundTo(places: 7)
-        
-        if change == 0.0 {
-            return Double.getDifferenceInPercent(between: second, and: first)?.changeColor ?? .onSurfaceDim
-        } else {
-            return change.changeColor
-        }
+        hover.graphColor(idle: getGasIndexColor(indexValue: gasFeePrices?.gasFeeData?.first?.proposeGasPrice ?? "0"))
     }
     
     var dragPositions: [CGPoint] {
-        let dragPositions = hoverHelper.offset.map({
-            (CGFloat(prices.count - 2) / (chartSize.width / $0.x)).safeValue
-        }).map({ prices.point(at: Int($0), rect: chartSize, dropCount: 2) })
-        
-        let newDragPosition = dragPositions.map({ CGPoint(x: $0.x - 0.5, y: $0.y)})
-        
-        return isDragging ? newDragPosition : [newDragPosition.first ?? .zero]
-    }
-    
-    var hoverTime: String {
-        return hoverHelper.hoverTimes.first ?? "0"
-    }
-    
-    var hoverPrice: String {
-        return "\(hoverHelper.hoverPrices.first?.formatted(.number.precision(.fractionLength(2))) ?? "0")"
+        hover.paddedDragPositions(prices: prices, dropCount: 2)
     }
     
     var hoverTimePosition: CGFloat {
-        return getXPosition(textSize: hoverTimeWidthSize) - hoverTimeWidthSize / 2
+        hover.timeLabelX(prices: prices, dropCount: 2)
     }
     
     var hoverPricePosition: CGFloat {
-        return getXPosition(textSize: hoverPriceWidthSize) - hoverTimeWidthSize / 2
-    }
-    
-    var differenceValue: String {
-        let first: CGFloat = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second: CGFloat = hoverHelper.hoverPrices[safely: 1] ?? 0.0
-        let percent = Double.getDifferenceInPercent(between: second, and: first)?.safeValue ?? 0
-        let sign = percent.roundTo(places: 2) < 0 ? "" : "+"
-        let difference = (hoverHelper.hoverPrices[safely: 1] ?? 0) - (hoverHelper.hoverPrices[safely: 0] ?? 0)
-        let formattedDifference = difference.formatted(.number.precision(.fractionLength(2)))
-        return "\(sign)\(formattedDifference)"
-    }
-    
-    var differencePercent: String {
-        let first: CGFloat = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second: CGFloat = hoverHelper.hoverPrices[safely: 1] ?? 0.0
-        let difference = Double.getDifferenceInPercent(between: second, and: first) ?? 0
-        let sign = difference >= 0 ? "+" : "-"
-        
-        return "\(sign)\(difference.safeValue.removeZerosFromEnd(force: true).withoutSymbol)%"
+        hover.priceLabelX(prices: prices, dropCount: 2)
     }
     
     var getChangeColor: Color {
-        let difference = (hoverHelper.hoverPrices[safely: 1] ?? 0) - (hoverHelper.hoverPrices[safely: 0] ?? 0)
-        return difference.roundTo(places: 7).changeColor
+        hover.rangeChangeColor
     }
     
     var graphStats: [String?] {
@@ -294,47 +221,16 @@ class GasFeesViewModelImp: GasFeesViewModel {
     }
 
     func updateHoverStats(touches: [CGPoint]) {
-        guard !timeStamps.isEmpty, !touches.isEmpty else {
-            isDragging = false
-            timer?.invalidate()
-            return
-        }
-        
-        if !isDragging {
-            timer?.invalidate()
-            
-            timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { _ in
-                Task { @MainActor in
-                    self.isDragging = !touches.isEmpty
-                    
-                    if self.isDragging {
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    }
-                }
-            })
-        }
-        
-        hoverHelper.offset = touches.map({
-            CGPoint(x: max(0, min($0.x, chartSize.width.rounded(.down) - 0.00001)), y: $0.y)
-        })
-        
-        hoverHelper.getHoverPrice(
-            readerSize: chartSize,
-            offset: hoverHelper.offset,
-            prices: prices.dropLast(2),
+        hover.updateLinear(
+            touches: touches,
+            prices: Array(prices.dropLast(2)),
             dates: timeStamps,
             timeChart: .aWeek,
-            inFearGreedView: true,
-            isDragging: isDragging
+            inFearGreedView: true
         )
     }
     
     // MARK: - Private functions
-    
-    private func getXPosition(textSize: CGFloat) -> CGFloat {
-        let xPoint = prices.point(at: currentHoverIndex, rect: chartSize, dropCount: 2).x
-        return getPriceXPosition(position: xPoint, textSize: textSize, readerWidthSize: chartSize.width)
-    }
     
     private func setPrices() {
         guard let data = gasFeePrices?.gasFeeData, !data.isEmpty else { return }

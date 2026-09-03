@@ -11,12 +11,7 @@ import Combine
 @preconcurrency import UserNotifications
 
 @MainActor
-protocol CryptoDetailViewModel {
-    var hoverHelper: HoverHelper { get set }
-    var hoverPriceWidthSize: CGFloat { get set }
-    var hoverTimeWidthSize: CGFloat { get set }
-    var hoverCandleTimeWidthSize: CGFloat { get set }
-    var chartSize: CGSize { get set }
+protocol CryptoDetailViewModel: ChartHoverHosting {
     var globalMarketData: GlobalMarketModel? { get set }
     var showMainPriceError: Bool { get set }
     var cryptoInfo: CurrencyDataModel? { get set }
@@ -41,7 +36,6 @@ protocol CryptoDetailViewModel {
     var currentDays: String { get set }
     var selectedTimeFrame: TimeCharts { get set }
     var widgetCurrencies: [Toplist] { get set }
-    var isDragging: Bool { get set }
     var selectedSortOption: SortOption { get set }
     var exchangeMarketItems: [ExchangeMarketItem]? { get set }
     var pie: Pie? { get set }
@@ -61,11 +55,7 @@ protocol CryptoDetailViewModel {
     var lowestCandleValue: Double? { get }
     var candleTimestamps: [Double] { get }
     var candleMiddlePrices: [Double] { get }
-    var differenceValue: String { get }
-    var differencePercent: String { get }
     var graphColor: Color { get }
-    var hoverTime: String { get }
-    var hoverPrice: String { get }
     var hoverTimePosition: CGFloat { get }
     var hoverPricePosition: CGFloat { get }
     var hoverCandleTimePosition: CGFloat { get }
@@ -111,7 +101,7 @@ protocol CryptoDetailViewModel {
 }
 
 @MainActor @Observable
-final class CryptoDetailViewModelImp: CryptoDetailViewModel {
+final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
     
     private let cryptoDetailRepository: CryptoDetailRepository
     private let portfolioRepository: PortfolioRepository
@@ -125,13 +115,7 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
     private let analyticsManager: AnalyticsManager
     private let settingsManager: SettingsManager
     
-    // Hover
-    var hoverHelper = HoverHelper()
-    
-    var hoverPriceWidthSize: CGFloat = 0
-    var hoverTimeWidthSize: CGFloat = 0
-    var hoverCandleTimeWidthSize: CGFloat = 0
-    var chartSize: CGSize = .zero
+    var hover = ChartHoverState()
     
     var globalMarketData: GlobalMarketModel?
     
@@ -174,12 +158,9 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
     var currentDays = TimeCharts.getStartTimeFrame(between: .anHour, and: .max).days
     var selectedTimeFrame = TimeCharts.getStartTimeFrame(between: .anHour, and: .max)
     var widgetCurrencies = [Toplist]()
-    var isDragging = false
 
     var selectedSortOption: SortOption = .volumeDesc
     var exchangeMarketItems: [ExchangeMarketItem]? = nil
-    
-    private var timer: Timer?
     
     private(set) var hasProSubscription = false
     
@@ -346,88 +327,39 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
         candleSticks.map { (($0.low ?? 0.0) + ($0.high ?? 0.0)) / 2 }
     }
 
-    var differenceValue: String {
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0
-        let percent = Double.getDifferenceInPercent(between: second, and: first)?.safeValue ?? 0
-        let sign = percent.roundTo(places: 2) < 0 ? "" : "+"
-        let difference = (second - first).formatCurrency(threshold: FormattingThreshold.million)
-        return "\(sign)\(difference)"
-    }
+    var differenceValue: String { hover.differenceValue }
     
-    var differencePercent: String {
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0.0
-        let difference = Double.getDifferenceInPercent(between: second, and: first) ?? 0
-        let sign = difference >= 0 ? "+" : "-"
-        
-        return "\(sign)\(difference.safeValue.removeZerosFromEnd(force: true).withoutSymbol)%"
-    }
+    var differencePercent: String { hover.differencePercent }
     
     var graphColor: Color {
-        guard hoverHelper.hoverPrices.count == 2, isDragging else {
-            return changePercent?.changeColor ?? .onSurfaceDim
-        }
-        
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0
-        let change = (second - first).roundTo(places: 7)
-        
-        if change == 0 {
-            let percent = Double.getDifferenceInPercent(between: second, and: first)?.roundTo(places: 7)
-            return percent?.changeColor ?? .onSurfaceDim
-        }
-        
-        return change.changeColor
+        hover.graphColor(idle: changePercent?.changeColor ?? .onSurfaceDim)
     }
     
-    var hoverTime: String {
-        return hoverHelper.hoverTimes.first ?? "0"
-    }
+    var hoverTime: String { hover.hoverTime }
     
-    var hoverPrice: String {
-        return hoverHelper.hoverPrices.first?.formatCurrency(threshold: FormattingThreshold.million) ?? "0"
-    }
+    var hoverPrice: String { hover.hoverPrice }
     
     var hoverTimePosition: CGFloat {
-        return getXPosition(textSize: hoverTimeWidthSize) - hoverTimeWidthSize / 2
+        hover.timeLabelX(prices: getPrices())
     }
     
     var hoverPricePosition: CGFloat {
-        return getXPosition(textSize: hoverPriceWidthSize) - hoverTimeWidthSize / 2
+        hover.priceLabelX(prices: getPrices())
     }
 
     var hoverCandleTimePosition: CGFloat {
-        return getCandleXPosition(textSize: hoverCandleTimeWidthSize) - hoverCandleTimeWidthSize / 2
+        let pointX = candleSticks.map({ $0.open ?? 0 }).point(at: currentCandleHoverIndex, rect: chartSize).x
+        return hover.timeLabelX(pointX: pointX)
     }
     
     var mainDragIndex: [Int] {
-        let timestamps = getTimestamps()
-        let pricesCount = CGFloat(getPrices().count)
-        let firstTimestamp = timeStamps.normalized.first ?? 0
-        let timestampCount = Double(timestamps.count)
-        
-        return hoverHelper.offset.map { offsetPoint in
-            let offsetRatio = offsetPoint.x / chartSize.width
-            guard offsetRatio >= firstTimestamp else { return -1 }
-            
-            let indexOffset = timestampCount * firstTimestamp
-            let maxIndex = max(0, Int(pricesCount))
-            let spatialIndex = Double(maxIndex) * Double(offsetPoint.x / chartSize.width)
-            let index = spatialIndex - indexOffset
-            
-            if index.isNaN || index.isInfinite {
-                return -1
-            }
-            
-            return Int(index)
-        }
+        hover.linearDragIndices(priceCount: getPrices().count, timestamps: getTimestamps())
     }
     
     var dragPositions: [CGPoint] {
-        return mainDragIndex.map({
-            point(at: $0, rect: CGSize(width: chartSize.width, height: chartSize.height))
-        })
+        hover.linearDragPositions(priceCount: getPrices().count, timestamps: getTimestamps()) { index, size in
+            point(at: index, rect: size)
+        }
     }
 
     func point(at index: Int, rect: CGSize) -> CGPoint {
@@ -441,25 +373,8 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
 
     private var currentCandleHoverIndex: Int {
         guard chartSize.width > 0 else { return 0 }
-        
         let hoverPoint = hoverHelper.offset.map { $0.x }.first ?? 0
-        
         return candleBinIndex(x: hoverPoint, width: chartSize.width, candleCount: candleSticks.count)
-    }
-    
-    private var currentHoverIndex: Int {
-        guard chartSize.width > 0 else { return 0 }
-        
-        let hoverPoints = hoverHelper.offset.map { $0.x }
-        let hoverPoint: CGFloat
-        
-        if hoverHelper.hoverPrices.count == 2 {
-            hoverPoint = hoverPoints.reduce(0, +) / 2
-        } else {
-            hoverPoint = hoverPoints.first ?? 0
-        }
-        
-        return chartLinearSeriesIndex(x: hoverPoint, width: chartSize.width, pointCount: getPrices().count)
     }
     
     // MARK: - Download data functions
@@ -978,37 +893,17 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
     }
     
     func updateHoverStats(touches: [CGPoint]) {
-        guard !mainReloading else { return }
-        guard (!timeStamps.isEmpty || !candleTimestamps.isEmpty) && !touches.isEmpty else {
-            isDragging = false
-            timer?.invalidate()
+        guard hover.applyTouches(
+            touches,
+            canUpdate: !mainReloading,
+            hasSeries: !timeStamps.isEmpty || !candleTimestamps.isEmpty,
+            limitToFirstTouch: isCandleChartEnabled
+        ) else {
             return
         }
         
-        if !isDragging {
-            timer?.invalidate()
-            timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { [weak self] _ in
-                Task { @MainActor in
-                    guard let self = self else { return }
-                    self.isDragging = !touches.isEmpty
-                    
-                    if self.isDragging {
-#if IS_APP
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-#endif
-                    }
-                }
-            }
-        }
-        
-        let adjustedTouches = isCandleChartEnabled ? [touches.first ?? .zero] : touches
-        
-        hoverHelper.offset = adjustedTouches.map {
-            CGPoint(x: max(0, min($0.x, chartSize.width.rounded(.down) - 0.00001)), y: $0.y)
-        }
-        
         if isCandleChartEnabled {
-            candleInfoLeftSide = (adjustedTouches.first?.x ?? 0) < chartSize.width / 2
+            candleInfoLeftSide = (hoverHelper.offset.first?.x ?? 0) < chartSize.width / 2
             
             hoverHelper.getHoverPriceCandles(
                 readerSize: chartSize,
@@ -1133,16 +1028,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel {
     }
     
     // MARK: - Private general functions
-    
-    private func getCandleXPosition(textSize: CGFloat) -> CGFloat {
-        let xPoint = candleSticks.map({ $0.open ?? 0 }).point(at: currentCandleHoverIndex, rect: chartSize).x
-        return getPriceXPosition(position: xPoint, textSize: textSize, readerWidthSize: chartSize.width)
-    }
-    
-    private func getXPosition(textSize: CGFloat) -> CGFloat {
-        let xPoint = getPrices().point(at: currentHoverIndex, rect: chartSize).x
-        return getPriceXPosition(position: xPoint, textSize: textSize, readerWidthSize: chartSize.width)
-    }
     
     private func getPricesRangePrefix(priceVolume: PriceVolumeModel?) -> Int {
         let count = priceVolume?.prices?.count ?? 0

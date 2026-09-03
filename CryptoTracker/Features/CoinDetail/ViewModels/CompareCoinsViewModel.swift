@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-protocol CompareCoinsViewModel {
+protocol CompareCoinsViewModel: ChartHoverHosting {
     var cryptoInfo: CurrencyDataModel? { get set }
     var priceVolumeModel: PriceVolumeModel? { get set }
     var prices: [Double] { get set }
@@ -25,22 +25,16 @@ protocol CompareCoinsViewModel {
     var compareTimeStamps: [Double] { get set }
     var compareReloading: Bool { get set }
     var showComparePriceError: Bool { get set }
-    var hoverHelper: HoverHelper { get set }
-    var hoverPriceWidthSize: CGFloat { get set }
     var hoverComparePriceWidthSize: CGFloat { get set }
-    var hoverTimeWidthSize: CGFloat { get set }
-    var chartSize: CGSize { get set }
     var selectedTimeFrame: TimeCharts { get set }
     var currentChartType: ChartTypes { get set }
     var currentDays: String { get set }
-    var isDragging: Bool { get set }
     var comparableCoins: [Toplist] { get set }
     var dragIndex: Int { get }
     var dragPositions: CGPoint { get }
     var compareDragPositions: CGPoint { get }
     var chartValues: [String] { get }
     var graphStats: [String?] { get }
-    var hoverTime: String { get }
     var hoverPrice: String { get }
     var compareHoverPrice: String { get }
     var hoverTimePosition: CGFloat { get }
@@ -69,7 +63,7 @@ protocol CompareCoinsViewModel {
 }
 
 @MainActor @Observable
-final class CompareCoinsViewModelImp: CompareCoinsViewModel {
+final class CompareCoinsViewModelImp: CompareCoinsViewModel, ChartHoverHosting {
     private let cryptoDetailRepository: CryptoDetailRepository
     private let toplistRepository: ToplistRepository
     private let settingsManager: SettingsManager
@@ -100,12 +94,8 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel {
     var showComparePriceError = false
     
     // Hover
-    var hoverHelper = HoverHelper()
-    
-    var hoverPriceWidthSize: CGFloat = 0
+    var hover = ChartHoverState()
     var hoverComparePriceWidthSize: CGFloat = 0
-    var hoverTimeWidthSize: CGFloat = 0
-    var chartSize: CGSize = .zero
     
     // General
     
@@ -113,11 +103,7 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel {
     var currentChartType: ChartTypes = SettingsManager.shared.get(key: AppSettingKey.graphType) ?? .price
     var currentDays = TimeCharts.getStartTimeFrame(between: .anHour, and: .max).days
     
-    var isDragging = false
-    
     var comparableCoins = [Toplist]()
-    
-    private var timer: Timer?
     
     private(set) var hasProSubscription = false
     
@@ -284,6 +270,16 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel {
             
             return "The \(chartLabel) was \(price) for \(name) and \(comparePrice) for \(compareName) on"
         }
+    }
+    
+    var hoverPrice: String {
+        getPrices(dropLastTwo: true)[safely: dragIndex] == -1 ? "N/A" : hover.hoverPrice
+    }
+    
+    var compareHoverPrice: String {
+        getComparePrices(dropLastTwo: true)[safely: dragIndex] == -1
+            ? "N/A"
+            : hoverHelper.compareHoverPrice.formatCurrency(threshold: FormattingThreshold.million)
     }
     
     var mainDifferencePercent: Double {
@@ -527,36 +523,12 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel {
         })
     }
     
-    var hoverTime: String {
-        return hoverHelper.hoverTimes.first ?? "0"
-    }
-    
-    var hoverPrice: String {
-        return getPrices(dropLastTwo: true)[safely: dragIndex] == -1 ? "N/A" : hoverHelper.hoverPrices.first?.formatCurrency(threshold: FormattingThreshold.million) ?? "0"
-    }
-    
-    var compareHoverPrice: String {
-        return getComparePrices(dropLastTwo: true)[safely: dragIndex] == -1 ? "N/A" : hoverHelper.compareHoverPrice.formatCurrency(threshold: FormattingThreshold.million)
-    }
-    
     var hoverTimePosition: CGFloat {
-        return getXPosition(textSize: hoverTimeWidthSize) - hoverTimeWidthSize / 2
-    }
-    
-    private func getXPosition(textSize: CGFloat) -> CGFloat {
-        let xPoint = point(at: currentHoverIndex, rect: chartSize, prices: getPrices()).x
-        return getPriceXPosition(position: xPoint, textSize: textSize, readerWidthSize: chartSize.width)
+        hover.timeLabelX(pointX: point(at: currentHoverIndex, rect: chartSize, prices: getPrices()).x)
     }
     
     private var currentHoverIndex: Int {
-        guard chartSize.width > 0 else { return 0 }
-        
-        let hoverPoints = hoverHelper.offset.map { $0.x }
-        let hoverPoint: CGFloat = hoverPoints.first ?? 0
-        
-        let pts = getPrices(dropLastTwo: true)
-        guard !pts.isEmpty else { return 0 }
-        return chartLinearSeriesIndex(x: hoverPoint, width: chartSize.width, pointCount: pts.count)
+        hover.currentLinearIndex(priceCount: getPrices(dropLastTwo: true).count)
     }
     
     // MARK: - Main coin functions
@@ -637,33 +609,13 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel {
     // Hover
     
     func updateHoverStats(touches: [CGPoint]) {
-        guard !mainReloading, !compareReloading else { return }
-        guard !timeStamps.isEmpty, !touches.isEmpty else {
-            isDragging = false
-            timer?.invalidate()
+        guard hover.applyTouches(
+            touches,
+            canUpdate: !mainReloading && !compareReloading,
+            hasSeries: !timeStamps.isEmpty,
+            limitToFirstTouch: true
+        ) else {
             return
-        }
-        
-        if !isDragging {
-            timer?.invalidate()
-            timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { [weak self] _ in
-                Task { @MainActor in
-                    guard let self = self else { return }
-                    self.isDragging = !touches.isEmpty
-                    
-                    if self.isDragging {
-#if IS_APP
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-#endif
-                    }
-                }
-            }
-        }
-        
-        let adjustedTouches = [touches.first ?? .zero]
-        
-        hoverHelper.offset = adjustedTouches.map {
-            CGPoint(x: max(0, min($0.x, chartSize.width.rounded(.down) - 0.00001)), y: $0.y)
         }
         
         hoverHelper.getHoverPrice(

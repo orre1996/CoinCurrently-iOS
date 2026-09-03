@@ -276,7 +276,7 @@ struct FearGreedScreen: View {
                 differencePercent: viewModel.differencePercent,
                 color: viewModel.graphColor,
                 xPosition: viewModel.hoverTimePosition,
-                hoverTimeWidthSize: $viewModel.hoverTimeWidthSize)
+                hoverTimeWidthSize: $viewModel.hover.hoverTimeWidthSize)
             .opacity(viewModel.isDragging ? 1 : 0)
             .animation(.default, value: viewModel.isDragging)
         } else {
@@ -285,7 +285,7 @@ struct FearGreedScreen: View {
                 priceColor: getIndexColor(indexValue: viewModel.hoverPrice),
                 hoverTime: viewModel.hoverTime,
                 xPositionTime: viewModel.hoverTimePosition,
-                hoverTimeWidthSize: $viewModel.hoverTimeWidthSize
+                hoverTimeWidthSize: $viewModel.hover.hoverTimeWidthSize
             )
             .opacity(viewModel.isDragging ? 1 : 0)
             .animation(.default, value: viewModel.isDragging)

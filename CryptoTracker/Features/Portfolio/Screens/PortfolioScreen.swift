@@ -983,7 +983,7 @@ struct PortfolioScreen: View {
                 differencePercent: viewModel.differencePercent,
                 color: viewModel.graphColor,
                 xPosition: viewModel.hoverTimePosition,
-                hoverTimeWidthSize: $viewModel.hoverTimeWidthSize)
+                hoverTimeWidthSize: $viewModel.hover.hoverTimeWidthSize)
             .opacity(viewModel.isDragging ? 1 : 0)
             .animation(.default, value: viewModel.isDragging)
         } else {
@@ -992,7 +992,7 @@ struct PortfolioScreen: View {
                 priceColor: .onSurface,
                 hoverTime: viewModel.hoverTime,
                 xPositionTime: viewModel.hoverTimePosition,
-                hoverTimeWidthSize: $viewModel.hoverTimeWidthSize
+                hoverTimeWidthSize: $viewModel.hover.hoverTimeWidthSize
             )
             .opacity(viewModel.isDragging ? 1 : 0)
             .animation(.default, value: viewModel.isDragging)

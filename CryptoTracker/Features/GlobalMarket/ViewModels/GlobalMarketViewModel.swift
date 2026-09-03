@@ -11,7 +11,7 @@ import UIKit
 import SwiftUI
 
 @MainActor
-protocol GlobalMarketViewModel {
+protocol GlobalMarketViewModel: ChartHoverHosting {
     var globalMarket: GlobalMarketModel? { get }
     var globalMarketChart: GlobalMarketChartData? { get }
     var selectedTimeFrame: TimeCharts { get set }
@@ -21,16 +21,8 @@ protocol GlobalMarketViewModel {
     var changePercent: Double? { get }
     var reloading: Bool { get set }
     var showMainPriceError: Bool { get set }
-    var hoverHelper: HoverHelper { get set }
-    var hoverTimeWidthSize: CGFloat { get set }
-    var chartSize: CGSize { get set }
-    var isDragging: Bool { get set }
     var mainGraphStats: [String?] { get }
-    var differenceValue: String { get }
-    var differencePercent: String { get }
     var graphColor: Color { get }
-    var hoverTime: String { get }
-    var hoverPrice: String { get }
     var hoverTimePosition: CGFloat { get }
     var dragPositions: [CGPoint] { get }
     var latestChartMarketCap: Double? { get }
@@ -49,11 +41,9 @@ protocol GlobalMarketViewModel {
 }
 
 @Observable
-class GlobalMarketViewModelImp: GlobalMarketViewModel {
+class GlobalMarketViewModelImp: GlobalMarketViewModel, ChartHoverHosting {
     private let globalMarketRepository: GlobalMarketRepository
     
-    private var timer: Timer?
-
     var globalMarket: GlobalMarketModel?
     var globalMarketChart: GlobalMarketChartData?
     var selectedTimeFrame = TimeCharts.getStartTimeFrame(between: .aWeek, and: .max)
@@ -66,10 +56,7 @@ class GlobalMarketViewModelImp: GlobalMarketViewModel {
     private(set) var changePercent: Double?
     var reloading = true
     var showMainPriceError = false
-    var hoverHelper = HoverHelper()
-    var hoverTimeWidthSize: CGFloat = 0
-    var chartSize: CGSize = .zero
-    var isDragging = false
+    var hover = ChartHoverState()
 
     init(globalMarketRepository: GlobalMarketRepository = GlobalMarketRepositoryImp.shared) {
         self.globalMarketRepository = globalMarketRepository
@@ -79,56 +66,17 @@ class GlobalMarketViewModelImp: GlobalMarketViewModel {
         (0..<6).map { getPriceInChart(prices: getPrices(), at: $0) }
     }
     
-    var differenceValue: String {
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0
-        let percent = Double.getDifferenceInPercent(between: second, and: first)?.safeValue ?? 0
-        let sign = percent.roundTo(places: 2) < 0 ? "" : "+"
-        let difference = (second - first).formatCurrency(threshold: FormattingThreshold.million)
-        return "\(sign)\(difference)"
-    }
-    
-    var differencePercent: String {
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0
-        let difference = Double.getDifferenceInPercent(between: second, and: first) ?? 0
-        let sign = difference >= 0 ? "+" : "-"
-        
-        return "\(sign)\(difference.safeValue.removeZerosFromEnd(force: true).withoutSymbol)%"
-    }
-    
     var graphColor: Color {
-        guard hoverHelper.hoverPrices.count == 2, isDragging else {
-            return changePercent?.changeColor ?? .onSurfaceDim
-        }
-        
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0
-        let change = (second - first).roundTo(places: 7)
-        
-        if change == 0 {
-            let percent = Double.getDifferenceInPercent(between: second, and: first)?.roundTo(places: 7)
-            return percent?.changeColor ?? .onSurfaceDim
-        }
-        
-        return change.changeColor
-    }
-    
-    var hoverTime: String {
-        hoverHelper.hoverTimes.first ?? "0"
-    }
-    
-    var hoverPrice: String {
-        hoverHelper.hoverPrices.first?.formatCurrency(threshold: FormattingThreshold.million) ?? "0"
+        hover.graphColor(idle: changePercent?.changeColor ?? .onSurfaceDim)
     }
     
     var hoverTimePosition: CGFloat {
-        getXPosition(textSize: hoverTimeWidthSize) - hoverTimeWidthSize / 2
+        hover.timeLabelX(prices: getPrices())
     }
     
     var dragPositions: [CGPoint] {
-        mainDragIndex.map {
-            point(at: $0, rect: CGSize(width: chartSize.width, height: chartSize.height))
+        hover.linearDragPositions(priceCount: getPrices().count, timestamps: getTimestamps()) { index, size in
+            point(at: index, rect: size)
         }
     }
     
@@ -140,26 +88,14 @@ class GlobalMarketViewModelImp: GlobalMarketViewModel {
         lastChartValue(in: globalMarketChart?.volume)
     }
     
-    private var mainDragIndex: [Int] {
-        let pricesCount = CGFloat(getPrices().count)
-        let firstTimestamp = timeStamps.normalized.first ?? 0
-        let timestampCount = Double(getTimestamps().count)
-        
-        return hoverHelper.offset.map { offsetPoint in
-            let offsetRatio = offsetPoint.x / chartSize.width
-            guard offsetRatio >= firstTimestamp else { return -1 }
-            
-            let indexOffset = timestampCount * firstTimestamp
-            let maxIndex = max(0, Int(pricesCount))
-            let spatialIndex = Double(maxIndex) * Double(offsetPoint.x / chartSize.width)
-            let index = spatialIndex - indexOffset
-            
-            if index.isNaN || index.isInfinite {
-                return -1
-            }
-            
-            return Int(index)
-        }
+    func updateHoverStats(touches: [CGPoint]) {
+        hover.updateLinear(
+            touches: touches,
+            prices: getPrices(),
+            dates: getTimestamps(),
+            timeChart: selectedTimeFrame,
+            canUpdate: !reloading
+        )
     }
     
     func setStartData() async {
@@ -252,42 +188,6 @@ class GlobalMarketViewModelImp: GlobalMarketViewModel {
             .filter { $0 != 0 } ?? []
     }
     
-    func updateHoverStats(touches: [CGPoint]) {
-        guard !reloading else { return }
-        guard !timeStamps.isEmpty, !touches.isEmpty else {
-            isDragging = false
-            timer?.invalidate()
-            return
-        }
-        
-        if !isDragging {
-            timer?.invalidate()
-            timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { [weak self] _ in
-                Task { @MainActor in
-                    guard let self else { return }
-                    self.isDragging = !touches.isEmpty
-                    
-                    if self.isDragging {
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    }
-                }
-            }
-        }
-        
-        hoverHelper.offset = touches.map {
-            CGPoint(x: max(0, min($0.x, chartSize.width.rounded(.down) - 0.00001)), y: $0.y)
-        }
-        
-        hoverHelper.getHoverPrice(
-            readerSize: chartSize,
-            offset: hoverHelper.offset,
-            prices: getPrices(),
-            dates: getTimestamps(),
-            timeChart: selectedTimeFrame,
-            isDragging: isDragging
-        )
-    }
-    
     private func lastChartValue(in chartData: [[Double?]]?) -> Double? {
         chartData?
             .compactMap { $0.last ?? 0 }
@@ -320,25 +220,5 @@ class GlobalMarketViewModelImp: GlobalMarketViewModel {
             x: x - 0.5,
             y: y.isNaN ? 0.5 * rect.height : y
         )
-    }
-    
-    private func getXPosition(textSize: CGFloat) -> CGFloat {
-        let xPoint = getPrices().point(at: currentHoverIndex, rect: chartSize).x
-        return getPriceXPosition(position: xPoint, textSize: textSize, readerWidthSize: chartSize.width)
-    }
-    
-    private var currentHoverIndex: Int {
-        guard chartSize.width > 0 else { return 0 }
-        
-        let hoverPoints = hoverHelper.offset.map(\.x)
-        let hoverPoint: CGFloat
-        
-        if hoverHelper.hoverPrices.count == 2 {
-            hoverPoint = hoverPoints.reduce(0, +) / 2
-        } else {
-            hoverPoint = hoverPoints.first ?? 0
-        }
-        
-        return chartLinearSeriesIndex(x: hoverPoint, width: chartSize.width, pointCount: getPrices().count)
     }
 }

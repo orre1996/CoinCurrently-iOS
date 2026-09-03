@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 @MainActor
-protocol NFTDetailViewModel {
+protocol NFTDetailViewModel: ChartHoverHosting {
     var nftDetailInfo: NFTDetail { get set }
     var priceVolumeModel: NFTPriceVolumeModel? { get set }
     var currentCurrency: CurrencyDataModel? { get set }
@@ -27,21 +27,11 @@ protocol NFTDetailViewModel {
     var prices24h: [Double] { get set }
     var onlyPrices: [Double] { get set }
     var timeStamps: [Double] { get set }
-    var isDragging: Bool { get set }
-    var hoverHelper: HoverHelper { get set }
-    var hoverPriceWidthSize: CGFloat { get set }
-    var hoverTimeWidthSize: CGFloat { get set }
-    var hoverCandleTimeWidthSize: CGFloat { get set }
-    var chartSize: CGSize { get set }
     var mainReloading: Bool { get set }
     var currentDays: String { get set }
     var mainGraphStats: [String?] { get }
-    var differenceValue: String { get }
-    var differencePercent: String { get }
     var graphColor: Color { get }
     var changePercent: Double? { get }
-    var hoverTime: String { get }
-    var hoverPrice: String { get }
     var hoverTimePosition: CGFloat { get }
     var hoverPricePosition: CGFloat { get }
     var mainDragIndex: [Int] { get }
@@ -77,7 +67,7 @@ protocol NFTDetailViewModel {
 }
 
 @MainActor @Observable
-final class NFTDetailViewModelImp: NFTDetailViewModel {
+final class NFTDetailViewModelImp: NFTDetailViewModel, ChartHoverHosting {
     private let nftDetailsRepository: NFTDetailsRepository
     private let nftsRepository: NFTRepository
     private let cryptoDetailRepository: CryptoDetailRepository
@@ -108,20 +98,11 @@ final class NFTDetailViewModelImp: NFTDetailViewModel {
     var onlyPrices = [Double]()
     var timeStamps = [Double]()
 
-    var isDragging = false
-    
     var selectedSortOption: SortOption = .priceDesc
     var exchangeMarketItems: [ExchangeMarketItem]? = nil
     
-    var hoverHelper = HoverHelper()
-    
-    var hoverPriceWidthSize: CGFloat = 0
-    var hoverTimeWidthSize: CGFloat = 0
-    var hoverCandleTimeWidthSize: CGFloat = 0
-    var chartSize: CGSize = .zero
+    var hover = ChartHoverState()
     var currencyLogo: UIImage?
-
-    private var timer: Timer?
 
     init(
         nftToplist: NFTToplist,
@@ -191,6 +172,7 @@ final class NFTDetailViewModelImp: NFTDetailViewModel {
     func setSelectedCurrency() async {
         let fiatCurrency = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
         selectedCurrency = isChartFiat ? fiatCurrency : await nativeChartCurrency()
+        hover.valueStyle = .currency(threshold: .million, currency: selectedCurrency)
     }
     
     private func nativeChartCurrency() async -> CurrencyModel {
@@ -470,39 +452,8 @@ final class NFTDetailViewModelImp: NFTDetailViewModel {
         return change
     }
 
-    var differenceValue: String {
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0
-        let percent = Double.getDifferenceInPercent(between: second, and: first)?.safeValue ?? 0
-        let sign = percent.roundTo(places: 2) < 0 ? "" : "+"
-        let difference = (second - first).formatCurrency(threshold: FormattingThreshold.million, currency: selectedCurrency)
-        return "\(sign)\(difference)"
-    }
-    
-    var differencePercent: String {
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0.0
-        let difference = Double.getDifferenceInPercent(between: second, and: first) ?? 0
-        let sign = difference >= 0 ? "+" : "-"
-        
-        return "\(sign)\(difference.safeValue.removeZerosFromEnd(force: true).withoutSymbol)%"
-    }
-    
     var graphColor: Color {
-        guard hoverHelper.hoverPrices.count == 2, isDragging else {
-            return changePercent?.changeColor ?? .onSurfaceDim
-        }
-        
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0
-        let change = (second - first).roundTo(places: 7)
-        
-        if change == 0 {
-            let percent = Double.getDifferenceInPercent(between: second, and: first)?.roundTo(places: 7)
-            return percent?.changeColor ?? .onSurfaceDim
-        }
-        
-        return change.changeColor
+        hover.graphColor(idle: changePercent?.changeColor ?? .onSurfaceDim)
     }
     
     var changePercent: Double? {
@@ -514,49 +465,22 @@ final class NFTDetailViewModelImp: NFTDetailViewModel {
         return Double.getDifferenceInPercent(between: last, and: first)?.roundTo(places: 7)
     }
     
-    var hoverTime: String {
-        return hoverHelper.hoverTimes.first ?? "0"
-    }
-    
-    var hoverPrice: String {
-        return hoverHelper.hoverPrices.first?.formatCurrency(threshold: FormattingThreshold.million, currency: selectedCurrency) ?? "0"
-    }
-    
     var hoverTimePosition: CGFloat {
-        return getXPosition(textSize: hoverTimeWidthSize) - hoverTimeWidthSize / 2
+        hover.timeLabelX(prices: getPrices())
     }
     
     var hoverPricePosition: CGFloat {
-        return getXPosition(textSize: hoverPriceWidthSize) - hoverTimeWidthSize / 2
+        hover.priceLabelX(prices: getPrices())
     }
     
     var mainDragIndex: [Int] {
-        let timestamps = getTimestamps()
-        let pricesCount = CGFloat(getPrices().count)
-        let firstTimestamp = timeStamps.normalized.first ?? 0
-        let timestampCount = Double(timestamps.count)
-        
-        return hoverHelper.offset.map { offsetPoint in
-            let offsetRatio = offsetPoint.x / chartSize.width
-            guard offsetRatio >= firstTimestamp else { return -1 }
-            
-            let indexOffset = timestampCount * firstTimestamp
-            let maxIndex = max(0, Int(pricesCount))
-            let spatialIndex = Double(maxIndex) * Double(offsetPoint.x / chartSize.width)
-            let index = spatialIndex - indexOffset
-            
-            if index.isNaN || index.isInfinite {
-                return -1
-            }
-            
-            return Int(index)
-        }
+        hover.linearDragIndices(priceCount: getPrices().count, timestamps: getTimestamps())
     }
     
     var dragPositions: [CGPoint] {
-        return mainDragIndex.map({
-            point(at: $0, rect: CGSize(width: chartSize.width, height: chartSize.height))
-        })
+        hover.linearDragPositions(priceCount: getPrices().count, timestamps: getTimestamps()) { index, size in
+            point(at: index, rect: size)
+        }
     }
 
     func point(at index: Int, rect: CGSize) -> CGPoint {
@@ -569,40 +493,12 @@ final class NFTDetailViewModelImp: NFTDetailViewModel {
     }
     
     func updateHoverStats(touches: [CGPoint]) {
-        guard !mainReloading else { return }
-        guard (!timeStamps.isEmpty) && !touches.isEmpty else {
-            isDragging = false
-            timer?.invalidate()
-            return
-        }
-        
-        if !isDragging {
-            timer?.invalidate()
-            timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { [weak self] _ in
-                Task { @MainActor in
-                    guard let self = self else { return }
-                    self.isDragging = !touches.isEmpty
-                    
-                    if self.isDragging {
-    #if IS_APP
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-    #endif
-                    }
-                }
-            }
-        }
-        
-        hoverHelper.offset = touches.map {
-            CGPoint(x: max(0, min($0.x, chartSize.width.rounded(.down) - 0.00001)), y: $0.y)
-        }
-        
-        hoverHelper.getHoverPrice(
-            readerSize: chartSize,
-            offset: hoverHelper.offset,
+        hover.updateLinear(
+            touches: touches,
             prices: getPrices(),
             dates: getTimestamps(),
             timeChart: selectedTimeFrame,
-            isDragging: isDragging
+            canUpdate: !mainReloading
         )
     }
     
@@ -624,27 +520,6 @@ final class NFTDetailViewModelImp: NFTDetailViewModel {
             x: adjustXByHalfPixel ? x - 0.5 : x,
             y: y.isNaN ? 0.5 * rect.height : y
         )
-    }
-    
-    private func getXPosition(textSize: CGFloat) -> CGFloat {
-        let xPoint = getPrices().point(at: currentHoverIndex, rect: chartSize).x
-        return getPriceXPosition(position: xPoint, textSize: textSize, readerWidthSize: chartSize.width)
-    }
-
-    private var currentHoverIndex: Int {
-        guard chartSize.width > 0 else { return 0 }
-        
-        let hoverPoints = hoverHelper.offset.map { $0.x }
-        let hoverPoint: CGFloat
-        
-        if hoverHelper.hoverPrices.count == 2 {
-            hoverPoint = hoverPoints.reduce(0, +) / 2
-        } else {
-            hoverPoint = hoverPoints.first ?? 0
-        }
-        
-        let pricesCount = CGFloat(getPrices().count)
-        return chartLinearSeriesIndex(x: hoverPoint, width: chartSize.width, pointCount: Int(pricesCount))
     }
     
     func setPriceMultiplier() {

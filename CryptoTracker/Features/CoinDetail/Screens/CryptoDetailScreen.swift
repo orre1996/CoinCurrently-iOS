@@ -121,7 +121,7 @@ struct CryptoDetailScreen: View {
                                 CandleChartHoverStatsView(
                                     currentCandle: viewModel.hoverHelper.currentCandle,
                                     xPosition: viewModel.hoverCandleTimePosition,
-                                    hoverCandleTimeWidthSize: $viewModel.hoverCandleTimeWidthSize
+                                    hoverCandleTimeWidthSize: $viewModel.hover.hoverCandleTimeWidthSize
                                 )
                                 .opacity(viewModel.isDragging && viewModel.isCandleChartEnabled ? 1 : 0)
                                 .animation(.default, value: viewModel.isDragging)
@@ -973,7 +973,7 @@ struct CryptoDetailScreen: View {
                 differencePercent: viewModel.differencePercent,
                 color: viewModel.graphColor,
                 xPosition: viewModel.hoverTimePosition,
-                hoverTimeWidthSize: $viewModel.hoverTimeWidthSize)
+                hoverTimeWidthSize: $viewModel.hover.hoverTimeWidthSize)
             .opacity(!viewModel.showMainPriceError && viewModel.isDragging && !viewModel.candleChartEnabled ? 1 : 0
             )
             .animation(.default, value: viewModel.isDragging)
@@ -983,7 +983,7 @@ struct CryptoDetailScreen: View {
                 priceColor: .onSurface,
                 hoverTime: viewModel.hoverTime,
                 xPositionTime: viewModel.hoverTimePosition,
-                hoverTimeWidthSize: $viewModel.hoverTimeWidthSize
+                hoverTimeWidthSize: $viewModel.hover.hoverTimeWidthSize
             )
             .opacity(!viewModel.showMainPriceError && viewModel.isDragging && !viewModel.candleChartEnabled ? 1 : 0)
             .animation(.default, value: viewModel.isDragging)

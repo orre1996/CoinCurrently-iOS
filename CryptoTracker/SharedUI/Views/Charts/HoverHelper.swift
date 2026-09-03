@@ -268,3 +268,326 @@ func chartAxisTimestampIndex(labelIndex: Int, labelCount: Int, dataCount: Int) -
     let maxIndex = dataCount
     return min(maxIndex, Int(Double(maxIndex) * clamped))
 }
+
+enum ChartHoverValueStyle {
+    case currency(threshold: FormattingThreshold, currency: CurrencyModel? = nil)
+    case integer
+    case decimal(fractionLength: Int)
+}
+
+@Observable @MainActor
+final class ChartHoverState {
+    var helper = HoverHelper()
+    var hoverPriceWidthSize: CGFloat = 0
+    var hoverTimeWidthSize: CGFloat = 0
+    var hoverCandleTimeWidthSize: CGFloat = 0
+    var chartSize: CGSize = .zero
+    var isDragging = false
+    var valueStyle: ChartHoverValueStyle
+    var hidesValues = false
+
+    private var timer: Timer?
+
+    init(valueStyle: ChartHoverValueStyle = .currency(threshold: .million)) {
+        self.valueStyle = valueStyle
+    }
+
+    var hoverTime: String {
+        helper.hoverTimes.first ?? "0"
+    }
+
+    var hoverPrice: String {
+        if hidesValues {
+            return String.stars
+        }
+
+        return formattedValue(helper.hoverPrices.first ?? 0)
+    }
+
+    var differenceValue: String {
+        if hidesValues {
+            return String.stars
+        }
+
+        let first = helper.hoverPrices[safely: 0] ?? 0
+        let second = helper.hoverPrices[safely: 1] ?? 0
+        let percent = Double.getDifferenceInPercent(between: second, and: first)?.safeValue ?? 0
+        let sign = percent.roundTo(places: 2) < 0 ? "" : "+"
+        return "\(sign)\(formattedDelta(second - first))"
+    }
+
+    var differencePercent: String {
+        let first = helper.hoverPrices[safely: 0] ?? 0
+        let second = helper.hoverPrices[safely: 1] ?? 0
+        let difference = Double.getDifferenceInPercent(between: second, and: first) ?? 0
+        let sign = difference >= 0 ? "+" : "-"
+        return "\(sign)\(difference.safeValue.removeZerosFromEnd(force: true).withoutSymbol)%"
+    }
+
+    var rangeChangeColor: Color {
+        let difference = (helper.hoverPrices[safely: 1] ?? 0) - (helper.hoverPrices[safely: 0] ?? 0)
+        return difference.roundTo(places: 7).changeColor
+    }
+
+    func graphColor(idle: Color) -> Color {
+        guard helper.hoverPrices.count == 2, isDragging else {
+            return idle
+        }
+
+        let first = helper.hoverPrices[safely: 0] ?? 0
+        let second = helper.hoverPrices[safely: 1] ?? 0
+        let change = (second - first).roundTo(places: 7)
+
+        if change == 0 {
+            let percent = Double.getDifferenceInPercent(between: second, and: first)?.roundTo(places: 7)
+            return percent?.changeColor ?? .onSurfaceDim
+        }
+
+        return change.changeColor
+    }
+
+    func timeLabelX(pointX: CGFloat) -> CGFloat {
+        getPriceXPosition(
+            position: pointX,
+            textSize: hoverTimeWidthSize,
+            readerWidthSize: chartSize.width
+        ) - hoverTimeWidthSize / 2
+    }
+
+    func priceLabelX(pointX: CGFloat) -> CGFloat {
+        getPriceXPosition(
+            position: pointX,
+            textSize: hoverPriceWidthSize,
+            readerWidthSize: chartSize.width
+        ) - hoverTimeWidthSize / 2
+    }
+
+    func timeLabelX(prices: [Double], dropCount: Int = 0) -> CGFloat {
+        let index = dropCount > 0
+            ? currentPaddedIndex(priceCount: prices.count, dropCount: dropCount)
+            : currentLinearIndex(priceCount: prices.count)
+        let pointX = prices.point(at: index, rect: chartSize, dropCount: dropCount).x
+        return timeLabelX(pointX: pointX)
+    }
+
+    func priceLabelX(prices: [Double], dropCount: Int = 0) -> CGFloat {
+        let index = dropCount > 0
+            ? currentPaddedIndex(priceCount: prices.count, dropCount: dropCount)
+            : currentLinearIndex(priceCount: prices.count)
+        let pointX = prices.point(at: index, rect: chartSize, dropCount: dropCount).x
+        return priceLabelX(pointX: pointX)
+    }
+
+    func currentLinearIndex(priceCount: Int) -> Int {
+        guard chartSize.width > 0 else { return 0 }
+
+        let hoverPoints = helper.offset.map(\.x)
+        let hoverPoint: CGFloat = helper.hoverPrices.count == 2
+            ? hoverPoints.reduce(0, +) / 2
+            : hoverPoints.first ?? 0
+
+        return chartLinearSeriesIndex(x: hoverPoint, width: chartSize.width, pointCount: priceCount)
+    }
+
+    func currentPaddedIndex(priceCount: Int, dropCount: Int) -> Int {
+        guard chartSize.width > 0 else { return 0 }
+
+        let hoverPoint = helper.hoverPrices.count == 2
+            ? helper.offset.map(\.x).reduce(0, +) / 2
+            : helper.offset.first?.x ?? 0
+
+        return Int(CGFloat(priceCount - dropCount) / (chartSize.width / hoverPoint))
+    }
+
+    func linearDragIndices(priceCount: Int, timestamps: [Double]) -> [Int] {
+        let firstTimestamp = timestamps.normalized.first ?? 0
+        let timestampCount = Double(timestamps.count)
+
+        return helper.offset.map { offsetPoint in
+            let offsetRatio = offsetPoint.x / chartSize.width
+            guard offsetRatio >= firstTimestamp else { return -1 }
+
+            let indexOffset = timestampCount * firstTimestamp
+            let maxIndex = max(0, priceCount)
+            let spatialIndex = Double(maxIndex) * Double(offsetPoint.x / chartSize.width)
+            let index = spatialIndex - indexOffset
+
+            if index.isNaN || index.isInfinite {
+                return -1
+            }
+
+            return Int(index)
+        }
+    }
+
+    func linearDragPositions(
+        priceCount: Int,
+        timestamps: [Double],
+        pointAt: (Int, CGSize) -> CGPoint
+    ) -> [CGPoint] {
+        linearDragIndices(priceCount: priceCount, timestamps: timestamps).map {
+            pointAt($0, chartSize)
+        }
+    }
+
+    func paddedDragPositions(prices: [Double], dropCount: Int) -> [CGPoint] {
+        let dragPositions = helper.offset.map {
+            (CGFloat(prices.count - dropCount) / (chartSize.width / $0.x)).safeValue
+        }.map {
+            prices.point(at: Int($0), rect: chartSize, dropCount: dropCount)
+        }.map {
+            CGPoint(x: $0.x - 0.5, y: $0.y)
+        }
+
+        return isDragging ? dragPositions : [dragPositions.first ?? .zero]
+    }
+
+    @discardableResult
+    func applyTouches(
+        _ touches: [CGPoint],
+        canUpdate: Bool,
+        hasSeries: Bool,
+        limitToFirstTouch: Bool = false
+    ) -> Bool {
+        guard canUpdate else { return false }
+        guard hasSeries, !touches.isEmpty else {
+            endDrag()
+            return false
+        }
+
+        scheduleDragStartIfNeeded(hasTouches: true)
+
+        let source = limitToFirstTouch ? [touches.first ?? .zero] : touches
+        helper.offset = source.map {
+            CGPoint(x: max(0, min($0.x, chartSize.width.rounded(.down) - 0.00001)), y: $0.y)
+        }
+        return true
+    }
+
+    func updateLinear(
+        touches: [CGPoint],
+        prices: [Double],
+        dates: [Double],
+        timeChart: TimeCharts?,
+        canUpdate: Bool = true,
+        inFearGreedView: Bool = false,
+        compareDates: [Double]? = nil,
+        comparePrices: [Double]? = nil,
+        limitToFirstTouch: Bool = false
+    ) {
+        guard applyTouches(
+            touches,
+            canUpdate: canUpdate,
+            hasSeries: !dates.isEmpty,
+            limitToFirstTouch: limitToFirstTouch
+        ) else {
+            return
+        }
+
+        helper.getHoverPrice(
+            readerSize: chartSize,
+            offset: helper.offset,
+            prices: prices,
+            dates: dates,
+            timeChart: timeChart,
+            compareDates: compareDates,
+            comparePrices: comparePrices,
+            inFearGreedView: inFearGreedView,
+            isDragging: isDragging
+        )
+    }
+
+    func endDrag() {
+        isDragging = false
+        timer?.invalidate()
+        timer = nil
+    }
+
+    private func scheduleDragStartIfNeeded(hasTouches: Bool) {
+        guard !isDragging else { return }
+
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { [weak self] _ in
+            Task { @MainActor in
+                guard let self else { return }
+                self.isDragging = hasTouches
+
+                if self.isDragging {
+#if IS_APP
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+#endif
+                }
+            }
+        }
+    }
+
+    private func formattedValue(_ value: Double) -> String {
+        switch valueStyle {
+        case .currency(let threshold, let currency):
+            if let currency {
+                return value.formatCurrency(threshold: threshold, currency: currency)
+            }
+            return value.formatCurrency(threshold: threshold)
+        case .integer:
+            return "\(Int(value))"
+        case .decimal(let fractionLength):
+            return "\(value.formatted(.number.precision(.fractionLength(fractionLength))))"
+        }
+    }
+
+    private func formattedDelta(_ value: Double) -> String {
+        switch valueStyle {
+        case .currency(let threshold, let currency):
+            if let currency {
+                return value.formatCurrency(threshold: threshold, currency: currency)
+            }
+            return value.formatCurrency(threshold: threshold)
+        case .integer:
+            return "\(Int(value))"
+        case .decimal(let fractionLength):
+            return value.formatted(.number.precision(.fractionLength(fractionLength)))
+        }
+    }
+}
+
+@MainActor
+protocol ChartHoverHosting: AnyObject {
+    var hover: ChartHoverState { get }
+}
+
+extension ChartHoverHosting {
+    var hoverHelper: HoverHelper {
+        get { hover.helper }
+        set { hover.helper = newValue }
+    }
+
+    var hoverPriceWidthSize: CGFloat {
+        get { hover.hoverPriceWidthSize }
+        set { hover.hoverPriceWidthSize = newValue }
+    }
+
+    var hoverTimeWidthSize: CGFloat {
+        get { hover.hoverTimeWidthSize }
+        set { hover.hoverTimeWidthSize = newValue }
+    }
+
+    var hoverCandleTimeWidthSize: CGFloat {
+        get { hover.hoverCandleTimeWidthSize }
+        set { hover.hoverCandleTimeWidthSize = newValue }
+    }
+
+    var chartSize: CGSize {
+        get { hover.chartSize }
+        set { hover.chartSize = newValue }
+    }
+
+    var isDragging: Bool {
+        get { hover.isDragging }
+        set { hover.isDragging = newValue }
+    }
+
+    var differenceValue: String { hover.differenceValue }
+    var differencePercent: String { hover.differencePercent }
+    var hoverTime: String { hover.hoverTime }
+    var hoverPrice: String { hover.hoverPrice }
+}

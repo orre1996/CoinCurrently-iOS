@@ -359,7 +359,7 @@ struct CompareCoinsScreen: View {
             hoverTime: viewModel.hoverTime,
             accessibleTimeframe: viewModel.selectedTimeFrame.accessibilityTimeframe,
             xPositionTime: viewModel.hoverTimePosition,
-            hoverTimeWidthSize: $viewModel.hoverTimeWidthSize
+            hoverTimeWidthSize: $viewModel.hover.hoverTimeWidthSize
         )
         .opacity(!viewModel.showMainPriceError && viewModel.isDragging ? 1 : 0)
         .animation(.default, value: viewModel.isDragging)

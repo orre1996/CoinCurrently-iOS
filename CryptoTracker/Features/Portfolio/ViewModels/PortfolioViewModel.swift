@@ -15,7 +15,7 @@ private func needsPieColor(_ color: String?) -> Bool {
 }
 
 @MainActor
-protocol PortfolioViewModel {
+protocol PortfolioViewModel: ChartHoverHosting {
     var reloading: Bool { get }
     var portfolio: [Pie]? { get }
     var allPrices: [Cryptocurrency] { get }
@@ -34,20 +34,10 @@ protocol PortfolioViewModel {
     var dateFilter: DateOption { get set }
     var coinFilters: [Toplist] { get set }
     var hideData: Bool { get set }
-    var hoverHelper: HoverHelper { get set }
-    var hoverPriceWidthSize: CGFloat { get set }
-    var hoverTimeWidthSize: CGFloat { get set }
-    var hoverCandleTimeWidthSize: CGFloat { get set }
-    var chartSize: CGSize { get set }
-    var isDragging: Bool { get set }
     var coinFilterList: [Toplist] { get }
     var unrealizedProfitLoss: Double? { get }
-    var differenceValue: String { get }
-    var differencePercent: String { get }
     var graphColor: Color { get }
     var changePercentGraph: Double? { get }
-    var hoverTime: String { get }
-    var hoverPrice: String { get }
     var hoverTimePosition: CGFloat { get }
     var hoverPricePosition: CGFloat { get }
     var mainDragIndex: [Int] { get }
@@ -93,7 +83,7 @@ protocol PortfolioViewModel {
 }
 
 @MainActor @Observable
-final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject {
+final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHoverHosting {
     private var cancellable: Set<AnyCancellable> = []
     
     private(set) var reloading = true
@@ -130,16 +120,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject {
     
     var hideData: Bool
     
-    // Hover
-    var hoverHelper = HoverHelper()
-    
-    var hoverPriceWidthSize: CGFloat = 0
-    var hoverTimeWidthSize: CGFloat = 0
-    var hoverCandleTimeWidthSize: CGFloat = 0
-    var chartSize: CGSize = .zero
-    var isDragging = false
-    
-    private var timer: Timer?
+    var hover = ChartHoverState(valueStyle: .currency(threshold: .billion))
     
     private let portfolioRepository: PortfolioRepository
     private let cryptoDetailRepository: CryptoDetailRepository
@@ -161,6 +142,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject {
         self.settingsManager = settingsManager
         
         self.hideData = settingsManager.get(key: AppSettingKey.hidePortfolioValues) ?? false
+        hover.hidesValues = hideData
     }
     
     // MARK: - Cache Management
@@ -418,6 +400,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject {
     
     func toggleHideData() {
         hideData.toggle()
+        hover.hidesValues = hideData
         settingsManager.set(data: hideData, key: AppSettingKey.hidePortfolioValues)
     }
     
@@ -828,44 +811,8 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject {
         }
     }
 
-    var differenceValue: String {
-        guard !hideData else {
-            return String.stars
-        }
-        
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0
-        let percent = Double.getDifferenceInPercent(between: second, and: first)?.safeValue ?? 0
-        let sign = percent.roundTo(places: 2) < 0 ? "" : "+"
-        let difference = (second - first).formatCurrency(threshold: FormattingThreshold.billion)
-        return "\(sign)\(difference)"
-    }
-    
-    var differencePercent: String {
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0.0
-        let difference = Double.getDifferenceInPercent(between: second, and: first) ?? 0
-        let sign = difference >= 0 ? "+" : "-"
-        
-        return "\(sign)\(difference.safeValue.removeZerosFromEnd(force: true).withoutSymbol)%"
-    }
-    
-    
     var graphColor: Color {
-        guard hoverHelper.hoverPrices.count == 2, isDragging else {
-            return changePercent?.changeColor ?? .onSurfaceDim
-        }
-        
-        let first = hoverHelper.hoverPrices[safely: 0] ?? 0
-        let second = hoverHelper.hoverPrices[safely: 1] ?? 0
-        let change = (second - first).roundTo(places: 7)
-        
-        if change == 0 {
-            let percent = Double.getDifferenceInPercent(between: second, and: first)?.roundTo(places: 7)
-            return percent?.changeColor ?? .onSurfaceDim
-        }
-        
-        return change.changeColor
+        hover.graphColor(idle: changePercent?.changeColor ?? .onSurfaceDim)
     }
     
     var changePercentGraph: Double? {
@@ -878,71 +825,32 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject {
         return Double.getDifferenceInPercent(between: last, and: first)?.roundTo(places: 7)
     }
     
-    var hoverTime: String {
-        return hoverHelper.hoverTimes.first ?? "0"
-    }
-    
-    var hoverPrice: String {
-        return hideData ? String.stars : hoverHelper.hoverPrices.first?.formatCurrency(threshold: FormattingThreshold.billion) ?? "0"
-    }
-    
     var hoverTimePosition: CGFloat {
-        return getXPosition(textSize: hoverTimeWidthSize) - hoverTimeWidthSize / 2
+        hover.timeLabelX(pointX: point(at: currentHoverIndex, rect: chartSize).x)
     }
     
     var hoverPricePosition: CGFloat {
-        return getXPosition(textSize: hoverPriceWidthSize) - hoverTimeWidthSize / 2
+        hover.priceLabelX(pointX: point(at: currentHoverIndex, rect: chartSize).x)
     }
     
     var mainDragIndex: [Int] {
-        let chartPrices = getPrices(dropLastTwo: benchmarkCoin != nil)
-        let chartTimeStamps = getTimeStamps(dropLastTwo: benchmarkCoin != nil)
-        let pricesCount = CGFloat(chartPrices.count)
-        let firstTimestamp = chartTimeStamps.normalized.first ?? 0
-        let timestampCount = Double(chartTimeStamps.count)
-        
-        return hoverHelper.offset.map { offsetPoint in
-            let offsetRatio = offsetPoint.x / chartSize.width
-            guard offsetRatio >= firstTimestamp else { return -1 }
-            
-            let indexOffset = timestampCount * firstTimestamp
-            let maxIndex = max(0, Int(pricesCount))
-            let spatialIndex = Double(maxIndex) * Double(offsetPoint.x / chartSize.width)
-            let index = spatialIndex - indexOffset
-            
-            if index.isNaN || index.isInfinite {
-                return -1
-            }
-            
-            return Int(index)
-        }
-    }
-    
-    private func getXPosition(textSize: CGFloat) -> CGFloat {
-        let xPoint = point(at: currentHoverIndex, rect: chartSize).x
-        return getPriceXPosition(position: xPoint, textSize: textSize, readerWidthSize: chartSize.width)
+        hover.linearDragIndices(
+            priceCount: getPrices(dropLastTwo: benchmarkCoin != nil).count,
+            timestamps: getTimeStamps(dropLastTwo: benchmarkCoin != nil)
+        )
     }
     
     private var currentHoverIndex: Int {
-        guard chartSize.width > 0 else { return 0 }
-        
-        let hoverPoints = hoverHelper.offset.map { $0.x }
-        let hoverPoint: CGFloat
-        
-        if hoverHelper.hoverPrices.count == 2 {
-            hoverPoint = hoverPoints.reduce(0, +) / 2
-        } else {
-            hoverPoint = hoverPoints.first ?? 0
-        }
-        
-        let pricesCount = CGFloat(getPrices(dropLastTwo: benchmarkCoin != nil).count)
-        return chartLinearSeriesIndex(x: hoverPoint, width: chartSize.width, pointCount: Int(pricesCount))
+        hover.currentLinearIndex(priceCount: getPrices(dropLastTwo: benchmarkCoin != nil).count)
     }
     
     var dragPositions: [CGPoint] {
-        return mainDragIndex.map({
-            point(at: $0, rect: CGSize(width: chartSize.width, height: chartSize.height))
-        })
+        hover.linearDragPositions(
+            priceCount: getPrices(dropLastTwo: benchmarkCoin != nil).count,
+            timestamps: getTimeStamps(dropLastTwo: benchmarkCoin != nil)
+        ) { index, size in
+            point(at: index, rect: size)
+        }
     }
     
     func point(at index: Int, rect: CGSize) -> CGPoint {
@@ -989,39 +897,11 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject {
             return
         }
         
-        guard (!getTimeStamps(dropLastTwo: benchmarkCoin != nil).isEmpty) && !touches.isEmpty else {
-            isDragging = false
-            timer?.invalidate()
-            return
-        }
-        
-        if !isDragging {
-            timer?.invalidate()
-            timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { [weak self] _ in
-                Task { @MainActor in
-                    guard let self = self else { return }
-                    self.isDragging = !touches.isEmpty
-                    
-                    if self.isDragging {
-    #if IS_APP
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-    #endif
-                    }
-                }
-            }
-        }
-        
-        hoverHelper.offset = touches.map {
-            CGPoint(x: max(0, min($0.x, chartSize.width.rounded(.down) - 0.00001)), y: $0.y)
-        }
-        
-        hoverHelper.getHoverPrice(
-            readerSize: chartSize,
-            offset: hoverHelper.offset,
+        hover.updateLinear(
+            touches: touches,
             prices: benchmarkCoin == nil ? rawPrices : portfolioHoverPrices,
             dates: getTimeStamps(dropLastTwo: benchmarkCoin != nil),
-            timeChart: .aWeek,
-            isDragging: isDragging
+            timeChart: .aWeek
         )
     }
     

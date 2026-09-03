@@ -61,9 +61,7 @@ struct CurrencyDetailScreen: View {
                         showReload: true,
                         newDays: nil,
                         newTimeChart: nil,
-                        forceId: nil,
-                        getNews:false,
-                        forceSymbol: nil
+                        forceId: nil
                     )
                 }
             }

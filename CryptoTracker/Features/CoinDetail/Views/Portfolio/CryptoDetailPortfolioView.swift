@@ -14,7 +14,9 @@ struct CryptoDetailPortfolioView: View {
     
     @ScaledMetric private var scale: CGFloat = 1
     
-    let viewModel: CryptoDetailViewModelImp
+    let cryptoInfo: CurrencyDataModel?
+    let groupedTransactions: [Date: [any PortfolioEvent]]?
+    @Bindable var viewModel: CryptoDetailPortfolioViewModel
     
     @Binding var showAddTransactionSheet: Bool
     let showTransactionDetails: (any PortfolioEvent) -> Void
@@ -27,15 +29,15 @@ struct CryptoDetailPortfolioView: View {
     
     var body: some View {
         VStack(spacing: 32) {
-            if let groupedTransactions = viewModel.groupedTransactions, groupedTransactions.isEmpty {
+            if let groupedTransactions, groupedTransactions.isEmpty {
                 EmptyContent(
                     title: "No transactions yet",
-                    subTitle: "Add your \(viewModel.cryptoInfo?.name ?? "") transactions to start tracking your portfolio holdings here.",
+                    subTitle: "Add your \(cryptoInfo?.name ?? "") transactions to start tracking your portfolio holdings here.",
                     buttonTitle: "Add Transaction",
                     buttonAction: {
                         Task {
-                            let hasPro = await viewModel.hasPro()
-                            if (viewModel.portfolio?.allTransactionsCount ?? 0) >= 3 && !hasPro {
+                            let hasBoughtPro = await viewModel.hasBoughtPro()
+                            if (viewModel.portfolio?.allTransactionsCount ?? 0) >= 3 && !hasBoughtPro {
                                 AnalyticsManager.shared.log(
                                     BuyProOpened(fromScreen: .cryptoDetail, action: .AddTransaction)
                                 )
@@ -57,7 +59,7 @@ struct CryptoDetailPortfolioView: View {
                         trailing: 16
                     )
                 )
-            } else if let groupedTransactions = viewModel.groupedTransactions {
+            } else if let groupedTransactions {
                 overviewView
                 
                 transactionsView(
@@ -143,9 +145,9 @@ struct CryptoDetailPortfolioView: View {
     }
     
     private var holdingsView: some View {
-        let amount = viewModel.portfolio?.getAllTransactions(of: viewModel.cryptoInfo?.id).getAmount()
-        let symbol = viewModel.cryptoInfo?.symbol?.uppercased() ?? ""
-        let coinName = viewModel.cryptoInfo?.name ?? symbol
+        let amount = viewModel.portfolio?.getAllTransactions(of: cryptoInfo?.id).getAmount()
+        let symbol = cryptoInfo?.symbol?.uppercased() ?? ""
+        let coinName = cryptoInfo?.name ?? symbol
         
         return VStack(alignment: .leading, spacing: 4) {
             Text("Total Holdings")
@@ -154,7 +156,7 @@ struct CryptoDetailPortfolioView: View {
             
             NewShimmeringText(
                 text: "\(amount?.formatCurrency(currency: CurrencyModel.empty) ?? "00000") \(symbol)",
-                isDownloading: viewModel.groupedTransactions == nil
+                isDownloading: groupedTransactions == nil
             )
             .font(.satoshiBold(16))
             .foregroundStyle(Color.onSurface)
@@ -167,8 +169,8 @@ struct CryptoDetailPortfolioView: View {
     
     @ViewBuilder
     private var currentValueView: some View {
-        let amount = viewModel.portfolio?.getAllTransactions(of: viewModel.cryptoInfo?.id).getAmount() ?? 0
-        let currentPrice = viewModel.pie?.data?.sparkline_in_7d?.price.last ?? viewModel.cryptoInfo?.market_data?.current_price?.getConvertedCurrency() ?? 0.0
+        let amount = viewModel.portfolio?.getAllTransactions(of: cryptoInfo?.id).getAmount() ?? 0
+        let currentPrice = viewModel.pie?.data?.sparkline_in_7d?.price.last ?? cryptoInfo?.market_data?.current_price?.getConvertedCurrency() ?? 0.0
         
         VStack(alignment: .leading, spacing: 4) {
             Text("Current Value")
@@ -177,7 +179,7 @@ struct CryptoDetailPortfolioView: View {
             
             NewShimmeringText(
                 text: (amount * currentPrice).formatCurrency(threshold: FormattingThreshold.million),
-                isDownloading: viewModel.groupedTransactions == nil
+                isDownloading: groupedTransactions == nil
             )
             .font(.satoshiBold(16))
             .foregroundStyle(Color.onSurface)
@@ -193,8 +195,8 @@ struct CryptoDetailPortfolioView: View {
     
     @ViewBuilder
     private var purchaseCostView: some View {
-        let currentPrice = viewModel.pie?.data?.sparkline_in_7d?.price.last ?? viewModel.cryptoInfo?.market_data?.current_price?.getConvertedCurrency() ?? 0.0
-        let cost = viewModel.portfolio?.getAllTransactions(of: viewModel.cryptoInfo?.id).getTotalCost(
+        let currentPrice = viewModel.pie?.data?.sparkline_in_7d?.price.last ?? cryptoInfo?.market_data?.current_price?.getConvertedCurrency() ?? 0.0
+        let cost = viewModel.portfolio?.getAllTransactions(of: cryptoInfo?.id).getTotalCost(
             prices: [selectedCurrency.code.lowercased() : currentPrice],
             showCurrency: selectedCurrency.code
         )
@@ -206,7 +208,7 @@ struct CryptoDetailPortfolioView: View {
             
             NewShimmeringText(
                 text: cost?.formatCurrency(threshold: FormattingThreshold.million) ?? "0000000",
-                isDownloading: viewModel.groupedTransactions == nil
+                isDownloading: groupedTransactions == nil
             )
             .font(.satoshiBold(16))
             .foregroundStyle(Color.onSurface)
@@ -222,8 +224,8 @@ struct CryptoDetailPortfolioView: View {
     
     @ViewBuilder
     private var profitLossView: some View {
-        let transactions = viewModel.portfolio?.getAllTransactions(of: viewModel.cryptoInfo?.id)
-        let prices = viewModel.cryptoInfo?.market_data?.current_price
+        let transactions = viewModel.portfolio?.getAllTransactions(of: cryptoInfo?.id)
+        let prices = cryptoInfo?.market_data?.current_price
         let profitValue = transactions?.getProfitValue(prices: prices, showCurrency: selectedCurrency.code)
         let profitPercent = transactions?.getProfitPercent(prices: prices, showCurrency: selectedCurrency.code)
         
@@ -291,8 +293,8 @@ struct CryptoDetailPortfolioView: View {
             
             Button(action: {
                 Task {
-                    let hasPro = await viewModel.hasPro()
-                    if (viewModel.portfolio?.allTransactionsCount ?? 0) >= 3 && !hasPro {
+                    let hasBoughtPro = await viewModel.hasBoughtPro()
+                    if (viewModel.portfolio?.allTransactionsCount ?? 0) >= 3 && !hasBoughtPro {
                         AnalyticsManager.shared.log(
                             BuyProOpened(fromScreen: .cryptoDetail, action: .AddTransaction)
                         )
@@ -312,7 +314,7 @@ struct CryptoDetailPortfolioView: View {
                     .padding(12)
             })
             .accessibilityLabel("Add new transaction")
-            .opacity((viewModel.groupedTransactions?.isEmpty ?? true) ? 0 : 1)
+            .opacity((groupedTransactions?.isEmpty ?? true) ? 0 : 1)
         }
     }
     
@@ -320,7 +322,7 @@ struct CryptoDetailPortfolioView: View {
     private func transactionsView(
         groupedTransactions: [Date: [any PortfolioEvent]]
     ) -> some View {
-        let prices = viewModel.cryptoInfo?.market_data?.current_price
+        let prices = cryptoInfo?.market_data?.current_price
         
         VStack(alignment: .leading, spacing: 4) {
             headerView

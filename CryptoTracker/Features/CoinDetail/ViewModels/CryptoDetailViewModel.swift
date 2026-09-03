@@ -7,8 +7,6 @@
 
 import Foundation
 import SwiftUI
-import Combine
-@preconcurrency import UserNotifications
 
 @MainActor
 protocol CryptoDetailViewModel: ChartHoverHosting {
@@ -27,24 +25,14 @@ protocol CryptoDetailViewModel: ChartHoverHosting {
     var candleSticksModel: CandleStickChartModel? { get set }
     var candleSticks: [Candle] { get set }
     var candleInfoLeftSide: Bool { get set }
-    var news: [NewsItem] { get set }
-    var showNewsError: Bool { get set }
-    var alerts: [AlertCoin]? { get set }
     var isGraphLinear: Bool { get set }
     var currentChartType: ChartTypes { get set }
     var candleChartEnabled: Bool { get set }
     var currentDays: String { get set }
     var selectedTimeFrame: TimeCharts { get set }
-    var widgetCurrencies: [Toplist] { get set }
     var selectedSortOption: SortOption { get set }
     var exchangeMarketItems: [ExchangeMarketItem]? { get set }
-    var pie: Pie? { get set }
     var isWebSocketEnabled: Bool { get }
-    var portfolio: [Pie]? { get set }
-    var allPrices: [Cryptocurrency] { get }
-    var hidePortfolioData: Bool { get set }
-    var groupedTransactions: [Date: [any PortfolioEvent]]? { get }
-    func getAllpriceAlertsCount() async -> Int
     func setNewSortOption(newSortOption: SortOption) async
     
     var changePercent: Double? { get }
@@ -66,22 +54,13 @@ protocol CryptoDetailViewModel: ChartHoverHosting {
     func setStartData() async
     func point(at index: Int, rect: CGSize) -> CGPoint
     func getGlobalMarketData() async
-    func getPortfolio() async
-    func setGroupTransactions()
-    func deleteTransaction(_ transaction: (any PortfolioEvent)?) async
-    func findTransaction(transaction: String) async -> ((any PortfolioEvent)?, Toplist?)
-    func hasPro() async -> Bool
-    func toggleHideData()
+    func hasBoughtPro() async -> Bool
     
-    func getNews(forceSymbol: String?) async
-    func refresh(showReload: Bool, newDays: String?, newTimeChart: TimeCharts?, forceId: String?, getNews: Bool, forceSymbol: String?) async
-    func addCurrencyToWidgets() async
-    func replaceWidgetCurrency(coin: Toplist, with: Toplist?) async
+    func refresh(showReload: Bool, newDays: String?, newTimeChart: TimeCharts?, forceId: String?) async
     func toggleChart() async
     func getMainCryptoInfo(id: String?) async
     func getMainCurrencyPrices(id: String?, chart: TimeCharts) async
     func newMainCoin(id: String) async
-    func hasBoughtPro() async -> Bool
     func handleFavoriteButtonPressed() async
     func setChartType(type: ChartTypes)
     func getPrices() -> [Double]
@@ -89,12 +68,6 @@ protocol CryptoDetailViewModel: ChartHoverHosting {
     func getPriceInChart(prices: [Double], at index: Int) -> String?
     func getCandleChart(id: String?, days: String) async
     func getPriceCandleInChart(at index: Int) -> String?
-    #if IS_APP
-    func checkIfUserEnabledPush() async -> Bool
-    #endif
-    func getPriceAlerts() async
-    func addPriceAlert(alertCoin: PostAlertCoin) async -> AddPriceAlertResult
-    func deleteAlert(alert: AlertCoin) async
     func shareDetails()
     func updateHoverStats(touches: [CGPoint])
     func stopLivePriceUpdates() async
@@ -104,14 +77,10 @@ protocol CryptoDetailViewModel: ChartHoverHosting {
 final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
     
     private let cryptoDetailRepository: CryptoDetailRepository
-    private let portfolioRepository: PortfolioRepository
-    private let newsRepository: NewsRepository
     private let toplistRepository: ToplistRepository
-    private let trendingRepository: TrendingRepository
     private let globalMarketRepository: GlobalMarketRepository
     private let storageManager: CachedStorageManager
     private let storeKitManager: StoreKitManager
-    private let priceAlertsRepository: PriceAlertsRepository
     private let analyticsManager: AnalyticsManager
     private let settingsManager: SettingsManager
     
@@ -137,27 +106,12 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
     var candleSticks = [Candle]()
     var candleInfoLeftSide = true
     
-    // News
-    var news = [NewsItem]()
-    var showNewsError = false
-    
-    // Portfolio
-    var pie: Pie?
-    var portfolio: [Pie]?
-    var allPrices = [Cryptocurrency]()
-    var hidePortfolioData: Bool
-    var groupedTransactions: [Date : [any PortfolioEvent]]? = nil
-    
-    // Alerts
-    var alerts: [AlertCoin]?
-    
     // General
     var isGraphLinear: Bool = SettingsManager.shared.get(key: AppSettingKey.isGraphLinear) ?? true
     var currentChartType: ChartTypes = SettingsManager.shared.get(key: AppSettingKey.graphType) ?? .price
     var candleChartEnabled = SettingsManager.shared.getCandleChartSelected()
     var currentDays = TimeCharts.getStartTimeFrame(between: .anHour, and: .max).days
     var selectedTimeFrame = TimeCharts.getStartTimeFrame(between: .anHour, and: .max)
-    var widgetCurrencies = [Toplist]()
 
     var selectedSortOption: SortOption = .volumeDesc
     var exchangeMarketItems: [ExchangeMarketItem]? = nil
@@ -171,37 +125,27 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
     init(
         cryptoInfo: CurrencyDataModel,
         cryptoDetailRepository: CryptoDetailRepository = CryptoDetailRepositoryImp.shared,
-        newsRepository: NewsRepository = NewsRepositoryImp.shared,
-        portfolioRepository: PortfolioRepository = PortfolioRepositoryImp.shared,
         toplistRepository: ToplistRepository = ToplistRepositoryImp.shared,
-        trendingRepository: TrendingRepository = TrendingRepositoryImp.shared,
         globalMarketRepository: GlobalMarketRepository = GlobalMarketRepositoryImp.shared,
         storageManager: CachedStorageManager = CachedStorageManagerImp.shared,
         storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
-        priceAlertsRepository: PriceAlertsRepository = PriceAlertsRepositoryImp.shared,
         analyticsManager: AnalyticsManager = AnalyticsManager.shared,
         settingsManager: SettingsManager = SettingsManager.shared
     ) {
         self.cryptoDetailRepository = cryptoDetailRepository
-        self.portfolioRepository = portfolioRepository
-        self.newsRepository = newsRepository
         self.toplistRepository = toplistRepository
-        self.trendingRepository = trendingRepository
         self.globalMarketRepository = globalMarketRepository
         self.storageManager = storageManager
         self.storeKitManager = storeKitManager
-        self.priceAlertsRepository = priceAlertsRepository
         self.analyticsManager = analyticsManager
         self.settingsManager = settingsManager
         
         self.cryptoInfo = cryptoInfo
-        self.hidePortfolioData = settingsManager.get(key: AppSettingKey.hidePortfolioValues) ?? false
     }
     
     func setStartData() async {
         await cryptoDetailRepository.ensureCacheLoaded()
         await toplistRepository.ensureCacheLoaded()
-        await priceAlertsRepository.ensureCacheLoaded()
         
         hasProSubscription = await storeKitManager.currentSubscription != nil
 
@@ -231,18 +175,11 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
             self.mainReloading = false
         }
         
-        self.widgetCurrencies = await cryptoDetailRepository.widgetCurrencies
-        
         if let globalData = await globalMarketRepository.cachedGlobalMarket?.data {
             globalMarketData = globalData
         }
         
         inFavoritesList = await toplistRepository.cachedFavorites?.data.contains { $0.id == cryptoInfo?.id } ?? false
-
-        if let symbol = cryptoInfo?.symbol?.uppercased(),
-           let newsData = await newsRepository.cachedNews[.coin(symbol: symbol)]?.data.data {
-            self.news = newsData
-        }
 
         selectedSortOption = await storageManager.load(type: AppSettingKey.cryptoDetailSortOption.rawValue) ?? .volumeDesc
         await updateExchangeMarketItems()
@@ -264,10 +201,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
     }
     
     // MARK: - Computed properties
-    
-    func getAllpriceAlertsCount() async -> Int {
-        await priceAlertsRepository.cachedPriceAlerts?.data.count ?? 0
-    }
     
     var changePercent: Double? {
         if isCandleChartEnabled {
@@ -385,102 +318,11 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
         }
     }
     
-    func getPortfolio() async {
-        async let portfolioTask = portfolioRepository.getPortfolio()
-        async let currenciesTask = portfolioRepository.getPortfolioAllCurrencies()
-        
-        // Wait for both network calls to complete
-        let fetchedPortfolio = await portfolioTask
-        let allCurrencies = await currenciesTask
-        
-        portfolio = fetchedPortfolio?.data
-        allPrices = allCurrencies ?? []
-        pie = portfolio?.first(where: { $0.data?.id == cryptoInfo?.id })
-        setGroupTransactions()
-    }
-    
-    func setGroupTransactions() {
-        guard let portfolio = portfolio else {
-            groupedTransactions = [:]
-            return
-        }
-        
-        let coinSlices = portfolio.filter({ $0.data?.id == cryptoInfo?.id }).compactMap({ $0.data })
-        var result = coinSlices.isEmpty ? [:] : portfolio.groupedTransactions(
-            types: [],
-            on: .all,
-            coinNames: coinSlices
-        )
-        
-        if let targetId = cryptoInfo?.id {
-            let calendar = Calendar.current
-            var seenIds = Set(result.values.flatMap { $0.map(\.id) })
-            
-            for swap in portfolio.flatMap({ $0.swaps }).filter({ $0.fromCurrencyId == targetId }) {
-                guard !seenIds.contains(swap.id) else { continue }
-                seenIds.insert(swap.id)
-                let day = calendar.startOfDay(for: swap.date)
-                result[day, default: []].append(swap)
-            }
-            
-            for key in result.keys {
-                result[key]?.sort { $0.date > $1.date }
-            }
-        }
-        
-        groupedTransactions = result
-    }
-    
-    func deleteTransaction(_ transaction: (any PortfolioEvent)?) async {
-        guard let transaction else {
-            return
-        }
-        
-        let id = portfolio?.pie(containing: transaction)?.data?.id ?? ""
-
-        portfolio = await portfolioRepository.deleteTransaction(
-            id: id,
-            uuid: transaction.id
-        )?.data
-        
-        pie = portfolio?.first(where: { $0.data?.id == cryptoInfo?.id })
-
-        setGroupTransactions()
-    }
-    
-    func findTransaction(transaction: String) async -> ((any PortfolioEvent)?, Toplist?) {
-        await portfolioRepository.findTransaction(lookup: transaction)
-    }
-    
-    func hasPro() async -> Bool {
-        return await storeKitManager.currentSubscription != nil
-    }
-    
-
-    func toggleHideData() {
-        hidePortfolioData.toggle()
-        settingsManager.set(data: hidePortfolioData, key: AppSettingKey.hidePortfolioValues)
-    }
-    
-    func getNews(forceSymbol: String? = nil) async {
-        guard let id = forceSymbol?.uppercased() ?? cryptoInfo?.symbol?.uppercased() else { return }
-        
-        showNewsError = false
-        
-        if let news = await newsRepository.getNews(type: .coin(symbol: id), count: 25), !news.isEmpty {
-            self.news = news
-        } else {
-            showNewsError = true
-        }
-    }
-    
     func refresh(
         showReload: Bool = true,
         newDays: String? = nil,
         newTimeChart: TimeCharts? = nil,
-        forceId: String? = nil,
-        getNews: Bool = false,
-        forceSymbol: String? = nil
+        forceId: String? = nil
     ) async {
         mainReloading = showReload
         
@@ -492,10 +334,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
         
         await withTaskGroup(of: Void.self) { group in
             group.addTask { await self.getMainCryptoInfo(id: mainId) }
-            
-            if getNews {
-                group.addTask { await self.getNews(forceSymbol: forceSymbol) }
-            }
             
             if isCandleChartEnabled {
                 group.addTask { await self.getCandleChart(id: mainId, days: days) }
@@ -526,24 +364,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
     }
     
     // MARK: - Main coin functions
-    
-    func addCurrencyToWidgets() async {
-        guard let cryptoInfo else { return }
-
-        let toplistItem = cryptoInfo.toToplist()
-
-        widgetCurrencies.append(toplistItem)
-        await cryptoDetailRepository.addCurrencyToWidget(toplist: toplistItem)
-    }
-    
-    func replaceWidgetCurrency(coin: Toplist, with: Toplist? = nil) async {
-        guard let cryptoInfo, let index = widgetCurrencies.firstIndex(where: { $0.id == coin.id }) else { return }
-        
-        let toplistItem = with ?? cryptoInfo.toToplist()
-        
-        widgetCurrencies[index] = toplistItem
-        await cryptoDetailRepository.replacedWidget(at: index, toplist: toplistItem)
-    }
     
     func toggleChart() async {
         mainReloading = true
@@ -738,62 +558,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
         }
 
         return CGPoint(x: x, y: y)
-    }
-    
-    // MARK: - Price alerts
-    
-#if IS_APP
-    func checkIfUserEnabledPush() async -> Bool {
-        let status = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
-        switch status {
-        case .authorized:
-            return true
-        case .notDetermined, .denied, .provisional, .ephemeral:
-            return false
-        @unknown default:
-            return false
-        }
-    }
-#endif
-    
-    func getPriceAlerts() async {
-        if let alerts = await priceAlertsRepository.getAlerts() {
-            self.alerts = alerts
-                .lazy
-                .filter({ $0.coinId == self.cryptoInfo?.id?.lowercased() })
-                .sorted(by: { ($0.createdDate.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ) ?? Date()) > ($1.createdDate.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ) ?? Date()) })
-            
-        } else if self.alerts?.isEmpty ?? true {
-            alerts = []
-        }
-    }
-    
-    func addPriceAlert(alertCoin: PostAlertCoin) async -> AddPriceAlertResult {
-        guard await priceAlertsRepository.ensureFCMToken() else {
-            return .fcmTokenUnavailable
-        }
-        
-        if let alerts = await priceAlertsRepository.createPriceAlert(alert: alertCoin) {
-            self.alerts = alerts
-                .lazy
-                .filter({ $0.coinId == self.cryptoInfo?.id?.lowercased() })
-                .sorted(by: { ($0.createdDate.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ) ?? Date()) > ($1.createdDate.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ) ?? Date()) })
-
-            return .success
-        } else {
-            return .failure
-        }
-    }
-    
-    func deleteAlert(alert: AlertCoin) async {
-        self.alerts = alerts?.filter({ $0.id != alert.id })
-        
-        if let alerts = await priceAlertsRepository.deleteAlert(alertId: alert.id) {
-            self.alerts = alerts
-                .lazy
-                .filter({ $0.coinId == self.cryptoInfo?.id?.lowercased() })
-                .sorted(by: { ($0.createdDate.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ) ?? Date()) > ($1.createdDate.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ) ?? Date()) })
-        }
     }
     
     // MARK: - General functions

@@ -16,6 +16,10 @@ struct CryptoDetailScreen: View {
     @ScaledMetric private var scale: CGFloat = 1
     
     @State var viewModel: CryptoDetailViewModelImp
+    @State private var newsViewModel = CryptoDetailNewsViewModel()
+    @State private var portfolioViewModel = CryptoDetailPortfolioViewModel()
+    @State private var alertsViewModel = CryptoDetailAlertsViewModel()
+    @State private var widgetViewModel: CryptoDetailWidgetViewModel
     
     @State private var currentPage: Int? = 0
     
@@ -66,6 +70,7 @@ struct CryptoDetailScreen: View {
     
     init(cryptoInfo: CurrencyDataModel) {
         _viewModel = State(wrappedValue: CryptoDetailViewModelImp(cryptoInfo: cryptoInfo))
+        _widgetViewModel = State(wrappedValue: CryptoDetailWidgetViewModel(cryptoInfo: cryptoInfo))
     }
     
     var body: some View {
@@ -212,38 +217,14 @@ struct CryptoDetailScreen: View {
                                         timeChart: viewModel.selectedTimeFrame,
                                         prices: viewModel.isCandleChartEnabled ? viewModel.candlePrices : viewModel.onlyPrices,
                                         totalMarketCap: viewModel.globalMarketData?.data?.total_market_cap?.getConvertedCurrency(),
-                                        alerts: viewModel.alerts,
+                                        alerts: alertsViewModel.alerts,
                                         fromScreen: .cryptoDetail,
                                         isSelectingCurrency: $isSelectingCurrency,
                                         selectedCurrency: $selectedCurrency,
                                         showCommunitySentimentHelp: $showCommunitySentimentHelp,
                                         addNewAlert: {
                                             Task {
-                                                let alerts = await viewModel.getAllpriceAlertsCount()
-                                                let success = await viewModel.checkIfUserEnabledPush()
-                                                let hasBoughtPro = await viewModel.hasBoughtPro()
-                                                
-                                                if !success {
-                                                    AnalyticsManager.shared.log(
-                                                        Navigate(fromScreen: .cryptoDetail, toScreen: .priceAlerts, coinName: viewModel.cryptoInfo?.name)
-                                                    )
-                                                    navigationViewModel.deepLink(to: .PriceAlerts)
-                                                } else if !hasBoughtPro && alerts >= 2 {
-                                                    AnalyticsManager.shared.log(
-                                                        BuyProOpened(fromScreen: .cryptoDetail, action: .PriceAlert)
-                                                    )
-                                                    showBuyPro()
-                                                } else {
-                                                    AnalyticsManager.shared.log(
-                                                        SheetOpened(fromScreen: .cryptoDetail, sheet: .newPriceAlert)
-                                                    )
-                                                    isAlertByPriceSelected = true
-                                                    priceInput = 0.0
-                                                    percentInput = 10.0
-                                                    isRecurringAlertOn = false
-                                                    selectedDirection = .up
-                                                    showAddAlert = true
-                                                }
+                                                await openNewPriceAlertIfAllowed()
                                             }
                                         },
                                         deleteAlert: { alert in
@@ -252,7 +233,7 @@ struct CryptoDetailScreen: View {
                                                     message: "Price alert deleted.",
                                                     type: .success
                                                 )
-                                                await viewModel.deleteAlert(alert: alert)
+                                                await alertsViewModel.deleteAlert(alert: alert)
                                                 AnalyticsManager.shared.log(
                                                     PriceAlertDeleted(fromScreen: .cryptoDetail, coinName: viewModel.cryptoInfo?.name ?? "")
                                                 )
@@ -267,7 +248,9 @@ struct CryptoDetailScreen: View {
                                     )
                                 } else if currentPage == 2 {
                                     CryptoDetailPortfolioView(
-                                        viewModel: viewModel,
+                                        cryptoInfo: viewModel.cryptoInfo,
+                                        groupedTransactions: portfolioViewModel.groupedTransactions,
+                                        viewModel: portfolioViewModel,
                                         showAddTransactionSheet: $showAddTransactionSheet,
                                         showTransactionDetails: { event in
                                             if let transaction = event as? NewTransaction {
@@ -283,7 +266,7 @@ struct CryptoDetailScreen: View {
                                             } else if event is AddressImport {
                                                 guard
                                                     let wallet = event as? AddressImport,
-                                                    let coin = viewModel.pie?.data
+                                                    let coin = portfolioViewModel.pie?.data
                                                 else {
                                                     return
                                                 }
@@ -304,6 +287,7 @@ struct CryptoDetailScreen: View {
                                             }
                                         }
                                     )
+                                    .id(viewModel.cryptoInfo?.id)
                                 } else if currentPage == 3 {
                                     CryptoDetailExchangesView(
                                         items: viewModel.exchangeMarketItems,
@@ -318,13 +302,11 @@ struct CryptoDetailScreen: View {
                                     DetailNews(
                                         title: viewModel.cryptoInfo?.name,
                                         fromScreen: .cryptoDetail,
-                                        news: viewModel.news,
-                                        showError: viewModel.showNewsError,
+                                        news: newsViewModel.news,
+                                        showError: newsViewModel.showNewsError,
                                         errorMessage: newsErrorString,
                                         refresh: {
-                                            await viewModel.refresh(
-                                                getNews: true
-                                            )
+                                            await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol)
                                         }
                                     )
                                 }
@@ -397,7 +379,7 @@ struct CryptoDetailScreen: View {
                     return
                 }
 
-                let (event, coin) = await viewModel.findTransaction(transaction: transaction)
+                let (event, coin) = await portfolioViewModel.findTransaction(transaction: transaction)
                 guard let event, let coin else {
                     return
                 }
@@ -464,8 +446,11 @@ struct CryptoDetailScreen: View {
         .task {
             AchievementManager.shared.increment(.cryptoDetailsViewed)
             await viewModel.setStartData()
+            widgetViewModel.cryptoInfo = viewModel.cryptoInfo
             await withTaskGroup(of: Void.self) { group in
-                group.addTask { await viewModel.getPriceAlerts() }
+                group.addTask { await alertsViewModel.load(coinId: viewModel.cryptoInfo?.id) }
+                group.addTask { await newsViewModel.loadCached(symbol: viewModel.cryptoInfo?.symbol) }
+                group.addTask { await widgetViewModel.load() }
                 group.addTask {
                     await viewModel.refresh(
                         showReload: viewModel.mainReloading
@@ -478,7 +463,7 @@ struct CryptoDetailScreen: View {
             case .active:
                 Task {
                     await withTaskGroup(of: Void.self) { group in
-                        group.addTask { await viewModel.getPriceAlerts() }
+                        group.addTask { await alertsViewModel.getPriceAlerts() }
                         group.addTask {
                             await viewModel.refresh(
                                 showReload: viewModel.mainReloading
@@ -498,23 +483,32 @@ struct CryptoDetailScreen: View {
             await withTaskGroup(of: Void.self) { group in
                 group.addTask {
                     await viewModel.refresh(
-                        showReload: false,
-                        getNews: currentPage == 4
+                        showReload: false
                     )
                 }
                 
                 if currentPage == 2 {
                     group.addTask {
-                        await viewModel.getPortfolio()
+                        await portfolioViewModel.load(coinId: viewModel.cryptoInfo?.id)
+                    }
+                }
+                
+                if currentPage == 4 {
+                    group.addTask {
+                        await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol)
                     }
                 }
             }
         }
-        .task(id: currentPage) {
+        .task(id: "\(currentPage ?? -1)-\(viewModel.cryptoInfo?.id ?? "")") {
+            guard viewModel.cryptoInfo?.id != nil else {
+                return
+            }
+
             if currentPage == 2 {
-                await viewModel.getPortfolio()
+                await portfolioViewModel.load(coinId: viewModel.cryptoInfo?.id)
             } else if currentPage == 4 {
-                await viewModel.getNews()
+                await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol)
             }
         }
         .onDisappear {
@@ -537,7 +531,7 @@ struct CryptoDetailScreen: View {
         }*/
         .sheet(isPresented: $isEditWidgetShowing) {
             EditWidgetsSheet(
-                widgetCoins: viewModel.widgetCurrencies,
+                widgetCoins: widgetViewModel.widgetCurrencies,
                 currentCoinName: viewModel.cryptoInfo?.name ?? "coin",
                 replaceCoin: { toplist in
                     let mainSymbol = viewModel.cryptoInfo?.symbol?.uppercased() ?? ""
@@ -552,7 +546,7 @@ struct CryptoDetailScreen: View {
                     )
 
                     Task {
-                        await viewModel.replaceWidgetCurrency(coin: toplist)
+                        await widgetViewModel.replaceWidgetCurrency(coin: toplist)
                     }
                     
                     navigationViewModel.showSnackbar(
@@ -571,7 +565,7 @@ struct CryptoDetailScreen: View {
                             )
 
                             Task {
-                                await viewModel.replaceWidgetCurrency(coin: toplistItem, with: toplist)
+                                await widgetViewModel.replaceWidgetCurrency(coin: toplistItem, with: toplist)
                             }
                         }
                     )
@@ -600,7 +594,14 @@ struct CryptoDetailScreen: View {
                                     coinName: name ?? ""
                                 )
                             )
+                            portfolioViewModel.reset()
                             await viewModel.newMainCoin(id: id)
+                            widgetViewModel.cryptoInfo = viewModel.cryptoInfo
+                            await withTaskGroup(of: Void.self) { group in
+                                group.addTask { await alertsViewModel.load(coinId: id) }
+                                group.addTask { await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol) }
+                                group.addTask { await portfolioViewModel.load(coinId: id) }
+                            }
                         }
                     } else {
                         AnalyticsManager.shared.log(
@@ -662,7 +663,7 @@ struct CryptoDetailScreen: View {
                     let inputType: PriceAlertInputType = isAlertByPriceSelected ? .price : .percent
                     
                     Task {
-                        switch await viewModel.addPriceAlert(alertCoin: alert) {
+                        switch await alertsViewModel.addPriceAlert(alertCoin: alert) {
                         case .success:
                             showSnackBar(
                                 message: "Price alert added.",
@@ -744,12 +745,12 @@ struct CryptoDetailScreen: View {
         .sheet(item: $selectedEvent) { event in
             switch event {
             case .transaction(let transaction):
-                let coin = viewModel.portfolio?.pie(containing: transaction)?.data
+                let coin = portfolioViewModel.portfolio?.pie(containing: transaction)?.data
                 
                 TransactionDetailSheet(
                     coin: coin,
                     transaction: transaction,
-                    hideData: viewModel.hidePortfolioData,
+                    hideData: portfolioViewModel.hidePortfolioData,
                     editTransaction: {
                         AnalyticsManager.shared.log(
                             Navigate(
@@ -775,19 +776,19 @@ struct CryptoDetailScreen: View {
                             )
                         )
                         Task {
-                            await viewModel.deleteTransaction(transaction)
+                            await portfolioViewModel.deleteTransaction(transaction)
                         }
                     }
                 )
                 
             case .swap(let swap):
-                let coin = viewModel.portfolio?.pie(containing: swap)?.data
+                let coin = portfolioViewModel.portfolio?.pie(containing: swap)?.data
 
                 SwapDetailSheet(
                     coin: coin,
                     transaction: swap,
-                    portfolio: viewModel.portfolio,
-                    hideData: viewModel.hidePortfolioData,
+                    portfolio: portfolioViewModel.portfolio,
+                    hideData: portfolioViewModel.hidePortfolioData,
                     editTransaction: {
                         AnalyticsManager.shared.log(
                             Navigate(
@@ -816,7 +817,7 @@ struct CryptoDetailScreen: View {
                             )
                         )
                         Task {
-                            await viewModel.deleteTransaction(transaction)
+                            await portfolioViewModel.deleteTransaction(transaction)
                         }
                     }
                 )
@@ -848,7 +849,7 @@ struct CryptoDetailScreen: View {
     
     private var toolbarMenuButton: some View {
         Menu {
-            let containsCurrency = viewModel.widgetCurrencies.contains(where: { $0.id == viewModel.cryptoInfo?.id })
+            let containsCurrency = widgetViewModel.widgetCurrencies.contains(where: { $0.id == viewModel.cryptoInfo?.id })
             
             Button(action: {
                 if containsCurrency {
@@ -856,14 +857,14 @@ struct CryptoDetailScreen: View {
                         Navigate(fromScreen: .cryptoDetail, toScreen: .widgets, coinName: viewModel.cryptoInfo?.name)
                     )
                     navigationViewModel.deepLink(to: .Widgets)
-                } else if viewModel.widgetCurrencies.count < 8 {
+                } else if widgetViewModel.widgetCurrencies.count < 8 {
                     let addedSymbol = viewModel.cryptoInfo?.symbol?.uppercased() ?? ""
                     AnalyticsManager.shared.log(
                         WidgetAdded(fromScreen: .cryptoDetail, coinSymbol: addedSymbol)
                     )
 
                     Task {
-                        await viewModel.addCurrencyToWidgets()
+                        await widgetViewModel.addCurrencyToWidgets()
                         
                         navigationViewModel.showSnackbar(
                             message: "\(viewModel.cryptoInfo?.symbol?.uppercased() ?? "Coin") added to widgets.",
@@ -907,31 +908,7 @@ struct CryptoDetailScreen: View {
             
             Button(action: {
                 Task {
-                    let alerts = await viewModel.getAllpriceAlertsCount()
-                    let success = await viewModel.checkIfUserEnabledPush()
-                    let hasBoughtPro = await viewModel.hasBoughtPro()
-                    
-                    if !success {
-                        AnalyticsManager.shared.log(
-                            Navigate(fromScreen: .cryptoDetail, toScreen: .priceAlerts, coinName: viewModel.cryptoInfo?.name)
-                        )
-                        navigationViewModel.deepLink(to: .PriceAlerts)
-                    } else if !hasBoughtPro && alerts >= 2 {
-                        AnalyticsManager.shared.log(
-                            BuyProOpened(fromScreen: .cryptoDetail, action: .PriceAlert)
-                        )
-                        showBuyPro()
-                    } else {
-                        AnalyticsManager.shared.log(
-                            SheetOpened(fromScreen: .cryptoDetail, sheet: .newPriceAlert)
-                        )
-                        isAlertByPriceSelected = true
-                        priceInput = 0.0
-                        percentInput = 10.0
-                        isRecurringAlertOn = false
-                        selectedDirection = .up
-                        showAddAlert = true
-                    }
+                    await openNewPriceAlertIfAllowed()
                 }
             }, label: {
                 HStack(spacing: 8) {
@@ -1077,6 +1054,34 @@ struct CryptoDetailScreen: View {
         }
         .background(Color.surface)
         .id(id)
+    }
+    
+    private func openNewPriceAlertIfAllowed() async {
+        let alerts = await alertsViewModel.allAlertsCount()
+        let success = await alertsViewModel.checkIfUserEnabledPush()
+        let hasBoughtPro = await alertsViewModel.hasBoughtPro()
+        
+        if !success {
+            AnalyticsManager.shared.log(
+                Navigate(fromScreen: .cryptoDetail, toScreen: .priceAlerts, coinName: viewModel.cryptoInfo?.name)
+            )
+            navigationViewModel.deepLink(to: .PriceAlerts)
+        } else if !hasBoughtPro && alerts >= 2 {
+            AnalyticsManager.shared.log(
+                BuyProOpened(fromScreen: .cryptoDetail, action: .PriceAlert)
+            )
+            showBuyPro()
+        } else {
+            AnalyticsManager.shared.log(
+                SheetOpened(fromScreen: .cryptoDetail, sheet: .newPriceAlert)
+            )
+            isAlertByPriceSelected = true
+            priceInput = 0.0
+            percentInput = 10.0
+            isRecurringAlertOn = false
+            selectedDirection = .up
+            showAddAlert = true
+        }
     }
     
     private func closeAllOverlays() {

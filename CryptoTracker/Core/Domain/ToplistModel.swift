@@ -50,6 +50,18 @@ struct Toplist: Codable, Identifiable, Equatable, Hashable {
             return price_change_percentage_30d_in_currency ?? 0
         }
     }
+
+    /// Current holding price for portfolio totals, pie slices, and asset rows.
+    /// Live vs-currency map first, then `current_price`, then the last 7d sparkline point.
+    func holdingPrice(
+        vsCurrencyPrices: [String: Double]?,
+        currencyCode: String
+    ) -> Double {
+        vsCurrencyPrices?[currencyCode.lowercased()]
+            ?? current_price
+            ?? sparkline_in_7d?.price.last
+            ?? 0
+    }
     
     var toCryptoDetail: CurrencyDataModel {
         let selectedCurrency = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()

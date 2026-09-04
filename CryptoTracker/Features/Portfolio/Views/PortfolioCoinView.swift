@@ -32,7 +32,10 @@ struct PortfolioCoinView: View {
     }
     
     private var currentPrice: Double {
-        prices[selectedCurrency.code.lowercased()] ?? 0
+        pie?.data?.holdingPrice(
+            vsCurrencyPrices: prices,
+            currencyCode: selectedCurrency.code
+        ) ?? 0
     }
     
     private var accessibilityLabelText: String {

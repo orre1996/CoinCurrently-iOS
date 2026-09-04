@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct PortfolioPieChartView: View {
     let slices: [PortfolioPieSlice]
@@ -100,13 +101,11 @@ struct PortfolioPieChartView: View {
             centerLabel
         }
         .animation(selectionAnimation, value: selectedSliceId)
-        .contentShape(Rectangle())
-        .gesture(
-            DragGesture(minimumDistance: 0)
-                .onEnded { value in
-                    handleTap(at: value.location, in: size)
-                }
-        )
+        .overlay {
+            SliceTapOverlay { location in
+                handleTap(at: location, in: size)
+            }
+        }
     }
 
     @ViewBuilder
@@ -211,7 +210,7 @@ struct PortfolioPieChartView: View {
     private func formattedPercent(_ percentage: Double) -> String {
         let value = percentage * 100
         if value >= 99.995 {
-            return value.formatted(.number.precision(.fractionLength(1))) + "%"
+            return "100%"
         }
         return value.formatted(.number.precision(.fractionLength(2))) + "%"
     }
@@ -223,6 +222,49 @@ struct PortfolioPieChartView: View {
 
         let percent = formattedPercent(slice.percentage)
         return "\(slice.symbol), \(percent) of portfolio"
+    }
+}
+
+/// Tap-only overlay so slice selection does not install a SwiftUI drag gesture that steals the
+/// portfolio screen's vertical scroll.
+private struct SliceTapOverlay: UIViewRepresentable {
+    let onTap: (CGPoint) -> Void
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(onTap: onTap)
+    }
+
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView()
+        view.backgroundColor = .clear
+        let tap = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap(_:)))
+        tap.cancelsTouchesInView = false
+        tap.delegate = context.coordinator
+        view.addGestureRecognizer(tap)
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {
+        context.coordinator.onTap = onTap
+    }
+
+    final class Coordinator: NSObject, UIGestureRecognizerDelegate {
+        var onTap: (CGPoint) -> Void
+
+        init(onTap: @escaping (CGPoint) -> Void) {
+            self.onTap = onTap
+        }
+
+        @objc func handleTap(_ gesture: UITapGestureRecognizer) {
+            onTap(gesture.location(in: gesture.view))
+        }
+
+        func gestureRecognizer(
+            _ gestureRecognizer: UIGestureRecognizer,
+            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+        ) -> Bool {
+            true
+        }
     }
 }
 

@@ -160,7 +160,7 @@ struct PortfolioTransactionView: View {
     
     var currentPrice: Double? {
         if transaction?.currency == currency.code {
-            return coin?.sparkline_in_7d?.price.last
+            return coin?.holdingPrice(vsCurrencyPrices: prices, currencyCode: currency.code)
         } else {
             return prices?[transaction?.currency.lowercased() ?? "usd"]
         }

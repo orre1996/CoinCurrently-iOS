@@ -257,7 +257,10 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
 
         return portfolio.reduce(0.0) { sum, pie in
             guard let id = pie.data?.id else { return sum }
-            let lastPrice = pricesById[id]?[code] ?? 0
+            let lastPrice = pie.data?.holdingPrice(
+                vsCurrencyPrices: pricesById[id],
+                currencyCode: code
+            ) ?? 0
             let amount = portfolio.getAllTransactions(of: id).getAmount()
             return sum + lastPrice * amount
         }

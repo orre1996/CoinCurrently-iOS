@@ -167,10 +167,20 @@ struct CryptoDetailPortfolioView: View {
         )
     }
     
+    private var holdingCurrentPrice: Double {
+        let code = selectedCurrency.code.lowercased()
+        let live = cryptoInfo?.market_data?.current_price?.getConvertedCurrency()
+        let vsPrices = live.map { [code: $0] }
+        return viewModel.pie?.data?.holdingPrice(
+            vsCurrencyPrices: vsPrices,
+            currencyCode: code
+        ) ?? live ?? 0
+    }
+    
     @ViewBuilder
     private var currentValueView: some View {
         let amount = viewModel.portfolio?.getAllTransactions(of: cryptoInfo?.id).getAmount() ?? 0
-        let currentPrice = viewModel.pie?.data?.sparkline_in_7d?.price.last ?? cryptoInfo?.market_data?.current_price?.getConvertedCurrency() ?? 0.0
+        let currentPrice = holdingCurrentPrice
         
         VStack(alignment: .leading, spacing: 4) {
             Text("Current Value")
@@ -195,7 +205,7 @@ struct CryptoDetailPortfolioView: View {
     
     @ViewBuilder
     private var purchaseCostView: some View {
-        let currentPrice = viewModel.pie?.data?.sparkline_in_7d?.price.last ?? cryptoInfo?.market_data?.current_price?.getConvertedCurrency() ?? 0.0
+        let currentPrice = holdingCurrentPrice
         let cost = viewModel.portfolio?.getAllTransactions(of: cryptoInfo?.id).getTotalCost(
             prices: [selectedCurrency.code.lowercased() : currentPrice],
             showCurrency: selectedCurrency.code

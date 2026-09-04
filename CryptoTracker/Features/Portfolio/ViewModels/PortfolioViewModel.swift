@@ -20,21 +20,13 @@ protocol PortfolioViewModel: ChartHoverHosting {
     var portfolio: [Pie]? { get }
     var allPrices: [Cryptocurrency] { get }
     var scrollToTopActive: Bool { get }
-    var groupedTransactions: [Date: [any PortfolioEvent]] { get }
     var prices: [Double] { get }
     var timeStamps: [Double] { get }
-    var totalValue: Double? { get }
     var changePercent: Double? { get }
     var changeValue: Double? { get }
     var graphStats: [String?] { get }
     var chartValues: [String] { get }
-    var profitLossPercent: Double? { get }
-    var profitLossValue: Double? { get }
-    var typeFilters: [NewTransactionType] { get set }
-    var dateFilter: DateOption { get set }
-    var coinFilters: [Toplist] { get set }
     var hideData: Bool { get set }
-    var coinFilterList: [Toplist] { get }
     var unrealizedProfitLoss: Double? { get }
     var graphColor: Color { get }
     var changePercentGraph: Double? { get }
@@ -42,13 +34,11 @@ protocol PortfolioViewModel: ChartHoverHosting {
     var hoverPricePosition: CGFloat { get }
     var mainDragIndex: [Int] { get }
     var dragPositions: [CGPoint] { get }
-    var portfolioPieSlices: [PortfolioPieSlice] { get }
     var benchmarkCoin: Toplist? { get }
     var benchmarkPrices: [Double] { get }
     var chartDropCount: Int { get }
 
     func setStartData() async
-    func setTotalValue()
     func hasBoughtPro() async -> Bool
     func toggleHideData()
     func setTimestamps()
@@ -56,7 +46,7 @@ protocol PortfolioViewModel: ChartHoverHosting {
     func getPrices(dropLastTwo: Bool) -> [Double]
     func getTimeStamps(dropLastTwo: Bool) -> [Double]
     func getBenchmarkPrices(dropLastTwo: Bool) -> [Double]
-    func setGroupTransactions() async
+    func reloadTransactions() async
     func deleteTransaction(_ transaction: (any PortfolioEvent)?) async
     func setChangePercent()
     func setChangeValue()
@@ -64,8 +54,6 @@ protocol PortfolioViewModel: ChartHoverHosting {
     func setChartValues()
     func point(at index: Int, rect: CGSize) -> CGPoint
     func updateHoverStats(touches: [CGPoint])
-    func setProfitLossPercent()
-    func setProfitLossValue()
     func export(_ format: PortfolioExportFormat, onComplete: @escaping (Bool) -> Void)
     func refreshPortfolioData() async
     func refreshImportWallets() async
@@ -84,7 +72,6 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
     private(set) var portfolio: [Pie]?
     private(set) var allPrices = [Cryptocurrency]()
     private(set) var scrollToTopActive = false
-    private(set) var groupedTransactions: [Date: [any PortfolioEvent]] = [:]
     
     private(set) var prices = [Double]()
     private(set) var timeStamps = [Double]()
@@ -95,22 +82,17 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
     private(set) var benchmarkTimeStamps = [Double]()
     private var rawBenchmarkPrices = [Double]()
     
-    private(set) var totalValue: Double?
     private(set) var changePercent: Double?
     private(set) var changeValue: Double?
     private(set) var graphStats: [String?] = [nil, nil, nil, nil, nil, nil]
     private(set) var chartValues: [String] = []
-    private(set) var profitLossPercent: Double?
-    private(set) var profitLossValue: Double?
-    private(set) var portfolioPieSlices: [PortfolioPieSlice] = []
+    
+    var holdings = PortfolioHoldingsViewModel()
+    var transactions = PortfolioTransactionsViewModel()
     
     // MARK: - Cached Lookups for O(1) Access
     private var pricesByIdCache: [String: [String: Double]] = [:]
     private var transactionAmountsCache: [String: Double] = [:]
-    
-    var typeFilters: [NewTransactionType] = []
-    var dateFilter: DateOption = .all
-    var coinFilters: [Toplist] = []
     
     var hideData: Bool
     
@@ -248,144 +230,24 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
         }
     }
     
-    var coinFilterList: [Toplist] {
-        let mainList =
-            portfolio?
-                .filter { !($0.transactions.isEmpty && $0.swaps.isEmpty && $0.imports.isEmpty) }
-                .compactMap { $0.data }
-            ?? []
-
-        return mainList
+    private var selectedCurrency: CurrencyModel {
+        settingsManager.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
     }
     
-    func setTotalValue() {
-        guard let portfolio else {
-            totalValue = nil
-            return
-        }
-
-        let currencyCode = (settingsManager.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()).code.lowercased()
-        
-        // Use cached lookups - O(1) per coin instead of O(n)
-        totalValue = portfolio.reduce(0.0) { sum, pie in
-            guard let id = pie.data?.id else { return sum }
-            let lastPrice = pricesByIdCache[id]?[currencyCode] ?? 0
-            let amount = transactionAmountsCache[id] ?? 0
-            return sum + lastPrice * amount
-        }
+    private func recalculateHoldings() {
+        let currency = selectedCurrency
+        holdings.recalculate(
+            portfolio: portfolio,
+            allPrices: allPrices,
+            pricesById: pricesByIdCache,
+            amountsById: transactionAmountsCache,
+            currencyCode: currency.code.lowercased(),
+            profitLossCurrencyCode: currency.code
+        )
     }
-
-    func setPortfolioPieSlices() {
-        guard let portfolio, let totalValue, totalValue > 0 else {
-            portfolioPieSlices = []
-            return
-        }
-
-        let currencyCode = (settingsManager.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()).code.lowercased()
-        let outerGap = PortfolioPieChartLayout.outerGapDegrees
-        let innerGap = PortfolioPieChartLayout.innerGapDegrees
-
-        let holdings: [(pie: Pie, value: Double)] = portfolio.compactMap { pie in
-            guard pie.shouldShow, let id = pie.data?.id else { return nil }
-            guard !portfolio.getAllTransactions(of: id).isEmpty else { return nil }
-
-            let lastPrice = pricesByIdCache[id]?[currencyCode] ?? 0
-            let amount = transactionAmountsCache[id] ?? 0
-            let value = lastPrice * amount
-            guard value > 0 else { return nil }
-
-            return (pie, value)
-        }.sorted { $0.value > $1.value }
-
-        guard !holdings.isEmpty else {
-            portfolioPieSlices = []
-            return
-        }
-
-        let sliceInputs = portfolioPieSliceInputs(from: holdings, totalValue: totalValue)
-        let sliceCount = sliceInputs.count
-        let effectiveOuterGap = sliceCount > 1 ? outerGap : 0
-        let effectiveInnerGap = sliceCount > 1 ? innerGap : 0
-
-        let outerAvailable = 360.0 - effectiveOuterGap * Double(sliceCount)
-        let innerAvailable = 360.0 - effectiveInnerGap * Double(sliceCount)
-        var outerCurrent = -90.0 + effectiveOuterGap / 2
-        var innerCurrent = -90.0 + effectiveInnerGap / 2
-
-        let percentages = sliceInputs.map { $0.value / totalValue }
-        let visualWeights = portfolioPieVisualWeights(from: percentages)
-
-        portfolioPieSlices = zip(sliceInputs, visualWeights).map { slice, visualWeight in
-            let percentage = slice.value / totalValue
-            let outerStart = outerCurrent
-            let outerEnd = outerStart + visualWeight * outerAvailable
-            let innerStart = innerCurrent
-            let innerEnd = innerStart + visualWeight * innerAvailable
-            outerCurrent = outerEnd + effectiveOuterGap
-            innerCurrent = innerEnd + effectiveInnerGap
-
-            return PortfolioPieSlice(
-                id: slice.id,
-                symbol: slice.symbol,
-                percentage: percentage,
-                color: slice.color,
-                outerStartAngle: outerStart,
-                outerEndAngle: outerEnd,
-                innerStartAngle: innerStart,
-                innerEndAngle: innerEnd
-            )
-        }
-    }
-
-    private func portfolioPieSliceInputs(
-        from holdings: [(pie: Pie, value: Double)],
-        totalValue: Double
-    ) -> [(id: String, symbol: String, value: Double, color: String?)] {
-        func input(for holding: (pie: Pie, value: Double)) -> (id: String, symbol: String, value: Double, color: String?) {
-            (
-                id: holding.pie.data?.id ?? UUID().uuidString,
-                symbol: holding.pie.data?.symbol?.uppercased() ?? "",
-                value: holding.value,
-                color: holding.pie.color
-            )
-        }
-
-        // With two or fewer coins, always show each holding — never collapse into Other.
-        guard holdings.count > 2 else {
-            return holdings.map(input)
-        }
-
-        let mainHoldings = holdings.filter { $0.value / totalValue >= PortfolioPieChartLayout.minimumSlicePercentage }
-        let otherHoldings = holdings.filter { $0.value / totalValue < PortfolioPieChartLayout.minimumSlicePercentage }
-
-        var sliceInputs = mainHoldings.map(input)
-
-        if !otherHoldings.isEmpty {
-            let otherValue = otherHoldings.reduce(0) { $0 + $1.value }
-            sliceInputs.append((
-                id: PortfolioPieChartLayout.otherSliceId,
-                symbol: "OTHER",
-                value: otherValue,
-                color: nil
-            ))
-        }
-
-        return sliceInputs
-    }
-
-    /// Guarantees each slice is at least `minimumSlicePercentage` of the chart; leftover angle is shared by true weight.
-    private func portfolioPieVisualWeights(from percentages: [Double]) -> [Double] {
-        let minimum = PortfolioPieChartLayout.minimumSlicePercentage
-        let count = percentages.count
-        guard count > 0 else { return [] }
-
-        let reserved = Double(count) * minimum
-        guard reserved < 1 else {
-            return Array(repeating: 1.0 / Double(count), count: count)
-        }
-
-        let remaining = 1 - reserved
-        return percentages.map { minimum + $0 * remaining }
+    
+    func reloadTransactions() async {
+        await transactions.setGroupTransactions(portfolio: portfolio)
     }
     
     func hasBoughtPro() async -> Bool {
@@ -440,7 +302,10 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
                 else { continue }
                 
                 // O(1) lookup instead of O(n)
-                let lastPrice = priceCache[coinId]?[currencyCode] ?? 0
+                let lastPrice = pie.data?.holdingPrice(
+                    vsCurrencyPrices: priceCache[coinId],
+                    currencyCode: currencyCode
+                ) ?? 0
                 let offset = timeStamps.count - sparkline.count
                 
                 // Get transactions once per coin (not per sparkline point)
@@ -650,26 +515,6 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
         
         guard rawIndex >= 0, rawIndex < rawPrices.count else { return nil }
         return rawPrices[rawIndex]
-    }
-    
-    func setGroupTransactions() async {
-        // Capture data needed for computation
-        let portfolio = self.portfolio
-        let typeFilters = self.typeFilters
-        let dateFilter = self.dateFilter
-        let coinFilters = self.coinFilters
-        
-        // Perform computation off main thread
-        let computedGroupedTransactions = await Task.detached(priority: .userInitiated) { [portfolio, typeFilters, dateFilter, coinFilters] in
-            return portfolio?.groupedTransactions(
-                types: typeFilters,
-                on: dateFilter,
-                coinNames: coinFilters
-            ) ?? [:]
-        }.value
-        
-        // Update property on main thread
-        self.groupedTransactions = computedGroupedTransactions
     }
     
     func deleteTransaction(_ transaction: (any PortfolioEvent)?) async {
@@ -899,33 +744,6 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
         )
     }
     
-    func setProfitLossPercent() {
-        guard let portfolio else {
-            profitLossPercent = nil
-            return
-        }
-        
-        let selectedCurrency: CurrencyModel = settingsManager.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
-        profitLossPercent = portfolio.getProfitLossPercent(
-            coinPrices: allPrices,
-            showCurrency: selectedCurrency.code
-        )
-    }
-    
-    func setProfitLossValue() {
-        guard let portfolio else {
-            profitLossValue = nil
-            return
-        }
-
-        let selectedCurrency: CurrencyModel = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
-        
-        profitLossValue = portfolio.getProfitLossValue(
-            coinPrices: allPrices,
-            showCurrency: selectedCurrency.code
-        )
-    }
-    
     func export(_ format: PortfolioExportFormat, onComplete: @escaping (Bool) -> Void = { _ in }) {
         guard let portfolio,
               let content = PortfolioExportBuilder.content(for: format, from: portfolio) else {
@@ -1026,7 +844,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
     func getCoinColors() async {
         for await _ in await portfolioRepository.getCoinColors() {
             await reloadPortfolioFromCache()
-            setPortfolioPieSlices()
+            recalculateHoldings()
         }
     }
 
@@ -1044,23 +862,20 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
         // setTimestamps() is lightweight and can run on main thread
         setTimestamps()
         
-        // Run setPrices() and setGroupTransactions() in parallel since they don't depend on each other
+        // Run setPrices() and transaction grouping in parallel since they don't depend on each other
         await withTaskGroup(of: Void.self) { group in
             group.addTask { await self.setPrices() }
-            group.addTask { await self.setGroupTransactions() }
+            group.addTask { await self.reloadTransactions() }
         }
         
         addExtraElementsToTimeline()
         
         // Set computed values after all data is ready (batch synchronous updates)
-        setTotalValue()
         setChangePercent()
         setChangeValue()
         setGraphStats()
         setChartValues()
-        setProfitLossPercent()
-        setProfitLossValue()
-        setPortfolioPieSlices()
+        recalculateHoldings()
 
         self.reloading = false
     }

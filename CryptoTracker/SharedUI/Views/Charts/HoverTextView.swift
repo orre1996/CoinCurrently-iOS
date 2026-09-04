@@ -34,7 +34,7 @@ struct HoverTextView: View {
                     .animation(.default, value: isDragging)
                     .offset(x: readerSize == .zero ? 0 : xPositionTime - hoverTimeWidthSize / 2)
                 
-                Text(isDragging ? fromFearGreed ? "\(Int(hoverPrice))" : hoverPrice.getFormattedString(fromMillion: true, selectedCurrency: forceCurrency) : "")
+                Text(isDragging ? fromFearGreed ? "\(Int(hoverPrice))" : hoverPrice.formatted(style: .compact(from: .million, currency: forceCurrency)) : "")
                     .fixedSize(horizontal: false, vertical: true)
                     .animation(.none, value: UUID())
                     .readSize {

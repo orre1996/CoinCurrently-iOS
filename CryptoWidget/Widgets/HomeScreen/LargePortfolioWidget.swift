@@ -67,7 +67,7 @@ struct LargePortfolioWidget: View {
                             let showInPercent = true
                             let currentPrice = entry?.pieModel.map({( $0.value ?? 0) }).reduce(0, +)
                             
-                            Text(((showInPercent ? (profitLossPercent.getPriceWithSymbol(currentPrice: currentPrice)) + "%" : totalProfit?.getFormattedString(fromThousand: true, fromPriceChange: true)) ?? ""))
+                            Text(((showInPercent ? (profitLossPercent.getPriceWithSymbol(currentPrice: currentPrice)) + "%" : totalProfit?.formatCurrency(threshold: .thousand)) ?? ""))
                                 .foregroundColor(showInPercent ? profitLossPercent.getWidgeWidgetPriceChangeColor(currentPrice: currentPrice) : totalProfit?.getWidgeWidgetPriceChangeColor(currentPrice: currentPrice))
                                 .font(.regularWidget12)
                             
@@ -203,7 +203,7 @@ struct LargePortfolioWidget: View {
                             
                             Spacer()
                             
-                            Text("\(portfolioItem?.data?.name != nil ? ("\((portfolioItem?.getAmount() ?? 0).getFormattedStringNoCurrencyWidget())") : "-")")
+                            Text("\(portfolioItem?.data?.name != nil ? ("\((portfolioItem?.getAmount() ?? 0).formatCurrency(threshold: .thousand, currency: CurrencyModel.empty))") : "-")")
                                 .foregroundColor(.onSurface)
                                 .opacity(portfolioItem?.data?.symbol == nil ? 0 : 1)
                                 .frame(width: reader.size.width / 5, height: reader.size.height, alignment: .leading)
@@ -264,7 +264,7 @@ struct LargePortfolioWidget: View {
             } else {
                 let value = GlobalFunctions.shared.getPortfolioProfitLossValue(of: array, coinPrices: entry?.allPrices ?? [], showCurrency: (SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()).code)
                 let sign = value ?? 0 > 0 ? "+" :  abs(value ?? 0) < 0.0000001 ? "" : "-"
-                return "\(sign)\(value?.getFormattedString(fromTenK: true, fromPriceChange: true) ?? "")"
+                return "\(sign)\(value?.formatCurrency(threshold: .tenThousand) ?? "")"
             }
         } else {
             let prices = entry?.allPrices.first(where: { $0.id == pie?.data?.id })?.prices
@@ -275,7 +275,7 @@ struct LargePortfolioWidget: View {
                 return "\(sign)\((pie?.getProfitPercent(prices: prices, showCurrency: showCurrency, withTransfers: false) ?? 0.0)?.getPriceWithSymbol() ?? "")%"
             } else {
                 let showCurrency = (SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()).code
-                return"\(sign)\(pie?.getProfitValue(prices: prices, showCurrency: showCurrency)?.getFormattedString(fromTenK: true, fromPriceChange: true) ?? "")"
+                return"\(sign)\(pie?.getProfitValue(prices: prices, showCurrency: showCurrency)?.formatCurrency(threshold: .tenThousand) ?? "")"
             }
         }
     }
@@ -315,12 +315,12 @@ struct LargePortfolioWidget: View {
         let code = (SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()).code.lowercased()
         
         if pie?.data?.symbol == "Other" {
-            return pie?.value?.getFormattedString(fromTenK: true) ?? "0.0"
+            return pie?.value?.formatCurrency(threshold: .tenThousand) ?? "0.0"
         }
         
         let price = (entry?.allPrices.first(where: { $0.id == pie?.data?.id})?.prices[code] ?? 0.0) * (pie?.getAmount() ?? 0.0)
         
-        return price.getFormattedString(fromTenK: true)
+        return price.formatCurrency(threshold: .tenThousand)
     }
     
     func getPortfolio() -> [Pie]? {

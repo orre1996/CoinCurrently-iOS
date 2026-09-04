@@ -179,9 +179,9 @@ struct Transaction: Codable, Equatable, Hashable {
         return CleanTransactionModel(
             date: date.longDateTime,
             amount: "\(amount)",
-            pricePerCoin: isTransferType ? nil : pricePerCoin?.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency),
-            fee: isTransferType ? nil : fee?.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency),
-            valueTraded:  isTransferType ? nil : value == 0 ? nil : value.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency),
+            pricePerCoin: isTransferType ? nil : pricePerCoin?.formatted(style: .exact(currency: selectedCurrency)),
+            fee: isTransferType ? nil : fee?.formatted(style: .exact(currency: selectedCurrency)),
+            valueTraded:  isTransferType ? nil : value == 0 ? nil : value.formatted(style: .exact(currency: selectedCurrency)),
             currency: isTransferType ? nil : currency,
             note: note?.isEmpty ?? true ? nil : note
         )

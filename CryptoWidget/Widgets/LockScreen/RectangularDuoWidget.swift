@@ -28,7 +28,7 @@ struct RectangularDuoWidget: View {
                         Text(data?.first?.symbol?.uppercased() ?? "CNCR")
                             .frame(maxHeight: .infinity)
                         
-                        Text(data?.first?.current_price?.getFormattedString(fromThousand: true, forceMaxDigits: 4) ?? "$0.00")
+                        Text(data?.first?.current_price?.formatCurrency(threshold: .thousand, currency: selectedCurrency ?? CurrencyModel(), maxDecimals: 4) ?? "$0.00")
                             .frame(maxHeight: .infinity)
                         
                         let firstChange = data?.first?.price_change_percentage_7d_in_currency ?? 0
@@ -44,7 +44,7 @@ struct RectangularDuoWidget: View {
                         Text(data?[safely: 1]?.symbol?.uppercased() ?? "CNCR")
                             .frame(maxHeight: .infinity)
                         
-                        Text(data?[safely: 1]?.current_price?.getFormattedString(fromThousand: true, forceMaxDigits: 4) ?? "$0.00")
+                        Text(data?[safely: 1]?.current_price?.formatCurrency(threshold: .thousand, currency: selectedCurrency ?? CurrencyModel(), maxDecimals: 4) ?? "$0.00")
                             .frame(maxHeight: .infinity)
                         
                         let secondChange = data?[safely: 1]?.price_change_percentage_7d_in_currency ?? 0

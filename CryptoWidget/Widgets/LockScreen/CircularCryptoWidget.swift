@@ -25,7 +25,11 @@ struct CircularCryptoWidget: View {
                         .padding(.horizontal, 2)
                     
                     let currentPrice = data?.current_price ?? 0
-                    Text(currentPrice.getFormattedString(fromMillion: true, selectedCurrency: CurrencyModel(currency: "", code: "", symbol: "", suffix: true), forceMaxDigits: currentPrice < 100 ? 4 : 0))
+                    Text(currentPrice.formatCurrency(
+                        threshold: .million,
+                        currency: CurrencyModel(currency: "", code: "", symbol: "", suffix: true),
+                        maxDecimals: currentPrice < 100 ? 4 : 0
+                    ))
                         .font(.system(size: 15, weight: .semibold))
                         .padding(.top, data == nil ? 0 : -1)
                     

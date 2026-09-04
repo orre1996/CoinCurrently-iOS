@@ -28,7 +28,7 @@ struct CurrencyDetailScreen: View {
             VStack(alignment: .leading, spacing: 8) {
                  overview
                 
-                Text("\(viewModel.cryptoInfo?.market_data?.current_price?.getConvertedCurrency()?.getFormattedString(dontShort: true) ?? "$0.00")")
+                Text("\(viewModel.cryptoInfo?.market_data?.current_price?.getConvertedCurrency()?.formatCurrency(threshold: .none, currency: selectedCurrency) ?? "$0.00")")
                     .font(.satoshiBold(20))
                 
                 VStack(spacing: 0) {

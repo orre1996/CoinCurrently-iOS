@@ -15,26 +15,6 @@ extension Locale {
 }
 
 extension Formatter {
-    static let withSeparator: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.groupingSeparator = " "
-        formatter.numberStyle = .currency
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        formatter.locale = Locale(identifier: "en_US")
-        return formatter
-    }()
-    
-    static let withSeparatorNoCurrency: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.groupingSeparator = ","
-        formatter.numberStyle = .decimal
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        formatter.locale = Locale(identifier: "en_US")
-        return formatter
-    }()
-    
     static let withSeparatorPortfolioAmount: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.groupingSeparator = ","
@@ -42,25 +22,6 @@ extension Formatter {
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 7
         formatter.locale = Locale(identifier: "en_US")
-        return formatter
-    }()
-    
-    static let withSeparatorNoCurrencyWidget: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.groupingSeparator = ","
-        formatter.numberStyle = .decimal
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        formatter.locale = Locale(identifier: "en_US")
-        return formatter
-    }()
-    
-    static let withSeparatorNoCurrencyWithSpaces: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.groupingSeparator = " "
-        formatter.numberStyle = .decimal
-        formatter.minimumFractionDigits = 1
-        formatter.maximumFractionDigits = 7
         return formatter
     }()
 }

@@ -36,7 +36,7 @@ struct PriceAlertView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 
-                /*Text("\(alert?.targetPrice?.getFormattedString(dontShort: true, selectedCurrency: getCurrencyModel(currencyCode: alert?.currency ?? "USD")) ?? (0.0).getFormattedString(dontShort: true, selectedCurrency: getCurrencyModel(currencyCode: alert?.currency ?? "USD")))")
+                /*Text("\(alert?.targetPrice?.formatted(style: .exact(currency: getCurrencyModel(currencyCode: alert?.currency ?? "USD"))) ?? (0.0).formatted(style: .exact(currency: getCurrencyModel(currencyCode: alert?.currency ?? "USD"))))")
                     .font(.poppinsRegular(14))
                     .foregroundColor(.onSurface)
                     .frame(maxWidth: .infinity, alignment: .leading)

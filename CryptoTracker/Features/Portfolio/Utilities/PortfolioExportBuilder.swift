@@ -235,16 +235,16 @@ enum PortfolioExportBuilder {
         block += "Amount: \(transaction.amount)\n"
 
         if !transaction.transactionType.isTransfer, let pricePerCoin = transaction.pricePerCoin {
-            block += "Price per coin: \(pricePerCoin.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))\n"
+            block += "Price per coin: \(pricePerCoin.formatted(style: .exact(currency: selectedCurrency)))\n"
         }
 
         if !transaction.transactionType.isTransfer, transaction.fee != 0 {
-            block += "Fee: \(transaction.fee.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))\n"
+            block += "Fee: \(transaction.fee.formatted(style: .exact(currency: selectedCurrency)))\n"
         }
 
         let value = (transaction.amount * (transaction.pricePerCoin ?? 0)) + transaction.fee
         if !transaction.transactionType.isTransfer, value != 0 {
-            block += "Value traded: \(value.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))\n"
+            block += "Value traded: \(value.formatted(style: .exact(currency: selectedCurrency)))\n"
         }
 
         if !transaction.transactionType.isTransfer {
@@ -267,11 +267,11 @@ enum PortfolioExportBuilder {
             $0.code.lowercased() == swap.selectedCurrency.lowercased()
         }
         var block = "Date (UTC): \(swap.date.portfolioExportDateTimeUTC)\n"
-        block += "From: \(swap.fromAmount) \(swap.fromCurrencySymbol.uppercased()) @ \(swap.fromUnitPrice.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))\n"
-        block += "To: \(swap.toAmount) \(swap.toCurrencySymbol.uppercased()) @ \(swap.toUnitPrice.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))\n"
+        block += "From: \(swap.fromAmount) \(swap.fromCurrencySymbol.uppercased()) @ \(swap.fromUnitPrice.formatted(style: .exact(currency: selectedCurrency)))\n"
+        block += "To: \(swap.toAmount) \(swap.toCurrencySymbol.uppercased()) @ \(swap.toUnitPrice.formatted(style: .exact(currency: selectedCurrency)))\n"
 
         if swap.fee != 0 {
-            block += "Fee: \(swap.fee.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))\n"
+            block += "Fee: \(swap.fee.formatted(style: .exact(currency: selectedCurrency)))\n"
         }
 
         if !swap.note.isEmpty {

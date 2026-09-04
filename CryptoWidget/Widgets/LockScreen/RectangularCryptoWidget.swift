@@ -35,7 +35,7 @@ struct RectangularCryptoWidget: View {
                             Spacer(minLength: 8)
                             
                             let price = coin?.current_price ?? 0.0
-                            Text(price.getFormattedString(fromHundredK: true, forceMaxDigits: 4))
+                            Text(price.formatCurrency(threshold: .hundredThousand, currency: selectedCurrency ?? CurrencyModel(), maxDecimals: 4))
                                 .font(.system(size: 14, weight: .medium))
                                 .frame(maxHeight: .infinity)
                             

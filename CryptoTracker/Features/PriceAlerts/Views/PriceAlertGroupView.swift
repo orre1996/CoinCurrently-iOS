@@ -41,7 +41,7 @@ struct PriceAlertGroupView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .accessibilityLabel("Currency \(index + 1) of \(totalGroupsCount). \(coin?.name ?? "")")
                     
-                    ShimmeringText(text: "\(price?.getFormattedString(dontShort: true, selectedCurrency: SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()) ?? "$0.00000")", font: .poppinsRegular(16), color: .onSurface, downloading: coin == nil)
+                    ShimmeringText(text: "\(price?.formatted(style: .exact(currency: SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel())) ?? "$0.00000")", font: .poppinsRegular(16), color: .onSurface, downloading: coin == nil)
                         .frame(minHeight: 32 * min(scale, 1.5))
                         .accessibilityLabel("Current price: \(price?.currencyAccessible(currency: SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()) ?? "$0.00")")
                 }*/

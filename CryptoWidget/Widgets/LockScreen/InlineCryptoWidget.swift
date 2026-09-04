@@ -16,7 +16,7 @@ struct InlineCryptoWidget: View {
             HStack(spacing: 4) {
                 let symbol = data?.symbol?.uppercased() ?? ""
                 let price = data?.current_price
-                let formattedPrice = price?.getFormattedString(fromThousand: true, forceMaxDigits: 4) ?? ""
+                let formattedPrice = price?.formatCurrency(threshold: .thousand, currency: selectedCurrency ?? CurrencyModel(), maxDecimals: 4) ?? ""
                 let change = data?.price_change_percentage_7d_in_currency ?? 0
                 let decimals = abs(change.roundTo(places: 2)) >= 100.0 ? 1 : 2
                 let decimalsFormatt = "%.\(decimals)f"

@@ -73,7 +73,7 @@ struct MediumCryptoWidget: View {
     }
     
     private var coinPrice: some View {
-        return Text("\(data?.current_price?.getFormattedString(dontShort: true, selectedCurrency: selectedCurrency) ?? "$0.00")")
+        return Text("\(data?.current_price?.formatCurrency(threshold: .none, currency: selectedCurrency ?? CurrencyModel()) ?? "$0.00")")
             .font(.regularWidget18)
             .minimumScaleFactor(0.7)
             .foregroundStyle(Color.onSurface(for: scheme))

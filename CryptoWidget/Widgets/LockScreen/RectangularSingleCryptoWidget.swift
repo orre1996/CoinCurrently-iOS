@@ -31,7 +31,7 @@ struct RectangularSingleCryptoWidget: View {
                             
                             Spacer(minLength: 0)
                             
-                            Text(data?.current_price?.getFormattedString(fromHundredK: true, forceMaxDigits: 4) ?? "$0.00")
+                            Text(data?.current_price?.formatCurrency(threshold: .hundredThousand, currency: selectedCurrency ?? CurrencyModel(), maxDecimals: 4) ?? "$0.00")
                         }
                         .font(.system(size: 12, weight: .bold))
                         .minimumScaleFactor(0.8)

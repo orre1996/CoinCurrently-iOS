@@ -133,13 +133,13 @@ struct LargeCryptoWidget: View {
                                     
                                     Spacer()
                                     
-                                    Text(Double(getOpenPrice()).getFormattedString(selectedCurrency: selectedCurrency))
+                                    Text(Double(getOpenPrice()).formatCurrency(threshold: .thousand, currency: selectedCurrency ?? CurrencyModel()))
                                         .frame(height: 20, alignment: .trailing)
                                     
-                                    Text("\(getHighestPrice().getFormattedString(selectedCurrency: selectedCurrency))")
+                                    Text("\(getHighestPrice().formatCurrency(threshold: .thousand, currency: selectedCurrency ?? CurrencyModel()))")
                                         .frame(height: 20, alignment: .trailing)
                                     
-                                    Text("\(getLowestPrice().getFormattedString(selectedCurrency: selectedCurrency))")
+                                    Text("\(getLowestPrice().formatCurrency(threshold: .thousand, currency: selectedCurrency ?? CurrencyModel()))")
                                         .frame(height: 20, alignment: .trailing)
                                     
                                     Spacer()
@@ -184,10 +184,10 @@ struct LargeCryptoWidget: View {
                                     
                                     Spacer()
                                     
-                                    Text(price?.total_volume?.getFormattedString(selectedCurrency: selectedCurrency) ?? "$0.00")
+                                    Text(price?.total_volume?.formatCurrency(threshold: .thousand, currency: selectedCurrency ?? CurrencyModel()) ?? "$0.00")
                                         .frame(height: 20)
                                     
-                                    Text("\(price?.market_cap?.getFormattedString(selectedCurrency: selectedCurrency) ?? "$0.00")")
+                                    Text("\(price?.market_cap?.formatCurrency(threshold: .thousand, currency: selectedCurrency ?? CurrencyModel()) ?? "$0.00")")
                                         .frame(height: 20)
                                     
                                     Text("\((price?.price_change_percentage_7d_in_currency ?? 0.0).getPriceWithSymbol(currentPrice: price?.current_price ?? 0.0, showSign: true) )%")
@@ -238,7 +238,7 @@ struct LargeCryptoWidget: View {
     private var coinPrice: some View {
         let price = data
         
-        return Text("\((price?.current_price ?? 0.0).getFormattedString(dontShort: true, selectedCurrency: selectedCurrency))")
+        return Text("\((price?.current_price ?? 0.0).formatCurrency(threshold: .none, currency: selectedCurrency ?? CurrencyModel()))")
             .foregroundColor(Color.onSurface(for: scheme))
             .font(.regularWidget18)
             .lineLimit(1)
@@ -248,7 +248,10 @@ struct LargeCryptoWidget: View {
     func getPriceInChart(at: Int) -> String {
         let lowest = getLowestPrice()
         let priceSteps = (getHighestPrice() - getLowestPrice()) / 4
-        return Double(lowest + (priceSteps * Double(at))).getFormattedString(dontShort: true, selectedCurrency: selectedCurrency, roundToClosest: (data?.sparkline_in_7d?.price.isEmpty ?? true) ? false : true)
+        return Double(lowest + (priceSteps * Double(at))).formatCurrency(
+            threshold: .none,
+            currency: selectedCurrency ?? CurrencyModel()
+        )
     }
     
     func getHighestPrice() -> Double {

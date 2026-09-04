@@ -267,24 +267,6 @@ extension String: @retroactive Identifiable {
             .replacingOccurrences(of: "+", with: "")
     }
     
-    func getFormattedString() -> String {
-        let formatted = self.replacingOccurrences(of: ",", with: ".")
-        if (Double(formatted) ?? 0.0) >= 1000000000000 {
-            return String(format: "%.2f", (Double(formatted) ?? 0.0) / 1000000000000) + "T"
-        }
-        else if (Double(formatted) ?? 0.0) >= 1000000000 {
-            return String(format: "%.2f", (Double(formatted) ?? 0.0) / 1000000000) + "B"
-        }
-        else if (Double(formatted) ?? 0.0) >= 1000000 {
-            return String(format: "%.2f", (Double(formatted) ?? 0.0) / 1000000) + "M"
-        }
-        else if (Double(formatted) ?? 0.0) >= 1000 {
-            return String(format: "%.2f", (Double(formatted) ?? 0.0) / 1000) + "K"
-        } else {
-            return String(format: "%.2f", Double(formatted) ?? 0.0)
-        }
-    }
-    
     func removeZerosFromEnd(maximumDigits: Int = 2) -> String {
         let formatter = NumberFormatter()
         let trimmed = self.replacingOccurrences(of: ",", with: ".")

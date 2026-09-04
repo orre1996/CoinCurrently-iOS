@@ -192,7 +192,7 @@ struct PortfolioTransactionCell: View {
         VStack(alignment: .trailing, spacing: 0) {
             let currentPrice = currentPrice
             let amount = transaction.amount
-            let formattedTotalValue = (currentPrice * amount).getFormattedString(fromMillion: true, selectedCurrency: selectedCurrency)
+            let formattedTotalValue = (currentPrice * amount).formatted(style: .compact(from: .million, currency: selectedCurrency))
             let accessibleTotalValue = (currentPrice * amount).formatCurrency(accessible: true, currency: selectedCurrency)
             
             if transactionType != .transfer {
@@ -205,7 +205,7 @@ struct PortfolioTransactionCell: View {
             }
 
             let prefixSign = transaction.getTransactionPrefixSign(transactionType: transactionType, transferType: transferType)
-            let formattedAmount = amount.getFormattedStringNoCurrencyPortfolioAmount()
+            let formattedAmount = amount.formatted(style: .portfolioAmount())
             let accessibleAmount = amount.numberAccessible()
             let symbol = cryptoInfo?.symbol?.uppercased() ?? ""
             let transactionColor = transaction.getTransactionTypeTextColor(transactionType: transactionType, transferType: transferType)
@@ -224,7 +224,7 @@ struct PortfolioTransactionCell: View {
     @ViewBuilder
     private var valueView: some View {
         let totalValue = currentPrice * transaction.amount
-        let formattedTotalValue = totalValue.getFormattedString(fromMillion: true, selectedCurrency: selectedCurrency)
+        let formattedTotalValue = totalValue.formatted(style: .compact(from: .million, currency: selectedCurrency))
         let accessibleTotalValue = totalValue.formatCurrency(accessible: true, currency: selectedCurrency)
 
         VStack(alignment: .leading, spacing: 2) {
@@ -248,7 +248,7 @@ struct PortfolioTransactionCell: View {
     @ViewBuilder
     private var amountView: some View {
         let amount = transaction.amount
-        let formattedAmount = amount.getFormattedStringNoCurrencyPortfolioAmount()
+        let formattedAmount = amount.formatted(style: .portfolioAmount())
         let accessibleAmount = amount.numberAccessible()
         let amountPrefix = transaction.getTransactionPrefixSign(transactionType: transactionType, transferType: transferType)
         let amountColor = transaction.getTransactionTypeTextColor(transactionType: transactionType, transferType: transferType)
@@ -274,7 +274,7 @@ struct PortfolioTransactionCell: View {
     @ViewBuilder
     private var pricePerCoinView: some View {
         let pricePerCoin = transaction.pricePerCoin
-        let formattedPricePerCoin = pricePerCoin?.getFormattedString(fromMillion: true, selectedCurrency: selectedCurrency) ?? "N/A"
+        let formattedPricePerCoin = pricePerCoin?.formatted(style: .compact(from: .million, currency: selectedCurrency)) ?? "N/A"
         let accessiblePricePerCoin = pricePerCoin?.formatCurrency(accessible: true, currency: selectedCurrency) ?? ""
     
         VStack(alignment: .leading, spacing: 2) {
@@ -305,7 +305,7 @@ struct PortfolioTransactionCell: View {
         
         let profitValue = transaction.getProfitValue(currentPrice: currentPrice) ?? 0
         let valueColor = profitValue.getPriceChangeColorInPortfolio()
-        let formattedValue = profitValue.getFormattedString(fromMillion: true, selectedCurrency: selectedCurrency, fromPriceChange: true)
+        let formattedValue = profitValue.formatted(style: .compact(from: .million, currency: selectedCurrency, isPriceChange: true))
         let accessibleValue = "\(profitValue.roundTo(places: abs(profitValue) < 1 ? 7 : 4) < 0 ? "down" : "up") \(profitValue.formatCurrency(accessible: true, currency: selectedCurrency))"
 
         VStack(alignment: .leading, spacing: 2) {
@@ -352,7 +352,7 @@ struct PortfolioTransactionCell: View {
     private var spentView: some View {
         let transactionText = transaction.getTransactionText(transactionType: transactionType, transferType: transferType)
         let totalSpent = transaction.getTotalSpent(transactionType: transactionType)
-        let formattedTotalSpent = totalSpent.getFormattedString(fromMillion: true, selectedCurrency: selectedCurrency)
+        let formattedTotalSpent = totalSpent.formatted(style: .compact(from: .million, currency: selectedCurrency))
         let accessibleTotalSpent = totalSpent.formatCurrency(accessible: true, currency: selectedCurrency)
 
         VStack(alignment: .leading, spacing: 2) {
@@ -376,7 +376,7 @@ struct PortfolioTransactionCell: View {
     @ViewBuilder
     private var feesView: some View {
         let fee = transaction.fee ?? 0
-        let formattedFee = fee.getFormattedString(fromMillion: true, selectedCurrency: selectedCurrency)
+        let formattedFee = fee.formatted(style: .compact(from: .million, currency: selectedCurrency))
         let accessibleFee = fee.formatCurrency(accessible: true, currency: selectedCurrency)
 
         VStack(alignment: .leading, spacing: 2) {

@@ -8,11 +8,7 @@
 import Foundation
 
 extension Numeric {
-    var formattedWithSeparator: String { Formatter.withSeparator.string(for: self) ?? "" }
-    var formattedWithSeparatorNoCurrency: String { Formatter.withSeparatorNoCurrency.string(for: self) ?? "" }
     var formattedWithPortfolioAmount: String { Formatter.withSeparatorPortfolioAmount.string(for: self) ?? "" }
-    var formattedWithSeparatorNoCurrencyWidget: String { Formatter.withSeparatorNoCurrencyWidget.string(for: self) ?? "" }
-    var formattedWithSeparatorNoCurrencyWithSpaces: String { Formatter.withSeparatorNoCurrencyWithSpaces.string(for: self) ?? "" }
 }
 
 extension DateFormatter {

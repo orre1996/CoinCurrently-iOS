@@ -90,7 +90,11 @@ extension ComplicationController {
                         .padding(.horizontal, 2)
                     
                     let currentPrice = currency?.market_data?.current_price?.getConvertedCurrency() ?? 0
-                    Text(currentPrice.getFormattedString(fromHundredK: true, selectedCurrency: CurrencyModel(currency: "", code: "", symbol: "", suffix: true), forceMaxDigits: currentPrice < 100 ? 4 : 0))
+                    Text(currentPrice.formatCurrency(
+                        threshold: .hundredThousand,
+                        currency: CurrencyModel(currency: "", code: "", symbol: "", suffix: true),
+                        maxDecimals: currentPrice < 100 ? 4 : 0
+                    ))
                         .font(.satoshiBold(12))
                     
                     let symbol = currency?.market_data?.price_change_percentage_7d?.roundTo(places: 2) ?? 0 < 0 ? "" : "+"

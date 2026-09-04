@@ -53,7 +53,7 @@ struct DeletePriceAlertOverlay: View {
                             }
                             .accessibilityHidden(true)
                             
-                            /*Text("Are you sure you want to delete this price alert with a target price of \(alert?.targetPrice?.getFormattedString(dontShort: true, selectedCurrency: CurrencyModel.allCurrencies.filter({ $0.code == alert?.currency }).first) ?? "USD")?")
+                            /*Text("Are you sure you want to delete this price alert with a target price of \(alert?.targetPrice?.formatted(style: .exact(currency: CurrencyModel.allCurrencies.filter({ $0.code == alert?.currency }).first)) ?? "USD")?")
                                 .font(.poppinsRegular(14))
                                 .foregroundColor(.onSurface)
                                 .multilineTextAlignment(.center)

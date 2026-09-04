@@ -91,7 +91,7 @@ struct AlertCoinDetails: View {
                                 
                                 let currentPrice = coinPrices?.first(where: { $0.id == selectedCoin?.id ?? "" })?.prices[currentlySelectedCurrency.code.lowercased()]
 
-                                Text("Current price: \(currentPrice?.getFormattedString(dontShort: true, selectedCurrency: currentlySelectedCurrency) ?? "$0.00")")
+                                Text("Current price: \(currentPrice?.formatted(style: .exact(currency: currentlySelectedCurrency)) ?? "$0.00")")
                                     .font(.poppinsRegular(12))
                                     .foregroundColor(Color.onSurface)
                                     .fixedSize(horizontal: false, vertical: true)
@@ -278,7 +278,7 @@ struct AlertCoinDetails: View {
             
             HStack(spacing: 0) {
                 let targetMinus15 = (currentPrice * 0.85).removeZerosFromEnd(maximumDigits: 2)
-                let targetMinus15Clean = (currentPrice * 0.85).getFormattedString(dontShort: true)
+                let targetMinus15Clean = (currentPrice * 0.85).formatted(style: .exact(currency: currentlySelectedCurrency))
                 
                 Button(action: {
                     endTextEditing()
@@ -303,7 +303,7 @@ struct AlertCoinDetails: View {
                   //  .foregroundColor(Color.borderColor)
                 
                 let targetMinus10 = (currentPrice * 0.90).removeZerosFromEnd(maximumDigits: 2)
-                let targetMinus10Clean = (currentPrice * 0.90).getFormattedString(dontShort: true)
+                let targetMinus10Clean = (currentPrice * 0.90).formatted(style: .exact(currency: currentlySelectedCurrency))
                 
                 Button(action: {
                     endTextEditing()
@@ -328,7 +328,7 @@ struct AlertCoinDetails: View {
                    // .foregroundColor(Color.borderColor)
                 
                 let targetMinus5 = (currentPrice * 0.95).removeZerosFromEnd(maximumDigits: 2)
-                let targetMinus5Clean = (currentPrice * 0.95).getFormattedString(dontShort: true)
+                let targetMinus5Clean = (currentPrice * 0.95).formatted(style: .exact(currency: currentlySelectedCurrency))
                 
                 Button(action: {
                     endTextEditing()
@@ -353,7 +353,7 @@ struct AlertCoinDetails: View {
                    // .foregroundColor(Color.borderColor)
                 
                 let targetPlus5 = (currentPrice * 1.05).removeZerosFromEnd(maximumDigits: 2)
-                let targetPlus5Clean = (currentPrice * 1.05).getFormattedString(dontShort: true)
+                let targetPlus5Clean = (currentPrice * 1.05).formatted(style: .exact(currency: currentlySelectedCurrency))
                 
                 Button(action: {
                     endTextEditing()
@@ -378,7 +378,7 @@ struct AlertCoinDetails: View {
                    // .foregroundColor(Color.borderColor)
                 
                 let targetPlus10 = (currentPrice * 1.1).removeZerosFromEnd(maximumDigits: 2)
-                let targetPlus10Clean = (currentPrice * 1.1).getFormattedString(dontShort: true)
+                let targetPlus10Clean = (currentPrice * 1.1).formatted(style: .exact(currency: currentlySelectedCurrency))
                 
                 Button(action: {
                     endTextEditing()
@@ -403,7 +403,7 @@ struct AlertCoinDetails: View {
                     //.foregroundColor(Color.borderColor)
 
                 let targetPlus15 = (currentPrice * 1.15).removeZerosFromEnd(maximumDigits: 2)
-                let targetPlus15Clean = (currentPrice * 1.15).getFormattedString(dontShort: true)
+                let targetPlus15Clean = (currentPrice * 1.15).formatted(style: .exact(currency: currentlySelectedCurrency))
                 
                 Button(action: {
                     endTextEditing()

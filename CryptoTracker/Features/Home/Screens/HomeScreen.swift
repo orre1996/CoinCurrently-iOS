@@ -17,6 +17,8 @@ struct HomeScreen: View {
     @State private var viewModel = HomeViewModelImp()
     @State private var id = UUID()
     @State private var colorBlindnessFilterEnabled: Bool = SettingsManager.shared.get(key: AppSettingKey.colorBlindnessFilter) ?? false
+    @State private var animateHomeFilterSelection = false
+    @State private var isHomeFilterPagerReady = false
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -68,50 +70,43 @@ struct HomeScreen: View {
                                 }
                             )
                             
-                            Section(header: sectionHeader) {
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    LazyHStack(alignment: .top, spacing: 0) {
-                                        ForEach(CarouselFilter.homeFilters, id: \.self) { filter in
-                                            ToplistCategoryView(
-                                                toplist: viewModel.getList(filter: filter),
-                                                favoriteList: viewModel.favoritesList,
-                                                showViewAll: filter.shouldShowViewAll,
-                                                carouselFilter: filter,
-                                                toggleFavorite: {
-                                                    await viewModel.favouriteButtonPressed(toplistItem: $0)
-                                                },
-                                                navigateToCryptoDetail: { coin in
-                                                    AnalyticsManager.shared.log(
-                                                        Navigate(fromScreen: .home, toScreen: .cryptoDetail, coinName: coin.name)
+                            if viewModel.hasResolvedDefaultHomeFilter {
+                                Section(header: sectionHeader) {
+                                    ZStack(alignment: .top) {
+                                        homeCategoryView(
+                                            filter: viewModel.selectedFilter ?? .topCoins,
+                                            width: proxy.size.width
+                                        )
+                                        .opacity(isHomeFilterPagerReady ? 0 : 1)
+                                        .allowsHitTesting(!isHomeFilterPagerReady)
+                                        .accessibilityHidden(isHomeFilterPagerReady)
+                                        
+                                        ScrollView(.horizontal, showsIndicators: false) {
+                                            LazyHStack(alignment: .top, spacing: 0) {
+                                                ForEach(CarouselFilter.homeFilters, id: \.self) { filter in
+                                                    homeCategoryView(
+                                                        filter: filter,
+                                                        width: proxy.size.width
                                                     )
-                                                    navigationViewModel.navPath.append(
-                                                        .CryptoDetail(
-                                                            currencyDataModel: coin.toCryptoDetail
-                                                        )
-                                                    )
-                                                },
-                                                viewAllPressed: {
-                                                    Task {
-                                                        AnalyticsManager.shared.log(
-                                                            ViewAll(fromScreen: .home, filter: viewModel.selectedFilter ?? .topCoins)
-                                                        )
-                                                        await viewModel.toplistSeeAll()
-                                                        navigationViewModel.selectedTab = 2
-                                                    }
-                                                },
-                                                refresh: {
-                                                    await viewModel.downloadData()
                                                 }
-                                            )
-                                            .frame(width: proxy.size.width)
-                                            .accessibilityHidden(filter != viewModel.selectedFilter)
+                                            }
+                                            .scrollTargetLayout()
+                                        }
+                                        .scrollTargetBehavior(.viewAligned)
+                                        .scrollPosition(id: $viewModel.selectedFilter)
+                                        .animation(animateHomeFilterSelection ? .default : nil, value: viewModel.selectedFilter)
+                                        .opacity(isHomeFilterPagerReady ? 1 : 0)
+                                        .allowsHitTesting(isHomeFilterPagerReady)
+                                        .onAppear {
+                                            DispatchQueue.main.async {
+                                                DispatchQueue.main.async {
+                                                    isHomeFilterPagerReady = true
+                                                    animateHomeFilterSelection = true
+                                                }
+                                            }
                                         }
                                     }
-                                    .scrollTargetLayout()
                                 }
-                                .scrollTargetBehavior(.viewAligned)
-                                .scrollPosition(id: $viewModel.selectedFilter)
-                                .animation(.default, value: viewModel.selectedFilter)
                             }
                         }
                         .animation(.default, value: viewModel.promotionTitle)
@@ -180,7 +175,9 @@ struct HomeScreen: View {
             ToplistFilterCarouselView(
                 filters: CarouselFilter.homeFilters,
                 selectedFilter: viewModel.selectedFilter ?? .topCoins,
+                animateSelectionChanges: animateHomeFilterSelection,
                 newFilterSelected: {
+                    animateHomeFilterSelection = true
                     viewModel.selectedFilter = $0
                 }
             )
@@ -190,17 +187,54 @@ struct HomeScreen: View {
                 selectedChangeOption: .sevenDays
             )
             .opacity(viewModel.selectedFilter == .favorites && viewModel.favoritesList.isEmpty ? 0 : 1)
-            .animation(.default, value: viewModel.selectedFilter)
+            .animation(animateHomeFilterSelection ? .default : nil, value: viewModel.selectedFilter)
         }
         .padding(.bottom, 16)
         .background(Color.surface)
     }
     
-    private func downloadData(includeSetStartData: Bool = true) async {
-        await withTaskGroup(of: Void.self) { group in
-            if includeSetStartData {
-                group.addTask { await viewModel.setStartData() }
+    @ViewBuilder
+    private func homeCategoryView(filter: CarouselFilter, width: CGFloat) -> some View {
+        ToplistCategoryView(
+            toplist: viewModel.getList(filter: filter),
+            favoriteList: viewModel.favoritesList,
+            showViewAll: filter.shouldShowViewAll,
+            carouselFilter: filter,
+            toggleFavorite: {
+                await viewModel.favouriteButtonPressed(toplistItem: $0)
+            },
+            navigateToCryptoDetail: { coin in
+                AnalyticsManager.shared.log(
+                    Navigate(fromScreen: .home, toScreen: .cryptoDetail, coinName: coin.name)
+                )
+                navigationViewModel.navPath.append(
+                    .CryptoDetail(
+                        currencyDataModel: coin.toCryptoDetail
+                    )
+                )
+            },
+            viewAllPressed: {
+                Task {
+                    AnalyticsManager.shared.log(
+                        ViewAll(fromScreen: .home, filter: viewModel.selectedFilter ?? .topCoins)
+                    )
+                    await viewModel.toplistSeeAll()
+                    navigationViewModel.selectedTab = 2
+                }
+            },
+            refresh: {
+                await viewModel.downloadData()
             }
+        )
+        .frame(width: width)
+        .accessibilityHidden(filter != viewModel.selectedFilter)
+    }
+    
+    private func downloadData(includeSetStartData: Bool = true) async {
+        if includeSetStartData {
+            await viewModel.setStartData()
+        }
+        await withTaskGroup(of: Void.self) { group in
             group.addTask { await viewModel.downloadData() }
             group.addTask { await viewModel.getGlobalMarket() }
             group.addTask { await viewModel.getGasFees() }

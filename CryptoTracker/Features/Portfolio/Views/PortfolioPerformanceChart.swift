@@ -45,7 +45,6 @@ struct PortfolioPerformanceChart: View {
                     ))
             }
         }
-        .animation(.spring(response: 0.4, dampingFraction: 0.86), value: isPieChartShowing)
     }
 
     private var lineChart: some View {

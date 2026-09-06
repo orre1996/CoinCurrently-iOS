@@ -15,6 +15,7 @@ struct ToplistFilterCarouselView: View {
     let filters: [CarouselFilter]
     let selectedFilter: CarouselFilter
     var hasPro: Bool = true
+    var animateSelectionChanges: Bool = true
     let newFilterSelected: (CarouselFilter) -> Void
     
     @State private var voiceOverFilterIndex = 0
@@ -130,7 +131,11 @@ struct ToplistFilterCarouselView: View {
     }
     
     private func scrollToFilterIndex(_ index: Int, using scrollReader: ScrollViewProxy) {
-        withAnimation {
+        if animateSelectionChanges {
+            withAnimation {
+                scrollReader.scrollTo(index, anchor: .center)
+            }
+        } else {
             scrollReader.scrollTo(index, anchor: .center)
         }
     }
@@ -160,7 +165,7 @@ struct ToplistFilterCarouselView: View {
                 )
                 .font(.satoshiMedium(16))
         })
-        .animation(.default, value: isSelected)
-        .animation(.default, value: title)
+        .animation(animateSelectionChanges ? .default : nil, value: isSelected)
+        .animation(animateSelectionChanges ? .default : nil, value: title)
     }
 }

@@ -14,6 +14,7 @@ protocol ToplistRepository: Actor {
     var cachedToplist: [String: CachedData<[Toplist]>] { get }
     
     func ensureCacheLoaded() async
+    func ensureFavoritesLoaded() async
     func migrateFavorites() async
     func getSmallToplist() async -> [Toplist]?
     func getMarketToplist(sortOption: SortOption, priceChange: PriceChange, platformId: String?) async -> [Toplist]?
@@ -48,11 +49,18 @@ final actor ToplistRepositoryImp: ToplistRepository {
     }
     
     private var hasLoadedFromStorage = false
+    private var hasLoadedFavoritesFromStorage = false
+    
+    func ensureFavoritesLoaded() async {
+        guard !hasLoadedFavoritesFromStorage else { return }
+        hasLoadedFavoritesFromStorage = true
+        cachedFavorites = await coreDataManager.get(forKey: .favorites) ?? CachedData(data: [], date: Date.tenYearsAgo)
+    }
     
     func ensureCacheLoaded() async {
+        await ensureFavoritesLoaded()
         guard !hasLoadedFromStorage else { return }
         hasLoadedFromStorage = true
-        cachedFavorites = await coreDataManager.get(forKey: .favorites) ?? CachedData(data: [], date: Date.tenYearsAgo)
         
         let currency: CurrencyModel = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
         
@@ -244,6 +252,7 @@ final actor ToplistRepositoryImp: ToplistRepository {
         self.cachedFavorites = cachedFavorites
         
         await coreDataManager.set(cachedFavorites, forKey: .favorites)
+        SettingsManager.shared.set(data: !cachedFavorites.data.isEmpty, key: AppSettingKey.hasHomeFavorites)
 
 #if IS_APP
         if isAdding {

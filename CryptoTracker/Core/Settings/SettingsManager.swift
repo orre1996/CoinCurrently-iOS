@@ -70,6 +70,7 @@ enum AppSettingKey: String, SettingKeyable {
     case achievementCounters
     case achievementUnlockSnapshot
     case achievementUnlockSnapshotInitialized
+    case hasHomeFavorites
 
     var data: Data? {
         return UserDefaults(suiteName: .groupIdentifier)?.data(forKey: self.rawValue)

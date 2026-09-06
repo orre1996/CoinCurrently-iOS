@@ -90,7 +90,9 @@ struct PortfolioSummaryHeader: View {
     private var pieChartToggleButton: some View {
         Button(action: {
             selectedPieSliceId = nil
-            isPieChartShowing.toggle()
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.86)) {
+                isPieChartShowing.toggle()
+            }
             SettingsManager.shared.set(data: isPieChartShowing, key: AppSettingKey.isPortfolioPieChartShowing)
         }, label: {
             (isPieChartShowing ? Image.lineChart : Image.portfolio)

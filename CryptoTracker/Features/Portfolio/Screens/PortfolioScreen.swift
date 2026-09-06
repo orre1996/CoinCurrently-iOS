@@ -380,7 +380,6 @@ struct PortfolioScreen: View {
                                 lineChartHeight: $lineChartHeight,
                                 chartHeight: reader.size.height * 0.35
                             )
-                            .border(Color.red)
                             
                             Section(header: pageSelector) {
                                 PortfolioTabPages(
@@ -394,7 +393,6 @@ struct PortfolioScreen: View {
                                 )
                             }
                             .accessibilitySortPriority(-2)
-                            .border(Color.red)
                         }
                         .padding(.top, 16)
                         .id(id)
@@ -428,8 +426,12 @@ struct PortfolioScreen: View {
                     await viewModel.getCoinColors()
                 }
                 .task {
-                    try? await Task.sleep(for: .seconds(0.1))
-                    isPieChartShowing = SettingsManager.shared.get(key: AppSettingKey.isPortfolioPieChartShowing) ?? false
+                    // try? await Task.sleep(for: .seconds(0.1))
+                    var transaction = SwiftUI.Transaction()
+                    transaction.disablesAnimations = true
+                    withTransaction(transaction) {
+                        isPieChartShowing = SettingsManager.shared.get(key: AppSettingKey.isPortfolioPieChartShowing) ?? false
+                    }
                 }
                 .task {
                     await withTaskGroup(of: Void.self) { group in

@@ -64,9 +64,9 @@ class HomeViewModelImp: HomeViewModel {
     private let settingsManager: SettingsManager
     private let analyticsManager: AnalyticsManager
     
-    var selectedFilter: CarouselFilter? = .topCoins
-    private var didApplyDefaultHomeFilter = false
+    var selectedFilter: CarouselFilter?
     private var skipNextHomeFilterAnalytics = false
+    private(set) var hasResolvedDefaultHomeFilter = false
     var toplist: [Toplist]?
     var favoritesList = [Toplist]()
     var winnersList: [Toplist]?
@@ -119,9 +119,17 @@ class HomeViewModelImp: HomeViewModel {
         self.cachedStorageManager = cachedStorageManager
         self.settingsManager = settingsManager
         self.analyticsManager = analyticsManager
+        let hasFavorites: Bool = settingsManager.get(key: AppSettingKey.hasHomeFavorites) ?? false
+        selectedFilter = CarouselFilter.defaultHomeFilter(hasFavorites: hasFavorites)
     }
     
     func setStartData() async {
+        await toplistRepository.ensureFavoritesLoaded()
+        if let favorites = await toplistRepository.cachedFavorites?.data {
+            self.favoritesList = favorites.sorted(by: { $0.market_cap_rank ?? 9999 < $1.market_cap_rank ?? 9999 })
+        }
+        applyDefaultHomeFilterIfNeeded()
+
         await cryptoDetailRepository.ensureCacheLoaded()
         await toplistRepository.ensureCacheLoaded()
         await winnersLosersRepository.ensureCacheLoaded()
@@ -142,8 +150,6 @@ class HomeViewModelImp: HomeViewModel {
          if let favorites = await toplistRepository.cachedFavorites?.data {
              self.favoritesList = favorites.sorted(by: { $0.market_cap_rank ?? 9999 < $1.market_cap_rank ?? 9999 })
          }
-         applyDefaultHomeFilterIfNeeded()
-         
           let timeFrame = "7"
          
          // Winner coins
@@ -330,12 +336,19 @@ class HomeViewModelImp: HomeViewModel {
     }
 
     private func applyDefaultHomeFilterIfNeeded() {
-        guard !didApplyDefaultHomeFilter else { return }
-        didApplyDefaultHomeFilter = true
-        let filter = CarouselFilter.defaultHomeFilter(hasFavorites: !favoritesList.isEmpty)
-        guard filter != (selectedFilter ?? .topCoins) else { return }
-        skipNextHomeFilterAnalytics = true
-        selectedFilter = filter
+        guard !hasResolvedDefaultHomeFilter else { return }
+        let hasFavorites = !favoritesList.isEmpty
+        settingsManager.set(data: hasFavorites, key: AppSettingKey.hasHomeFavorites)
+        let filter = CarouselFilter.defaultHomeFilter(hasFavorites: hasFavorites)
+        if filter != (selectedFilter ?? .topCoins) {
+            skipNextHomeFilterAnalytics = true
+            var transaction = SwiftUI.Transaction()
+            transaction.disablesAnimations = true
+            withTransaction(transaction) {
+                selectedFilter = filter
+            }
+        }
+        hasResolvedDefaultHomeFilter = true
     }
 
     func favouriteButtonPressed(toplistItem: Toplist?) async {
@@ -358,6 +371,7 @@ class HomeViewModelImp: HomeViewModel {
         }
            
         favoritesList = await toplistRepository.favouriteButtonPressed(toplist: toplistItem).sorted(by: { $0.market_cap_rank ?? 9999 < $1.market_cap_rank ?? 9999 })
+        settingsManager.set(data: !favoritesList.isEmpty, key: AppSettingKey.hasHomeFavorites)
     }
     
     // MARK: - Trending

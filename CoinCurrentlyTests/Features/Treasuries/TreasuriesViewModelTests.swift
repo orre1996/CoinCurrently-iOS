@@ -344,6 +344,7 @@ private actor MockTreasuryToplistRepository: ToplistRepository {
     }
 
     func ensureCacheLoaded() async {}
+    func ensureFavoritesLoaded() async {}
     func migrateFavorites() async {}
     func getSmallToplist() async -> [Toplist]? { smallToplist }
     func getMarketToplist(sortOption: SortOption, priceChange: PriceChange, platformId: String?) async -> [Toplist]? { nil }

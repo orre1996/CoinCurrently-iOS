@@ -41,7 +41,7 @@ struct CachedPortfolioPies: Codable {
 protocol PortfolioRepository: Actor {
     var cachedPortfolioPies: CachedPortfolioPies? { get }
     var cachedPortfolioPrices: CachedData<[Cryptocurrency]>? { get }
-    var portfolioModels: [NewPortfolioModel] { get }
+    var portfolioModels: [PortfolioModel] { get }
     
     func ensureCacheLoaded() async
     func migratePortfolio() async
@@ -69,7 +69,7 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
 
     private(set) var cachedPortfolioPies: CachedPortfolioPies?
     private(set) var cachedPortfolioPrices: CachedData<[Cryptocurrency]>?
-    private(set) var portfolioModels: [NewPortfolioModel] = []
+    private(set) var portfolioModels: [PortfolioModel] = []
 
     init(
         networkManager: NetworkManager = NetworkManagerImp.shared,
@@ -121,11 +121,11 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
         TokenInfo(accountHash: "example-wallet-address", balance: "0.621", tokenHash: "example-wallet-address", tokenSymbol: "hemi", coinId: "hemi"),
         TokenInfo(accountHash: "0x0000000000000000000000000000000000000000", balance: "13.5213", tokenHash: "0x0000000000000000000000000000000000000000", tokenSymbol: "the", coinId: "thena")], blockChain: .token), allCurrencies: [:])*/
         
-        // await addNewCoin(coin: Toplist(id: "ethereum"), event: NewSwapTransaction(fromCurrency: "BTC", fromAmount: 0.5, toCurrency: "ETH", toAmount: 13, fee: 2, note: "hello"), allCurrencies: [:])
+        // await addNewCoin(coin: Toplist(id: "ethereum"), event: PortfolioSwapTransaction(fromCurrency: "BTC", fromAmount: 0.5, toCurrency: "ETH", toAmount: 13, fee: 2, note: "hello"), allCurrencies: [:])
         
         /*await addNewTransaction(
             id: "ethereum",
-            event: NewSwapTransaction(
+            event: PortfolioSwapTransaction(
                 fromCurrency: "BTC",
                 fromAmount: 0.5,
                 fromUnitPrice: 1300,
@@ -140,8 +140,8 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
     
     func migratePortfolio() async {
         await ensureCacheLoaded()
-        let saved: [NewPortfolioModel] = await coreDataManager.get(forKey: .portfolio) ?? []
-        let old = GlobalFunctions.shared.getSavedPortfolio()
+        let saved: [PortfolioModel] = await coreDataManager.get(forKey: .portfolio) ?? []
+        let old = WidgetReloadService.shared.getSavedPortfolio()
         
         guard !old.isEmpty, saved.isEmpty else { return }
         
@@ -395,10 +395,10 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
         let resolvedCoin = await resolvedCoin(with: coin)
         let color = await colorHex(from: resolvedCoin.image)
 
-        if let event = event as? NewTransaction {
+        if let event = event as? PortfolioTransaction {
             let newPie = Pie(data: resolvedCoin, color: color, transactions: [event])
             await appendPie(newPie)
-        } else if let event = event as? NewSwapTransaction {
+        } else if let event = event as? PortfolioSwapTransaction {
             let newPie = Pie(data: resolvedCoin, color: color, swaps: [event])
             await appendPie(newPie)
         }  else if let event = event as? AddressImport {
@@ -432,9 +432,9 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
         }
         
         switch event {
-        case let event as NewTransaction:
+        case let event as PortfolioTransaction:
             portfolio.data[index].transactions.append(event)
-        case let event as NewSwapTransaction:
+        case let event as PortfolioSwapTransaction:
             portfolio.data[index].swaps.append(event)
         case let event as AddressImport:
             portfolio.data[index].imports.append(event)
@@ -724,6 +724,6 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
         await updatePortfolioCache(with: portfolio)
         await coreDataManager.set(portfolio.data.compactMap { $0.toPortfolioCurrencyModel }, forKey: .portfolio)
         portfolioModels = await coreDataManager.get(forKey: .portfolio) ?? []
-        GlobalFunctions.shared.forceUpdateWidgets(type: .portfolio)
+        WidgetReloadService.shared.forceUpdateWidgets(type: .portfolio)
     }
 }

@@ -143,7 +143,7 @@ extension ComplicationController {
                         .foregroundColor(.onSurface)
                         .font(.semiboldWidget18)
                     
-                    NewPriceChangePercentView(
+                    PriceChangePercentView(
                         change: currency?.market_data?.price_change_percentage_7d,
                         accessibleTimeframe: "7 days",
                         isDownloading: currency == nil

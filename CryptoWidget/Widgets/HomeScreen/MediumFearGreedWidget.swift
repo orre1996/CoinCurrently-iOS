@@ -107,7 +107,7 @@ struct MediumFearGreedWidget: View {
                     
                 }
                 .overlay (
-                    BuyProView(
+                    WidgetBuyProOverlay(
                         hasBoughtPro: hasBoughtPro
                     )
                 )

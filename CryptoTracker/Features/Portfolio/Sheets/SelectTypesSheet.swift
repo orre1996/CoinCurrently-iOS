@@ -16,7 +16,7 @@ struct SelectTypesSheet: View {
     @ScaledMetric private var scale: CGFloat = 1
 
     let fromScreen: ScreenLabel
-    @Binding var transactionTypes: [NewTransactionType]
+    @Binding var transactionTypes: [PortfolioTransactionType]
     
     @State private var contentHeight: CGFloat = 0
     @State private var headerHeight: CGFloat = 0
@@ -172,7 +172,7 @@ struct SelectTypesSheet: View {
         )
     }
     
-    private func toggleType(_ type: NewTransactionType) {
+    private func toggleType(_ type: PortfolioTransactionType) {
         if transactionTypes.contains(type) {
             transactionTypes.removeAll(where: { $0 == type })
             AnalyticsManager.shared.log(

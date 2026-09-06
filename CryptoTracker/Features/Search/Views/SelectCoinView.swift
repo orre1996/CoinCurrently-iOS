@@ -60,7 +60,7 @@ struct SelectCoinView: View {
             
             VStack(alignment: .leading, spacing: 0) {
                 if toplist == nil || toplist?.symbol != nil {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: toplist?.symbol?.uppercased() ?? "0000",
                         isDownloading: toplist?.symbol == nil
                     )
@@ -69,7 +69,7 @@ struct SelectCoinView: View {
                 }
 
                 if toplist == nil || toplist?.name != nil {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: toplist?.name ?? "000000",
                         isDownloading: toplist?.name == nil
                     )

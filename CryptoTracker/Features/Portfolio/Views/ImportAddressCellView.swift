@@ -31,7 +31,7 @@ struct ImportAddressCellView: View {
                 .foregroundStyle(Color.onSurface)
                 .font(.satoshiBold(16))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: hideData ? String.stars : "+\((Double(walletImport?.balance ?? "0") ?? 0).formatCurrency(threshold: FormattingThreshold.million, currency: CurrencyModel.empty)) \(symbol?.uppercased() ?? "")",
                     isDownloading: walletImport == nil
                 )

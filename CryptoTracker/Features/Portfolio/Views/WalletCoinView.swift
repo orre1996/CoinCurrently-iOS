@@ -146,14 +146,14 @@ struct WalletCoinView: View {
     
     private var coinInfoView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: toplist?.symbol?.uppercased() ?? token?.tokenSymbol.uppercased() ?? "",
                 isDownloading: isDownloading
             )
             .font(.satoshiBold(16))
             .foregroundStyle(Color.onSurface)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: toplist?.name ?? token?.tokenSymbol.uppercased() ?? "",
                 isDownloading: isDownloading
             )
@@ -169,7 +169,7 @@ struct WalletCoinView: View {
     @ViewBuilder
     private var holdingsView: some View {
         VStack(alignment: .trailing, spacing: 4) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: formattedAmount,
                 isDownloading: isDownloading
             )
@@ -177,7 +177,7 @@ struct WalletCoinView: View {
             .foregroundStyle(Color.onSurface)
             .multilineTextAlignment(.trailing)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: formattedValue,
                 isDownloading: isDownloading
             )
@@ -191,7 +191,7 @@ struct WalletCoinView: View {
     
     @ViewBuilder
     private var holdingsSubtitleView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: formattedAmount,
             isDownloading: isDownloading
         )
@@ -199,7 +199,7 @@ struct WalletCoinView: View {
         .font(.satoshiBold(12))
         .multilineTextAlignment(.leading)
         
-        NewShimmeringText(
+        ShimmeringText(
             text: formattedValue,
             isDownloading: isDownloading
         )
@@ -215,7 +215,7 @@ struct WalletCoinView: View {
             extraSize: 16 * min(scale, 1.5) + 4,
             alignment: .trailing
         ) {
-            NewPriceChangePercentView(
+            PriceChangePercentView(
                 change: toplist?.price_change_percentage_7d_in_currency,
                 accessibleTimeframe: "7 days",
                 isDownloading: isDownloading

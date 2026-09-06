@@ -29,22 +29,22 @@ extension NavigationScreens {
                 compareId: compareId
             )
             
-        case .NewPortfolioTransaction(let transactionType, let currencyDataModel, let transaction):
-            NewTransactionScreen(
+        case .AddPortfolioTransaction(let transactionType, let currencyDataModel, let transaction):
+            AddTransactionScreen(
                 transactionType: transactionType,
                 currencyDetail: currencyDataModel,
                 transaction: transaction
             )
             
-        case .NewSwapTransaction(let transactionType, let currencyDataModel, let transaction):
-            NewSwapTransactionScreen(
+        case .PortfolioSwapTransaction(let transactionType, let currencyDataModel, let transaction):
+            AddSwapTransactionScreen(
                 transactionType: transactionType,
                 currencyDetail: currencyDataModel,
                 transaction: transaction
             )
             
-        case .NewImportTransaction:
-            NewImportTransactionScreen()
+        case .ImportWalletTransaction:
+            ImportWalletTransactionScreen()
 
         case .Feedback:
             FeedbackScreen()

@@ -22,7 +22,7 @@ struct ComplicationView: View {
                 Text(currentCurrency?.market_data?.current_price?.getConvertedCurrency()?.formatCurrency(threshold: FormattingThreshold.none) ?? "")
                     .font(.satoshiBold(12))
                 
-                NewPriceChangePercentView(
+                PriceChangePercentView(
                     change: currentCurrency?.market_data?.price_change_percentage_7d,
                     size: .small,
                     accessibleTimeframe: "7 days",
@@ -32,7 +32,7 @@ struct ComplicationView: View {
             .lineLimit(1)
             .minimumScaleFactor(0.7)
     
-            NewChartView(
+            PriceLineChartView(
                 prices: currentCurrency?.market_data?.sparkline_7d?.price ?? getRandomPoints(),
                 color: currentCurrency?.market_data?.price_change_percentage_7d?.changeColor,
                 lineWidth: 1
@@ -54,7 +54,7 @@ struct ComplicationView: View {
                 .resizable()
                 .frame(width: 10, height: 10)
 
-            NewShimmeringText(
+            ShimmeringText(
                 text: prices?.min()?.formatCurrency(threshold: FormattingThreshold.none) ?? "00000",
                 isDownloading: prices?.isEmpty ?? true
             )
@@ -67,7 +67,7 @@ struct ComplicationView: View {
                 .frame(width: 10, height: 10)
                 .padding(.horizontal, 4)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: prices?.max()?.formatCurrency(threshold: FormattingThreshold.none) ?? "00000",
                 isDownloading: prices?.isEmpty ?? true
             )
@@ -82,7 +82,7 @@ struct ComplicationView: View {
             Spacer(minLength: 0)
             
             ForEach((1...3), id: \.self) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: getTimeInChart(at: $0),
                     isDownloading: currentCurrency == nil
                 )

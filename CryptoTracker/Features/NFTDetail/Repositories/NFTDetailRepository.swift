@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol NFTDetailsRepository: Actor {
+protocol NFTDetailRepository: Actor {
     var cachedNFTDetails: [String: CachedData<NFTDetail>] { get }
     var cachedNFTPrices: [String: CachedData<NFTPriceVolumeModel>] { get }
     var cachedNFTTickers: [String: CachedData<[NFTTicker]>] { get }
@@ -21,8 +21,8 @@ protocol NFTDetailsRepository: Actor {
     func getImage(url: String?) async -> UIImage?
 }
 
-final actor NFTDetailsRepositoryImp: NFTDetailsRepository {
-    static let shared = NFTDetailsRepositoryImp()
+final actor NFTDetailRepositoryImp: NFTDetailRepository {
+    static let shared = NFTDetailRepositoryImp()
 
     private let networkManager: NetworkManager
     

@@ -73,7 +73,7 @@ struct MultiWidgetEntryView: View {
             .widgetContainerBackground()
             
         case .accessoryRectangular:
-            RectangularCryptoWidget(
+            RectangularMultiCryptoWidget(
                 data: entry.cryptoInfos,
                 selectedCurrency: entry.selectedCurrency,
                 hasBoughtPro: entry.hasPro

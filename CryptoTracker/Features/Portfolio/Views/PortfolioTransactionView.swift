@@ -14,7 +14,7 @@ struct PortfolioTransactionView: View {
     @ScaledMetric private var scale: CGFloat = 1
     
     let coin: Toplist?
-    let transaction: NewTransaction?
+    let transaction: PortfolioTransaction?
     let prices: [String: Double]?
     let hideData: Bool
     let index: Int
@@ -76,14 +76,14 @@ struct PortfolioTransactionView: View {
             
             AdaptiveStack(isHorizontal: isHorizontal, spacing: 4, horizontalAlignment: .leading, verticalAlignment: .top) {
                 VStack(alignment: .leading, spacing: 4) {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: "\(transaction?.transactionText ?? "00000000") \(coin?.symbol?.uppercased() ?? "0000")",
                         isDownloading: transaction == nil
                     )
                     .foregroundStyle(Color.onSurface)
                     .font(.satoshiBold(16))
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: transaction?.date.formatted(date: .omitted, time: .shortened) ?? "000000",
                         isDownloading: transaction == nil
                     )
@@ -114,7 +114,7 @@ struct PortfolioTransactionView: View {
     @ViewBuilder
     private func valuesView(currency: CurrencyModel) -> some View {
         VStack(alignment: .trailing, spacing: 4) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: hideData ? String.stars : ((transaction?.amount ?? 0) * (currentPrice ?? 0)).formatCurrency(
                     threshold: FormattingThreshold.million,
                     currency: currency
@@ -124,7 +124,7 @@ struct PortfolioTransactionView: View {
             .foregroundStyle(Color.onSurface)
             .font(.satoshiBold(16))
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: hideData ? String.stars : "\(transaction?.getTransactionPrefixSign ?? "")\(transaction?.amount.formatCurrency(threshold: FormattingThreshold.million, currency: CurrencyModel.empty) ?? "000000")\(coin?.symbol?.uppercased() ?? "")",
                 isDownloading: transaction == nil
             )
@@ -138,7 +138,7 @@ struct PortfolioTransactionView: View {
     @ViewBuilder
     private func valuesSubtitleView(currency: CurrencyModel) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: hideData ? String.stars : ((transaction?.amount ?? 0) * (currentPrice ?? 0)).formatCurrency(
                     threshold: FormattingThreshold.million,
                     currency: currency
@@ -148,7 +148,7 @@ struct PortfolioTransactionView: View {
             .foregroundStyle(Color.onSurfaceDimmer)
             .font(.satoshiBold(12))
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: hideData ? String.stars : "\(transaction?.getTransactionPrefixSign ?? "")\(transaction?.amount.formatCurrency(threshold: FormattingThreshold.million, currency: CurrencyModel.empty) ?? "000000")\(coin?.symbol?.uppercased() ?? "")",
                 isDownloading: transaction == nil
             )

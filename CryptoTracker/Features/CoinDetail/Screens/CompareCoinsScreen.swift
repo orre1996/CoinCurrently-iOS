@@ -110,7 +110,7 @@ struct CompareCoinsScreen: View {
                             }
                             .padding(.horizontal, 16)
                             
-                            ChartButtonsView(
+                            ChartTypeButtonsView(
                                 fromScreen: .compareCoins,
                                 selectedGraphType: viewModel.currentChartType,
                                 isCandleChartEnabled: false,
@@ -197,7 +197,7 @@ struct CompareCoinsScreen: View {
                                 )
                             )
                             
-                            ChartButtonsViewNew(
+                            ChartTimeframeButtonsView(
                                 fromScreen: .compareCoins,
                                 chartButtons: ChartButton.getButtons(from: .anHour, to: .max),
                                 selectedNumber: viewModel.selectedTimeFrame.rawValue,
@@ -367,7 +367,7 @@ struct CompareCoinsScreen: View {
     
     @ViewBuilder
     private func mainGraph(halfBiggestChartValueHeight: CGFloat) -> some View {
-        NewChartView(
+        PriceLineChartView(
             prices: viewModel.getPrices(),
             color: Color.primary50,
             isGraphFilled: false,
@@ -393,7 +393,7 @@ struct CompareCoinsScreen: View {
     
     @ViewBuilder
     private func compareGraph(halfBiggestChartValueHeight: CGFloat) -> some View {
-        NewChartView(
+        PriceLineChartView(
             prices: viewModel.getComparePrices(),
             color: Color.blue50,
             isGraphFilled: false,
@@ -420,7 +420,7 @@ struct CompareCoinsScreen: View {
                 color: Color.primary50
             )
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: viewModel.cryptoInfo?.symbol?.uppercased() ?? "0000",
                 isDownloading: viewModel.cryptoInfo == nil
             )
@@ -432,7 +432,7 @@ struct CompareCoinsScreen: View {
                 color: Color.blue50
             )
     
-            NewShimmeringText(
+            ShimmeringText(
                 text: viewModel.comparedCryptoInfo?.symbol?.uppercased() ?? "0000",
                 isDownloading: viewModel.comparedCryptoInfo == nil
             )

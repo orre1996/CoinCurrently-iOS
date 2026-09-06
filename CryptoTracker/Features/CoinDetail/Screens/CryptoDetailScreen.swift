@@ -106,7 +106,7 @@ struct CryptoDetailScreen: View {
                             )
                             .padding(.horizontal, 16)
                             
-                            ChartButtonsView(
+                            ChartTypeButtonsView(
                                 fromScreen: .cryptoDetail,
                                 selectedGraphType: viewModel.currentChartType,
                                 isCandleChartEnabled: viewModel.isCandleChartEnabled,
@@ -195,7 +195,7 @@ struct CryptoDetailScreen: View {
                                 )
                             )
                             
-                            ChartButtonsViewNew(
+                            ChartTimeframeButtonsView(
                                 fromScreen: .cryptoDetail,
                                 chartButtons: ChartButton.getButtons(from: .anHour, to: .max),
                                 selectedNumber: viewModel.selectedTimeFrame.rawValue,
@@ -253,12 +253,12 @@ struct CryptoDetailScreen: View {
                                         viewModel: portfolioViewModel,
                                         showAddTransactionSheet: $showAddTransactionSheet,
                                         showTransactionDetails: { event in
-                                            if let transaction = event as? NewTransaction {
+                                            if let transaction = event as? PortfolioTransaction {
                                                 AnalyticsManager.shared.log(
                                                     SheetOpened(fromScreen: .cryptoDetail, sheet: .portfolioTransactionDetails)
                                                 )
                                                 selectedEvent = PortfolioEventWrapper.transaction(transaction)
-                                            } else if let swap = event as? NewSwapTransaction {
+                                            } else if let swap = event as? PortfolioSwapTransaction {
                                                 AnalyticsManager.shared.log(
                                                     SheetOpened(fromScreen: .cryptoDetail, sheet: .portfolioTransactionDetails)
                                                 )
@@ -384,7 +384,7 @@ struct CryptoDetailScreen: View {
                     return
                 }
 
-                if let transaction = event as? NewTransaction {
+                if let transaction = event as? PortfolioTransaction {
                     navigationViewModel.showSnackbar(
                         message: "\(coin.symbol?.uppercased() ?? "Coin") transaction added to your portfolio!",
                         buttonTitle: "View Details",
@@ -396,7 +396,7 @@ struct CryptoDetailScreen: View {
                             selectedEvent = PortfolioEventWrapper.transaction(transaction)
                         }
                     )
-                } else if let swap = event as? NewSwapTransaction {
+                } else if let swap = event as? PortfolioSwapTransaction {
                     navigationViewModel.showSnackbar(
                         message: "\(coin.symbol?.uppercased() ?? "Coin") transaction added to your portfolio!",
                         buttonTitle: "View Details",
@@ -644,7 +644,7 @@ struct CryptoDetailScreen: View {
             )
         }
         .sheet(isPresented: $showAddAlert) {
-            NewPriceAlertSheet(
+            CreatePriceAlertSheet(
                 currencyDataModel: viewModel.cryptoInfo,
                 selectedCurrency: selectedAlertCurrencyModel,
                 isLoading: isAddingAlert,
@@ -721,7 +721,7 @@ struct CryptoDetailScreen: View {
                             Navigate(fromScreen: .cryptoDetail, toScreen: .newSwapTransaction, coinName: viewModel.cryptoInfo?.name)
                         )
                         navigationViewModel.navPath.append(
-                            NavigationScreens.NewSwapTransaction(
+                            NavigationScreens.PortfolioSwapTransaction(
                                 transactionType: type,
                                 currencyDataModel: viewModel.cryptoInfo,
                                 transaction: nil
@@ -732,7 +732,7 @@ struct CryptoDetailScreen: View {
                             Navigate(fromScreen: .cryptoDetail, toScreen: .newPortfolioTransaction, coinName: viewModel.cryptoInfo?.name)
                         )
                         navigationViewModel.navPath.append(
-                            NavigationScreens.NewPortfolioTransaction(
+                            NavigationScreens.AddPortfolioTransaction(
                                 transactionType: type,
                                 currencyDataModel: viewModel.cryptoInfo,
                                 transaction: nil
@@ -760,7 +760,7 @@ struct CryptoDetailScreen: View {
                             )
                         )
                         navigationViewModel.navPath.append(
-                            NavigationScreens.NewPortfolioTransaction(
+                            NavigationScreens.AddPortfolioTransaction(
                                 transactionType: $0.transactionType,
                                 currencyDataModel: coin?.toCryptoDetail,
                                 transaction: $0
@@ -798,7 +798,7 @@ struct CryptoDetailScreen: View {
                             )
                         )
                         navigationViewModel.navPath.append(
-                            NavigationScreens.NewSwapTransaction(
+                            NavigationScreens.PortfolioSwapTransaction(
                                 transactionType: .swap,
                                 currencyDataModel: CurrencyDataModel(
                                     id: $0.fromCurrencyId,
@@ -944,7 +944,7 @@ struct CryptoDetailScreen: View {
     @ViewBuilder
     private var hoverTexts: some View {
         if viewModel.hoverHelper.hoverPrices.count == 2 {
-            NewMultiHoverTextView(
+            MultiHoverTextView(
                 hoverTimes: viewModel.hoverHelper.hoverTimes,
                 differenceValue: viewModel.differenceValue,
                 differencePercent: viewModel.differencePercent,
@@ -971,7 +971,7 @@ struct CryptoDetailScreen: View {
     private func mainGraph(
         halfBiggestChartValueHeight: CGFloat,
     ) -> some View {
-        NewChartView(
+        PriceLineChartView(
             prices: viewModel.getPrices(),
             color: viewModel.graphColor,
             lineWidth: 2,

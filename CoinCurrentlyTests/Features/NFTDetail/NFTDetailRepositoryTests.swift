@@ -8,7 +8,7 @@ struct NFTDetailRepositoryTests {
     func getNFTDetailWithNilId() async {
         let mock = MockRepoNetworkManager()
 
-        let repo = NFTDetailsRepositoryImp(
+        let repo = NFTDetailRepositoryImp(
             networkManager: mock
         )
 
@@ -20,7 +20,7 @@ struct NFTDetailRepositoryTests {
     func getNFTPricesWithNilId() async {
         let mock = MockRepoNetworkManager()
 
-        let repo = NFTDetailsRepositoryImp(
+        let repo = NFTDetailRepositoryImp(
             networkManager: mock
         )
 
@@ -32,7 +32,7 @@ struct NFTDetailRepositoryTests {
     func getNFTTickersWithNilId() async {
         let mock = MockRepoNetworkManager()
 
-        let repo = NFTDetailsRepositoryImp(
+        let repo = NFTDetailRepositoryImp(
             networkManager: mock
         )
 

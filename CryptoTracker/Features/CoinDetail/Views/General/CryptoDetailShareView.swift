@@ -81,7 +81,7 @@ struct CryptoDetailShareView: View {
 
     @ViewBuilder
     private func mainGraph(halfBiggestChartValueHeight: CGFloat) -> some View {
-        NewChartView(
+        PriceLineChartView(
             prices: viewModel.onlyPrices,
             color: viewModel.graphColor,
             lineWidth: 2,

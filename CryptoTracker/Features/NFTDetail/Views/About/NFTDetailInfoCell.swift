@@ -49,7 +49,7 @@ struct NFTDetailInfoCell: View {
     }
 
     private var headerView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: title ?? "000000000",
             isDownloading: downloading
         )
@@ -80,7 +80,7 @@ struct NFTDetailInfoCell: View {
                             .accessibilityHidden(true)
                     }
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: content,
                         isDownloading: title == nil
                     )

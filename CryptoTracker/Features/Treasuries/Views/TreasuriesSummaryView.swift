@@ -23,7 +23,7 @@ struct TreasuriesSummaryView: View {
                 .font(.satoshiBold(18))
                 .foregroundStyle(Color.onSurfaceDim)
 
-            NewShimmeringText(
+            ShimmeringText(
                 text: formattedTotalHoldings(isHorizontal: isHorizontal),
                 isDownloading: totalHoldings == nil
             )
@@ -46,7 +46,7 @@ struct TreasuriesSummaryView: View {
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
 
-            NewShimmeringText(
+            ShimmeringText(
                 text: "\(formattedDominance)%",
                 isDownloading: marketCapDominance == nil
             )

@@ -82,7 +82,7 @@ struct CategoryItemView: View {
     }
     
     private var nameView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: currentCategory?.name ?? "00000000000000",
             isDownloading: currentCategory == nil
         )
@@ -106,7 +106,7 @@ struct CategoryItemView: View {
             text: "Market Cap",
             alignment: .trailing
         ) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: formattedMarketCap,
                 isDownloading: isDownloadingMarketCap
             )
@@ -118,7 +118,7 @@ struct CategoryItemView: View {
     
     @ViewBuilder
     private var marketCapSubtitleView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: formattedMarketCap,
             isDownloading: isDownloadingMarketCap
         )
@@ -137,7 +137,7 @@ struct CategoryItemView: View {
             extraSize: 16 * min(scale, 1.5) + 4,
             alignment: .trailing
         ) {
-            NewPriceChangePercentView(
+            PriceChangePercentView(
                 change: currentCategory?.market_cap_change_24h,
                 accessibleTimeframe: "24 hour",
                 isDownloading: isLoading

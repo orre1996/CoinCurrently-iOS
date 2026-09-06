@@ -88,7 +88,7 @@ struct DerivativeItem: View {
     }
     
     private var nameView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: currentDerivative?.name ?? "000000000",
             isDownloading: currentDerivative == nil
         )
@@ -104,7 +104,7 @@ struct DerivativeItem: View {
             text: "24h Volume",
             alignment: .trailing
         ) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: formattedOpenInterest,
                 isDownloading: isDownloadingOpenInterest
             )
@@ -128,7 +128,7 @@ struct DerivativeItem: View {
     
     @ViewBuilder
     private var interestSubtitleView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: formattedOpenInterest,
             isDownloading: isDownloadingOpenInterest
         )
@@ -147,7 +147,7 @@ struct DerivativeItem: View {
             text: "24h Volume",
             alignment: .trailing
         ) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: totalVolume.formatCurrency(),
                 isDownloading: currentDerivative == nil || bitcoin?.market_data?.current_price == nil
             )

@@ -59,7 +59,7 @@ struct LargeFearGreedWidget: View {
                             
                             WidgetChartBackground()
                             
-                            NewChartView(
+                            PriceLineChartView(
                                 prices: prices,
                                 color: fearGreedModel?.data?.isEmpty ?? true ? Color.onSurfaceDim(for: scheme) : getIndexColor(
                                     indexValue: fearGreedModel?.data?.first?.value ?? "0",
@@ -167,7 +167,7 @@ struct LargeFearGreedWidget: View {
                     }
                 }
                 .overlay (
-                    BuyProView(
+                    WidgetBuyProOverlay(
                         hasBoughtPro: hasBoughtPro
                     )
                 )

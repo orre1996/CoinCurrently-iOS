@@ -11,13 +11,13 @@ import SwiftUI
 struct Pie: Codable, Hashable, Equatable {
     let data: Toplist?
     var color: String? = nil
-    var transactions: [NewTransaction] = []
-    var swaps: [NewSwapTransaction] = []
+    var transactions: [PortfolioTransaction] = []
+    var swaps: [PortfolioSwapTransaction] = []
     var imports: [AddressImport] = []
     
-    var toPortfolioCurrencyModel: NewPortfolioModel? {
+    var toPortfolioCurrencyModel: PortfolioModel? {
         data?.id.map {
-            NewPortfolioModel(
+            PortfolioModel(
                 id: $0,
                 transactions: transactions,
                 swaps: swaps,

@@ -19,13 +19,13 @@ struct MarketShareView: View {
         HStack(spacing: 4) {
             circleView
 
-            NewShimmeringText(
+            ShimmeringText(
                 text: coin?.symbol.uppercased() ?? "000",
                 isDownloading: coin == nil
             )
             .foregroundStyle(Color.onSurface)
 
-            NewShimmeringText(
+            ShimmeringText(
                 text: "\(roundedChange.formatted(.number.precision(.fractionLength(2))))%",
                 isDownloading: coin?.percentage == nil
             )

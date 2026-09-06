@@ -76,7 +76,7 @@ struct CompareStatisticsView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: mainPriceFormatted,
                         isDownloading: mainPrice == nil
                     )
@@ -92,7 +92,7 @@ struct CompareStatisticsView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: comparePriceFormatted,
                         isDownloading: comparePrice == nil
                     )
@@ -124,7 +124,7 @@ struct CompareStatisticsView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewPriceChangePercentView(
+                    PriceChangePercentView(
                         change: mainPriceChange,
                         accessibleTimeframe: selectedTimeframe.accessibilityTimeframe,
                         isDownloading: mainPriceChange == nil
@@ -141,7 +141,7 @@ struct CompareStatisticsView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewPriceChangePercentView(
+                    PriceChangePercentView(
                         change: comparePriceChange,
                         accessibleTimeframe: selectedTimeframe.accessibilityTimeframe,
                         isDownloading: comparePriceChange == nil
@@ -195,14 +195,14 @@ struct CompareStatisticsView: View {
                     .accessibilityHidden(true)
                     
                     HStack(spacing: 4) {
-                        NewShimmeringText(
+                        ShimmeringText(
                             text: mainMarketCap?.formatCurrency() ?? "000000000",
                             isDownloading: mainMarketCap == nil
                         )
                         .foregroundStyle(Color.onSurface)
                         .font(.satoshiBold(16))
                         
-                        NewShimmeringText(
+                        ShimmeringText(
                             text: mainRank == nil ? "-" : "#\(mainRank ?? 0)",
                             isDownloading: mainMarketCap == nil
                         )
@@ -225,14 +225,14 @@ struct CompareStatisticsView: View {
                     .accessibilityHidden(true)
                     
                     HStack(spacing: 4) {
-                        NewShimmeringText(
+                        ShimmeringText(
                             text: compareMarketCap?.formatCurrency() ?? "000000000",
                             isDownloading: compareMarketCap == nil
                         )
                         .foregroundStyle(Color.onSurface)
                         .font(.satoshiBold(16))
                         
-                        NewShimmeringText(
+                        ShimmeringText(
                             text: compareRank == nil ? "-" : "#\(compareRank ?? 0)",
                             isDownloading: compareMarketCap == nil
                         )
@@ -285,7 +285,7 @@ struct CompareStatisticsView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: mainVolume?.formatCurrency() ?? "000000000",
                         isDownloading: mainVolume == nil
                     )
@@ -303,7 +303,7 @@ struct CompareStatisticsView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: compareVolume?.formatCurrency() ?? "000000000",
                         isDownloading: compareVolume == nil
                     )
@@ -355,7 +355,7 @@ struct CompareStatisticsView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: mainSupply?.formatCurrency(currency: CurrencyModel.empty) ?? "000000000",
                         isDownloading: mainSupply == nil
                     )
@@ -371,7 +371,7 @@ struct CompareStatisticsView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: compareSupply?.formatCurrency(currency: CurrencyModel.empty) ?? "000000000",
                         isDownloading: compareSupply == nil
                     )

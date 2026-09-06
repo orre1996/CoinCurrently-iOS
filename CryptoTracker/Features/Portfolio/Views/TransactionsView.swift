@@ -12,7 +12,7 @@ struct TransactionsView: View {
     let groupedTransactions: [Date: [any PortfolioEvent]]
     let prices: [Cryptocurrency]
     let hideData: Bool
-    let typeFilters: [NewTransactionType]
+    let typeFilters: [PortfolioTransactionType]
     let dateFilter: DateOption
     let coinFilters: [Toplist]
     let typeFilterPressed: () -> Void
@@ -187,7 +187,7 @@ struct TransactionsView: View {
                 let coinPrices = prices.first(where: { price in price.id == coin?.id })?.prices
                 let events = groupedTransactions[date] ?? []
                 
-                if let transaction = event as? NewTransaction {
+                if let transaction = event as? PortfolioTransaction {
                     PortfolioTransactionView(
                         coin: coin,
                         transaction: transaction,
@@ -199,7 +199,7 @@ struct TransactionsView: View {
                             showTransactionDetails(transaction)
                         }
                     )
-                } else if let swap = event as? NewSwapTransaction {
+                } else if let swap = event as? PortfolioSwapTransaction {
                     PortfolioSwapView(
                         coin: coin,
                         transaction: swap,
@@ -212,7 +212,7 @@ struct TransactionsView: View {
                         }
                      )
                 } else if let walletImport = event as? AddressImport {
-                    PortfolioImportTransaction(
+                    PortfolioImportTransactionView(
                         coin: coin,
                         walletImport: walletImport,
                         prices: prices,

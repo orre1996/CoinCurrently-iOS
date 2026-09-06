@@ -51,7 +51,7 @@ struct MediumMultiWidget: View {
             }
         }
         .overlay (
-            BuyProView(
+            WidgetBuyProOverlay(
                 hasBoughtPro: hasBoughtPro
             )
         )

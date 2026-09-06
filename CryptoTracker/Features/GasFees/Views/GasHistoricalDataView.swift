@@ -67,14 +67,14 @@ struct GasHistoricalDataView: View {
                 .accessibilityLabel("Estimated cost \(title)")
                 .padding(.bottom, 4)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: "\(value?.formatCurrency(currency: CurrencyModel.empty, minDecimals: 3, maxDecimals: 3) ?? " ") Gwei",
                 isDownloading: value == nil
             )
             .font(.satoshiBold(16))
             .foregroundStyle(Color.onSurface)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: currentStatus,
                 isDownloading: value == nil
             )

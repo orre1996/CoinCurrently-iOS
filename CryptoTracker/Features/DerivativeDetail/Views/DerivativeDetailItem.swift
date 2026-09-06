@@ -79,7 +79,7 @@ struct DerivativeDetailItem: View {
     
     private var symbolView: some View {
         VStack(alignment: .leading, spacing: 0) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: derivativeDetail?.symbol ?? "000000",
                 isDownloading: derivativeDetail?.symbol == nil
             )
@@ -87,7 +87,7 @@ struct DerivativeDetailItem: View {
             .font(.satoshiBold(16))
             
             if isFutures {
-                NewShimmeringText(
+                ShimmeringText(
                     text: derivativeDetail?.expired_at.map { $0.timeUntilExpired } ?? "-",
                     isDownloading: derivativeDetail == nil
                 )
@@ -119,7 +119,7 @@ struct DerivativeDetailItem: View {
     private var priceView: some View {
         let lastPrice = (Double(derivativeDetail?.converted_last?.usd ?? "0") ?? 0) * (multiplier ?? 0)
         
-        NewShimmeringText(
+        ShimmeringText(
             text: derivativeDetail?.converted_last == nil || multiplier == nil ? "00000000" : lastPrice.formatCurrency(threshold: FormattingThreshold.none),
             isDownloading: derivativeDetail?.converted_last == nil || multiplier == nil
         )
@@ -151,7 +151,7 @@ struct DerivativeDetailItem: View {
             text: "Open Interest",
             alignment: .trailing
         ) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: formattedOpenInterest,
                 isDownloading: isDownloadingOpenInterest
             )
@@ -165,7 +165,7 @@ struct DerivativeDetailItem: View {
     
     @ViewBuilder
     private var openInterestSubtitleView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: formattedOpenInterest,
             isDownloading: isDownloadingOpenInterest
         )

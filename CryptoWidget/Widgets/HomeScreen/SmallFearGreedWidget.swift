@@ -26,7 +26,7 @@ struct SmallFearGreedWidget: View {
                 let indexValue = fearGreedModel?.data?.first?.value
                 let percent = CGFloat((Double(indexValue ?? "0") ?? 0) / 100)
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: indexValue ?? "0",
                     isDownloading: fearGreedModel == nil
                 )
@@ -34,7 +34,7 @@ struct SmallFearGreedWidget: View {
                 .font(.satoshiBold(56))
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: fearGreedModel?.data?.first?.value_classification ?? "0",
                     isDownloading: fearGreedModel == nil
                 )

@@ -89,7 +89,7 @@ struct CryptoDetailSummaryView: View {
                 HStack(spacing: 8) {
                     cryptoImage
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: name ?? "000000",
                         isDownloading: name == nil
                     )
@@ -148,7 +148,7 @@ struct CryptoDetailSummaryView: View {
     
     @ViewBuilder
     private var priceView: some View {
-        let priceText = NewShimmeringText(
+        let priceText = ShimmeringText(
             text: currentPrice?.formatCurrency(threshold: displayFormattingThreshold, currency: currency) ?? "000000000",
             isDownloading: currentPrice == nil,
             useNumericContentTransition: isWebSocketEnabled
@@ -187,7 +187,7 @@ struct CryptoDetailSummaryView: View {
     
     @ViewBuilder
     private var changeValueLabel: some View {
-        let label = NewPriceChangeValueView(
+        let label = PriceChangeValueView(
             change: changeValue,
             size: .extraSmall,
             formattingThreshold: shortChange || isHorizontalChangeLayout ? FormattingThreshold.thousand : FormattingThreshold.none,
@@ -205,7 +205,7 @@ struct CryptoDetailSummaryView: View {
     
     @ViewBuilder
     private var changePercentLabel: some View {
-        let label = NewShimmeringText(
+        let label = ShimmeringText(
             text: "(\(formattedChange)%)",
             isDownloading: prices?.isEmpty ?? true,
             useNumericContentTransition: isWebSocketEnabled

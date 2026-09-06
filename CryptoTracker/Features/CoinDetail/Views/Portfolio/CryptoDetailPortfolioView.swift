@@ -154,7 +154,7 @@ struct CryptoDetailPortfolioView: View {
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: "\(amount?.formatCurrency(currency: CurrencyModel.empty) ?? "00000") \(symbol)",
                 isDownloading: groupedTransactions == nil
             )
@@ -187,7 +187,7 @@ struct CryptoDetailPortfolioView: View {
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: (amount * currentPrice).formatCurrency(threshold: FormattingThreshold.million),
                 isDownloading: groupedTransactions == nil
             )
@@ -216,7 +216,7 @@ struct CryptoDetailPortfolioView: View {
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: cost?.formatCurrency(threshold: FormattingThreshold.million) ?? "0000000",
                 isDownloading: groupedTransactions == nil
             )
@@ -245,7 +245,7 @@ struct CryptoDetailPortfolioView: View {
                 .foregroundStyle(Color.onSurfaceDim)
             
             VStack(alignment: .leading, spacing: 0) {
-                NewPriceChangeValueView(
+                PriceChangeValueView(
                     change: profitValue,
                     hideData: viewModel.hidePortfolioData,
                     accessibleTimeframe: "",
@@ -253,7 +253,7 @@ struct CryptoDetailPortfolioView: View {
                     isDownloading: prices?.isEmpty ?? true
                 )
                 
-                NewPriceChangePercentView(
+                PriceChangePercentView(
                     change: profitPercent,
                     size: .extraSmall,
                     accessibleTimeframe: "",
@@ -349,7 +349,7 @@ struct CryptoDetailPortfolioView: View {
                         let coin = viewModel.portfolio?.pie(containing: event)?.data
                         let events = groupedTransactions[date] ?? []
                         
-                        if let transaction = event as? NewTransaction {
+                        if let transaction = event as? PortfolioTransaction {
                             PortfolioTransactionView(
                                 coin: coin,
                                 transaction: transaction,
@@ -361,7 +361,7 @@ struct CryptoDetailPortfolioView: View {
                                     showTransactionDetails(transaction)
                                 }
                             )
-                        } else if let swap = event as? NewSwapTransaction {
+                        } else if let swap = event as? PortfolioSwapTransaction {
                             PortfolioSwapView(
                                 coin: coin,
                                 transaction: swap,
@@ -374,7 +374,7 @@ struct CryptoDetailPortfolioView: View {
                                 }
                             )
                         } else if let walletImport = event as? AddressImport {
-                            PortfolioImportTransaction(
+                            PortfolioImportTransactionView(
                                 coin: coin,
                                 walletImport: walletImport,
                                 prices: viewModel.allPrices,
@@ -403,7 +403,7 @@ struct CryptoDetailPortfolioView: View {
             
             VStack(alignment: .leading, spacing: 16) {
                 ForEach(0..<(isPad ? 4 : 2), id: \.self) { sectionIndex in
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: "Apr 7, 2025",
                         isDownloading: true
                     )

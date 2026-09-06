@@ -255,7 +255,7 @@ struct WalletDetailsScreen: View {
                     .foregroundStyle(Color.onSurfaceDim)
             } else {
                 OverflowLayout(spacing: 4) {
-                    NewPriceChangeValueView(
+                    PriceChangeValueView(
                         change: viewModel.changeValue,
                         size: .small,
                         accessibleTimeframe: "7 days",
@@ -268,7 +268,7 @@ struct WalletDetailsScreen: View {
                         : .number.precision(.fractionLength(2))
                     ).changeWithSymbol
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: "(\(formattedChange)%)",
                         isDownloading: viewModel.changePercent == nil
                     )

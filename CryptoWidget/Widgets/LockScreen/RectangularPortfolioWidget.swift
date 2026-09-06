@@ -29,7 +29,7 @@ struct RectangularPortfolioWidget: View {
                         
                         Spacer(minLength: 8)
                         
-                        NewShimmeringText(
+                        ShimmeringText(
                             text: entry?.totalValue?.formatCurrency() ?? "000000",
                             isDownloading: entry == nil
                         )
@@ -85,7 +85,7 @@ struct RectangularPortfolioWidget: View {
         ).changeWithSymbol
         
         OverflowLayout(spacing: 4) {
-            NewPriceChangeValueView(
+            PriceChangeValueView(
                 change: entry?.portfolioDailyChangeValue,
                 size: .extraSmall,
                 hideData: false,
@@ -94,7 +94,7 @@ struct RectangularPortfolioWidget: View {
             )
             .privacySensitive()
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: "(\(showDash ? "-" : (formattedChange + "%")))",
                 isDownloading: entry == nil || changePercent == nil
             )
@@ -110,7 +110,7 @@ struct RectangularPortfolioWidget: View {
     @ViewBuilder
     private func coinChangeRow(symbol: String?, pie: Pie?) -> some View {
         HStack(spacing: 0) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: symbol ?? "0000",
                 isDownloading: entry == nil
             )
@@ -135,7 +135,7 @@ struct RectangularPortfolioWidget: View {
         ).changeWithSymbol
         
         OverflowLayout(spacing: 4) {
-            NewPriceChangeValueView(
+            PriceChangeValueView(
                 change: entry?.dailyChangeValue(for: pie),
                 size: .extraSmall,
                 hideData: false,
@@ -144,7 +144,7 @@ struct RectangularPortfolioWidget: View {
             )
             .privacySensitive()
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: "(\(showDash ? "-" : (formattedChange + "%")))",
                 isDownloading: entry == nil || changePercent == nil
             )

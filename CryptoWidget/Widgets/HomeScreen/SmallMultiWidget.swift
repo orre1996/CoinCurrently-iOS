@@ -87,7 +87,7 @@ struct MultiWidgetCell: View {
                         .font(.regularWidget12)
                         .foregroundStyle(Color.onSurface(for: scheme))
                     
-                    NewPriceChangePercentView(
+                    PriceChangePercentView(
                         change: data?.price_change_percentage_7d_in_currency ?? 0,
                         size: .small,
                         accessibleTimeframe: "7 days",
@@ -99,7 +99,7 @@ struct MultiWidgetCell: View {
                     VStack {
                         Spacer()
                         
-                        NewChartView(
+                        PriceLineChartView(
                             prices: data?.sparkline_in_7d?.price ?? getRandomPoints(),
                             color: data?.price_change_percentage_7d_in_currency?.changeColor(for: scheme),
                         )

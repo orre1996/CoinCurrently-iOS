@@ -259,7 +259,7 @@ struct DerivativeDetailSheet: View {
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityHidden(true)
             
-            NewPriceChangePercentView(
+            PriceChangePercentView(
                 change: derivativeDetail.h24_percentage_change,
                 accessibleTimeframe: "24 hour",
                 isDownloading: false

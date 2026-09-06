@@ -57,7 +57,7 @@ struct CryptoDetailInfoCell: View {
     }
 
     private var headerView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: title ?? "000000000",
             isDownloading: downloading
         )
@@ -88,7 +88,7 @@ struct CryptoDetailInfoCell: View {
                                 .accessibilityHidden(true)
                         }
 
-                        NewShimmeringText(
+                        ShimmeringText(
                             text: displayLabel,
                             isDownloading: title == nil
                         )

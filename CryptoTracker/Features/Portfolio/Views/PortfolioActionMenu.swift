@@ -79,7 +79,7 @@ struct PortfolioActionMenu: View {
                                         Navigate(fromScreen: .portfolio, toScreen: .newImportTransaction)
                                     )
                                     navigationViewModel.navPath.append(
-                                        NavigationScreens.NewImportTransaction
+                                        NavigationScreens.ImportWalletTransaction
                                     )
                                 } else {
                                     AnalyticsManager.shared.log(

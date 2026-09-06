@@ -20,10 +20,10 @@ struct TransactionDetailSheet: View {
     @State private var buttonsHeight: CGFloat = 0
     
     let coin: Toplist?
-    let transaction: NewTransaction
+    let transaction: PortfolioTransaction
     let hideData: Bool
-    var editTransaction: (NewTransaction) -> Void
-    var deleteTransaction: (NewTransaction) -> Void
+    var editTransaction: (PortfolioTransaction) -> Void
+    var deleteTransaction: (PortfolioTransaction) -> Void
     
     private var transactionCurrency: CurrencyModel {
         CurrencyModel.allCurrencies.first(where: { $0.code.lowercased() == transaction.currency.lowercased() }) ?? SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
@@ -203,7 +203,7 @@ struct TransactionDetailSheet: View {
                 size: 24 * min(scale, 1.5)
             )
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: "\(transaction.transactionText) \(coin?.symbol?.uppercased() ?? "0000")",
                 isDownloading: coin == nil
             )

@@ -53,7 +53,7 @@ struct FearGreedScreen: View {
                                 ActivityIndicator()
                                     .padding(.trailing, biggestChartValue.width)
                             } else {
-                                NewChartView(
+                                PriceLineChartView(
                                     prices: viewModel.prices.normalized,
                                     color: viewModel.graphColor,
                                     lineWidth: 2,
@@ -118,7 +118,7 @@ struct FearGreedScreen: View {
                             )
                         )
                         
-                        ChartButtonsViewNew(
+                        ChartTimeframeButtonsView(
                             fromScreen: .fearGreed,
                             chartButtons: ChartButton.getButtons(from: .aWeek, to: .max),
                             selectedNumber: viewModel.timeChart.rawValue,
@@ -270,7 +270,7 @@ struct FearGreedScreen: View {
     @ViewBuilder
     private var hoverTexts: some View {
         if viewModel.hoverHelper.hoverPrices.count == 2 {
-            NewMultiHoverTextView(
+            MultiHoverTextView(
                 hoverTimes: viewModel.hoverHelper.hoverTimes,
                 differenceValue: viewModel.differenceValue,
                 differencePercent: viewModel.differencePercent,

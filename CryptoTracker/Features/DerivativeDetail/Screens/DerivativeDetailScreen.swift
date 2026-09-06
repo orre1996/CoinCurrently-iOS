@@ -185,7 +185,7 @@ struct DerivativeDetailScreen: View {
             }
             
             ToolbarItem(placement: .principal) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: navigationTitle.isEmpty ? "000000" : navigationTitle,
                     isDownloading: navigationTitle.isEmpty
                 )
@@ -275,7 +275,7 @@ struct DerivativeDetailScreen: View {
             let bitcoinPrice = viewModel.bitcoin?.market_data?.current_price?.getConvertedCurrency() ?? 0.0
             let addedVolume = volume * bitcoinPrice
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: addedVolume.formatCurrency(
                     threshold: FormattingThreshold.none,
                     maxDecimals: addedVolume < 1_000_000 ? 2 : 0
@@ -300,7 +300,7 @@ struct DerivativeDetailScreen: View {
                 let interest = viewModel.derativeDetail?.open_interest_btc ?? 0
                 let bitcoinPrice = viewModel.bitcoin?.market_data?.current_price?.getConvertedCurrency() ?? 0.0
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: (interest * bitcoinPrice).formatCurrency(),
                     isDownloading: viewModel.derativeDetail == nil || viewModel.bitcoin == nil
                 )
@@ -322,7 +322,7 @@ struct DerivativeDetailScreen: View {
                 let perpetuals = viewModel.derativeDetail?.number_of_perpetual_pairs ?? 0
                 let futures = viewModel.derativeDetail?.number_of_futures_pairs ?? 0
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: "\(perpetuals + futures)",
                     isDownloading: viewModel.derativeDetail == nil
                 )

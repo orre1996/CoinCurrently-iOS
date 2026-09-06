@@ -22,7 +22,7 @@ struct SmallPortfolioWidget: View {
                 .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
                 .font(.satoshiBold(12))
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: entry?.totalValue?.formatCurrency() ?? "000000",
                 isDownloading: entry == nil
             )
@@ -55,7 +55,7 @@ struct SmallPortfolioWidget: View {
         ).changeWithSymbol
 
         OverflowLayout(spacing: 4) {
-            NewPriceChangeValueView(
+            PriceChangeValueView(
                 change: entry?.portfolioDailyChangeValue,
                 size: .small,
                 hideData: false,
@@ -64,7 +64,7 @@ struct SmallPortfolioWidget: View {
             )
             .privacySensitive()
 
-            NewShimmeringText(
+            ShimmeringText(
                 text: "(\(showDash ? "-" : (formattedChange + "%")))",
                 isDownloading: entry == nil || changePercent == nil
             )

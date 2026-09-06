@@ -657,7 +657,7 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel, ChartHoverHosting {
         return CGPoint(x: x - 0.5, y: y.isNaN ? 0.5 * rect.height : y)
     }
     
-    /// Matches `NewChartView.realPrices`: normalize using the full series (including padding),
+    /// Matches `PriceLineChartView.realPrices`: normalize using the full series (including padding),
     /// then drop the synthetic tail points used only for compare-chart scaling.
     private func normalizedCompareChartPrices(from prices: [Double], dropCount: Int = 2) -> [Double] {
         guard !prices.isEmpty, let firstPrice = prices.first else { return [] }

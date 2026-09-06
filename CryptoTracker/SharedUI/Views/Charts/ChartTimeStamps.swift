@@ -19,7 +19,7 @@ struct ChartTimeStamps: View {
         
         HStack(alignment: .center, spacing: 4) {
             ForEach(1..<numberOfSteps + 1, id: \.self) { index in
-                NewShimmeringText(
+                ShimmeringText(
                     text: getTimeInChart(
                         at: index,
                         numberOfSteps: numberOfSteps

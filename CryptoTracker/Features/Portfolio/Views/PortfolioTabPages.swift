@@ -76,12 +76,12 @@ struct PortfolioTabPages: View {
                     temporaryCustomDate = DateOption.custom(startDate: nil, endDate: nil)
                 },
                 showTransactionDetails: { event in
-                    if let transaction = event as? NewTransaction {
+                    if let transaction = event as? PortfolioTransaction {
                         AnalyticsManager.shared.log(
                             SheetOpened(fromScreen: .portfolio, sheet: .portfolioTransactionDetails)
                         )
                         selectedEvent = PortfolioEventWrapper.transaction(transaction)
-                    } else if let swap = event as? NewSwapTransaction {
+                    } else if let swap = event as? PortfolioSwapTransaction {
                         AnalyticsManager.shared.log(
                             SheetOpened(fromScreen: .portfolio, sheet: .portfolioTransactionDetails)
                         )

@@ -48,7 +48,7 @@ struct GlobalMarketScreen: View {
                                 )
                             )
                             
-                            ChartButtonsView(
+                            ChartTypeButtonsView(
                                 fromScreen: .globalMarket,
                                 selectedGraphType: viewModel.selectedChartType,
                                 isCandleChartEnabled: false,
@@ -112,7 +112,7 @@ struct GlobalMarketScreen: View {
                                     )
                                 )
                                 
-                                ChartButtonsViewNew(
+                                ChartTimeframeButtonsView(
                                     fromScreen: .globalMarket,
                                     chartButtons: ChartButton.getButtons(from: .aDay, to: .max),
                                     selectedNumber: viewModel.selectedTimeFrame.rawValue,
@@ -215,7 +215,7 @@ struct GlobalMarketScreen: View {
     @ViewBuilder
     private var hoverTexts: some View {
         if viewModel.hoverHelper.hoverPrices.count == 2 {
-            NewMultiHoverTextView(
+            MultiHoverTextView(
                 hoverTimes: viewModel.hoverHelper.hoverTimes,
                 differenceValue: viewModel.differenceValue,
                 differencePercent: viewModel.differencePercent,
@@ -243,7 +243,7 @@ struct GlobalMarketScreen: View {
         halfBiggestChartValueHeight: CGFloat,
         geometryReader: GeometryProxy
     ) -> some View {
-        NewChartView(
+        PriceLineChartView(
             prices: viewModel.getPrices(),
             color: viewModel.graphColor,
             lineWidth: 2,
@@ -371,7 +371,7 @@ struct GlobalMarketScreen: View {
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityHidden(true)
             
-            NewPriceChangePercentView(
+            PriceChangePercentView(
                 change: viewModel.globalMarket?.data?.market_cap_change_percentage_24h_usd,
                 accessibleTimeframe: "24 hour",
                 isDownloading: viewModel.globalMarket?.data == nil
@@ -427,7 +427,7 @@ struct GlobalMarketScreen: View {
                 .accessibilityLabel(accessibleTitle)
                 .accessibilityHidden(valueAccessible != nil)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: value ?? "000000000000",
                 isDownloading: value == nil
             )

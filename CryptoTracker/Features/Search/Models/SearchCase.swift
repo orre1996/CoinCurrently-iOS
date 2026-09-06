@@ -30,7 +30,7 @@ enum SearchCase: String, Codable {
 
 enum SearchScreenCase: Codable, Equatable, Hashable {
     case search(list: SearchCase)
-    case transaction(transactionType: NewTransactionType)
+    case transaction(transactionType: PortfolioTransactionType)
     case fixedList(list: [Toplist])
     
     var title: String {

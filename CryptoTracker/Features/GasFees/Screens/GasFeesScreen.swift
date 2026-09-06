@@ -50,7 +50,7 @@ struct GasFeesScreen: View {
                                     .padding(.trailing, biggestChartValue.width)
                                     .accessibilityHidden(true)
                             } else {
-                                NewChartView(
+                                PriceLineChartView(
                                     prices: viewModel.prices,
                                     color: viewModel.graphColor,
                                     lineWidth: 2,
@@ -264,7 +264,7 @@ struct GasFeesScreen: View {
     @ViewBuilder
     private var hoverTexts: some View {
         if viewModel.hoverHelper.hoverPrices.count == 2 {
-            NewMultiHoverTextView(hoverTimes: viewModel.hoverHelper.hoverTimes,
+            MultiHoverTextView(hoverTimes: viewModel.hoverHelper.hoverTimes,
                                   differenceValue: viewModel.differenceValue,
                                   differencePercent: viewModel.differencePercent,
                                   color: viewModel.graphColor,

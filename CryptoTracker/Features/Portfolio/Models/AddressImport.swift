@@ -72,12 +72,12 @@ extension AddressImport {
         return [coinId ?? ""] + (tokenInfos?.compactMap { $0.tokenId } ?? [])
     }
     
-    var importTransaction: NewTransaction? {
+    var importTransaction: PortfolioTransaction? {
         guard let balance = Double(balance) else {
             return nil
         }
         
-        return NewTransaction(
+        return PortfolioTransaction(
             id: id,
             date: date,
             amount: balance,

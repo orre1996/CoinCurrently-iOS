@@ -53,7 +53,7 @@ struct MediumPortfolioWidget: View {
                     size: 16
                 )
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: entry?.dailyWinnerPie?.data?.symbol?.uppercased() ?? "0000",
                     isDownloading: entry == nil
                 )
@@ -78,7 +78,7 @@ struct MediumPortfolioWidget: View {
                     size: 16
                 )
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: entry?.dailyLoserPie?.data?.symbol?.uppercased() ?? "0000",
                     isDownloading: entry == nil
                 )
@@ -102,7 +102,7 @@ struct MediumPortfolioWidget: View {
         ).changeWithSymbol
 
         OverflowLayout(spacing: 4) {
-            NewPriceChangeValueView(
+            PriceChangeValueView(
                 change: entry?.dailyChangeValue(for: pie),
                 size: .small,
                 hideData: false,
@@ -111,7 +111,7 @@ struct MediumPortfolioWidget: View {
             )
             .privacySensitive()
 
-            NewShimmeringText(
+            ShimmeringText(
                 text: "(\(showDash ? "-" : (formattedChange + "%")))",
                 isDownloading: entry == nil || changePercent == nil
             )

@@ -133,7 +133,7 @@ struct ExchangeDetailScreen: View {
                                     )
                                 )
                                 
-                                ChartButtonsViewNew(
+                                ChartTimeframeButtonsView(
                                     fromScreen: .exchangeDetail,
                                     chartButtons: ChartButton.getButtons(from: .aDay, to: .aYear),
                                     selectedNumber: viewModel.selectedTimeFrame.rawValue,
@@ -277,7 +277,7 @@ struct ExchangeDetailScreen: View {
     @ViewBuilder
     private var hoverTexts: some View {
         if viewModel.hoverHelper.hoverPrices.count == 2 {
-            NewMultiHoverTextView(
+            MultiHoverTextView(
                 hoverTimes: viewModel.hoverHelper.hoverTimes,
                 differenceValue: viewModel.differenceValue,
                 differencePercent: viewModel.differencePercent,
@@ -305,7 +305,7 @@ struct ExchangeDetailScreen: View {
         halfBiggestChartValueHeight: CGFloat,
         geometryReader: GeometryProxy
     ) -> some View {
-        NewChartView(
+        PriceLineChartView(
             prices: viewModel.getPrices(),
             color: viewModel.graphColor,
             lineWidth: 2,

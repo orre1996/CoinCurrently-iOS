@@ -31,7 +31,7 @@ struct SmallNewsWidget: View {
         .blur(radius: showBuyProOverlay ? 5 : 0)
         .overlay {
             if showBuyProOverlay {
-                BuyProView(hasBoughtPro: false)
+                WidgetBuyProOverlay(hasBoughtPro: false)
             }
         }
         .widgetURL(resolvedWidgetURL(buyProURL: buyProURL, newsURL: newsURL))
@@ -47,7 +47,7 @@ struct SmallNewsWidget: View {
 
     private var content: some View {
         VStack(alignment: .leading, spacing: 8) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: newsItem?.title ?? "CoinCurrently",
                 isDownloading: newsItem == nil
             )
@@ -73,7 +73,7 @@ struct SmallNewsWidget: View {
             sentimentIcon
             
             if newsItem == nil || newsItem?.tickers?.isEmpty == false {
-                NewShimmeringText(
+                ShimmeringText(
                     text: newsItem?.tickers?.prefix(2).map({ $0 }).joined(separator: " · ") ?? "000",
                     isDownloading: newsItem == nil
                 )
@@ -113,7 +113,7 @@ struct SmallNewsWidget: View {
             .timeAgoDisplay ?? "000000"
         let text = "\(nonBreaking(source)) · \(nonBreaking(timeAgo))"
 
-        return NewShimmeringText(
+        return ShimmeringText(
             text: text,
             isDownloading: newsItem?.source_name == nil || newsItem?.date == nil
         )

@@ -18,7 +18,7 @@ struct SelectTransactionTypeSheet: View {
     @State var headerHeight: CGFloat = 0
     @State var contentHeight: CGFloat = 0
     
-    let transactionSelected: (NewTransactionType) -> Void
+    let transactionSelected: (PortfolioTransactionType) -> Void
     
     var body: some View {
         VStack(spacing: 0) {

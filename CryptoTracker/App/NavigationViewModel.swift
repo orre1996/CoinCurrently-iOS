@@ -60,7 +60,7 @@ final class NavigationViewModel {
     var showSnackBar = false
     var message = ""
     var buttonTitle = ""
-    var snackBarType = SnackBarTypes.success
+    var snackBarType = SnackbarTypes.success
     var canShowSnackbar = true
     var buttonCallback: () -> Void = { }
     var standardSnackbarIsVisible = false
@@ -242,7 +242,7 @@ final class NavigationViewModel {
     func showSnackbar(
         message: String,
         buttonTitle: String,
-        snackBarType: SnackBarTypes,
+        snackBarType: SnackbarTypes,
         buttonCallback: @escaping () -> Void
     ) {
         if canShowSnackbar || snackBarType == .success {

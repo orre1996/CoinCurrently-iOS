@@ -130,12 +130,12 @@ struct AchievementSnackbarView: View {
         timer?.invalidate()
         isSnackbarFocused = false
 
-        withAnimation(.easeIn(duration: SnackBarConstants.animationDuration)) {
+        withAnimation(.easeIn(duration: SnackbarConstants.animationDuration)) {
             isPresented = false
             offset = hiddenOffset
         }
 
-        dismissTimer = Timer.scheduledTimer(withTimeInterval: SnackBarConstants.animationDuration, repeats: false) { _ in
+        dismissTimer = Timer.scheduledTimer(withTimeInterval: SnackbarConstants.animationDuration, repeats: false) { _ in
             Task { @MainActor in
                 resetContent()
             }
@@ -151,7 +151,7 @@ struct AchievementSnackbarView: View {
         isSnackbarVisible = true
         canDrag = true
 
-        withAnimation(.easeOut(duration: SnackBarConstants.animationDuration)) {
+        withAnimation(.easeOut(duration: SnackbarConstants.animationDuration)) {
             isPresented = true
             offset = visibleOffset
         }
@@ -174,7 +174,7 @@ struct AchievementSnackbarView: View {
 
         guard !standardSnackbarIsVisible else { return }
 
-        timer = Timer.scheduledTimer(withTimeInterval: SnackBarConstants.displayDuration, repeats: false) { _ in
+        timer = Timer.scheduledTimer(withTimeInterval: SnackbarConstants.displayDuration, repeats: false) { _ in
             Task { @MainActor in
                 dismissSnackBar()
             }

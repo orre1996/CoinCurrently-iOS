@@ -29,7 +29,7 @@ struct FearGreedHistoricView: View {
             .foregroundStyle(Color.onSurfaceDimmer)
             .padding(.bottom, 4)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: indexValue ?? "000",
                 isDownloading: indexValue == nil
             )
@@ -40,7 +40,7 @@ struct FearGreedHistoricView: View {
                 text: longestStatus?.replacingOccurrences(of: " ", with: isAccessibilityEnabled ? " " : "\n") ?? "",
                 alignment: .top
             ) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: status?.replacingOccurrences(of: " ", with: isAccessibilityEnabled ? " " : "\n") ?? "000000",
                     isDownloading: status == nil
                 )

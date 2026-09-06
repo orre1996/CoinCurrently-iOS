@@ -66,7 +66,7 @@ struct NFTDetailStatisticsView: View {
                 let low = prices?.min()?.formatCurrency(threshold: FormattingThreshold.none, currency: chartCurrency)
                 let lowAccessible = accessibleRangePrice(prices?.min())
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: low ?? "00000000000",
                     isDownloading: prices?.isEmpty ?? true
                 )
@@ -78,7 +78,7 @@ struct NFTDetailStatisticsView: View {
                 let high = prices?.max()?.formatCurrency(threshold: FormattingThreshold.none, currency: chartCurrency)
                 let highAccessible = accessibleRangePrice(prices?.max())
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: high ?? "00000000000",
                     isDownloading: prices?.isEmpty ?? true
                 )
@@ -121,7 +121,7 @@ struct NFTDetailStatisticsView: View {
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: nftDetailInfo?.market_cap_rank == nil ? "-" : "#\(nftDetailInfo?.market_cap_rank ?? 0)",
                     isDownloading: nftDetailInfo == nil
                 )
@@ -145,7 +145,7 @@ struct NFTDetailStatisticsView: View {
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: marketCap?.formatCurrency(threshold: FormattingThreshold.none, currency: chartCurrency) ?? "00000000000",
                     isDownloading: nftDetailInfo?.market_cap == nil
                 )
@@ -171,7 +171,7 @@ struct NFTDetailStatisticsView: View {
                 
                 let dailySales = nftDetailInfo?.one_day_sales
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: dailySales?.formatted(.number.precision(.fractionLength(0))) ?? "-",
                     isDownloading: nftDetailInfo == nil
                 )
@@ -190,7 +190,7 @@ struct NFTDetailStatisticsView: View {
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: volume?.formatCurrency(threshold: FormattingThreshold.none, currency: chartCurrency) ?? "00000000000",
                     isDownloading: nftDetailInfo?.volume_24h == nil
                 )
@@ -255,7 +255,7 @@ struct NFTDetailStatisticsView: View {
                 let formattedUniqueOwners = uniqueOwners?.formatted(.number.precision(.fractionLength(0))) ?? "Unknown"
                 let formattedPercentOwners = abs(roundedChange ?? 0).formatted(.number.precision(.fractionLength(decimals)))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: "\(formattedUniqueOwners) (\(formattedPercentOwners)%)",
                     isDownloading: nftDetailInfo?.number_of_unique_addresses == nil
                 )
@@ -274,7 +274,7 @@ struct NFTDetailStatisticsView: View {
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: totalSupply?.formatted(.number.precision(.fractionLength(0))) ?? "Unknown",
                     isDownloading: nftDetailInfo?.total_supply == nil
                 )

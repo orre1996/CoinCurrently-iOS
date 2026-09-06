@@ -89,7 +89,7 @@ struct CurrencyConverterView: View {
                     size: 20 * min(scale, 1.5)
                 )
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: cryptoDetailModel?.symbol?.uppercased() ?? "0000",
                     isDownloading: cryptoDetailModel?.symbol == nil
                 )

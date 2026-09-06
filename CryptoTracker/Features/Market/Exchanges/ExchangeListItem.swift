@@ -86,7 +86,7 @@ struct ExchangeListItem: View {
     }
     
     private var exchangeName: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: data?.name ?? "00000",
             isDownloading: data?.name == nil
         )
@@ -111,7 +111,7 @@ struct ExchangeListItem: View {
     
     @ViewBuilder
     private var volumeView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: formattedVolume,
             isDownloading: isDownloadingVolume
         )
@@ -124,7 +124,7 @@ struct ExchangeListItem: View {
     
     @ViewBuilder
     private var volumeSubtitleView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: formattedVolume,
             isDownloading: isDownloadingVolume
         )
@@ -135,7 +135,7 @@ struct ExchangeListItem: View {
     }
     
     private var trustColorView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: "\(data?.trust_score ?? 0)/10",
             isDownloading: data == nil
         )

@@ -138,7 +138,7 @@ struct HistoricalDataView: View {
                 let atlPrice = cryptoDetailModel?.market_data?.atl?.getConvertedCurrency()?.formatCurrency(threshold: FormattingThreshold.none)
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: atlPrice ?? "0000",
                         isDownloading: cryptoDetailModel?.market_data?.atl == nil
                     )
@@ -147,7 +147,7 @@ struct HistoricalDataView: View {
                     .accessibilityLabel("From \(atlPrice ?? "")")
                     
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: formattedAtlDate ?? "0000000",
                         isDownloading: formattedAtlDate == nil
                     )
@@ -163,7 +163,7 @@ struct HistoricalDataView: View {
                 VStack(alignment: isHorizontal ? .trailing : .leading, spacing: 4) {
                     let athPrice = cryptoDetailModel?.market_data?.ath?.getConvertedCurrency()?.formatCurrency(threshold: FormattingThreshold.none)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: cryptoDetailModel?.market_data?.ath?.getConvertedCurrency()?.formatCurrency(threshold: FormattingThreshold.none) ?? "000000000",
                         isDownloading: cryptoDetailModel?.market_data?.ath == nil
                     )
@@ -171,7 +171,7 @@ struct HistoricalDataView: View {
                     .font(.satoshiBold(16))
                     .accessibilityLabel("to \(athPrice ?? "")")
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: formattedAthDate ?? "0000000",
                         isDownloading: formattedAthDate == nil
                     )
@@ -195,7 +195,7 @@ struct HistoricalDataView: View {
                     .font(.satoshiBold(12))
                     .accessibilityHidden(true)
                 
-                NewPriceChangePercentView(
+                PriceChangePercentView(
                     change: cryptoDetailModel?.market_data?.atl_change_percentage?.getConvertedCurrency(),
                     accessibleTimeframe: "Change since all time low: ",
                     isDownloading: cryptoDetailModel?.market_data?.atl_change_percentage == nil
@@ -214,7 +214,7 @@ struct HistoricalDataView: View {
                     .font(.satoshiBold(12))
                     .accessibilityLabel("Days since all time low: ")
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: cryptoDetailModel?.market_data?.atl_date?.getConvertedCurrency()?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)?.daysAgo ?? "00000000",
                     isDownloading: cryptoDetailModel?.market_data?.atl_date == nil
                 )
@@ -237,7 +237,7 @@ struct HistoricalDataView: View {
                     .font(.satoshiBold(12))
                     .accessibilityHidden(true)
                 
-                NewPriceChangePercentView(
+                PriceChangePercentView(
                     change: cryptoDetailModel?.market_data?.ath_change_percentage?.getConvertedCurrency(),
                     accessibleTimeframe: "Change since all time high: ",
                     isDownloading: cryptoDetailModel?.market_data?.ath_change_percentage == nil
@@ -258,7 +258,7 @@ struct HistoricalDataView: View {
                     .font(.satoshiBold(12))
                     .accessibilityLabel("Days since all time high: ")
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: cryptoDetailModel?.market_data?.ath_date?.getConvertedCurrency()?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)?.daysAgo ?? "00000000",
                     isDownloading: cryptoDetailModel?.market_data?.ath_date == nil
                 )
@@ -280,7 +280,7 @@ struct HistoricalDataView: View {
                 .foregroundStyle(Color.onSurfaceContainerDim)
                 .font(.satoshiBold(12))
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: formattedGenesisDate ?? "Unknown",
                 isDownloading: cryptoDetailModel?.market_data?.market_cap == nil
             )

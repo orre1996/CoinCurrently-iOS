@@ -109,7 +109,7 @@ struct NFTHistoricalDataView: View {
                     .font(.satoshiBold(12))
                     .accessibilityLabel("Change since all time high: ")
                 
-                NewPriceChangePercentView(
+                PriceChangePercentView(
                     change: nftDetailModel?.ath_change_percentage?.usd,
                     accessibleTimeframe: "",
                     isDownloading: nftDetailModel == nil
@@ -130,7 +130,7 @@ struct NFTHistoricalDataView: View {
                     .font(.satoshiBold(12))
                     .accessibilityLabel("Days since all time high: ")
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: nftDetailModel?.ath_date?.usd?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)?.daysAgo ?? "00000000",
                     isDownloading: nftDetailModel?.ath_date == nil
                 )

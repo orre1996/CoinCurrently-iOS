@@ -14,7 +14,7 @@ struct PortfolioCoinView: View {
     @ScaledMetric private var scale: CGFloat = 1
 
     let pie: Pie?
-    let transactions: [NewTransaction]?
+    let transactions: [PortfolioTransaction]?
     let prices: [String: Double]
     let hideData: Bool
     let index: Int
@@ -140,14 +140,14 @@ struct PortfolioCoinView: View {
     
     private var coinInfoView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: pie?.data?.symbol?.uppercased() ?? "0000",
                 isDownloading: pie?.data?.symbol == nil
             )
             .font(.satoshiBold(16))
             .foregroundStyle(Color.onSurface)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: pie?.data?.name ?? "0000000",
                 isDownloading: pie?.data?.name == nil
             )
@@ -163,7 +163,7 @@ struct PortfolioCoinView: View {
     @ViewBuilder
     private var holdingsView: some View {
         VStack(alignment: .trailing, spacing: 4) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: hideData ? String.stars : currentAmount?.formatCurrency(currency: CurrencyModel.empty) ?? "00000",
                 isDownloading: pie?.data == nil
             )
@@ -171,7 +171,7 @@ struct PortfolioCoinView: View {
             .foregroundStyle(Color.onSurface)
             .multilineTextAlignment(.trailing)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: hideData ? String.stars : ((currentAmount ?? 0) * currentPrice).formatCurrency(threshold: FormattingThreshold.million),
                 isDownloading: pie?.data == nil
             )
@@ -185,7 +185,7 @@ struct PortfolioCoinView: View {
     
     @ViewBuilder
     private var holdingsSubtitleView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: hideData ? String.stars : currentAmount?.formatCurrency(currency: CurrencyModel.empty) ?? "00000",
             isDownloading: pie?.data == nil
         )
@@ -193,7 +193,7 @@ struct PortfolioCoinView: View {
         .font(.satoshiBold(12))
         .multilineTextAlignment(.leading)
         
-        NewShimmeringText(
+        ShimmeringText(
             text: hideData ? String.stars : ((currentAmount ?? 0) * currentPrice).formatCurrency(threshold: FormattingThreshold.million),
             isDownloading: pie?.data == nil
         )
@@ -209,7 +209,7 @@ struct PortfolioCoinView: View {
             alignment: .trailing
         ) {
             VStack(alignment: .trailing, spacing: 4) {
-                NewPriceChangeValueView(
+                PriceChangeValueView(
                     change: transactions?.getProfitValue(prices: prices, showCurrency: selectedCurrency.code),
                     hideData: hideData,
                     accessibleTimeframe: "",
@@ -218,7 +218,7 @@ struct PortfolioCoinView: View {
                 )
                 .multilineTextAlignment(.trailing)
                 
-                NewPriceChangePercentView(
+                PriceChangePercentView(
                     change: transactions?.getProfitPercent(prices: prices, showCurrency: selectedCurrency.code),
                     size: .extraSmall,
                     accessibleTimeframe: "",

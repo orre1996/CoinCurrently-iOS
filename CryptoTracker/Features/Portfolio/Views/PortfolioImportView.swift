@@ -52,14 +52,14 @@ struct PortfolioImportView: View {
                 )
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: "\(walletImport?.walletName ?? "Imported")",
                         isDownloading: coin == nil
                     )
                     .foregroundStyle(Color.onSurface)
                     .font(.satoshiBold(16))
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: "\(coin?.symbol?.uppercased() ?? "") Mainnet · \(walletImport?.address.uppercased().prefix(4) ?? "")...\(walletImport?.address.uppercased().suffix(4) ?? "")",
                         isDownloading: coin == nil
                     )
@@ -68,7 +68,7 @@ struct PortfolioImportView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: hideData ? String.stars : walletImport?.totalValue(
                         mainId: coin?.id,
                         prices: prices

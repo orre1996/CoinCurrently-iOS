@@ -28,7 +28,7 @@ struct SearchCoinView: View {
                     .padding(.trailing, 16)
                 }
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: getText,
                     isDownloading: searchCoin == nil
                 )
@@ -36,7 +36,7 @@ struct SearchCoinView: View {
                 .font(.satoshiBold(16))
                 
                 if searchCoin == nil || searchCoin?.name != nil {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: searchCoin?.name ?? "000000",
                         isDownloading: searchCoin?.name == nil
                     )

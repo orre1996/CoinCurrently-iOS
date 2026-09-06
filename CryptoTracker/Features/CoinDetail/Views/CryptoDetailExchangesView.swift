@@ -233,7 +233,7 @@ struct CryptoDetailExchangeRow: View {
     }
     
     private var nameView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: item?.name ?? "000000",
             isDownloading: item?.name == nil
         )
@@ -258,7 +258,7 @@ struct CryptoDetailExchangeRow: View {
     
     @ViewBuilder
     private var priceView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: formattedPrice,
             isDownloading: isDownloadingPrice
         )
@@ -271,7 +271,7 @@ struct CryptoDetailExchangeRow: View {
     
     @ViewBuilder
     private var priceSubtitleView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: formattedPrice,
             isDownloading: isDownloadingPrice
         )
@@ -290,7 +290,7 @@ struct CryptoDetailExchangeRow: View {
             text: "24h Volume",
             alignment: .trailing
         ) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: formattedVolume ?? "000000000",
                 isDownloading: item?.volume == nil
             )

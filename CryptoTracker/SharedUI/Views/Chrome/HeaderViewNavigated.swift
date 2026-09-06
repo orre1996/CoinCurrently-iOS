@@ -46,7 +46,7 @@ struct HeaderViewNavigated: View {
                 }
             }
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: title,
                 isDownloading: downloading
             )

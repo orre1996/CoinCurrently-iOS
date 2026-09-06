@@ -67,7 +67,7 @@ struct ToplistCardView: View {
     }
     private var marketCapRankView: some View {
         MinimumTextSize(text: "9999") {
-            NewShimmeringText(
+            ShimmeringText(
                 text: coin == nil ? "-" : coin?.market_cap_rank?.description ?? "-",
                 isDownloading: coin == nil
             )
@@ -91,7 +91,7 @@ struct ToplistCardView: View {
         let marketCap = coin?.market_cap
         
         VStack(alignment: .leading, spacing: 0) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: coin?.symbol?.uppercased() ?? "0000",
                 isDownloading: coin == nil
             )
@@ -99,7 +99,7 @@ struct ToplistCardView: View {
             .foregroundStyle(Color.onSurface)
             .font(.satoshiBold(16))
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: coin == nil ? "00000000" : (marketCap ?? 0).formatCurrency(),
                 isDownloading: coin == nil
             )
@@ -111,7 +111,7 @@ struct ToplistCardView: View {
     }
     
     private var priceView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: coin?.current_price?.formatCurrency(threshold: FormattingThreshold.none) ?? "00000000",
             isDownloading: coin == nil
         )
@@ -131,7 +131,7 @@ struct ToplistCardView: View {
             extraSize: 16 * min(scale, 1.5) + 4,
             alignment: .trailing
         ) {
-            NewPriceChangePercentView(
+            PriceChangePercentView(
                 change: change,
                 accessibleTimeframe: selectedChangeOption.accessibilityTimeframe,
                 isDownloading: coin == nil

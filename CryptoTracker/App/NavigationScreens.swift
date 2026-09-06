@@ -27,17 +27,17 @@ enum NavigationScreens: Codable, Equatable, Hashable {
         priceVolumeModel: PriceVolumeModel?,
         compareId: String
     )
-    case NewPortfolioTransaction(
-        transactionType: NewTransactionType,
+    case AddPortfolioTransaction(
+        transactionType: PortfolioTransactionType,
         currencyDataModel: CurrencyDataModel?,
-        transaction: NewTransaction?
+        transaction: PortfolioTransaction?
     )
-    case NewSwapTransaction(
-        transactionType: NewTransactionType,
+    case PortfolioSwapTransaction(
+        transactionType: PortfolioTransactionType,
         currencyDataModel: CurrencyDataModel?,
-        transaction: NewSwapTransaction?
+        transaction: PortfolioSwapTransaction?
     )
-    case NewImportTransaction
+    case ImportWalletTransaction
     case Feedback
     case Referral(referralCode: String)
     
@@ -97,11 +97,11 @@ enum NavigationScreens: Codable, Equatable, Hashable {
             "CryptoDetail"
         case .CompareCoins(_, _, _):
             "CompareCoins"
-        case .NewPortfolioTransaction(_, _, _):
+        case .AddPortfolioTransaction(_, _, _):
             "NewPortfolioTransaction"
-        case .NewSwapTransaction(_, _, _):
-            "NewSwapTransaction"
-        case .NewImportTransaction:
+        case .PortfolioSwapTransaction(_, _, _):
+            "PortfolioSwapTransaction"
+        case .ImportWalletTransaction:
             "NewImportTransaction"
         case .Feedback:
             "Feedback"
@@ -166,7 +166,7 @@ enum ScreenLabel: String {
     case cryptoDetail = "CryptoDetail"
     case compareCoins = "CompareCoins"
     case newPortfolioTransaction = "NewPortfolioTransaction"
-    case newSwapTransaction = "NewSwapTransaction"
+    case newSwapTransaction = "PortfolioSwapTransaction"
     case newImportTransaction = "NewImportTransaction"
     case feedback = "Feedback"
     case referral = "Referral"

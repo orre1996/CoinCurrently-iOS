@@ -26,7 +26,7 @@ struct TrendingCoinView: View {
 
                 VStack(alignment: .leading, spacing: 0) {
                     if !getText.isEmpty {
-                        NewShimmeringText(
+                        ShimmeringText(
                             text: getText,
                             isDownloading: coin == nil
                         )
@@ -35,7 +35,7 @@ struct TrendingCoinView: View {
                     }
                     
                     if coin == nil || coin?.name != nil {
-                        NewShimmeringText(
+                        ShimmeringText(
                             text: coin?.name ?? "000000",
                             isDownloading: coin?.name == nil
                         )

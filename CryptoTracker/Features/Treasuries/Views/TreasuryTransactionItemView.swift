@@ -17,7 +17,7 @@ struct TreasuryTransactionItemView: View {
                 text: "Dec 31, 2025",
                 alignment: .leading
             ) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: formattedDate,
                     isDownloading: transaction == nil
                 )
@@ -33,7 +33,7 @@ struct TreasuryTransactionItemView: View {
                     size: 20 * min(scale, 1.5)
                 )
 
-                NewShimmeringText(
+                ShimmeringText(
                     text: coinName,
                     isDownloading: transaction == nil
                 )
@@ -43,14 +43,14 @@ struct TreasuryTransactionItemView: View {
             .padding(.trailing, 12)
 
             VStack(alignment: .trailing, spacing: 0) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: balanceText,
                     isDownloading: transaction == nil
                 )
                 .font(.satoshiBold(16))
                 .foregroundStyle(Color.onSurface)
 
-                NewShimmeringText(
+                ShimmeringText(
                     text: netChangeText,
                     isDownloading: transaction == nil
                 )

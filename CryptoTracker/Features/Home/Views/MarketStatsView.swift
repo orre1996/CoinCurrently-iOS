@@ -78,7 +78,7 @@ struct MarketStatsView: View {
                     .font(.satoshiMedium(14))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: marketCap?.formatCurrency() ?? "00000",
                     isDownloading: globalMarket == nil
                 )
@@ -86,7 +86,7 @@ struct MarketStatsView: View {
                 .foregroundStyle(Color.onSurfaceContainer)
                 .lineLimit(1)
                 
-                NewPriceChangePercentView(
+                PriceChangePercentView(
                     change: change,
                     size: .small,
                     accessibleTimeframe: "24 hour",
@@ -112,7 +112,7 @@ struct MarketStatsView: View {
                     .font(.satoshiMedium(14))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: gasFee?.formatted(.number.precision(.fractionLength(2))) ?? "0000",
                     isDownloading: gasFees?.gasFeeData == nil
                 )
@@ -144,7 +144,7 @@ struct MarketStatsView: View {
                     .font(.satoshiMedium(14))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: firstValue ?? "00",
                     isDownloading: fearGreed == nil
                 )

@@ -26,7 +26,7 @@ struct GasFeesHistoricView: View {
             .foregroundStyle(Color.onSurfaceDimmer)
             .padding(.bottom, 4)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: roundedChange.formatCurrency(
                     currency: CurrencyModel.empty,
                     minDecimals: 3,
@@ -40,7 +40,7 @@ struct GasFeesHistoricView: View {
             MinimumTextSize(
                 text: "Very High"
             ) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: status ?? "000000",
                     isDownloading: indexValue == nil
                 )

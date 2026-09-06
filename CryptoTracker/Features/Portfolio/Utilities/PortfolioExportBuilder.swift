@@ -142,7 +142,7 @@ enum PortfolioExportBuilder {
         return csvField(value.description)
     }
 
-    private static func csvRow(coin: String, transaction: NewTransaction) -> String {
+    private static func csvRow(coin: String, transaction: PortfolioTransaction) -> String {
         let isTransfer = transaction.transactionType.isTransfer
         let value = (transaction.amount * (transaction.pricePerCoin ?? 0)) + transaction.fee
 
@@ -160,14 +160,14 @@ enum PortfolioExportBuilder {
         ].joined(separator: ",")
     }
 
-    private static func csvSwapRow(swap: NewSwapTransaction) -> String {
+    private static func csvSwapRow(swap: PortfolioSwapTransaction) -> String {
         let coin = "\(swap.fromCurrencySymbol.uppercased()) → \(swap.toCurrencySymbol.uppercased())"
         let value = (swap.fromAmount * swap.fromUnitPrice) + swap.fee
 
         return [
             swap.date.portfolioExportDateTimeUTC,
             coin,
-            NewTransactionType.swap.rawValue,
+            PortfolioTransactionType.swap.rawValue,
             csvField("\(swap.fromAmount)"),
             csvNumericField(swap.fromUnitPrice),
             csvNumericField(swap.fee),
@@ -182,7 +182,7 @@ enum PortfolioExportBuilder {
         [
             importEvent.date.portfolioExportDateTimeUTC,
             coin,
-            NewTransactionType.importAddress.rawValue,
+            PortfolioTransactionType.importAddress.rawValue,
             csvField(importEvent.balance),
             "",
             "",
@@ -199,7 +199,7 @@ enum PortfolioExportBuilder {
 
         let transactionsByType = Dictionary(grouping: pie.transactions, by: \.transactionType)
 
-        for type in [NewTransactionType.buy, .sell, .transferIn, .transferOut] {
+        for type in [PortfolioTransactionType.buy, .sell, .transferIn, .transferOut] {
             guard let transactions = transactionsByType[type], !transactions.isEmpty else { continue }
             section += "-- \(type.rawValue) Transactions --\n"
             section += transactions
@@ -227,7 +227,7 @@ enum PortfolioExportBuilder {
         return section
     }
 
-    private static func textExportBlock(for transaction: NewTransaction) -> String {
+    private static func textExportBlock(for transaction: PortfolioTransaction) -> String {
         let selectedCurrency = CurrencyModel.allCurrencies.first {
             $0.code.lowercased() == transaction.currency.lowercased()
         }
@@ -262,7 +262,7 @@ enum PortfolioExportBuilder {
         return block + "\n"
     }
 
-    private static func textExportBlock(for swap: NewSwapTransaction) -> String {
+    private static func textExportBlock(for swap: PortfolioSwapTransaction) -> String {
         let selectedCurrency = CurrencyModel.allCurrencies.first {
             $0.code.lowercased() == swap.selectedCurrency.lowercased()
         }

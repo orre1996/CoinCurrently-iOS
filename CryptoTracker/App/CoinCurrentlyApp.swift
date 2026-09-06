@@ -248,7 +248,7 @@ struct CoinCurrentlyApp: View {
             viewModel.showSnackbar(
                 message: notification.userInfo?["message"] as? String ?? "",
                 buttonTitle: "",
-                snackBarType: notification.userInfo?["type"] as? SnackBarTypes ?? .success,
+                snackBarType: notification.userInfo?["type"] as? SnackbarTypes ?? .success,
                 buttonCallback: { }
             )
         }

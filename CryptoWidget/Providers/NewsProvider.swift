@@ -71,7 +71,7 @@ struct NewsWidgetEntryView: View {
                 .widgetContainerBackground()
             
         case .accessoryRectangular:
-            RectangularLockScreenNewsWidget(entry: entry.newsModel.first)
+            RectangularNewsWidget(entry: entry.newsModel.first)
                 .widgetBackground(Color.clear)
             
         default:

@@ -10,7 +10,7 @@ struct PortfolioMathTests {
         let pie = Pie(
             data: Toplist(id: "bitcoin", symbol: "btc", name: "Bitcoin"),
             transactions: [
-                NewTransaction(
+                PortfolioTransaction(
                     date: Date(timeIntervalSince1970: 1_700_000_000),
                     amount: 1,
                     pricePerCoin: 100,
@@ -36,11 +36,11 @@ struct PortfolioMathTests {
 
     @Test("default wallet name counts existing imports")
     func defaultWalletName() {
-        let empty: [NewPortfolioModel] = []
+        let empty: [PortfolioModel] = []
         #expect(empty.defaultWalletName == "Wallet")
 
         let withImport = [
-            NewPortfolioModel(
+            PortfolioModel(
                 id: "bitcoin",
                 transactions: [],
                 swaps: [],
@@ -60,7 +60,7 @@ struct PortfolioExportBuilderTests {
         Pie(
             data: Toplist(id: "bitcoin", symbol: "btc", name: "Bitcoin"),
             transactions: [
-                NewTransaction(
+                PortfolioTransaction(
                     date: Date(timeIntervalSince1970: 1_700_000_000),
                     amount: 2,
                     pricePerCoin: 25_000,

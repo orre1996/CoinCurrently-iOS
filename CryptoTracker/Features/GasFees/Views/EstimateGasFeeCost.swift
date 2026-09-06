@@ -76,7 +76,7 @@ struct EstimateGasFeeCost: View {
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityLabel("Estimated cost \(title)")
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: value ?? "000000",
                 isDownloading: value == nil
             )

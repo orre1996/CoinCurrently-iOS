@@ -83,7 +83,7 @@ struct RectangularFearGreedWidget: View {
             .widgetURL(url)
             .multilineTextAlignment(.center)
             /*.overlay (
-                BuyProView(
+                WidgetBuyProOverlay(
                     hasBoughtPro: hasBoughtPro,
                     fromLockScreen: true
                 )

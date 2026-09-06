@@ -78,7 +78,7 @@ struct CommunitySentimentView: View {
     private var sentimentMeterTitles: some View {
         HStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 4) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: "\((sentimentVotesUpPercentage ?? 0).formatted(.number.precision(.fractionLength(0))))%",
                     isDownloading: sentimentVotesUpPercentage == nil
                 )
@@ -94,7 +94,7 @@ struct CommunitySentimentView: View {
             Spacer(minLength: 16)
             
             VStack(alignment: .trailing, spacing: 4) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: "\((sentimentVotesDownPercentage ?? 0).formatted(.number.precision(.fractionLength(0))))%",
                     isDownloading: sentimentVotesDownPercentage == nil
                 )

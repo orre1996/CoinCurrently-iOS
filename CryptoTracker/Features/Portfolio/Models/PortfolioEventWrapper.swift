@@ -8,8 +8,8 @@
 import Foundation
 
 enum PortfolioEventWrapper: Codable, Identifiable, Equatable, Hashable {
-    case transaction(NewTransaction)
-    case swap(NewSwapTransaction)
+    case transaction(PortfolioTransaction)
+    case swap(PortfolioSwapTransaction)
     case walletImport(AddressImport, [Cryptocurrency]?)
 
     var id: UUID {

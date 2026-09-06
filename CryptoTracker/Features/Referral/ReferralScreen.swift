@@ -76,7 +76,7 @@ struct ReferralScreen: View {
                 .font(.satoshiBold(22))
                 .foregroundStyle(Color.onSurface)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: "\(viewModel.currentReferrals)/3 towards earnings 6 months of CoinCurrently Pro. Thereafter 1 month per referral.",
                 isDownloading: viewModel.user == nil
             )
@@ -104,7 +104,7 @@ struct ReferralScreen: View {
             .padding(.vertical, 16)
             
             VStack(spacing: 8) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: viewModel.referralCode ?? "000000000000",
                     isDownloading: viewModel.referralCode == nil && viewModel.isLoadingReferralCode
                 )

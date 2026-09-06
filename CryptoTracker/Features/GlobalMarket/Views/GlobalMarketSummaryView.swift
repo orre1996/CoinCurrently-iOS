@@ -24,7 +24,7 @@ struct GlobalMarketSummaryView: View {
                 .font(.satoshiBold(18))
                 .foregroundStyle(Color.onSurfaceDim)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: marketCap?.formatCurrency(
                     threshold: isHorizontal ? FormattingThreshold.million : FormattingThreshold.none,
                     maxDecimals: (marketCap ?? 0) >= 1_000_000_000 ? 0 : 2
@@ -54,14 +54,14 @@ struct GlobalMarketSummaryView: View {
         let changeValue = roundedChange.getChangeInValue(currentValue: marketCap ?? 0)
         
         OverflowLayout(spacing: 4) {
-            NewPriceChangeValueView(
+            PriceChangeValueView(
                 change: changeValue,
                 size: .extraSmall,
                 accessibleTimeframe: selectedTimeframe.accessibilityTimeframe,
                 isDownloading: marketCap == nil
             )
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: "(\(formattedChange)%)",
                 isDownloading: changePercent == nil
             )

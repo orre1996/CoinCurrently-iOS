@@ -88,7 +88,7 @@ struct PortfolioScreen: View {
                     return
                 }
                 
-                if let transaction = event as? NewTransaction {
+                if let transaction = event as? PortfolioTransaction {
                     navigationViewModel.showSnackbar(
                         message: "\(coin.symbol?.uppercased() ?? "Coin") transaction added to your portfolio!",
                         buttonTitle: "View Details",
@@ -100,7 +100,7 @@ struct PortfolioScreen: View {
                             selectedEvent = PortfolioEventWrapper.transaction(transaction)
                         }
                     )
-                } else if let swap = event as? NewSwapTransaction {
+                } else if let swap = event as? PortfolioSwapTransaction {
                     navigationViewModel.showSnackbar(
                         message: "\(coin.symbol?.uppercased() ?? "Coin") transaction added to your portfolio!",
                         buttonTitle: "View Details",
@@ -284,7 +284,7 @@ struct PortfolioScreen: View {
                             )
                         )
                         navigationViewModel.navPath.append(
-                            NavigationScreens.NewPortfolioTransaction(
+                            NavigationScreens.AddPortfolioTransaction(
                                 transactionType: $0.transactionType,
                                 currencyDataModel: coin?.toCryptoDetail,
                                 transaction: $0
@@ -322,7 +322,7 @@ struct PortfolioScreen: View {
                             )
                         )
                         navigationViewModel.navPath.append(
-                            NavigationScreens.NewSwapTransaction(
+                            NavigationScreens.PortfolioSwapTransaction(
                                 transactionType: .swap,
                                 currencyDataModel: CurrencyDataModel(
                                     id: $0.fromCurrencyId,

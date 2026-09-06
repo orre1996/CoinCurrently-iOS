@@ -31,7 +31,7 @@ struct MediumNewsWidget: View {
         }
         .blur(radius: entry.showBuyProOverlay ? 5 : 0)
         .overlay {
-            BuyProView(hasBoughtPro: !entry.showBuyProOverlay)
+            WidgetBuyProOverlay(hasBoughtPro: !entry.showBuyProOverlay)
         }
         .widgetURL(entry.showBuyProOverlay ? URL(string: "buyPro") : nil)
     }

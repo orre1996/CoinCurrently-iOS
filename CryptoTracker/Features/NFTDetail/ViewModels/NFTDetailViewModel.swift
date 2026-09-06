@@ -68,7 +68,7 @@ protocol NFTDetailViewModel: ChartHoverHosting {
 
 @MainActor @Observable
 final class NFTDetailViewModelImp: NFTDetailViewModel, ChartHoverHosting {
-    private let nftDetailsRepository: NFTDetailsRepository
+    private let nftDetailsRepository: NFTDetailRepository
     private let nftsRepository: NFTRepository
     private let cryptoDetailRepository: CryptoDetailRepository
     private let newsRepository: NewsRepository
@@ -108,7 +108,7 @@ final class NFTDetailViewModelImp: NFTDetailViewModel, ChartHoverHosting {
         nftToplist: NFTToplist,
         cryptoDetailRepository: CryptoDetailRepository = CryptoDetailRepositoryImp.shared,
         newsRepository: NewsRepository = NewsRepositoryImp.shared,
-        nftDetailsRepository: NFTDetailsRepository = NFTDetailsRepositoryImp.shared,
+        nftDetailsRepository: NFTDetailRepository = NFTDetailRepositoryImp.shared,
         nftsRepository: NFTRepository = NFTRepositoryImp.shared,
         globalRepository: GlobalMarketRepository = GlobalMarketRepositoryImp.shared,
         storageManager: CachedStorageManager = CachedStorageManagerImp.shared,

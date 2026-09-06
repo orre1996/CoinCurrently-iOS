@@ -7,11 +7,11 @@
 
 import Foundation
 
-extension Array where Element == NewSwapTransaction {
+extension Array where Element == PortfolioSwapTransaction {
     private func filtered(
         after: Date = .distantPast,
         before: Date = Date()
-    ) -> [NewSwapTransaction] {
+    ) -> [PortfolioSwapTransaction] {
         return self.filter { tx in
             guard tx.date > after && tx.date < before else {
                 return false
@@ -21,7 +21,7 @@ extension Array where Element == NewSwapTransaction {
         }
     }
 
-    var buyTransactions: [NewTransaction] {
+    var buyTransactions: [PortfolioTransaction] {
         return map { $0.buyTransaction }
     }
 
@@ -51,17 +51,17 @@ extension Array where Element == NewSwapTransaction {
     }
 }
 
-extension Array where Element == NewTransaction {
-    func ofType(_ type: NewTransactionType) -> [NewTransaction] {
+extension Array where Element == PortfolioTransaction {
+    func ofType(_ type: PortfolioTransactionType) -> [PortfolioTransaction] {
         self.filter { $0.transactionType == type }
     }
 
     private func filtered(
-        type: NewTransactionType? = nil,
+        type: PortfolioTransactionType? = nil,
         withTransfers: Bool = true,
         after: Date = .distantPast,
         before: Date = Date()
-    ) -> [NewTransaction] {
+    ) -> [PortfolioTransaction] {
         return self.filter { tx in
             if let type = type {
                 guard tx.transactionType == type else {
@@ -82,7 +82,7 @@ extension Array where Element == NewTransaction {
     }
 
     func sumAmounts(
-        of type: NewTransactionType,
+        of type: PortfolioTransactionType,
         withTransfers: Bool = true,
         after: Date = .distantPast,
         before: Date = Date()
@@ -104,11 +104,11 @@ extension Array where Element == NewTransaction {
         - sumAmounts(of: .transferOut, withTransfers: withTransfers, after: after, before: before)
     }
 
-    func afterDate(_ date: Date) -> [NewTransaction] {
+    func afterDate(_ date: Date) -> [PortfolioTransaction] {
         filtered(after: date)
     }
 
-    func beforeDate(_ date: Date) -> [NewTransaction] {
+    func beforeDate(_ date: Date) -> [PortfolioTransaction] {
         filtered(before: date)
     }
 
@@ -143,7 +143,7 @@ extension Array where Element == NewTransaction {
     func getTotalCost(
         prices: [String: Double]?,
         showCurrency: String,
-        extraTransactions: [NewTransaction] = []
+        extraTransactions: [PortfolioTransaction] = []
     ) -> Double? {
         let total = ofType(.buy).compactMap { tx -> Double? in
             guard let price = tx.pricePerCoin else { return nil }
@@ -208,13 +208,13 @@ extension Array where Element == NewTransaction {
     }
 }
 
-extension Array where Element == NewPortfolioModel {
+extension Array where Element == PortfolioModel {
     var defaultWalletName: String {
         let imports = map { $0.imports.count }.reduce(0, +)
         return imports == 0 ? "Wallet" : "Wallet \(imports)"
     }
 
-    func getAllTransactions(of id: String?) -> [NewTransaction] {
+    func getAllTransactions(of id: String?) -> [PortfolioTransaction] {
         let coin = filter { $0.id == id }
         let transactions = coin.flatMap { $0.transactions }
         let buySwapTransactions = coin.map { $0.swaps }
@@ -249,9 +249,9 @@ extension Array where Element == NewPortfolioModel {
 extension Array where Element == Pie {
     func pie(containing event: (any PortfolioEvent)?) -> Pie? {
         switch event {
-        case let transaction as NewTransaction:
+        case let transaction as PortfolioTransaction:
             return first { $0.transactions.contains(transaction) }
-        case let swap as NewSwapTransaction:
+        case let swap as PortfolioSwapTransaction:
             return first { $0.swaps.contains(swap) }
         case let importEvent as AddressImport:
             return first { $0.imports.contains(importEvent) }
@@ -268,7 +268,7 @@ extension Array where Element == Pie {
         map { $0.transactions.count + $0.swaps.count + $0.imports.count }.reduce(0, +)
     }
 
-    func getAllTransactions(of id: String?) -> [NewTransaction] {
+    func getAllTransactions(of id: String?) -> [PortfolioTransaction] {
         let coin = filter { $0.data?.id == id }
         let transactions = coin.flatMap { $0.transactions }
         let buySwapTransactions = coin.map { $0.swaps }
@@ -351,14 +351,14 @@ extension Array where Element == Pie {
         return percent * 100
     }
 
-    func swapSellTransactions(for id: String?) -> [NewTransaction] {
+    func swapSellTransactions(for id: String?) -> [PortfolioTransaction] {
         return flatMap { $0.swaps }
             .filter { $0.fromCurrencyId == id }
             .map { $0.sellTransaction }
     }
 
     func groupedTransactions(
-        types: [NewTransactionType],
+        types: [PortfolioTransactionType],
         on dateOption: DateOption,
         coinNames: [Toplist],
     ) -> [Date: [any PortfolioEvent]] {

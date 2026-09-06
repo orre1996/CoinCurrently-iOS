@@ -87,7 +87,7 @@ struct CurrencyDetailScreen: View {
             Spacer(minLength: 0)
             
             ForEach((1...3), id: \.self) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: getTimeInChart(at: $0),
                     isDownloading: viewModel.timeStamps.isEmpty
                 )
@@ -121,7 +121,7 @@ struct CurrencyDetailScreen: View {
                 .stroke(Color.outlineVariant)
             
             if !viewModel.mainReloading {
-                NewChartView(
+                PriceLineChartView(
                     prices: viewModel.prices,
                     color: viewModel.graphColor,
                     lineWidth: 1
@@ -141,7 +141,7 @@ struct CurrencyDetailScreen: View {
                 .resizable()
                 .frame(width: 10, height: 10)
 
-            NewShimmeringText(
+            ShimmeringText(
                 text: viewModel.prices.min()?.formatCurrency(threshold: FormattingThreshold.none) ?? "00000",
                 isDownloading: viewModel.prices.isEmpty
             )
@@ -154,7 +154,7 @@ struct CurrencyDetailScreen: View {
                 .frame(width: 10, height: 10)
                 .padding(.horizontal, 4)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: viewModel.prices.max()?.formatCurrency(threshold: FormattingThreshold.none) ?? "00000",
                 isDownloading: viewModel.prices.isEmpty
             )
@@ -170,7 +170,7 @@ struct CurrencyDetailScreen: View {
             Text("24h: ")
                 .font(.satoshiBold(14))
             
-            NewPriceChangePercentView(
+            PriceChangePercentView(
                 change: viewModel.cryptoInfo?.market_data?.price_change_percentage_24h,
                 size: .small,
                 accessibleTimeframe: "24 hour",
@@ -185,7 +185,7 @@ struct CurrencyDetailScreen: View {
             Text("7d: ")
                 .font(.satoshiBold(14))
             
-            NewPriceChangePercentView(
+            PriceChangePercentView(
                 change: viewModel.cryptoInfo?.market_data?.price_change_percentage_7d,
                 size: .small,
                 accessibleTimeframe: "7 days",
@@ -200,7 +200,7 @@ struct CurrencyDetailScreen: View {
             Text("30d: ")
                 .font(.satoshiBold(14))
             
-            NewPriceChangePercentView(
+            PriceChangePercentView(
                 change: viewModel.cryptoInfo?.market_data?.price_change_percentage_30d,
                 size: .small,
                 accessibleTimeframe: "30 days",

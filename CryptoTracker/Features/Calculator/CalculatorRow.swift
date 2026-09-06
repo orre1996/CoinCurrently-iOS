@@ -22,14 +22,14 @@ struct CalculatorRow: View {
             )
             
             VStack(alignment: .leading, spacing: 0) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: coin?.symbol?.uppercased() ?? "0000",
                     isDownloading: coin?.symbol == nil
                 )
                 .foregroundStyle(Color.onSurface)
                 .font(.satoshiBold(16))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: coin?.name ?? "00000",
                     isDownloading: coin?.name == nil
                 )
@@ -38,7 +38,7 @@ struct CalculatorRow: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: amount ?? "000000",
                 isDownloading: amount == nil
             )

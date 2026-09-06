@@ -42,7 +42,7 @@ struct CryptoDetailAlertCellView: View {
 
                 AdaptiveStack(isHorizontal: isHorizontal, spacing: 4, horizontalAlignment: .leading) {
                     if let symbol {
-                        NewShimmeringText(
+                        ShimmeringText(
                             text: symbol.uppercased(),
                             isDownloading: alert == nil
                         )
@@ -51,7 +51,7 @@ struct CryptoDetailAlertCellView: View {
                     }
 
                     if alert == nil {
-                        NewShimmeringText(
+                        ShimmeringText(
                             text: "0000000",
                             isDownloading: alert == nil
                         )
@@ -72,7 +72,7 @@ struct CryptoDetailAlertCellView: View {
                 
                 let recurringText = alert?.isRecurringAlert ?? false ? "Recurring" : "One-time"
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: "\(recurringText) · Created \(alert?.createdDate.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)?.alertTimeAgoDisplay ?? "000")",
                     isDownloading: alert == nil
                 )

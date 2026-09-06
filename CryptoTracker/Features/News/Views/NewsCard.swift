@@ -21,7 +21,7 @@ struct NewsCard: View {
     var selected: Bool = false
     let index: Int
     let totalCount: Int
-    var newsType: NewsTypeEnum = .article
+    var newsType: NewsContentKind = .article
     var topPadding: CGFloat = 32
 
     var body: some View {
@@ -88,7 +88,7 @@ struct NewsCard: View {
     
     @ViewBuilder
     private var textsView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: news?.title ?? String.getStringRandomLength(length: 60),
             isDownloading: news?.title == nil
         )
@@ -100,7 +100,7 @@ struct NewsCard: View {
     }
     
     private var metadataView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: "\(news?.source_name ?? "000000") · \(news?.date?.convertStringToDate(dateFormat: .EdMMMyyyyHHmmssZ)?.timeAgoDisplay ?? "000000")",
             isDownloading: news?.source_name == nil || news?.date == nil
         )
@@ -116,7 +116,7 @@ struct NewsCard: View {
             sentimentIcon
             
             if news == nil || news?.tickers?.isEmpty == false {
-                NewShimmeringText(
+                ShimmeringText(
                     text: news?.tickers?.prefix(3).map({ $0 }).joined(separator: " · ") ?? "000",
                     isDownloading: news == nil
                 )

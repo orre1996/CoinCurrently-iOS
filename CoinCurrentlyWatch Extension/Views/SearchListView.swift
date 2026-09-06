@@ -24,13 +24,13 @@ struct SearchListView: View {
             )
 
             VStack(alignment: .leading, spacing: 4) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: coin == nil ? "00000000" : rankName,
                     isDownloading: coin == nil
                 )
                 .font(.satoshiBold(14))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: coin?.name ?? "0000",
                     isDownloading: coin?.name == nil
                 )

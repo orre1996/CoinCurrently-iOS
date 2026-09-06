@@ -27,7 +27,7 @@ struct LargeMultiWidget: View {
         } else {
             coinGrid
                 .overlay(
-                    BuyProView(
+                    WidgetBuyProOverlay(
                         hasBoughtPro: hasBoughtPro
                     )
                 )

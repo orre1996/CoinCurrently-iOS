@@ -55,7 +55,7 @@ struct PortfolioSummaryHeader: View {
                     threshold: isHorizontal ? FormattingThreshold.billion : FormattingThreshold.thousand
                 ) ?? "000000000"
 
-                NewShimmeringText(
+                ShimmeringText(
                     text: viewModel.hideData ? String.stars : totalValue,
                     isDownloading: viewModel.holdings.totalValue == nil
                 )
@@ -121,7 +121,7 @@ struct PortfolioSummaryHeader: View {
             OverflowLayout(spacing: 4) {
                 if viewModel.hideData {
                     HStack(spacing: 4) {
-                        NewShimmerImageDirection(
+                        PriceChangeDirectionView(
                             change: 0,
                             size: .medium,
                             isDownloading: viewModel.changePercent == nil
@@ -132,7 +132,7 @@ struct PortfolioSummaryHeader: View {
                             .foregroundStyle(Color.onSurfaceDim)
                     }
                 } else {
-                    NewPriceChangeValueView(
+                    PriceChangeValueView(
                         change: viewModel.changeValue,
                         size: .small,
                         accessibleTimeframe: "7 days",
@@ -146,7 +146,7 @@ struct PortfolioSummaryHeader: View {
                     : .number.precision(.fractionLength(2))
                 ).changeWithSymbol
 
-                NewShimmeringText(
+                ShimmeringText(
                     text: "(\(((viewModel.changePercent?.isInfinite ?? true) || (viewModel.portfolio?.isEmpty ?? true)) ? "-" : (formattedChange + "%")))",
                     isDownloading: viewModel.changePercent == nil
                 )
@@ -176,7 +176,7 @@ struct PortfolioSummaryHeader: View {
             OverflowLayout(spacing: 4) {
                 if viewModel.hideData {
                     HStack(spacing: 4) {
-                        NewShimmerImageDirection(
+                        PriceChangeDirectionView(
                             change: 0,
                             size: .medium,
                             isDownloading: viewModel.holdings.profitLossValue == nil
@@ -187,7 +187,7 @@ struct PortfolioSummaryHeader: View {
                             .foregroundStyle(Color.onSurfaceDim)
                     }
                 } else {
-                    NewPriceChangeValueView(
+                    PriceChangeValueView(
                         change: viewModel.holdings.profitLossValue,
                         size: .small,
                         hideData: viewModel.hideData,
@@ -202,7 +202,7 @@ struct PortfolioSummaryHeader: View {
                     : .number.precision(.fractionLength(2))
                 ).changeWithSymbol
 
-                NewShimmeringText(
+                ShimmeringText(
                     text: "(\(((viewModel.holdings.profitLossPercent?.isInfinite ?? true) || (viewModel.portfolio?.isEmpty ?? true)) ? "-" : (formattedChange + "%")))",
                     isDownloading: viewModel.holdings.profitLossPercent == nil
                 )

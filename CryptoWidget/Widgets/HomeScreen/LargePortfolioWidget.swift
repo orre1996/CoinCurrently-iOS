@@ -24,21 +24,21 @@ struct LargePortfolioWidget: View {
                     .padding(.bottom, 5)
             }
             .overlay (
-                BuyProView(hasBoughtPro: hasBoughtPro)
+                WidgetBuyProOverlay(hasBoughtPro: hasBoughtPro)
             )
         }*/
     }
     
     /*private var portfolioOverview: some View {
         
-        let totalValue = GlobalFunctions.shared.getTotalValue(portfolio: entry?.pieModel)
+        let totalValue = WidgetReloadService.shared.getTotalValue(portfolio: entry?.pieModel)
         
-        let totalValueDouble = GlobalFunctions.shared.getTotalValueDouble(portfolio: entry?.pieModel)
+        let totalValueDouble = WidgetReloadService.shared.getTotalValueDouble(portfolio: entry?.pieModel)
         
-        let totalProfit = GlobalFunctions.shared.getPortfolioProfitLossValue(of: entry?.pieModel,
+        let totalProfit = WidgetReloadService.shared.getPortfolioProfitLossValue(of: entry?.pieModel,
                                                                              coinPrices: entry?.allPrices ?? [])
         
-        let profitLossPercent = GlobalFunctions.shared.getPortfolioProfitLossPercent(of: entry?.pieModel,
+        let profitLossPercent = WidgetReloadService.shared.getPortfolioProfitLossPercent(of: entry?.pieModel,
                                                                                      totalValue: totalValueDouble,
                                                                                      coinPrices: entry?.allPrices ?? [])
         
@@ -102,8 +102,8 @@ struct LargePortfolioWidget: View {
                 
                 ForEach(0..<(portfolio?.isEmpty ?? true ? 1 : portfolio?.count ?? 0), id: \.self) { i in
                     
-                    let from = portfolio?.isEmpty ?? true ? 0.0 : GlobalFunctions.shared.from(index: i, portfolio: portfolio)
-                    let to = portfolio?.isEmpty ?? true ? 360.0 : GlobalFunctions.shared.to(index: i, portfolio: portfolio)
+                    let from = portfolio?.isEmpty ?? true ? 0.0 : WidgetReloadService.shared.from(index: i, portfolio: portfolio)
+                    let to = portfolio?.isEmpty ?? true ? 360.0 : WidgetReloadService.shared.to(index: i, portfolio: portfolio)
                     
                     ZStack {
                         
@@ -258,11 +258,11 @@ struct LargePortfolioWidget: View {
             
             if showInPercent {
                 let showCurrency = (SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()).code
-                let value = GlobalFunctions.shared.getPortfolioProfitLossPercent(of: array, totalValue: pie?.value ?? 0, coinPrices: entry?.allPrices ?? [], showCurrency: showCurrency)
+                let value = WidgetReloadService.shared.getPortfolioProfitLossPercent(of: array, totalValue: pie?.value ?? 0, coinPrices: entry?.allPrices ?? [], showCurrency: showCurrency)
                 let sign = value > 0 ? "+" :  abs(value) < 0.0000001 ? "" : "-"
                 return "\(sign)\(value.getPriceWithSymbol())%"
             } else {
-                let value = GlobalFunctions.shared.getPortfolioProfitLossValue(of: array, coinPrices: entry?.allPrices ?? [], showCurrency: (SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()).code)
+                let value = WidgetReloadService.shared.getPortfolioProfitLossValue(of: array, coinPrices: entry?.allPrices ?? [], showCurrency: (SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()).code)
                 let sign = value ?? 0 > 0 ? "+" :  abs(value ?? 0) < 0.0000001 ? "" : "-"
                 return "\(sign)\(value?.formatCurrency(threshold: .tenThousand) ?? "")"
             }
@@ -287,9 +287,9 @@ struct LargePortfolioWidget: View {
             let array = Array(entry?.pieModel[3..<(entry?.pieModel.count ?? 0)] ?? [])
             
             if showInPercent {
-                return GlobalFunctions.shared.getPortfolioProfitLossPercent(of: array, totalValue: pie?.value ?? 0, coinPrices: entry?.allPrices ?? [], showCurrency: (SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()).code).getWidgeWidgetPriceChangeColor(currentPrice: 0)
+                return WidgetReloadService.shared.getPortfolioProfitLossPercent(of: array, totalValue: pie?.value ?? 0, coinPrices: entry?.allPrices ?? [], showCurrency: (SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()).code).getWidgeWidgetPriceChangeColor(currentPrice: 0)
             } else {
-                return GlobalFunctions.shared.getPortfolioProfitLossValue(of: array, coinPrices: entry?.allPrices ?? [], showCurrency: (SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()).code)?.getWidgeWidgetPriceChangeColor(currentPrice: 0) ?? Color.onSurfaceDim
+                return WidgetReloadService.shared.getPortfolioProfitLossValue(of: array, coinPrices: entry?.allPrices ?? [], showCurrency: (SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()).code)?.getWidgeWidgetPriceChangeColor(currentPrice: 0) ?? Color.onSurfaceDim
             }
         } else {
             let prices = entry?.allPrices.first(where: { $0.id == pie?.data?.id })?.prices
@@ -324,6 +324,6 @@ struct LargePortfolioWidget: View {
     }
     
     func getPortfolio() -> [Pie]? {
-        return GlobalFunctions.shared.getData(of: entry?.pieModel)
+        return WidgetReloadService.shared.getData(of: entry?.pieModel)
     }*/
 }

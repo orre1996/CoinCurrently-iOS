@@ -24,13 +24,13 @@ struct CryptoListView: View {
             )
 
             VStack(alignment: .leading, spacing: 4) {
-                NewShimmeringText(
+                ShimmeringText(
                     text: coin == nil ? "00000000" : rankName,
                     isDownloading: coin == nil
                 )
                 .font(.satoshiBold(14))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: coin?.current_price?.formatCurrency(threshold: FormattingThreshold.none) ?? "",
                     isDownloading: coin == nil
                 )
@@ -40,7 +40,7 @@ struct CryptoListView: View {
                     Text("7d: ")
                     .font(.satoshiBold(12))
                     
-                    NewPriceChangePercentView(
+                    PriceChangePercentView(
                         change: coin?.price_change_percentage_7d_in_currency,
                         size: .small,
                         accessibleTimeframe: "7 days",

@@ -66,7 +66,7 @@ struct RectangularDuoWidget: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .widgetURL(url)
             /*.overlay (
-                BuyProView(
+                WidgetBuyProOverlay(
                     hasBoughtPro: hasBoughtPro,
                     fromLockScreen: true
                 )

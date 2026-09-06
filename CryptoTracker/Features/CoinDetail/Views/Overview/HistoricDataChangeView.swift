@@ -18,7 +18,7 @@ struct HistoricDataChangeView: View {
                 .foregroundStyle(Color.onSurfaceContainerDim)
                 .accessibilityHidden(true)
             
-            NewPriceChangePercentView(
+            PriceChangePercentView(
                 change: change,
                 accessibleTimeframe: timeframe.lowercased(),
                 isDownloading: change == nil

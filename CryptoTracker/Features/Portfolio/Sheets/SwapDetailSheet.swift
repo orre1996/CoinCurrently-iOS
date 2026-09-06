@@ -20,11 +20,11 @@ struct SwapDetailSheet: View {
     @State private var buttonsHeight: CGFloat = 0
     
     let coin: Toplist?
-    let transaction: NewSwapTransaction
+    let transaction: PortfolioSwapTransaction
     let portfolio: [Pie]?
     let hideData: Bool
-    var editTransaction: (NewSwapTransaction) -> Void
-    var deleteTransaction: (NewSwapTransaction) -> Void
+    var editTransaction: (PortfolioSwapTransaction) -> Void
+    var deleteTransaction: (PortfolioSwapTransaction) -> Void
     
     private var transactionCurrency: CurrencyModel {
         CurrencyModel.allCurrencies.first(where: { $0.code.lowercased() == transaction.selectedCurrency.lowercased() }) ?? SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
@@ -234,7 +234,7 @@ struct SwapDetailSheet: View {
                 size: 24 * min(scale, 1.5)
             )
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: "Swapped \(transaction.fromCurrencySymbol.uppercased()) for \(transaction.toCurrencySymbol.uppercased())",
                 isDownloading: coin == nil
             )

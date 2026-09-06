@@ -111,7 +111,7 @@ class SettingsManager {
         UserDefaults(suiteName: .groupIdentifier)?.set(data, forKey: key.rawValue)
     }
 
-    // MARK: - Migrated from GlobalFunctions (app-only settings)
+    // MARK: - Migrated from WidgetReloadService (app-only settings)
 
     func getCandleChartSelected() -> Bool {
         get(key: AppSettingKey.candleChartSelected) ?? false

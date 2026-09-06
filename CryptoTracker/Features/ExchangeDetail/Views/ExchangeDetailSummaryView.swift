@@ -89,7 +89,7 @@ struct ExchangeDetailSummaryView: View {
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityLabel("\(label): ")
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: value,
                 isDownloading: isDownloading
             )
@@ -107,7 +107,7 @@ struct ExchangeDetailSummaryView: View {
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityLabel("Trust score: ")
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: "\(exchangeDetail?.trust_score ?? 0)/10",
                 isDownloading: exchangeDetail?.trust_score == nil
             )

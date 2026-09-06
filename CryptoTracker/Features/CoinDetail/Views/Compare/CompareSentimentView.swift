@@ -94,7 +94,7 @@ struct CompareSentimentView: View {
                 .padding(.trailing, 4)
                 .accessibilityHidden(true)
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: "\((mainUpVotes ?? 0).formatted(.number.precision(.fractionLength(0))))%",
                     isDownloading: mainUpVotes == nil
                 )
@@ -119,7 +119,7 @@ struct CompareSentimentView: View {
                 .padding(.trailing, 4)
                 .accessibilityHidden(true)
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: "\((compareUpVotes ?? 0).formatted(.number.precision(.fractionLength(0))))%",
                     isDownloading: compareUpVotes == nil
                 )

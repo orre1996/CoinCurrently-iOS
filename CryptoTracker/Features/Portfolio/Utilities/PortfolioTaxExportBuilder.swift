@@ -60,8 +60,8 @@ enum PortfolioTaxExportBuilder {
     private static func buildCSV(
         header: String,
         from portfolio: [Pie],
-        transactionRow: (String, NewTransaction) -> String,
-        swapRow: (NewSwapTransaction) -> String,
+        transactionRow: (String, PortfolioTransaction) -> String,
+        swapRow: (PortfolioSwapTransaction) -> String,
         importRow: (String, AddressImport) -> String
     ) -> String {
         var entries: [ExportEntry] = []
@@ -120,7 +120,7 @@ enum PortfolioTaxExportBuilder {
     
     // MARK: - Koinly
     
-    private static func koinlyRow(coin: String, transaction: NewTransaction) -> String {
+    private static func koinlyRow(coin: String, transaction: PortfolioTransaction) -> String {
         let fees = feeFields(amount: transaction.fee, currency: transaction.currency)
         let value = tradeValue(amount: transaction.amount, pricePerCoin: transaction.pricePerCoin)
         
@@ -183,7 +183,7 @@ enum PortfolioTaxExportBuilder {
         }
     }
     
-    private static func koinlySwapRow(swap: NewSwapTransaction) -> String {
+    private static func koinlySwapRow(swap: PortfolioSwapTransaction) -> String {
         let fees = feeFields(amount: swap.fee, currency: swap.selectedCurrency)
         
         return koinlyColumns(
@@ -233,7 +233,7 @@ enum PortfolioTaxExportBuilder {
     
     // MARK: - CoinTracker
     
-    private static func coinTrackerRow(coin: String, transaction: NewTransaction) -> String {
+    private static func coinTrackerRow(coin: String, transaction: PortfolioTransaction) -> String {
         let fees = feeFields(amount: transaction.fee, currency: transaction.currency)
         let value = tradeValue(amount: transaction.amount, pricePerCoin: transaction.pricePerCoin)
         
@@ -296,7 +296,7 @@ enum PortfolioTaxExportBuilder {
         }
     }
     
-    private static func coinTrackerSwapRow(swap: NewSwapTransaction) -> String {
+    private static func coinTrackerSwapRow(swap: PortfolioSwapTransaction) -> String {
         let fees = feeFields(amount: swap.fee, currency: swap.selectedCurrency)
         
         return coinTrackerColumns(
@@ -340,7 +340,7 @@ enum PortfolioTaxExportBuilder {
     
     // MARK: - TokenTax
     
-    private static func tokenTaxRow(coin: String, transaction: NewTransaction) -> String {
+    private static func tokenTaxRow(coin: String, transaction: PortfolioTransaction) -> String {
         let fees = feeFields(amount: transaction.fee, currency: transaction.currency)
         let value = tradeValue(amount: transaction.amount, pricePerCoin: transaction.pricePerCoin)
         
@@ -408,7 +408,7 @@ enum PortfolioTaxExportBuilder {
         }
     }
     
-    private static func tokenTaxSwapRow(swap: NewSwapTransaction) -> String {
+    private static func tokenTaxSwapRow(swap: PortfolioSwapTransaction) -> String {
         let fees = feeFields(amount: swap.fee, currency: swap.selectedCurrency)
         
         return tokenTaxColumns(
@@ -460,7 +460,7 @@ enum PortfolioTaxExportBuilder {
     
     // MARK: - ZenLedger
     
-    private static func zenLedgerRow(coin: String, transaction: NewTransaction) -> String {
+    private static func zenLedgerRow(coin: String, transaction: PortfolioTransaction) -> String {
         let fees = feeFields(amount: transaction.fee, currency: transaction.currency)
         let value = tradeValue(amount: transaction.amount, pricePerCoin: transaction.pricePerCoin)
         
@@ -523,7 +523,7 @@ enum PortfolioTaxExportBuilder {
         }
     }
     
-    private static func zenLedgerSwapRow(swap: NewSwapTransaction) -> String {
+    private static func zenLedgerSwapRow(swap: PortfolioSwapTransaction) -> String {
         let fees = feeFields(amount: swap.fee, currency: swap.selectedCurrency)
         
         return zenLedgerColumns(

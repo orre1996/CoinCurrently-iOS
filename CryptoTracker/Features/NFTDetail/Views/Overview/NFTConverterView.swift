@@ -89,7 +89,7 @@ struct NFTConverterView: View {
                     size: 20 * min(scale, 1.5)
                 )
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: currentCurrency?.symbol?.uppercased() ?? "0000",
                     isDownloading: currentCurrency?.symbol == nil
                 )

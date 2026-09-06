@@ -150,7 +150,7 @@ struct NFTListCell: View {
     }
     
     private var nftNameView: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: nftToplist?.name ?? "00000000",
             isDownloading: nftToplist?.name == nil
         )
@@ -163,14 +163,14 @@ struct NFTListCell: View {
     @ViewBuilder
     private var floorPriceView: some View {
         VStack(alignment: isHorizontal ? .trailing : .leading, spacing: 0) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: "\(nftToplist?.floor_price?.native_currency?.formatCurrency(threshold: FormattingThreshold.none, currency: nativeFloorPriceCurrency()) ?? "0000")",
                 isDownloading: nftToplist?.floor_price?.native_currency == nil
             )
             .foregroundStyle(Color.onSurface)
             .font(.satoshiBold(16))
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: "\(((nftToplist?.floor_price?.usd ?? 0) * (priceMultiplier ?? 0)).formatCurrency(threshold: FormattingThreshold.none))",
                 isDownloading: nftToplist?.floor_price?.native_currency == nil || priceMultiplier == nil
             )
@@ -191,7 +191,7 @@ struct NFTListCell: View {
             extraSize: 16 * min(scale, 1.5) + 4,
             alignment: .trailing
         ) {
-            NewPriceChangePercentView(
+            PriceChangePercentView(
                 change: change,
                 accessibleTimeframe: "24 hour",
                 isDownloading: nftToplist == nil

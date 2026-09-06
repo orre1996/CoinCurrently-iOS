@@ -120,7 +120,7 @@ struct TreasuryDetailScreen: View {
                                 )
                             )
 
-                            ChartButtonsViewNew(
+                            ChartTimeframeButtonsView(
                                 fromScreen: .treasuryDetail,
                                 chartButtons: ChartButton.treasuryDetailButtons(),
                                 selectedNumber: viewModel.selectedTimeFrame.rawValue,
@@ -217,7 +217,7 @@ struct TreasuryDetailScreen: View {
     @ViewBuilder
     private var hoverTexts: some View {
         if viewModel.hoverHelper.hoverPrices.count == 2 {
-            NewMultiHoverTextView(
+            MultiHoverTextView(
                 hoverTimes: viewModel.hoverHelper.hoverTimes,
                 differenceValue: viewModel.differenceValue,
                 differencePercent: viewModel.differencePercent,
@@ -245,7 +245,7 @@ struct TreasuryDetailScreen: View {
         halfBiggestChartValueHeight: CGFloat,
         geometryReader: GeometryProxy
     ) -> some View {
-        NewChartView(
+        PriceLineChartView(
             prices: viewModel.getPrices(),
             color: viewModel.graphColor,
             lineWidth: 2,

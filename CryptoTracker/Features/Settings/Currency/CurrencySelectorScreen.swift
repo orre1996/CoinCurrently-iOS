@@ -46,7 +46,7 @@ struct CurrencySelectorScreen: View {
                                         sortOption: sortOption,
                                         priceChange: priceChange
                                     )
-                                    GlobalFunctions.shared.forceUpdateWidgets()
+                                    WidgetReloadService.shared.forceUpdateWidgets()
                                     NotificationCenter.default.post(name: .downloadNewToplist, object: nil)
                                 }
                                 

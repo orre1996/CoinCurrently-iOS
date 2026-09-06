@@ -41,7 +41,7 @@ struct CompareHoverStats: View {
                         if mainHoverPrice == "N/A" {
                             naView
                         } else {
-                            NewPriceChangePercentView(
+                            PriceChangePercentView(
                                 change: mainPercentChange,
                                 size: .small,
                                 accessibleTimeframe: accessibleTimeframe,
@@ -67,7 +67,7 @@ struct CompareHoverStats: View {
                         if compareHoverPrice == "N/A" {
                             naView
                         } else {
-                            NewPriceChangePercentView(
+                            PriceChangePercentView(
                                 change: comparePercentChange,
                                 size: .small,
                                 accessibleTimeframe: accessibleTimeframe,

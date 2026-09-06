@@ -357,7 +357,7 @@ struct PaywallScreen: View {
         }, label: {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(alignment: .center, spacing: 12) {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: button?.title ?? "00000000",
                         isDownloading: button?.title == nil
                     )
@@ -381,7 +381,7 @@ struct PaywallScreen: View {
                     }
                 }
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: button?.formattedPrice ?? "0000000000000",
                     isDownloading: button?.formattedPrice == nil
                 )
@@ -391,7 +391,7 @@ struct PaywallScreen: View {
                 .accessibilityLabel(button?.formattedPriceAccessibilityLabel ?? "")
                 
                 if !(button?.subTitle?.isEmpty ?? false) {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: button?.subTitle ?? "0000000000000000000000",
                         isDownloading: button?.subTitle == nil
                     )

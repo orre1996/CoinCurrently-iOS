@@ -14,7 +14,7 @@ struct PortfolioSwapView: View {
     @ScaledMetric private var scale: CGFloat = 1
     
     let coin: Toplist?
-    let transaction: NewSwapTransaction?
+    let transaction: PortfolioSwapTransaction?
     let portfolio: [Pie]?
     let hideData: Bool
     let index: Int
@@ -81,14 +81,14 @@ struct PortfolioSwapView: View {
             
             AdaptiveStack(isHorizontal: isHorizontal, spacing: 4, horizontalAlignment: .leading, verticalAlignment: .top) {
                 VStack(alignment: .leading, spacing: 4) {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: "Swapped \(transaction?.fromCurrencySymbol.uppercased() ?? "0000") for \(transaction?.toCurrencySymbol.uppercased() ?? "0000")",
                         isDownloading: transaction == nil
                     )
                     .foregroundStyle(Color.onSurface)
                     .font(.satoshiBold(16))
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: transaction?.date.formatted(date: .omitted, time: .shortened) ?? "000000",
                         isDownloading: transaction == nil
                     )
@@ -119,14 +119,14 @@ struct PortfolioSwapView: View {
     @ViewBuilder
     private var valuesView: some View {
         VStack(alignment: .trailing, spacing: 4) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: hideData ? String.stars : "+\(transaction?.toAmount.formatCurrency(threshold: FormattingThreshold.million, currency: CurrencyModel.empty) ?? "0000000")\(transaction?.toCurrencySymbol.uppercased() ?? "0000")",
                 isDownloading: transaction == nil
             )
             .foregroundStyle(Color.onSurface)
             .font(.satoshiBold(16))
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: hideData ? String.stars : "-\(transaction?.fromAmount.formatCurrency(threshold: FormattingThreshold.million, currency: CurrencyModel.empty) ?? "000000")\(transaction?.fromCurrencySymbol.uppercased() ?? "0000")",
                 isDownloading: transaction == nil
             )
@@ -140,14 +140,14 @@ struct PortfolioSwapView: View {
     @ViewBuilder
     private var valuesSubtitleView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: hideData ? String.stars : "+\(transaction?.toAmount.formatCurrency(threshold: FormattingThreshold.million, currency: CurrencyModel.empty) ?? "0000000")\(transaction?.toCurrencySymbol.uppercased() ?? "0000")",
                 isDownloading: transaction == nil
             )
             .foregroundStyle(Color.onSurfaceDimmer)
             .font(.satoshiBold(12))
             
-            NewShimmeringText(
+            ShimmeringText(
                 text: hideData ? String.stars : "-\(transaction?.fromAmount.formatCurrency(threshold: FormattingThreshold.million, currency: CurrencyModel.empty) ?? "000000")\(transaction?.fromCurrencySymbol.uppercased() ?? "0000")",
                 isDownloading: transaction == nil
             )

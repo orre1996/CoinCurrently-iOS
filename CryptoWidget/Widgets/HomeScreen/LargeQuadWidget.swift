@@ -62,7 +62,7 @@ struct LargeQuadWidget: View {
                 }
             }
             .overlay (
-                BuyProView(
+                WidgetBuyProOverlay(
                     hasBoughtPro: hasBoughtPro
                 )
             )

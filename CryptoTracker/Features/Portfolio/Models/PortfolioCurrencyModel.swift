@@ -53,13 +53,13 @@ struct CleanPortfolioModel: Codable {
 }
 
 extension PortfolioCurrencyModel {
-    func migrateToNewPortfolioModel() -> NewPortfolioModel {
-        var transactions = [NewTransaction]()
+    func migrateToNewPortfolioModel() -> PortfolioModel {
+        var transactions = [PortfolioTransaction]()
         var imports = [AddressImport]()
         
         if let amount = amount {
             transactions.append(
-                NewTransaction(
+                PortfolioTransaction(
                     amount: amount,
                     pricePerCoin: entryCost,
                     fee: 0.0,
@@ -72,7 +72,7 @@ extension PortfolioCurrencyModel {
         
         buyTransactions.forEach {
             transactions.append(
-                NewTransaction(
+                PortfolioTransaction(
                     amount: $0.amount,
                     pricePerCoin: $0.pricePerCoin,
                     fee: $0.fee ?? 0,
@@ -85,7 +85,7 @@ extension PortfolioCurrencyModel {
         
         sellTransactions.forEach {
             transactions.append(
-                NewTransaction(
+                PortfolioTransaction(
                     amount: $0.amount,
                     pricePerCoin: $0.pricePerCoin,
                     fee: $0.fee ?? 0,
@@ -98,7 +98,7 @@ extension PortfolioCurrencyModel {
         
         inTransferTransactions.forEach {
             transactions.append(
-                NewTransaction(
+                PortfolioTransaction(
                     amount: $0.amount,
                     pricePerCoin: $0.pricePerCoin,
                     fee: $0.fee ?? 0,
@@ -111,7 +111,7 @@ extension PortfolioCurrencyModel {
         
         outTransferTransactions.forEach {
             transactions.append(
-                NewTransaction(
+                PortfolioTransaction(
                     amount: $0.amount,
                     pricePerCoin: $0.pricePerCoin,
                     fee: $0.fee ?? 0,
@@ -134,7 +134,7 @@ extension PortfolioCurrencyModel {
             )
         }
         
-        return NewPortfolioModel(
+        return PortfolioModel(
             id: id ?? "",
             transactions: transactions,
             swaps: [],

@@ -64,7 +64,7 @@ struct HoverTextView: View {
     }
 }
 
-struct NewHoverTextView: View {
+struct ChartHoverLabelsView: View {
     let hoverTime: String
     let hoverPrice: String
     let xPositionTime: CGFloat

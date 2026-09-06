@@ -67,7 +67,7 @@ struct CryptoDetailStatisticsView: View {
             AdaptiveStack(isHorizontal: isHorizontal, spacing: 16, horizontalAlignment: .leading) {
                 let low = prices?.min()?.formatCurrency(threshold: FormattingThreshold.none)
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: low ?? "00000000000",
                     isDownloading: prices?.min() == nil
                 )
@@ -78,7 +78,7 @@ struct CryptoDetailStatisticsView: View {
                 
                 let high = prices?.max()?.formatCurrency(threshold: FormattingThreshold.none)
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: high ?? "00000000000",
                     isDownloading: prices?.max() == nil
                 )
@@ -121,7 +121,7 @@ struct CryptoDetailStatisticsView: View {
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: cryptoDetailModel?.market_cap_rank == nil ? "-" : "#\(cryptoDetailModel?.market_cap_rank ?? 0)",
                     isDownloading: cryptoDetailModel == nil
                 )
@@ -145,7 +145,7 @@ struct CryptoDetailStatisticsView: View {
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: marketCap?.formatCurrency(threshold: FormattingThreshold.none, maxDecimals: (marketCap ?? 0) >= 1_000_000_000 ? 0 : nil) ?? "00000000000",
                     isDownloading: cryptoDetailModel?.market_data?.market_cap == nil
                 )
@@ -173,7 +173,7 @@ struct CryptoDetailStatisticsView: View {
                 let totalMarketCap = totalMarketCap ?? 0
                 
                 if cryptoDetailModel?.market_data?.market_cap == nil {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: "0.00%",
                         isDownloading: cryptoDetailModel?.market_data?.market_cap == nil
                     )
@@ -200,7 +200,7 @@ struct CryptoDetailStatisticsView: View {
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: volume?.formatCurrency(threshold: FormattingThreshold.none, maxDecimals: (volume ?? 0) >= 1_000_000_000 ? 0 : nil) ?? "00000000000",
                     isDownloading: cryptoDetailModel?.market_data?.total_volume == nil
                 )
@@ -296,7 +296,7 @@ struct CryptoDetailStatisticsView: View {
                 ) ?? "000000000"
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: supply,
                         isDownloading: cryptoDetailModel?.market_data?.atl == nil
                     )
@@ -324,14 +324,14 @@ struct CryptoDetailStatisticsView: View {
                     : "Max supply: \(maxSupplyText)"
                 
                 VStack(alignment: isHorizontal ? .trailing : .leading, spacing: 4) {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: maxSupplyText,
                         isDownloading: cryptoDetailModel?.market_data?.ath == nil
                     )
                     .foregroundStyle(Color.onSurface)
                     .font(.satoshiBold(16))
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: "Max Supply",
                         isDownloading: cryptoDetailModel?.market_data == nil
                     )
@@ -356,7 +356,7 @@ struct CryptoDetailStatisticsView: View {
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
-                NewShimmeringText(
+                ShimmeringText(
                     text: cryptoDetailModel?.market_data?.circulating_supply?.formatCurrency(
                         threshold: FormattingThreshold.billion,
                         currency: CurrencyModel.empty,

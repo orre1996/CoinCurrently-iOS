@@ -63,7 +63,7 @@ struct PortfolioPerformanceChart: View {
                         .padding(.trailing, biggestChartValue.width)
                         .accessibilityHidden(true)
                 } else {
-                    NewChartView(
+                    PriceLineChartView(
                         prices: viewModel.prices,
                         color: viewModel.graphColor,
                         lineWidth: 2,
@@ -87,7 +87,7 @@ struct PortfolioPerformanceChart: View {
                     .frame(height: max(1, chartHeight))
 
                     if !viewModel.benchmarkPrices.isEmpty {
-                        NewChartView(
+                        PriceLineChartView(
                             prices: viewModel.benchmarkPrices,
                             color: Color.primary,
                             isGraphFilled: false,
@@ -183,7 +183,7 @@ struct PortfolioPerformanceChart: View {
     @ViewBuilder
     private var hoverTexts: some View {
         if viewModel.hoverHelper.hoverPrices.count == 2 {
-            NewMultiHoverTextView(
+            MultiHoverTextView(
                 hoverTimes: viewModel.hoverHelper.hoverTimes,
                 differenceValue: viewModel.differenceValue,
                 differencePercent: viewModel.differencePercent,

@@ -176,7 +176,7 @@ struct SettingsScreen: View {
                     )
                     Task {
                         await refreshCachedSections()
-                        GlobalFunctions.shared.forceUpdateWidgets()
+                        WidgetReloadService.shared.forceUpdateWidgets()
                         NotificationCenter.default.post(name: .downloadNewToplist, object: nil)
                     }
                     
@@ -368,7 +368,7 @@ struct SettingsScreen: View {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                     colorBlindnessFilterEnabled.toggle()
                     SettingsManager.shared.setColorBlindnessFilterEnabled(colorBlindnessFilterEnabled)
-                    GlobalFunctions.shared.forceUpdateWidgets()
+                    WidgetReloadService.shared.forceUpdateWidgets()
                     NotificationCenter.default.post(name: .colorBlindnessFilterChanged, object: nil)
 
                     if colorBlindnessFilterEnabled {

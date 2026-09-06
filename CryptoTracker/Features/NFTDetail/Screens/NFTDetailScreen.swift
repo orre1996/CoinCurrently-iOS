@@ -84,7 +84,7 @@ struct NFTDetailScreen: View {
                             )
                             .padding(.horizontal, 16)
                             
-                            ChartButtonsView(
+                            ChartTypeButtonsView(
                                 fromScreen: .nftDetail,
                                 selectedGraphType: viewModel.currentChartType,
                                 isCandleChartEnabled: !viewModel.isChartFiat,
@@ -152,7 +152,7 @@ struct NFTDetailScreen: View {
                                 )
                             )
                             
-                            ChartButtonsViewNew(
+                            ChartTimeframeButtonsView(
                                 fromScreen: .nftDetail,
                                 chartButtons: ChartButton.getButtons(from: .anHour, to: .aYear),
                                 selectedNumber: viewModel.selectedTimeFrame.rawValue,
@@ -352,7 +352,7 @@ struct NFTDetailScreen: View {
     @ViewBuilder
     private var hoverTexts: some View {
         if viewModel.hoverHelper.hoverPrices.count == 2 {
-            NewMultiHoverTextView(
+            MultiHoverTextView(
                 hoverTimes: viewModel.hoverHelper.hoverTimes,
                 differenceValue: viewModel.differenceValue,
                 differencePercent: viewModel.differencePercent,
@@ -380,7 +380,7 @@ struct NFTDetailScreen: View {
         halfBiggestChartValueHeight: CGFloat,
         geometryReader: GeometryProxy
     ) -> some View {
-        NewChartView(
+        PriceLineChartView(
             prices: viewModel.getPrices(),
             color: viewModel.graphColor,
             lineWidth: 2,

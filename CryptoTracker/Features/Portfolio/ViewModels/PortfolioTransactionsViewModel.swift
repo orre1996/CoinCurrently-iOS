@@ -11,7 +11,7 @@ import Foundation
 @Observable
 final class PortfolioTransactionsViewModel {
     var groupedTransactions: [Date: [any PortfolioEvent]] = [:]
-    var typeFilters: [NewTransactionType] = []
+    var typeFilters: [PortfolioTransactionType] = []
     var dateFilter: DateOption = .all
     var coinFilters: [Toplist] = []
 

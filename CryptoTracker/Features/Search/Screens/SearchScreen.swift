@@ -325,7 +325,7 @@ struct SearchScreen: View {
     @ViewBuilder
     private func fixedListTransaction(
         coins: [Toplist],
-        transactionType: NewTransactionType?,
+        transactionType: PortfolioTransactionType?,
         isSelectable: Bool
     ) -> some View {
         ForEach(Array(coins.enumerated()), id: \.element) { index, coin in
@@ -345,7 +345,7 @@ struct SearchScreen: View {
 
     private func handleTransactionCoinSelection(
         coin: Toplist,
-        transactionType: NewTransactionType?
+        transactionType: PortfolioTransactionType?
     ) {
         guard let id = coin.id, coin.id != highlightId, let symbol = coin.symbol else {
             return
@@ -358,7 +358,7 @@ struct SearchScreen: View {
                 Navigate(fromScreen: fromScreen, toScreen: .newSwapTransaction, coinName: coin.name ?? "")
             )
             navigationViewModel.navPath.append(
-                NavigationScreens.NewSwapTransaction(
+                NavigationScreens.PortfolioSwapTransaction(
                     transactionType: transactionType,
                     currencyDataModel: CurrencyDataModel(id: id, symbol: symbol),
                     transaction: nil
@@ -369,7 +369,7 @@ struct SearchScreen: View {
                 Navigate(fromScreen: fromScreen, toScreen: .newPortfolioTransaction, coinName: coin.name ?? "")
             )
             navigationViewModel.navPath.append(
-                NavigationScreens.NewPortfolioTransaction(
+                NavigationScreens.AddPortfolioTransaction(
                     transactionType: transactionType,
                     currencyDataModel: CurrencyDataModel(id: id, symbol: symbol),
                     transaction: nil
@@ -380,7 +380,7 @@ struct SearchScreen: View {
 
     @ViewBuilder
     private func transactionSearchCoinsList(
-        transactionType: NewTransactionType,
+        transactionType: PortfolioTransactionType,
         searchResult: SearchModel
     ) -> some View {
         let coins = searchResult.searchCaseCoins(searchCase: .coins)

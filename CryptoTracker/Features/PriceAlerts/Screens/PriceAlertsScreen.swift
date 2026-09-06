@@ -180,7 +180,7 @@ struct PriceAlertsScreen: View {
             )
         }
         .sheet(item: $selectedCoin) {
-            NewPriceAlertSheet(
+            CreatePriceAlertSheet(
                 currencyDataModel: $0,
                 selectedCurrency: selectedAlertCurrencyModel,
                 isLoading: isAddingAlert,

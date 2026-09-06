@@ -111,7 +111,7 @@ struct TreasuriesItemView: View {
             Text(flag)
                 .font(.satoshiBold(16))
         } else {
-            NewShimmeringText(
+            ShimmeringText(
                 text: data?.country ?? "00000",
                 isDownloading: data?.name == nil
             )
@@ -122,7 +122,7 @@ struct TreasuriesItemView: View {
     }
 
     private var exchangeName: some View {
-        NewShimmeringText(
+        ShimmeringText(
             text: data?.name ?? "00000",
             isDownloading: data?.name == nil
         )
@@ -135,14 +135,14 @@ struct TreasuriesItemView: View {
     @ViewBuilder
     private var holdingsView: some View {
         VStack(alignment: isHorizontal ? .trailing : .leading, spacing: 0) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: holdingsText,
                 isDownloading: data == nil
             )
             .font(.satoshiBold(16))
             .foregroundStyle(Color.onSurface)
 
-            NewShimmeringText(
+            ShimmeringText(
                 text: holdingsTextFiat,
                 isDownloading: data == nil || priceMultiplier == nil
             )

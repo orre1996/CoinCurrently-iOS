@@ -91,7 +91,7 @@ struct CompareHistoricDataView: View {
         let athPriceFormatted = athPrice?.formatCurrency(threshold: FormattingThreshold.none) ?? "000000000"
         
         VStack(alignment: .leading, spacing: 0) {
-            NewShimmeringText(
+            ShimmeringText(
                 text: "All-Time Range (\(cryptoInfo?.symbol?.uppercased() ?? "0000"))",
                 isDownloading: isDownloading
             )
@@ -109,7 +109,7 @@ struct CompareHistoricDataView: View {
             
             AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? 0 : 16, horizontalAlignment: .leading) {
                 VStack(alignment: .leading, spacing: 4) {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: atlPriceFormatted,
                         isDownloading: cryptoInfo?.market_data?.atl == nil
                     )
@@ -117,7 +117,7 @@ struct CompareHistoricDataView: View {
                     .font(.satoshiBold(16))
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: formattedAtlDate ?? "0000000",
                         isDownloading: formattedAtlDate == nil
                     )
@@ -134,7 +134,7 @@ struct CompareHistoricDataView: View {
                 }
                 
                 VStack(alignment: isHorizontal ? .trailing : .leading, spacing: 4) {
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: athPriceFormatted,
                         isDownloading: cryptoInfo?.market_data?.ath == nil
                     )
@@ -142,7 +142,7 @@ struct CompareHistoricDataView: View {
                     .font(.satoshiBold(16))
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: formattedAthDate ?? "0000000",
                         isDownloading: formattedAthDate == nil
                     )
@@ -176,7 +176,7 @@ struct CompareHistoricDataView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: mainDaysAgo ?? "Unknown",
                         isDownloading: mainCryptoInfo?.market_data?.ath_date == nil
                     )
@@ -194,7 +194,7 @@ struct CompareHistoricDataView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: compareDaysAgo ?? "Unknown",
                         isDownloading: compareCryptoInfo?.market_data?.ath_date == nil
                     )
@@ -229,7 +229,7 @@ struct CompareHistoricDataView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: mainDaysAgo ?? "00000000",
                         isDownloading: mainCryptoInfo?.market_data?.atl_date == nil
                     )
@@ -247,7 +247,7 @@ struct CompareHistoricDataView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: compareDaysAgo ?? "00000000",
                         isDownloading: compareCryptoInfo?.market_data?.atl_date == nil
                     )
@@ -283,7 +283,7 @@ struct CompareHistoricDataView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: mainFormattedGenesisDate ?? "Unknown",
                         isDownloading: mainCryptoInfo?.market_data?.atl_date == nil
                     )
@@ -301,7 +301,7 @@ struct CompareHistoricDataView: View {
                     )
                     .accessibilityHidden(true)
                     
-                    NewShimmeringText(
+                    ShimmeringText(
                         text: compareFormattedGenesisDate ?? "Unknown",
                         isDownloading: compareCryptoInfo?.market_data?.atl_date == nil
                     )

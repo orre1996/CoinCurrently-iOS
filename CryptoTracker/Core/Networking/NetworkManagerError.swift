@@ -59,6 +59,25 @@ enum NetworkManagerError: Int, Error, Equatable {
 }
 
 extension NetworkManagerError {
+    /// Backend error bodies use `{ "detail": "..." }`. Upstream 404s are often
+    /// forwarded as 500s with a `HttpRequestException` in `detail`.
+    static func resolved(statusCode: Int, data: Data) -> NetworkManagerError? {
+        if isUpstreamNotFound(in: data) {
+            return .notFound
+        }
+        return NetworkManagerError(rawValue: statusCode)
+    }
+
+    static func isUpstreamNotFound(in data: Data) -> Bool {
+        guard let detail = (try? JSONDecoder().decode(APIErrorDetail.self, from: data))?.detail
+                ?? String(data: data, encoding: .utf8),
+              !detail.isEmpty else {
+            return false
+        }
+
+        return detail.contains("404") && detail.range(of: "Not Found", options: .caseInsensitive) != nil
+    }
+
     static func from(caughtError error: Error) -> NetworkManagerError {
         if let urlError = error as? URLError {
             switch urlError.code {
@@ -73,4 +92,8 @@ extension NetworkManagerError {
         }
         return .unknownError
     }
+}
+
+private struct APIErrorDetail: Decodable {
+    let detail: String?
 }

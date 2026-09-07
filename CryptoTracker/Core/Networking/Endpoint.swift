@@ -394,6 +394,16 @@ enum Endpoint: Sendable {
             return true
         }
     }
+
+    /// Missing treasury data should render the empty state instead of an error.
+    var treatsNotFoundAsEmpty: Bool {
+        switch self {
+        case .publicTreasury:
+            return true
+        default:
+            return false
+        }
+    }
     
     func shouldAddBearerToken() -> Bool {
         switch self {

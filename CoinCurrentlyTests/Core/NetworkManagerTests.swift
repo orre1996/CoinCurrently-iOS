@@ -232,6 +232,75 @@ struct NetworkManagerTests {
             #expect(result == nil)
         }
 
+        @Test("get treats public treasury 500 with upstream 404 as empty model")
+        func getTreatsPublicTreasuryUpstreamNotFoundAsEmpty() async {
+            MockURLProtocol.reset()
+            defer { MockURLProtocol.reset() }
+
+            let jsonData = """
+            {"detail":"System.Net.Http.HttpRequestException: Response status code does not indicate success: 404 (Not Found)."}
+            """.data(using: .utf8)!
+
+            MockURLProtocol.mockData = jsonData
+            MockURLProtocol.mockResponse = HTTPURLResponse(
+                url: URL(string: "https://api.coincurrently.app/crypto/api/v3/companies/public_treasury/dogecoin")!,
+                statusCode: 500,
+                httpVersion: nil,
+                headerFields: nil
+            )
+
+            let config = URLSessionConfiguration.ephemeral
+            config.protocolClasses = [MockURLProtocol.self]
+            let session = URLSession(configuration: config)
+
+            let manager = NetworkManagerImp(
+                storeKitManager: MockRepoStoreKitManager(),
+                firebaseManager: MockFirebaseManager(),
+                session: session
+            )
+
+            let result: PublicTreasuryModel? = await manager.get(
+                endpoint: .publicTreasury(entity: .companies, coinId: "dogecoin")
+            )
+
+            #expect(result != nil)
+            #expect(result?.holders.isEmpty == true)
+        }
+
+        @Test("get still returns nil for public treasury 500 without upstream 404")
+        func getReturnsNilForPublicTreasuryServerError() async {
+            MockURLProtocol.reset()
+            defer { MockURLProtocol.reset() }
+
+            let jsonData = """
+            {"detail":"An unexpected error occurred."}
+            """.data(using: .utf8)!
+
+            MockURLProtocol.mockData = jsonData
+            MockURLProtocol.mockResponse = HTTPURLResponse(
+                url: URL(string: "https://api.coincurrently.app/crypto/api/v3/companies/public_treasury/bitcoin")!,
+                statusCode: 500,
+                httpVersion: nil,
+                headerFields: nil
+            )
+
+            let config = URLSessionConfiguration.ephemeral
+            config.protocolClasses = [MockURLProtocol.self]
+            let session = URLSession(configuration: config)
+
+            let manager = NetworkManagerImp(
+                storeKitManager: MockRepoStoreKitManager(),
+                firebaseManager: MockFirebaseManager(),
+                session: session
+            )
+
+            let result: PublicTreasuryModel? = await manager.get(
+                endpoint: .publicTreasury(entity: .companies, coinId: "bitcoin")
+            )
+
+            #expect(result == nil)
+        }
+
         @Test("get returns nil on HTTP error")
         func getReturnsNilOnHTTPError() async {
             MockURLProtocol.reset()

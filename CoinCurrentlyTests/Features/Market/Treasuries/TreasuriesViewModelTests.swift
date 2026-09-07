@@ -268,6 +268,30 @@ struct TreasuriesViewModelTests {
         #expect(viewModel.selectedCoinId == "ethereum")
     }
 
+    @Test("getTreasuries shows empty holders when coin has no treasury data")
+    func getTreasuriesShowsEmptyHoldersWhenCoinHasNoData() async {
+        let emptyTreasury = PublicTreasuryModel(
+            total_holdings: nil,
+            total_value_usd: nil,
+            market_cap_dominance: nil,
+            companies: nil,
+            governments: nil
+        )
+        let mockRepo = MockPublicTreasuryRepository(fetchResults: [
+            .companies: emptyTreasury,
+            .governments: emptyTreasury
+        ])
+        let viewModel = TreasuriesViewModelImp(
+            publicTreasuryRepository: mockRepo,
+            toplistRepository: MockTreasuryToplistRepository()
+        )
+
+        await viewModel.getTreasuries()
+
+        #expect(viewModel.treasury != nil)
+        #expect(viewModel.holders.isEmpty)
+    }
+
     @Test("loadAvailableCoins uses full smallToplist")
     func loadAvailableCoinsUsesFullSmallToplist() async {
         let viewModel = TreasuriesViewModelImp(

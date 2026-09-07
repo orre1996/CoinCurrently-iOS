@@ -86,6 +86,13 @@ actor NetworkManagerImp: NetworkManager {
             )
         }
     }
+
+    private func cacheAndDecodeEmpty<T: Decodable>(cacheKey: String) async -> T? {
+        let emptyData = Data("{}".utf8)
+        cache[cacheKey] = CachedData(data: emptyData, date: Date())
+        await coreDataManager.set(cache, forKey: .networkCache)
+        return try? decoder.decode(T.self, from: emptyData)
+    }
     
     // MARK: - GET
     
@@ -175,7 +182,7 @@ actor NetworkManagerImp: NetworkManager {
             }
             
             if httpResponse.statusCode != 200,
-               let error = NetworkManagerError(rawValue: httpResponse.statusCode) {
+               let error = NetworkManagerError.resolved(statusCode: httpResponse.statusCode, data: data) {
                 print("🔴 ERROR GETTING \(endpoint) \(error.localizedDescription)")
                 
                 if error == .tooManyRequests, endpoint.shouldTryAgain(hasBoughtPro: hasActiveSubscription) {
@@ -259,11 +266,17 @@ actor NetworkManagerImp: NetworkManager {
         do {
             let (data, response) = try await session.data(for: request)
             
-            if let responseCode = (response as? HTTPURLResponse)?.statusCode, responseCode != 200, let error = NetworkManagerError(rawValue: responseCode) {
+            if let responseCode = (response as? HTTPURLResponse)?.statusCode,
+               responseCode != 200,
+               let error = NetworkManagerError.resolved(statusCode: responseCode, data: data) {
                 print("🔴 ERROR GETTING \(endpoint) \(error.localizedDescription)")
                 
                 if error == .tooManyRequests, endpoint.shouldTryAgain(hasBoughtPro: hasActiveSubscription) {
                     return await get(endpoint: endpoint.withPremiumVersion)
+                }
+
+                if endpoint.treatsNotFoundAsEmpty, error == .notFound {
+                    return await cacheAndDecodeEmpty(cacheKey: cacheKey)
                 }
                 
                 showErrorIfNeeded(

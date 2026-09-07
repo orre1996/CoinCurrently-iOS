@@ -44,10 +44,10 @@
 		10347B202543489100BCC77E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10347B1F2543489100BCC77E /* SwiftUI.framework */; };
 		10347B232543489100BCC77E /* MainWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10347B222543489100BCC77E /* MainWidgetBundle.swift */; };
 		10347B2C2543489300BCC77E /* CryptoWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 10347B1B2543489100BCC77E /* CryptoWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		10347B47254453F400BCC77E /* SmallMainWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10347B43254453F200BCC77E /* SmallMainWidgetBundle.swift */; };
+		10347B47254453F400BCC77E /* SmallCryptoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10347B43254453F200BCC77E /* SmallCryptoWidget.swift */; };
 		10347B6825446F1B00BCC77E /* CryptoTracker/Core/Extensions/BezierPath+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10347B64254460EE00BCC77E /* CryptoTracker/Core/Extensions/BezierPath+Extensions.swift */; };
-		10347B7A2544864D00BCC77E /* MediumMainWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10347B76254485A200BCC77E /* MediumMainWidgetBundle.swift */; };
-		10347BAF25471A6F00BCC77E /* LargeMainWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10347BAD25471A6F00BCC77E /* LargeMainWidgetBundle.swift */; };
+		10347B7A2544864D00BCC77E /* MediumCryptoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10347B76254485A200BCC77E /* MediumCryptoWidget.swift */; };
+		10347BAF25471A6F00BCC77E /* LargeCryptoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10347BAD25471A6F00BCC77E /* LargeCryptoWidget.swift */; };
 		10347BBD25474EFF00BCC77E /* VolumeLineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10347BBB25474EFE00BCC77E /* VolumeLineChart.swift */; };
 		10347BC22548B0B700BCC77E /* WidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10347BC02548B0B600BCC77E /* WidgetViewModel.swift */; };
 		104CD2F1267F786F00A69D4F /* CryptoTracker/Features/Portfolio/Models/PortfolioCurrencyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104CD2EF267F786F00A69D4F /* CryptoTracker/Features/Portfolio/Models/PortfolioCurrencyModel.swift */; };
@@ -353,8 +353,8 @@
 		9F10EC042A35297C007637C0 /* ViewRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F10EC032A35297C007637C0 /* ViewRect.swift */; };
 		9F1961332AB0E9BB0087B610 /* RectangularFearGreedWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1961322AB0E9BB0087B610 /* RectangularFearGreedWidget.swift */; };
 		9F19B6C32AAA64980049E3D4 /* RectangularNewsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F19B6C22AAA64980049E3D4 /* RectangularNewsWidget.swift */; };
-		9F19B6C92AAB7AA90049E3D4 /* InlineMainWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F19B6C82AAB7AA90049E3D4 /* InlineMainWidgetBundle.swift */; };
-		9F19B6CB2AAB80920049E3D4 /* CircularMainWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F19B6CA2AAB80920049E3D4 /* CircularMainWidgetBundle.swift */; };
+		9F19B6C92AAB7AA90049E3D4 /* InlineCryptoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F19B6C82AAB7AA90049E3D4 /* InlineCryptoWidget.swift */; };
+		9F19B6CB2AAB80920049E3D4 /* CircularCryptoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F19B6CA2AAB80920049E3D4 /* CircularCryptoWidget.swift */; };
 		9F19B6CF2AACD8E40049E3D4 /* InlineFearGreedWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F19B6CE2AACD8E40049E3D4 /* InlineFearGreedWidget.swift */; };
 		9F19B6D12AACD9620049E3D4 /* CircularFearGreedWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F19B6D02AACD9620049E3D4 /* CircularFearGreedWidget.swift */; };
 		9F19B6D32AACDC460049E3D4 /* InlinePortfolioWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F19B6D22AACDC460049E3D4 /* InlinePortfolioWidget.swift */; };
@@ -363,8 +363,8 @@
 		9F26D0572BAB96EA00EEA74D /* CryptoTracker/Features/GasFees/Models/GasFees.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD0F4A02BA8B668007DBD37 /* CryptoTracker/Features/GasFees/Models/GasFees.swift */; };
 		9F26D0592BAB977C00EEA74D /* SmallGasFeesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F26D0582BAB977C00EEA74D /* SmallGasFeesWidget.swift */; };
 		9F26D0652BACC00300EEA74D /* RectangularGasFeesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F26D0642BACC00300EEA74D /* RectangularGasFeesWidget.swift */; };
-		9F2BBB7D2AADFF4100A496A4 /* RectangularMultiMainWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2BBB7C2AADFF4100A496A4 /* RectangularMultiMainWidgetBundle.swift */; };
-		9F2BBB802AAE417A00A496A4 /* RectangularSingleMainWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2BBB7F2AAE417A00A496A4 /* RectangularSingleMainWidgetBundle.swift */; };
+		9F2BBB7D2AADFF4100A496A4 /* RectangularMultiCryptoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2BBB7C2AADFF4100A496A4 /* RectangularMultiCryptoWidget.swift */; };
+		9F2BBB802AAE417A00A496A4 /* RectangularSingleCryptoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2BBB7F2AAE417A00A496A4 /* RectangularSingleCryptoWidget.swift */; };
 		9F2BBB822AAE46F300A496A4 /* RectangularDuoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2BBB812AAE46F300A496A4 /* RectangularDuoWidget.swift */; };
 		9F31DDB12BC9CFE500EBA996 /* CryptoTracker/Features/News/Views/NewsCloudLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8127E82B7A610700786B7F /* CryptoTracker/Features/News/Views/NewsCloudLayout.swift */; };
 		9F331F9D2AB2368D00CAD62C /* RectangularPortfolioWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F331F9C2AB2368D00CAD62C /* RectangularPortfolioWidget.swift */; };
@@ -507,10 +507,10 @@
 		10347B1F2543489100BCC77E /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		10347B222543489100BCC77E /* MainWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWidgetBundle.swift; sourceTree = "<group>"; };
 		10347B272543489300BCC77E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		10347B43254453F200BCC77E /* SmallMainWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallMainWidgetBundle.swift; sourceTree = "<group>"; };
+		10347B43254453F200BCC77E /* SmallCryptoWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallCryptoWidget.swift; sourceTree = "<group>"; };
 		10347B64254460EE00BCC77E /* CryptoTracker/Core/Extensions/BezierPath+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoTracker/Core/Extensions/BezierPath+Extensions.swift"; sourceTree = SOURCE_ROOT; };
-		10347B76254485A200BCC77E /* MediumMainWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumMainWidgetBundle.swift; sourceTree = "<group>"; };
-		10347BAD25471A6F00BCC77E /* LargeMainWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeMainWidgetBundle.swift; sourceTree = "<group>"; };
+		10347B76254485A200BCC77E /* MediumCryptoWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumCryptoWidget.swift; sourceTree = "<group>"; };
+		10347BAD25471A6F00BCC77E /* LargeCryptoWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeCryptoWidget.swift; sourceTree = "<group>"; };
 		10347BBB25474EFE00BCC77E /* VolumeLineChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeLineChart.swift; sourceTree = "<group>"; };
 		10347BC02548B0B600BCC77E /* WidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViewModel.swift; sourceTree = "<group>"; };
 		10347BC52548B1A900BCC77E /* CryptoTracker/Features/CoinDetail/Models/PriceVolumeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/Features/CoinDetail/Models/PriceVolumeModel.swift; sourceTree = SOURCE_ROOT; };
@@ -679,8 +679,8 @@
 		9F192A662833E2D3009F2142 /* CryptoTracker/Features/Search/Models/SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/Features/Search/Models/SearchModel.swift; sourceTree = SOURCE_ROOT; };
 		9F1961322AB0E9BB0087B610 /* RectangularFearGreedWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularFearGreedWidget.swift; sourceTree = "<group>"; };
 		9F19B6C22AAA64980049E3D4 /* RectangularNewsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularNewsWidget.swift; sourceTree = "<group>"; };
-		9F19B6C82AAB7AA90049E3D4 /* InlineMainWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineMainWidgetBundle.swift; sourceTree = "<group>"; };
-		9F19B6CA2AAB80920049E3D4 /* CircularMainWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularMainWidgetBundle.swift; sourceTree = "<group>"; };
+		9F19B6C82AAB7AA90049E3D4 /* InlineCryptoWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineCryptoWidget.swift; sourceTree = "<group>"; };
+		9F19B6CA2AAB80920049E3D4 /* CircularCryptoWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularCryptoWidget.swift; sourceTree = "<group>"; };
 		9F19B6CE2AACD8E40049E3D4 /* InlineFearGreedWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineFearGreedWidget.swift; sourceTree = "<group>"; };
 		9F19B6D02AACD9620049E3D4 /* CircularFearGreedWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularFearGreedWidget.swift; sourceTree = "<group>"; };
 		9F19B6D22AACDC460049E3D4 /* InlinePortfolioWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlinePortfolioWidget.swift; sourceTree = "<group>"; };
@@ -691,8 +691,8 @@
 		9F26D0542BAB96C100EEA74D /* GasFeeEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeeEntry.swift; sourceTree = "<group>"; };
 		9F26D0582BAB977C00EEA74D /* SmallGasFeesWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallGasFeesWidget.swift; sourceTree = "<group>"; };
 		9F26D0642BACC00300EEA74D /* RectangularGasFeesWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularGasFeesWidget.swift; sourceTree = "<group>"; };
-		9F2BBB7C2AADFF4100A496A4 /* RectangularMultiMainWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularMultiMainWidgetBundle.swift; sourceTree = "<group>"; };
-		9F2BBB7F2AAE417A00A496A4 /* RectangularSingleMainWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularSingleMainWidgetBundle.swift; sourceTree = "<group>"; };
+		9F2BBB7C2AADFF4100A496A4 /* RectangularMultiCryptoWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularMultiCryptoWidget.swift; sourceTree = "<group>"; };
+		9F2BBB7F2AAE417A00A496A4 /* RectangularSingleCryptoWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularSingleCryptoWidget.swift; sourceTree = "<group>"; };
 		9F2BBB812AAE46F300A496A4 /* RectangularDuoWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularDuoWidget.swift; sourceTree = "<group>"; };
 		9F2DF0B928A43121007765DF /* CryptoTracker/Features/Market/Toplist/ToplistRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/Features/Market/Toplist/ToplistRepository.swift; sourceTree = SOURCE_ROOT; };
 		9F331F9C2AB2368D00CAD62C /* RectangularPortfolioWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularPortfolioWidget.swift; sourceTree = "<group>"; };
@@ -1235,20 +1235,20 @@
 				8E2133C527C7CEBB00690A41 /* LargeNewsWidget.swift */,
 				108F58F7259BB86D00543C75 /* LargePortfolioWidget.swift */,
 				107C5E712555DB8A00E29E9D /* LargeQuadWidget.swift */,
-				10347BAD25471A6F00BCC77E /* LargeMainWidgetBundle.swift */,
+				10347BAD25471A6F00BCC77E /* LargeCryptoWidget.swift */,
 				107C5E632555D89F00E29E9D /* MediumDuoWidget.swift */,
 				8E209AB227CCD1E20015D9AF /* MediumFearGreedWidget.swift */,
 				8E209AA827CAFB940015D9AF /* MediumMultiWidget.swift */,
 				8E21339B27C6C93100690A41 /* MediumNewsWidget.swift */,
 				102D46B825912FA500075F1F /* MediumPortfolioWidget.swift */,
-				10347B76254485A200BCC77E /* MediumMainWidgetBundle.swift */,
+				10347B76254485A200BCC77E /* MediumCryptoWidget.swift */,
 				8EWG000A2F6000000095B005 /* PortfolioWidgetEmptyView.swift */,
 				8E209ABF27CE3B7C0015D9AF /* SmallFearGreedWidget.swift */,
 				9F26D0582BAB977C00EEA74D /* SmallGasFeesWidget.swift */,
 				8E209AA627CAE9160015D9AF /* SmallMultiWidget.swift */,
 				8EEE8F5C27C42E32008587AA /* SmallNewsWidget.swift */,
 				10C96CD1258E4D520023153A /* SmallPortfolioWidget.swift */,
-				10347B43254453F200BCC77E /* SmallMainWidgetBundle.swift */,
+				10347B43254453F200BCC77E /* SmallCryptoWidget.swift */,
 				8EWG00082F6000000095B004 /* WidgetEmptyView.swift */,
 			);
 			path = HomeScreen;
@@ -1257,18 +1257,18 @@
 		CCFD000000000000000000A8 /* LockScreen */ = {
 			isa = PBXGroup;
 			children = (
-				9F19B6CA2AAB80920049E3D4 /* CircularMainWidgetBundle.swift */,
+				9F19B6CA2AAB80920049E3D4 /* CircularCryptoWidget.swift */,
 				9F19B6D02AACD9620049E3D4 /* CircularFearGreedWidget.swift */,
-				9F19B6C82AAB7AA90049E3D4 /* InlineMainWidgetBundle.swift */,
+				9F19B6C82AAB7AA90049E3D4 /* InlineCryptoWidget.swift */,
 				9F19B6CE2AACD8E40049E3D4 /* InlineFearGreedWidget.swift */,
 				9F19B6D22AACDC460049E3D4 /* InlinePortfolioWidget.swift */,
-				9F2BBB7C2AADFF4100A496A4 /* RectangularMultiMainWidgetBundle.swift */,
+				9F2BBB7C2AADFF4100A496A4 /* RectangularMultiCryptoWidget.swift */,
 				9F2BBB812AAE46F300A496A4 /* RectangularDuoWidget.swift */,
 				9F1961322AB0E9BB0087B610 /* RectangularFearGreedWidget.swift */,
 				9F26D0642BACC00300EEA74D /* RectangularGasFeesWidget.swift */,
 				9F19B6C22AAA64980049E3D4 /* RectangularNewsWidget.swift */,
 				9F331F9C2AB2368D00CAD62C /* RectangularPortfolioWidget.swift */,
-				9F2BBB7F2AAE417A00A496A4 /* RectangularSingleMainWidgetBundle.swift */,
+				9F2BBB7F2AAE417A00A496A4 /* RectangularSingleCryptoWidget.swift */,
 			);
 			path = LockScreen;
 			sourceTree = "<group>";
@@ -1800,7 +1800,7 @@
 				9FE73E8C2A37BA2A0055564C /* CryptoTracker/Core/Extensions/DominantColorExtension.swift in Sources */,
 				8E84C99B2DDF7FA0003F1B36 /* CryptoTracker/Core/Extensions/Dictionary+Extensions.swift in Sources */,
 				9FEC77DC2C3B461B001AC954 /* CryptoTracker/Features/News/Models/NewsType.swift in Sources */,
-				10347BAF25471A6F00BCC77E /* LargeMainWidgetBundle.swift in Sources */,
+				10347BAF25471A6F00BCC77E /* LargeCryptoWidget.swift in Sources */,
 				10F3507026F0985B003E0A28 /* CryptoTracker/Features/Home/Trending/Models/TrendingCoins.swift in Sources */,
 				8E8762A02DBBDDE40026BB4C /* CryptoTracker/App/DeeplinkHandler.swift in Sources */,
 				107C5E502555D60A00E29E9D /* CryptoEntry.swift in Sources */,
@@ -1815,7 +1815,7 @@
 				8EC759EE2F0C1C45004256BD /* CryptoTracker/SharedUI/Views/Loading/ShimmeringText.swift in Sources */,
 				9F7FFACC28AC26BF0064D272 /* CryptoTracker/Features/News/Models/NewsData.swift in Sources */,
 				9F26D0552BAB96C100EEA74D /* GasFeeEntry.swift in Sources */,
-				10347B7A2544864D00BCC77E /* MediumMainWidgetBundle.swift in Sources */,
+				10347B7A2544864D00BCC77E /* MediumCryptoWidget.swift in Sources */,
 				9F8CE5362C80C4A7009D1758 /* CryptoTracker/Features/Portfolio/Models/TransactionType.swift in Sources */,
 				8EEE8F5927C42C08008587AA /* NewsEntry.swift in Sources */,
 				8E5B9AB52E84F6FD00D61032 /* CryptoTracker/Features/Portfolio/Models/CleanTransactionModel.swift in Sources */,
@@ -1823,11 +1823,11 @@
 				8ECA7B162DB7461000E3214E /* CryptoTracker/Core/Analytics/RemoteConfigKeys.swift in Sources */,
 				8EC75A2C2F172E6B004256BD /* CryptoTracker/Features/Portfolio/Models/DateOption.swift in Sources */,
 				8E4845D52FE2404A0051DB45 /* CryptoTracker/Features/Market/Toplist/ToplistRepository.swift in Sources */,
-				10347B47254453F400BCC77E /* SmallMainWidgetBundle.swift in Sources */,
+				10347B47254453F400BCC77E /* SmallCryptoWidget.swift in Sources */,
 				9F955F712C5A8E8900427E66 /* CryptoTracker/Features/FearGreed/Views/PieChartPiece.swift in Sources */,
 				8E5B9AB82E86174800D61032 /* CryptoTracker/Core/Extensions/Data+Extensions.swift in Sources */,
 				8E209AAF27CCCFD30015D9AF /* FearGreedEntry.swift in Sources */,
-				9F2BBB802AAE417A00A496A4 /* RectangularSingleMainWidgetBundle.swift in Sources */,
+				9F2BBB802AAE417A00A496A4 /* RectangularSingleCryptoWidget.swift in Sources */,
 				8E209AA927CAFB940015D9AF /* MediumMultiWidget.swift in Sources */,
 				8EAE8787282843CF00946181 /* CryptoTracker/Core/Extensions/Font+Extensions.swift in Sources */,
 				9F19B6D12AACD9620049E3D4 /* CircularFearGreedWidget.swift in Sources */,
@@ -1869,7 +1869,7 @@
 				8E4845D82FE240FA0051DB45 /* CryptoTracker/Features/Home/NewCoins/Repositories/NewCoinsRepository.swift in Sources */,
 				8E209AA527CAE8B50015D9AF /* MultiWidgetProvider.swift in Sources */,
 				8EC759E32F09F3E9004256BD /* CryptoTracker/Core/Extensions/Double+Extensions.swift in Sources */,
-				9F2BBB7D2AADFF4100A496A4 /* RectangularMultiMainWidgetBundle.swift in Sources */,
+				9F2BBB7D2AADFF4100A496A4 /* RectangularMultiCryptoWidget.swift in Sources */,
 				9FED52D92BA0E1E80046FA4A /* CryptoTracker/Core/Purchases/StoreKitManager.swift in Sources */,
 				CC0A00172F6000000000007 /* CryptoTracker/Core/Config/AppSecrets.swift in Sources */,
 				8ECA7B192DB7489F00E3214E /* CryptoTracker/Core/Analytics/FirebaseManager.swift in Sources */,
@@ -1919,14 +1919,14 @@
 				10715D63254F474C00FC0975 /* CryptoTracker/Core/Extensions/Date+Extensions.swift in Sources */,
 				8EB2D243301075420069FD57 /* CryptoTracker/Features/Treasuries/Models/TreasuryEntity.swift in Sources */,
 				100991B325AF0744009589F6 /* CryptoTracker/Core/Extensions/Array+Extensions.swift in Sources */,
-				9F19B6CB2AAB80920049E3D4 /* CircularMainWidgetBundle.swift in Sources */,
+				9F19B6CB2AAB80920049E3D4 /* CircularCryptoWidget.swift in Sources */,
 				8E0554A52EF5660B000A7E09 /* CryptoTracker/Features/PriceAlerts/Repositories/PriceAlertsRepository.swift in Sources */,
 				104CD2F1267F786F00A69D4F /* CryptoTracker/Features/Portfolio/Models/PortfolioCurrencyModel.swift in Sources */,
 				10654A7225CD953E005E7744 /* CryptoTracker/SharedUI/Views/ScaledBezier.swift in Sources */,
 				102545A225B1C53800580EF7 /* CryptoTracker/Core/Extensions/Numeric+Extensions.swift in Sources */,
 				8E4845D62FE2406E0051DB45 /* CryptoTracker/Features/Home/WinnersLosers/Repositories/WinnersLosersRepository.swift in Sources */,
 				9FFEDD1328C78E3D0041A39A /* CryptoTracker/Core/Extensions/ThreadHelper.swift in Sources */,
-				9F19B6C92AAB7AA90049E3D4 /* InlineMainWidgetBundle.swift in Sources */,
+				9F19B6C92AAB7AA90049E3D4 /* InlineCryptoWidget.swift in Sources */,
 				107C5E5C2555D7ED00E29E9D /* QuadWidgetProvider.swift in Sources */,
 				8ECA7B0C2DB70B1B00E3214E /* WatchConnectivityViewModel.swift in Sources */,
 				8EC759DC2F09EDE5004256BD /* Separator.swift in Sources */,

@@ -30,7 +30,7 @@ enum PortfolioPieChartLayout {
             return []
         }
 
-        let holdings: [(id: String, symbol: String, value: Double, color: String?)] = portfolio.compactMap { pie in
+        let holdings: [(id: String, symbol: String, name: String, value: Double, color: String?)] = portfolio.compactMap { pie in
             guard pie.shouldShow, let id = pie.data?.id else { return nil }
             guard !portfolio.getAllTransactions(of: id).isEmpty else { return nil }
 
@@ -42,9 +42,11 @@ enum PortfolioPieChartLayout {
             let value = lastPrice * amount
             guard value > 0 else { return nil }
 
+            let symbol = pie.data?.symbol?.uppercased() ?? ""
             return (
                 id: id,
-                symbol: pie.data?.symbol?.uppercased() ?? "",
+                symbol: symbol,
+                name: pie.data?.name ?? symbol,
                 value: value,
                 color: pie.color
             )
@@ -54,7 +56,7 @@ enum PortfolioPieChartLayout {
     }
 
     static func slices(
-        from holdings: [(id: String, symbol: String, value: Double, color: String?)],
+        from holdings: [(id: String, symbol: String, name: String, value: Double, color: String?)],
         totalValue: Double
     ) -> [PortfolioPieSlice] {
         guard totalValue > 0, !holdings.isEmpty else {
@@ -67,6 +69,7 @@ enum PortfolioPieChartLayout {
                 PortfolioPieSlice(
                     id: slice.id,
                     symbol: slice.symbol,
+                    name: slice.name,
                     percentage: 1,
                     color: slice.color,
                     outerStartAngle: -90,
@@ -101,6 +104,7 @@ enum PortfolioPieChartLayout {
             return PortfolioPieSlice(
                 id: slice.id,
                 symbol: slice.symbol,
+                name: slice.name,
                 percentage: percentage,
                 color: slice.color,
                 outerStartAngle: outerStart,
@@ -113,9 +117,9 @@ enum PortfolioPieChartLayout {
 
     /// With two or fewer coins, always show each holding — never collapse into Other.
     private static func collapsedSliceInputs(
-        from holdings: [(id: String, symbol: String, value: Double, color: String?)],
+        from holdings: [(id: String, symbol: String, name: String, value: Double, color: String?)],
         totalValue: Double
-    ) -> [(id: String, symbol: String, value: Double, color: String?)] {
+    ) -> [(id: String, symbol: String, name: String, value: Double, color: String?)] {
         guard holdings.count > 2 else {
             return holdings
         }
@@ -130,6 +134,7 @@ enum PortfolioPieChartLayout {
             sliceInputs.append((
                 id: otherSliceId,
                 symbol: "OTHER",
+                name: "Other",
                 value: otherValue,
                 color: nil
             ))

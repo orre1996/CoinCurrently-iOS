@@ -10,6 +10,7 @@ import Foundation
 struct PortfolioPieSlice: Identifiable, Hashable {
     let id: String
     let symbol: String
+    let name: String
     let percentage: Double
     let color: String?
     let outerStartAngle: Double

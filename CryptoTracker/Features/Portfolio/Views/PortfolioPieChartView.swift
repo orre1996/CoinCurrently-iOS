@@ -44,67 +44,58 @@ struct PortfolioPieChartView: View {
         ZStack {
             ForEach(slices) { slice in
                 let isSelected = selectedSliceId == slice.id
-                let displayColor: Color = {
-                    if slice.symbol == "OTHER" {
-                        return Color.primary20
-                    }
-                    if let hex = slice.color {
-                        return Color(hex: hex)
-                    }
-                    return Color.surfaceContainerLow
-                }()
+                let displayColor = sliceColor(for: slice)
 
-                if isFullCircleSlice(slice) {
-                    FullDonutShape(
-                        innerRadiusRatio: innerRadiusRatio,
-                        outerRadiusScale: isSelected ? selectedOuterRadiusScale : 1
-                    )
-                    .fill(displayColor, style: FillStyle(eoFill: true))
-                    .frame(width: size.width, height: size.height)
+                filledSlice(slice, size: size, color: displayColor, selected: isSelected)
+                    .accessibilityElement()
+                    .accessibilityLabel(accessibilityLabel(for: slice))
+                    .accessibilityAddTraits(isSelected ? .isSelected : [])
 
-                    if isLoading {
-                        FullDonutShape(innerRadiusRatio: innerRadiusRatio)
-                            .fill(Color.onSurface.opacity(0.25), style: FillStyle(eoFill: true))
-                            .frame(width: size.width, height: size.height)
-                            .shimmer()
-                    }
-                } else {
-                    RoundedDonutSlice(
-                        outerStartAngle: slice.outerStartAngle,
-                        outerEndAngle: slice.outerEndAngle,
-                        innerStartAngle: slice.innerStartAngle,
-                        innerEndAngle: slice.innerEndAngle,
-                        innerRadiusRatio: innerRadiusRatio,
-                        outerRadiusScale: isSelected ? selectedOuterRadiusScale : 1,
-                        explosionOffset: isSelected ? selectedExplosionOffset : 0
-                    )
-                    .fill(displayColor)
-                    .frame(width: size.width, height: size.height)
-
-                    if isLoading {
-                        RoundedDonutSlice(
-                            outerStartAngle: slice.outerStartAngle,
-                            outerEndAngle: slice.outerEndAngle,
-                            innerStartAngle: slice.innerStartAngle,
-                            innerEndAngle: slice.innerEndAngle,
-                            innerRadiusRatio: innerRadiusRatio
-                        )
-                        .fill(Color.onSurface.opacity(0.25))
-                        .frame(width: size.width, height: size.height)
+                if isLoading {
+                    filledSlice(slice, size: size, color: Color.onSurface.opacity(0.25), selected: false)
                         .shimmer()
-                    }
+                        .accessibilityHidden(true)
                 }
             }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(accessibilityLabel(for: slices.first { $0.id == selectedSliceId }))
 
             centerLabel
+                .accessibilityHidden(true)
         }
         .animation(selectionAnimation, value: selectedSliceId)
         .overlay {
             SliceTapOverlay { location in
                 handleTap(at: location, in: size)
             }
+            .accessibilityHidden(true)
+        }
+    }
+
+    @ViewBuilder
+    private func filledSlice(
+        _ slice: PortfolioPieSlice,
+        size: CGSize,
+        color: Color,
+        selected: Bool
+    ) -> some View {
+        if isFullCircleSlice(slice) {
+            FullDonutShape(
+                innerRadiusRatio: innerRadiusRatio,
+                outerRadiusScale: selected ? selectedOuterRadiusScale : 1
+            )
+            .fill(color, style: FillStyle(eoFill: true))
+            .frame(width: size.width, height: size.height)
+        } else {
+            RoundedDonutSlice(
+                outerStartAngle: slice.outerStartAngle,
+                outerEndAngle: slice.outerEndAngle,
+                innerStartAngle: slice.innerStartAngle,
+                innerEndAngle: slice.innerEndAngle,
+                innerRadiusRatio: innerRadiusRatio,
+                outerRadiusScale: selected ? selectedOuterRadiusScale : 1,
+                explosionOffset: selected ? selectedExplosionOffset : 0
+            )
+            .fill(color)
+            .frame(width: size.width, height: size.height)
         }
     }
 
@@ -215,13 +206,20 @@ struct PortfolioPieChartView: View {
         return value.formatted(.number.precision(.fractionLength(2))) + "%"
     }
 
-    private func accessibilityLabel(for slice: PortfolioPieSlice?) -> String {
-        guard let slice else {
-            return "Portfolio allocation chart"
+    private func sliceColor(for slice: PortfolioPieSlice) -> Color {
+        if slice.symbol == "OTHER" {
+            return Color.primary20
         }
+        if let hex = slice.color {
+            return Color(hex: hex)
+        }
+        return Color.surfaceContainerLow
+    }
 
-        let percent = formattedPercent(slice.percentage)
-        return "\(slice.symbol), \(percent) of portfolio"
+    private func accessibilityLabel(for slice: PortfolioPieSlice) -> String {
+        let percentValue = slice.percentage * 100
+        let roundedPercent = percentValue >= 99.995 ? 100 : percentValue.roundTo(places: 2)
+        return "\(slice.name), \(roundedPercent.numberAccessible(maxPlaces: 2)) percent of portfolio"
     }
 }
 
@@ -237,6 +235,8 @@ private struct SliceTapOverlay: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
         view.backgroundColor = .clear
+        view.isAccessibilityElement = false
+        view.accessibilityElementsHidden = true
         let tap = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap(_:)))
         tap.cancelsTouchesInView = false
         tap.delegate = context.coordinator

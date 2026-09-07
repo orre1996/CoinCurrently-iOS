@@ -74,10 +74,36 @@ struct TreasuriesSummaryView: View {
         )
     }
 
+    private func accessibleHoldingsCurrency() -> CurrencyModel {
+        if let symbol = coinSymbol?.uppercased(),
+           let knownCurrency = CurrencyModel.allCurrencies.first(where: { $0.code == symbol }) {
+            return knownCurrency
+        }
+
+        if let symbol = coinSymbol?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !symbol.isEmpty {
+            let spelledSymbol = symbol.uppercased().map { String($0) }.joined(separator: " ")
+            return CurrencyModel(
+                currency: spelledSymbol,
+                code: symbol.uppercased(),
+                symbol: symbol.uppercased(),
+                locale: "",
+                suffix: true,
+                voiceOverName: spelledSymbol
+            )
+        }
+
+        return holdingsCurrency
+    }
+
     private func summaryAccessibilityLabel(isHorizontal: Bool) -> String {
+        guard totalHoldings != nil || marketCapDominance != nil else {
+            return "Loading total holdings"
+        }
+
         let holdingsText = (totalHoldings ?? 0).formatCurrency(
             threshold: isHorizontal ? .million : FormattingThreshold.none,
-            currency: holdingsCurrency,
+            currency: accessibleHoldingsCurrency(),
             accessible: true
         )
         let dominanceText = (marketCapDominance ?? 0).numberAccessible(maxPlaces: 2)

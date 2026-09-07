@@ -55,12 +55,18 @@ struct TreasuriesItemView: View {
     }
     
     private var accessibilityLabelText: String {
+        guard data != nil else { return "Loading treasury" }
+        
         var components: [String] = []
         
         if let listIndex, let listCount {
             components.append("Treasury \(listIndex + 1) of \(listCount), \(data?.name ?? "")")
         } else {
             components.append(data?.name ?? "")
+        }
+        
+        if let entity {
+            components.append(entity.displayName)
         }
         
         if let country = data?.country,
@@ -110,6 +116,7 @@ struct TreasuriesItemView: View {
         if let country = data?.country, let flag = CountryFlagEmojis.flags[country] {
             Text(flag)
                 .font(.satoshiBold(16))
+                .accessibilityHidden(true)
         } else {
             ShimmeringText(
                 text: data?.country ?? "00000",

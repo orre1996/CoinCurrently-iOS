@@ -14,5 +14,6 @@ struct EdgeSwipe: View {
         Color.black.opacity(0.00001)
             .frame(width: 24)
             .allowsHitTesting(!isDragging)
+            .accessibilityHidden(true)
     }
 }

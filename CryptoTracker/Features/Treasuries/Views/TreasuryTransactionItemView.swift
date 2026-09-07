@@ -25,6 +25,7 @@ struct TreasuryTransactionItemView: View {
             }
             .font(.satoshiMedium(16))
             .foregroundStyle(Color.onSurface)
+            .accessibilityHidden(true)
 
             HStack(spacing: 4) {
                 ShimmeringImage(
@@ -32,6 +33,7 @@ struct TreasuryTransactionItemView: View {
                     downloading: transaction != nil && coin == nil,
                     size: 20 * min(scale, 1.5)
                 )
+                .accessibilityHidden(true)
 
                 ShimmeringText(
                     text: coinName,
@@ -39,6 +41,7 @@ struct TreasuryTransactionItemView: View {
                 )
                 .font(.satoshiBold(16))
                 .foregroundStyle(Color.onSurface)
+                .accessibilityHidden(true)
             }
             .padding(.trailing, 12)
 
@@ -59,6 +62,7 @@ struct TreasuryTransactionItemView: View {
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
             .multilineTextAlignment(.trailing)
+            .accessibilityHidden(true)
         }
         .padding(.vertical, 10)
         .accessibilityElement(children: .ignore)
@@ -110,12 +114,66 @@ struct TreasuryTransactionItemView: View {
         )
     }
 
-    private var accessibilityLabelText: String {
-        guard transaction != nil else { return "Loading transaction" }
+    private func accessibleHoldingsCurrency() -> CurrencyModel {
+        let symbol = coin?.symbol?.uppercased()
+            ?? transaction?.coin_id?.uppercased()
 
-        var components = [formattedDate, coinName]
-        components.append("Balance \(balanceText)")
-        components.append("Change \(netChangeText)")
+        if let symbol,
+           let knownCurrency = CurrencyModel.allCurrencies.first(where: { $0.code == symbol }) {
+            return knownCurrency
+        }
+
+        if let symbol, !symbol.isEmpty {
+            let spelledSymbol = symbol.map { String($0) }.joined(separator: " ")
+            return CurrencyModel(
+                currency: spelledSymbol,
+                code: symbol,
+                symbol: symbol,
+                locale: "",
+                suffix: true,
+                voiceOverName: spelledSymbol
+            )
+        }
+
+        return holdingsCurrency
+    }
+
+    private var accessibilityDate: String {
+        guard let timestamp = transaction?.date else { return formattedDate }
+        return Date(timeIntervalSince1970: timestamp / 1000)
+            .formatted(.dateTime.weekday(.wide).month(.wide).day().year())
+    }
+
+    private var accessibilityLabelText: String {
+        guard let transaction else { return "Loading transaction" }
+
+        var components = [accessibilityDate]
+
+        if let type = transaction.type {
+            components.append(type == .buy ? "Buy" : "Sell")
+        }
+
+        components.append(coinName)
+
+        let change = transaction.holding_net_change ?? 0
+        let changeAmount = abs(change).formatCurrency(
+            threshold: FormattingThreshold.none,
+            currency: accessibleHoldingsCurrency(),
+            accessible: true
+        )
+        if change > 0 {
+            components.append("Change up \(changeAmount)")
+        } else if change < 0 {
+            components.append("Change down \(changeAmount)")
+        } else {
+            components.append("Change \(changeAmount)")
+        }
+
+        let balance = transaction.holding_balance ?? 0
+        components.append(
+            "Balance: \(balance.formatCurrency(threshold: FormattingThreshold.none, currency: accessibleHoldingsCurrency(), accessible: true))"
+        )
+
         return components.joined(separator: ". ")
     }
 }

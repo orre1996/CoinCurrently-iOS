@@ -55,6 +55,8 @@ struct TreasuryDetailScreen: View {
                                 selectedTimeframe: viewModel.selectedTimeFrame,
                                 shortPrice: false,
                                 shortChange: false,
+                                valueAccessibilityLabel: "current holdings",
+                                changeMetricLabel: "holdings",
                                 currency: viewModel.selectedCurrency,
                                 changeCoin: { }
                             )
@@ -68,7 +70,9 @@ struct TreasuryDetailScreen: View {
                             )
                             .id(id)
 
-                            hoverTexts
+                            if !accessibilityVoiceOverEnabled {
+                                hoverTexts
+                            }
 
                             ZStack {
                                 ChartBackground(
@@ -102,7 +106,9 @@ struct TreasuryDetailScreen: View {
                                 prices: viewModel.getPrices(),
                                 timeChart: viewModel.selectedTimeFrame,
                                 currency: viewModel.selectedCurrency,
-                                trailingPadding: biggestChartValue.width
+                                trailingPadding: biggestChartValue.width,
+                                chartTitle: "Holdings chart",
+                                yAxisTitle: "Holdings"
                             )
                             .padding(.horizontal, 16)
 
@@ -144,6 +150,7 @@ struct TreasuryDetailScreen: View {
                                     isHoldingFilterShowing = true
                                 }
                             )
+                            .accessibilitySortPriority(-2)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.bottom, 22)

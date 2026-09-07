@@ -66,6 +66,15 @@ struct CryptoDetailSummaryView: View {
         }
     }
     
+    private var accessibilityCountryText: String {
+        guard let countryCode,
+              let countryName = Locale.current.localizedString(forRegionCode: countryCode),
+              !countryName.isEmpty else {
+            return ""
+        }
+        return ". Country: \(countryName)"
+    }
+    
     private var accessibilityLabel: String {
         let name = name ?? "coin"
         let roundedChange = Double.getDifferenceInPercent(between: prices?.last, and: prices?.first)?.roundTo(places: 2) ?? 0
@@ -74,13 +83,13 @@ struct CryptoDetailSummaryView: View {
         
         if changeMetricLabel == "volume" {
             let volumeText = currentPrice?.formatCurrency(threshold: accessibilityFormattingThreshold, currency: currency, accessible: true) ?? ""
-            return "\(name), \(valueAccessibilityLabel): \(volumeText). \(changeDirection) \(formattedChangePercent) percent \(accessibilityChangePeriod)"
+            return "\(name)\(accessibilityCountryText), \(valueAccessibilityLabel): \(volumeText). \(changeDirection) \(formattedChangePercent) percent \(accessibilityChangePeriod)"
         }
         
         let currentPriceText = ", \(valueAccessibilityLabel): \(currentPrice?.formatCurrency(threshold: accessibilityFormattingThreshold, currency: currency, accessible: true) ?? "")."
         let timeframe = changeAccessibilityTimeframe ?? selectedTimeframe.accessibilityTimeframe
         
-        return "\(name)\(currentPriceText) \(timeframe) \(changeMetricLabel). change: \(changeDirection) \(formattedChangePercent) percent"
+        return "\(name)\(accessibilityCountryText)\(currentPriceText) \(timeframe) \(changeMetricLabel). change: \(changeDirection) \(formattedChangePercent) percent"
     }
     
     var body: some View {

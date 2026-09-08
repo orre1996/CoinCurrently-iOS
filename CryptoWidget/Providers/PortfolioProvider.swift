@@ -68,6 +68,10 @@ struct PortfolioWidgetEntryView: View {
                 MediumPortfolioWidget(entry: entry)
                     .widgetContainerBackground()
                 
+            case .systemLarge:
+                LargePortfolioWidget(entry: entry)
+                    .widgetContainerBackground()
+                
             case .accessoryInline:
                 InlinePortfolioWidget(entry: entry)
                     .widgetBackground(Color.clear)
@@ -99,7 +103,7 @@ struct PortfolioWidget: Widget {
             })
         .configurationDisplayName("Portfolio widgets")
         .description("Keep track of your crypto portfolio. All in one widget")
-        .supportedFamilies([.accessoryInline, .accessoryRectangular, .systemSmall, .systemMedium])
+        .supportedFamilies([.accessoryInline, .accessoryRectangular, .systemSmall, .systemMedium, .systemLarge])
         .contentMarginsDisabled()
     }
 }

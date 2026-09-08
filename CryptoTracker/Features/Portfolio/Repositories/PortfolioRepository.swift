@@ -87,10 +87,18 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
     private var hasLoadedFromStorage = false
     
     func ensureCacheLoaded() async {
+#if IS_WIDGET
+        await loadFromStorage()
+#else
         guard !hasLoadedFromStorage else {
             return
         }
         hasLoadedFromStorage = true
+        await loadFromStorage()
+#endif
+    }
+    
+    private func loadFromStorage() async {
         portfolioModels = await coreDataManager.get(forKey: .portfolio) ?? []
         await migratePortfolioCacheFromStorageIfNeeded()
         cachedPortfolioPies = await coreDataManager.get(forKey: .portfolioPies) ?? CachedPortfolioPies(data: [], otherCoins: [], date: Date.tenYearsAgo)
@@ -152,6 +160,7 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
     func resetData(onlyPies: Bool = false) {
         cachedPortfolioPies = nil
         cachedPortfolioPrices = nil
+        hasLoadedFromStorage = false
     }
     
     func getPortfolio() async -> CachedPortfolioPies? {

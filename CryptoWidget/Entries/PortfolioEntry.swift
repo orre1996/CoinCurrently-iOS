@@ -101,6 +101,35 @@ extension PortfolioEntry {
         return holdingsValue(for: pie) * (changePercent / 100)
     }
     
+    var topCoinsByProfitLoss: [Pie] {
+        Array(
+            portfolioCoins.sorted {
+                (profitLossValue(for: $0) ?? -.infinity) > (profitLossValue(for: $1) ?? -.infinity)
+            }
+            .prefix(6)
+        )
+    }
+    
+    func profitLossValue(for pie: Pie?) -> Double? {
+        guard let pie, let id = pie.data?.id else { return nil }
+        return pieModel.getAllTransactions(of: id).getProfitValue(
+            prices: prices(for: id),
+            showCurrency: selectedCurrency.code
+        )
+    }
+    
+    func profitLossPercent(for pie: Pie?) -> Double? {
+        guard let pie, let id = pie.data?.id else { return nil }
+        return pieModel.getAllTransactions(of: id).getProfitPercent(
+            prices: prices(for: id),
+            showCurrency: selectedCurrency.code
+        )
+    }
+    
+    private func prices(for id: String) -> [String: Double]? {
+        allPrices.first(where: { $0.id == id })?.prices
+    }
+    
     private func holdingsValue(for pie: Pie) -> Double {
         guard let id = pie.data?.id else { return 0 }
         

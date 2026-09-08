@@ -67,6 +67,10 @@ final class CoreDataManager: @unchecked Sendable {
             true as NSNumber,
             forKey: NSPersistentHistoryTrackingKey
         )
+        storeDescription.setOption(
+            true as NSNumber,
+            forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey
+        )
         
         container.loadPersistentStores { _, error in
             if let error = error {

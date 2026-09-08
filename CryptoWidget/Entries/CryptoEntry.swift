@@ -29,13 +29,13 @@ struct CryptoEntry: TimelineEntry {
         )
     }
     
-    static func empty(selectedCoinIDs: [String] = []) -> CryptoEntry {
+    static func empty(selectedCoinIDs: [String] = [], hasPro: Bool = false) -> CryptoEntry {
         return CryptoEntry(
             cryptoInfos: [],
             currencyLogos: [],
             selectedCurrency: SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel(),
             selectedCoinIDs: selectedCoinIDs,
-            hasPro: false,
+            hasPro: hasPro,
             isPlaceholder: false
         )
     }

@@ -61,27 +61,35 @@ struct LargeQuadWidget: View {
                     cellContent(at: 3)
                 }
             }
-            .overlay (
-                WidgetBuyProOverlay(
-                    hasBoughtPro: hasBoughtPro
-                )
-            )
+            .overlay {
+                if !hasBoughtPro {
+                    WidgetBuyProOverlay()
+                }
+            }
             .widgetURL(hasBoughtPro ? nil : URL(string: "buyPro"))
         }
     }
     
     @ViewBuilder
     private func cellContent(at index: Int) -> some View {
-        if !hasBoughtPro || index < selectedCoinCount {
+        let coinID = selectedCoinIDs[safely: index] ?? data?[safely: index]?.id
+        if !hasBoughtPro || !(coinID ?? "").isEmpty {
             SmallCryptoWidget(
                 data: data?[safely: index],
                 image: image?[safely: index],
                 selectedCurrency: selectedCurrency,
-                coinID: selectedCoinIDs[safely: index],
+                coinID: coinID,
                 hasBoughtPro: hasBoughtPro
             )
-        } else {
+        } else if index == WidgetEmptyView.nextPromptIndex(
+            selectedIDs: selectedCoinIDs,
+            data: data,
+            slotCount: 4
+        ) {
             WidgetEmptyView(plural: false)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else {
+            Color.clear
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }

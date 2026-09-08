@@ -65,12 +65,11 @@ struct RectangularDuoWidget: View {
             .font(.system(size: 12, weight: .semibold))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .widgetURL(url)
-            /*.overlay (
-                WidgetBuyProOverlay(
-                    hasBoughtPro: hasBoughtPro,
-                    fromLockScreen: true
-                )
-            )*/
+            /*.overlay {
+                if !hasBoughtPro {
+                    WidgetBuyProOverlay(fromLockScreen: true)
+                }
+            }*/
         }
     }
 }

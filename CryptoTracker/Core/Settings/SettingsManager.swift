@@ -87,6 +87,7 @@ enum NewsSettingKey: String, SettingKeyable {
 
 enum WidgetSettingKey: String, SettingKeyable {
     case portfolioWidgetsHidden = "hidePortfolioWidgets"
+    case hasBoughtPro
     
     var data: Data? {
         return UserDefaults(suiteName: .groupIdentifier)?.data(forKey: self.rawValue)

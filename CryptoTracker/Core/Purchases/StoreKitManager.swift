@@ -7,7 +7,6 @@
 
 import Foundation
 import StoreKit
-import WidgetKit
 import RevenueCat
 #if os(iOS)
 import UserNotifications
@@ -107,9 +106,17 @@ actor StoreKitManagerImp: StoreKitManager {
     }
 
     func setStartData(downloadSubscriptions: Bool = true) async {
-        RevenueCatConfigurator.configureIfNeeded()
         currentSubscription = await storageManager.load(type: LocalStorageKeys.proStatus)
         subscriptionExpirationDate = await storageManager.load(type: LocalStorageKeys.proExpirationDate)
+
+        if currentSubscription == nil,
+           SettingsManager.shared.get(key: WidgetSettingKey.hasBoughtPro) == true {
+            currentSubscription = "pro"
+        }
+
+        guard runsInMainIOSApplication else { return }
+
+        RevenueCatConfigurator.configureIfNeeded()
         startSubscriptionMonitoringIfNeeded()
         warmOfferingsCache()
 
@@ -538,20 +545,21 @@ actor StoreKitManagerImp: StoreKitManager {
     }
 
     private func persistSubscriptionState(newSubscriptionId: String?, newExpirationDate: Date?) async {
+        guard runsInMainIOSApplication else { return }
+
         #if os(iOS)
-        if newSubscriptionId == nil, runsInMainIOSApplication {
+        if newSubscriptionId == nil {
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         }
         #endif
 
-        if newSubscriptionId != currentSubscription {
-            WidgetCenter.shared.reloadAllTimelines()
-        }
-
         let previousSubscription = currentSubscription
         let previousExpirationDate = subscriptionExpirationDate
+        let didChangeSubscription = newSubscriptionId != currentSubscription
         currentSubscription = newSubscriptionId
         subscriptionExpirationDate = newExpirationDate
+
+        SettingsManager.shared.set(data: newSubscriptionId != nil, key: WidgetSettingKey.hasBoughtPro)
 
         if let newSubscriptionId {
             await storageManager.save(type: LocalStorageKeys.proStatus, data: newSubscriptionId)
@@ -565,12 +573,18 @@ actor StoreKitManagerImp: StoreKitManager {
             _ = await storageManager.clear(type: LocalStorageKeys.proExpirationDate)
         }
 
+        UserDefaults(suiteName: .groupIdentifier)?.synchronize()
+
         publish(newSubscriptionId != nil)
 
         if previousSubscription != newSubscriptionId || previousExpirationDate != newExpirationDate {
             asyncMain {
                 NotificationCenter.default.post(name: .subscriptionStatusDidChange, object: nil)
             }
+        }
+
+        if didChangeSubscription {
+            WidgetReloadService.shared.forceUpdateWidgets()
         }
 
         #if os(iOS)

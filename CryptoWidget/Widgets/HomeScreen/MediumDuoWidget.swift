@@ -19,6 +19,14 @@ struct MediumDuoWidget: View {
     private var hasSelectedCoins: Bool {
         selectedCoinIDs.contains { !$0.isEmpty }
     }
+
+    private var nextEmptyPromptIndex: Int? {
+        WidgetEmptyView.nextPromptIndex(
+            selectedIDs: selectedCoinIDs,
+            data: data,
+            slotCount: 2
+        )
+    }
     
     var body: some View {
         if !hasSelectedCoins {
@@ -30,7 +38,8 @@ struct MediumDuoWidget: View {
                     data: data?[safely: 0],
                     image: image?[safely: 0],
                     selectedCurrency: selectedCurrency,
-                    coinID: selectedCoinIDs[safely: 0]
+                    coinID: selectedCoinIDs[safely: 0],
+                    showsEmptyPrompt: nextEmptyPromptIndex == 0
                 )
                 
                 Rectangle()
@@ -48,7 +57,8 @@ struct MediumDuoWidget: View {
                     data: data?[safely: 1],
                     image: image?[safely: 1],
                     selectedCurrency: selectedCurrency,
-                    coinID: selectedCoinIDs[safely: 1]
+                    coinID: selectedCoinIDs[safely: 1],
+                    showsEmptyPrompt: nextEmptyPromptIndex == 1
                 )
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

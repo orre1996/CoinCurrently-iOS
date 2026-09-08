@@ -64,7 +64,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "10347B1A2543489100BCC77E"
             BuildableName = "CryptoWidgetExtension.appex"
-            BlueprintName = "CryptoWidgetExtension"
             ReferencedContainer = "container:CoinCurrently.xcodeproj">
          </BuildableReference>
       </RemoteRunnable>

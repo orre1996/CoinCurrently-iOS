@@ -72,8 +72,12 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
             }
             
             let imageDict = await fetchImages(for: currencies.compactMap({ $0.image }), networkManager: net)
-
-            let images = currencies.map { entry in
+            let hasPro = await WidgetProAccess.hasPro()
+            let orderedCurrencies = ids.compactMap { id in
+                currencies.first(where: { $0.id == id })
+            }
+            let displayCurrencies = orderedCurrencies.isEmpty ? currencies : orderedCurrencies
+            let displayImages = displayCurrencies.map { entry in
                 if let url = entry.image, let image = imageDict[url] {
                     return image
                 } else {
@@ -81,15 +85,13 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
                 }
             }
             
-            let hasPro = await storeKit.currentSubscription != nil
-            
             box.call(
                 .success(
                     CryptoEntry(
-                        cryptoInfos: currencies,
-                        currencyLogos: images,
+                        cryptoInfos: displayCurrencies,
+                        currencyLogos: displayImages,
                         selectedCurrency: SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel(),
-                        selectedCoinIDs: ids,
+                        selectedCoinIDs: displayCurrencies.compactMap(\.id),
                         hasPro: hasPro,
                         isPlaceholder: false
                     )
@@ -115,7 +117,7 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
                 return
             }
             
-            let hasPro = await storeKit.currentSubscription != nil
+            let hasPro = await WidgetProAccess.hasPro()
             let selectedCurrency = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
             let portfolioData = pieModel.data
             let totalValue = Self.calculateTotalValue(
@@ -174,7 +176,7 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
                 return
             }
             
-            let hasPro = await storeKit.currentSubscription != nil
+            let hasPro = await WidgetProAccess.hasPro()
             
             box.call(
                 .success(
@@ -203,7 +205,7 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
                 return
             }
             
-            let hasPro = await storeKit.currentSubscription != nil
+            let hasPro = await WidgetProAccess.hasPro()
             
             box.call(
                 .success(
@@ -231,7 +233,7 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
                 return
             }
             
-            let hasPro = await storeKit.currentSubscription != nil
+            let hasPro = await WidgetProAccess.hasPro()
             
             box.call(
                 .success(
@@ -306,8 +308,9 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
     }
 
     func fetchDisplayEntry(ids: [String]) async -> CryptoEntry {
+        let hasPro = await WidgetProAccess.hasPro()
         guard !ids.isEmpty else {
-            return CryptoEntry.empty()
+            return CryptoEntry.empty(hasPro: hasPro)
         }
 
         return await withCheckedContinuation { continuation in
@@ -316,7 +319,7 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
                 case .success(let entry):
                     continuation.resume(returning: entry)
                 case .failure:
-                    continuation.resume(returning: CryptoEntry.empty(selectedCoinIDs: ids))
+                    continuation.resume(returning: CryptoEntry.empty(selectedCoinIDs: ids, hasPro: hasPro))
                 }
             }
         }

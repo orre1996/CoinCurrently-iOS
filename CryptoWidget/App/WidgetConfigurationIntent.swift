@@ -11,8 +11,16 @@ import WidgetKit
 
 enum WidgetProAccess {
     static func hasPro() async -> Bool {
-        await StoreKitManagerImp.shared.setStartData()
-        return await StoreKitManagerImp.shared.currentSubscription != nil
+        if SettingsManager.shared.get(key: WidgetSettingKey.hasBoughtPro) == true {
+            return true
+        }
+
+        let status: String? = await CachedStorageManagerImp.shared.load(type: LocalStorageKeys.proStatus)
+        if status != nil {
+            SettingsManager.shared.set(data: true, key: WidgetSettingKey.hasBoughtPro)
+            return true
+        }
+        return false
     }
 }
 
@@ -31,11 +39,6 @@ enum WidgetCoinStorage {
             if !ids.isEmpty {
                 return Array(ids.prefix(snapshotCoinLimit))
             }
-        }
-
-        let stored = await coinIDs()
-        if !stored.isEmpty {
-            return Array(stored.prefix(snapshotCoinLimit))
         }
 
         return Array(
@@ -61,8 +64,8 @@ enum WidgetCoinStorage {
         case .accessoryRectangular: return 3
         case .systemSmall: return 2
         case .systemMedium: return 4
-        case .systemLarge: return 8
-        default: return 8
+        case .systemLarge: return 6
+        default: return 6
         }
     }
 }
@@ -200,22 +203,61 @@ struct MultiCoinWidgetConfigurationIntent: WidgetConfigurationIntent {
     static var description: IntentDescription { IntentDescription("Choose coins to display.") }
 
     @Parameter(
-        title: "Coins",
-        size: [
-            .systemSmall: IntentCollectionSize(2),
-            .systemMedium: IntentCollectionSize(4),
-            .systemLarge: IntentCollectionSize(8),
-            .accessoryRectangular: IntentCollectionSize(3)
-        ]
+        title: "First Coin",
+        requestValueDialog: IntentDialog("Choose")
     )
-    var coins: [CoinEntity]?
+    var firstCoin: CoinEntity?
+
+    @Parameter(
+        title: "Second Coin",
+        requestValueDialog: IntentDialog("Choose")
+    )
+    var secondCoin: CoinEntity?
+
+    @Parameter(
+        title: "Third Coin",
+        requestValueDialog: IntentDialog("Choose")
+    )
+    var thirdCoin: CoinEntity?
+
+    @Parameter(
+        title: "Fourth Coin",
+        requestValueDialog: IntentDialog("Choose")
+    )
+    var fourthCoin: CoinEntity?
+
+    @Parameter(
+        title: "Fifth Coin",
+        requestValueDialog: IntentDialog("Choose")
+    )
+    var fifthCoin: CoinEntity?
+
+    @Parameter(
+        title: "Sixth Coin",
+        requestValueDialog: IntentDialog("Choose")
+    )
+    var sixthCoin: CoinEntity?
 
     init() {
-        coins = nil
+        firstCoin = nil
+        secondCoin = nil
+        thirdCoin = nil
+        fourthCoin = nil
+        fifthCoin = nil
+        sixthCoin = nil
     }
 
     func coinIDs(limit: Int) async -> [String] {
-        let configured = coins?.map(\.id).filter { !$0.isEmpty } ?? []
+        let configured = [
+            firstCoin?.id,
+            secondCoin?.id,
+            thirdCoin?.id,
+            fourthCoin?.id,
+            fifthCoin?.id,
+            sixthCoin?.id
+        ]
+        .compactMap { $0 }
+        .filter { !$0.isEmpty }
         return Array(configured.prefix(limit))
     }
 }

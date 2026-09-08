@@ -106,11 +106,11 @@ struct MediumFearGreedWidget: View {
                     .frame(maxWidth: .infinity)
                     
                 }
-                .overlay (
-                    WidgetBuyProOverlay(
-                        hasBoughtPro: hasBoughtPro
-                    )
-                )
+                .overlay {
+                    if !hasBoughtPro {
+                        WidgetBuyProOverlay()
+                    }
+                }
             }
         }
     }

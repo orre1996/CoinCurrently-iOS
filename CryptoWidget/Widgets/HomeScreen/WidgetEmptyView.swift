@@ -20,4 +20,18 @@ struct WidgetEmptyView: View {
         .fixedSize(horizontal: false, vertical: true)
         .padding(16)
     }
+
+    static func nextPromptIndex(
+        selectedIDs: [String],
+        data: [Toplist]? = nil,
+        slotCount: Int
+    ) -> Int? {
+        let lastFilled = (0..<slotCount).last { index in
+            let id = selectedIDs[safely: index] ?? data?[safely: index]?.id
+            return !(id ?? "").isEmpty
+        }
+        guard let lastFilled else { return nil }
+        let next = lastFilled + 1
+        return next < slotCount ? next : nil
+    }
 }

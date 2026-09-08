@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct LargeMultiWidget: View {
     @Environment(\.colorScheme) var scheme
@@ -16,76 +17,96 @@ struct LargeMultiWidget: View {
     let selectedCoinIDs: [String]
     let hasBoughtPro: Bool
 
-    private var hasSelectedCoins: Bool {
-        selectedCoinIDs.contains { !$0.isEmpty }
+    private var selectedCoinCount: Int {
+        selectedCoinIDs.filter { !$0.isEmpty }.count
     }
-    
+
+    private var displaySlotCount: Int {
+        hasBoughtPro ? selectedCoinCount : 6
+    }
+
     var body: some View {
-        if !hasSelectedCoins {
+        if displaySlotCount == 0 {
             WidgetEmptyView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
-            coinGrid
-                .overlay(
-                    WidgetBuyProOverlay(
-                        hasBoughtPro: hasBoughtPro
-                    )
-                )
-                .widgetURL(hasBoughtPro ? nil : URL(string: "buyPro"))
+            VStack(spacing: 0) {
+                HStack(spacing: 0) {
+                    cellContent(at: 0)
+
+                    VerticalSeparator()
+                        .padding(.vertical, 16)
+                        .blur(radius: hasBoughtPro ? 0 : 5)
+
+                    cellContent(at: 1)
+                }
+
+                rowSeparator
+
+                HStack(spacing: 0) {
+                    cellContent(at: 2)
+
+                    VerticalSeparator()
+                        .padding(.vertical, 16)
+                        .blur(radius: hasBoughtPro ? 0 : 5)
+
+                    cellContent(at: 3)
+                }
+
+                rowSeparator
+
+                HStack(spacing: 0) {
+                    cellContent(at: 4)
+
+                    VerticalSeparator()
+                        .padding(.vertical, 16)
+                        .blur(radius: hasBoughtPro ? 0 : 5)
+
+                    cellContent(at: 5)
+                }
+            }
+            .overlay {
+                if !hasBoughtPro {
+                    WidgetBuyProOverlay()
+                }
+            }
+            .widgetURL(hasBoughtPro ? nil : URL(string: "buyPro"))
         }
     }
 
-    private var coinGrid: some View {
-        VStack(spacing: 0) {
-            HStack(alignment: .center, spacing: 0) {
-                MultiWidgetCell(data: data?.first, image: image?.first, selectedCurrency: selectedCurrency, hasPro: hasBoughtPro)
-                    .padding(.top, 8)
-                    .padding(.bottom, 6)
-
-                VerticalSeparator()
-
-                MultiWidgetCell(data: data?[safely: 1], image: image?[safely: 1], selectedCurrency: selectedCurrency, hasPro: hasBoughtPro)
-                    .padding(.top, 8)
-                    .padding(.bottom, 6)
-            }
+    private var rowSeparator: some View {
+        HStack(spacing: 0) {
+            Separator()
+                .padding(.horizontal, 16)
+                .blur(radius: hasBoughtPro ? 0 : 5)
 
             Separator()
+                .padding(.horizontal, 16)
+                .blur(radius: hasBoughtPro ? 0 : 5)
+        }
+    }
 
-            HStack(alignment: .center, spacing: 0) {
-                MultiWidgetCell(data: data?[safely: 2], image: image?[safely: 2], selectedCurrency: selectedCurrency, hasPro: hasBoughtPro)
-                    .padding(.vertical, 6)
-
-                VerticalSeparator()
-
-                MultiWidgetCell(data: data?[safely: 3], image: image?[safely: 3], selectedCurrency: selectedCurrency, hasPro: hasBoughtPro)
-                    .padding(.vertical, 6)
-            }
-
-            Separator()
-
-            HStack(alignment: .center, spacing: 0) {
-                MultiWidgetCell(data: data?[safely: 4], image: image?[safely: 4], selectedCurrency: selectedCurrency, hasPro: hasBoughtPro)
-                    .padding(.vertical, 6)
-
-                VerticalSeparator()
-
-                MultiWidgetCell(data: data?[safely: 5], image: image?[safely: 5], selectedCurrency: selectedCurrency, hasPro: hasBoughtPro)
-                    .padding(.vertical, 6)
-            }
-
-            Separator()
-
-            HStack(alignment: .center, spacing: 0) {
-                MultiWidgetCell(data: data?[safely: 6], image: image?[safely: 6], selectedCurrency: selectedCurrency, hasPro: hasBoughtPro)
-                    .padding(.top, 8)
-                    .padding(.bottom, 6)
-
-                VerticalSeparator()
-
-                MultiWidgetCell(data: data?[safely: 7], image: image?[safely: 7], selectedCurrency: selectedCurrency, hasPro: hasBoughtPro)
-                    .padding(.top, 8)
-                    .padding(.bottom, 6)
-            }
+    @ViewBuilder
+    private func cellContent(at index: Int) -> some View {
+        let coinID = selectedCoinIDs[safely: index] ?? data?[safely: index]?.id
+        if !hasBoughtPro || !(coinID ?? "").isEmpty {
+            SmallCryptoWidget(
+                data: data?[safely: index],
+                image: image?[safely: index],
+                selectedCurrency: selectedCurrency,
+                coinID: coinID,
+                hasBoughtPro: hasBoughtPro
+            )
+        } else if index == WidgetEmptyView.nextPromptIndex(
+            selectedIDs: selectedCoinIDs,
+            data: data,
+            slotCount: 6
+        ) {
+            WidgetEmptyView(plural: false)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else {
+            Color.clear
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }

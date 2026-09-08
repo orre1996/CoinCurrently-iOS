@@ -319,7 +319,7 @@ private class LocalStorageManager: SaveAndLoadable {
             let encoder = JSONEncoder()
             encoder.dateEncodingStrategy = .iso8601
             if let encodedData = (try? encoder.encode([data])), encodedData.count > 0 {
-                try? encodedData.write(to: filePath)
+                try? encodedData.write(to: filePath, options: .atomic)
             }
         }
     }

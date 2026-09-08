@@ -15,6 +15,7 @@ struct SmallCryptoWidget: View {
     let selectedCurrency: CurrencyModel?
     let coinID: String?
     var hasBoughtPro: Bool = true
+    var showsEmptyPrompt: Bool = true
     
     @ScaledMetric private var scale: CGFloat = 1
     
@@ -24,9 +25,14 @@ struct SmallCryptoWidget: View {
     }
     
     var body: some View {
-        if !hasSelectedCoin {
-            WidgetEmptyView(plural: false)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        if !hasSelectedCoin && data == nil {
+            if showsEmptyPrompt {
+                WidgetEmptyView(plural: false)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                Color.clear
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         } else {
             Group {
                 if hasBoughtPro, let url = coinURL {

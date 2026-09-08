@@ -31,7 +31,7 @@ struct SmallNewsWidget: View {
         .blur(radius: showBuyProOverlay ? 5 : 0)
         .overlay {
             if showBuyProOverlay {
-                WidgetBuyProOverlay(hasBoughtPro: false)
+                WidgetBuyProOverlay()
             }
         }
         .widgetURL(resolvedWidgetURL(buyProURL: buyProURL, newsURL: newsURL))

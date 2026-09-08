@@ -6,7 +6,6 @@
 //
 
 import StoreKit
-import WidgetKit
 
 @MainActor
 protocol PaywallViewModel {
@@ -183,7 +182,7 @@ class PaywallViewModelImp: PaywallViewModel {
             NotificationCenter.default.post(Notification(name: .showRatingView, object: nil, userInfo: ["force" : true]))
         }
         
-        WidgetCenter.shared.reloadAllTimelines()
+        WidgetReloadService.shared.forceUpdateWidgets()
         return true
     }
     
@@ -209,7 +208,7 @@ class PaywallViewModelImp: PaywallViewModel {
                 NotificationCenter.default.post(Notification(name: .showRatingView, object: nil, userInfo: ["force" : true]))
             }
 
-            WidgetCenter.shared.reloadAllTimelines()
+            WidgetReloadService.shared.forceUpdateWidgets()
             return true
         case .nothingToRestore:
             logRestore(.nothingToRestore)

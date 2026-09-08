@@ -40,7 +40,7 @@ struct WidgetsHelpSheet: View {
                         Text("·")
                             .accessibilityHidden(true)
                         
-                        Text("Up to 8 coins can be displayed.")
+                        Text("Up to 6 coins can be displayed.")
                     }
                     
                     HStack(alignment: .firstTextBaseline, spacing: 4) {
@@ -52,7 +52,7 @@ struct WidgetsHelpSheet: View {
                     .padding(.bottom, 40)
                     
                     VStack(spacing: 0) {
-                        ForEach(0..<4, id: \.self) { column in
+                        ForEach(0..<3, id: \.self) { column in
                             HStack(spacing: 0) {
                                 ForEach(1..<3, id: \.self) { row in
                                     Text("\(column * 2 + row)")
@@ -66,7 +66,7 @@ struct WidgetsHelpSheet: View {
                                 }
                             }
                             
-                            if column != 3 {
+                            if column != 2 {
                                 Separator()
                             }
                         }
@@ -78,7 +78,7 @@ struct WidgetsHelpSheet: View {
                     )
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel(
-                        "Coin order on the widget follows this grid. Numbers 1 to 8, two numbers per row across four rows. Row 1: 1 and 2. Row 2: 3 and 4. Row 3: 5 and 6. Row 4: 7 and 8."
+                        "Coin order on the widget follows this grid. Numbers 1 to 6, two numbers per row across three rows. Row 1: 1 and 2. Row 2: 3 and 4. Row 3: 5 and 6."
                     )
                     .padding(.bottom, 32)
                     .frame(maxWidth: .infinity)

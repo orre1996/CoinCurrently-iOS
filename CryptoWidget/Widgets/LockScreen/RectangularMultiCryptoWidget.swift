@@ -55,12 +55,11 @@ struct RectangularMultiCryptoWidget: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .widgetURL(url)
             .minimumScaleFactor(0.5)
-            /*.overlay (
-                WidgetBuyProOverlay(
-                    hasBoughtPro: hasBoughtPro,
-                    fromLockScreen: true
-                )
-            )*/
+            /*.overlay {
+                if !hasBoughtPro {
+                    WidgetBuyProOverlay(fromLockScreen: true)
+                }
+            }*/
         }
     }
 }

@@ -13,7 +13,6 @@ struct WidgetBuyProOverlay: View {
     @Environment(\.widgetFamily) private var widgetFamily
     @Environment(\.widgetRenderingMode) private var widgetRenderingMode
 
-    let hasBoughtPro: Bool
     var fromLockScreen: Bool = false
 
     private var contentSpacing: CGFloat {
@@ -30,17 +29,12 @@ struct WidgetBuyProOverlay: View {
     }
     
     var body: some View {
-        ZStack {
-            if !hasBoughtPro {
-                if let url = URL(string: "buyPro") {
-                    Link(destination: url) {
-                        overlayContent
-                    }
-                    .widgetURL(url)
-                } else {
-                    overlayContent
-                }
+        if let url = URL(string: "buyPro") {
+            Link(destination: url) {
+                overlayContent
             }
+        } else {
+            overlayContent
         }
     }
 

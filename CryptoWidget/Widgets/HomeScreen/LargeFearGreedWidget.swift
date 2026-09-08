@@ -166,11 +166,11 @@ struct LargeFearGreedWidget: View {
                         }
                     }
                 }
-                .overlay (
-                    WidgetBuyProOverlay(
-                        hasBoughtPro: hasBoughtPro
-                    )
-                )
+                .overlay {
+                    if !hasBoughtPro {
+                        WidgetBuyProOverlay()
+                    }
+                }
             }
         }
     }

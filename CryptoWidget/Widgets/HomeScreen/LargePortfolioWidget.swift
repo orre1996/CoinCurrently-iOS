@@ -24,7 +24,7 @@ struct LargePortfolioWidget: View {
                     .padding(.bottom, 5)
             }
             .overlay (
-                WidgetBuyProOverlay(hasBoughtPro: hasBoughtPro)
+                WidgetBuyProOverlay()
             )
         }*/
     }

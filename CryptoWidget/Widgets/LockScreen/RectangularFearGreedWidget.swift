@@ -82,12 +82,11 @@ struct RectangularFearGreedWidget: View {
             .frame(maxHeight: .infinity)
             .widgetURL(url)
             .multilineTextAlignment(.center)
-            /*.overlay (
-                WidgetBuyProOverlay(
-                    hasBoughtPro: hasBoughtPro,
-                    fromLockScreen: true
-                )
-            )*/
+            /*.overlay {
+                if !hasBoughtPro {
+                    WidgetBuyProOverlay(fromLockScreen: true)
+                }
+            }*/
         }
     }
 }

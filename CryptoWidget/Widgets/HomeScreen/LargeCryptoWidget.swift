@@ -210,11 +210,11 @@ struct LargeCryptoWidget: View {
                     
                 }
             }
-            .overlay (
-                WidgetBuyProOverlay(
-                    hasBoughtPro: hasBoughtPro
-                )
-            )
+            .overlay {
+                if !hasBoughtPro {
+                    WidgetBuyProOverlay()
+                }
+            }
         }
     }
     

@@ -104,6 +104,7 @@ struct RectangularPortfolioWidget: View {
                     : safeChange?.changeColor(for: scheme) ?? Color.onSurfaceDim(for: scheme)
             )
             .font(.satoshiBold(12))
+            .opacity(0.75)
         }
     }
     
@@ -154,6 +155,7 @@ struct RectangularPortfolioWidget: View {
                     : safeChange?.changeColor(for: scheme) ?? Color.onSurfaceDim(for: scheme)
             )
             .font(.satoshiBold(12))
+            .opacity(0.75)
         }
     }
 }

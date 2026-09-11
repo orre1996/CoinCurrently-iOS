@@ -74,6 +74,7 @@ struct SmallPortfolioWidget: View {
                     : safeChange?.changeColor(for: scheme) ?? Color.onSurfaceDim(for: scheme)
             )
             .font(.satoshiBold(14))
+            .opacity(0.75)
         }
     }
 }

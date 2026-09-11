@@ -21,13 +21,21 @@ struct MediumPortfolioWidget: View {
         if let url = URL(string: "portfolio") {
             Link(destination: url) {
                 HStack(spacing: 0) {
-                    SmallPortfolioWidget(entry: entry)
+                    VStack(alignment: .leading, spacing: 4) {
+                        portfolioValue
+                        
+                        Spacer(minLength: 12)
+                        
+                        dailyWinner
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .padding(16)
                     
                     VerticalSeparator()
                         .padding(.vertical, 16)
                     
                     VStack(alignment: .leading, spacing: 16) {
-                        dailyWinner
+                        portfolioDailyChange
                             .frame(maxHeight: .infinity, alignment: .leading)
                         
                         dailyLoser
@@ -37,6 +45,35 @@ struct MediumPortfolioWidget: View {
                     .padding(16)
                 }
             }
+        }
+    }
+    
+    private var portfolioValue: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Portfolio Value")
+                .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
+                .font(.satoshiBold(12))
+            
+            ShimmeringText(
+                text: entry?.totalValue?.formatCurrency() ?? "000000",
+                isDownloading: entry == nil
+            )
+            .foregroundStyle(Color.onSurface(for: scheme))
+            .font(.satoshiBold(22))
+            .privacySensitive()
+        }
+    }
+    
+    private var portfolioDailyChange: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("24h Change")
+                .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
+                .font(.satoshiBold(12))
+            
+            changeView(
+                value: entry?.portfolioDailyChangeValue,
+                percent: entry?.portfolioDailyChangePercent
+            )
         }
     }
     
@@ -92,9 +129,16 @@ struct MediumPortfolioWidget: View {
     
     @ViewBuilder
     private func dailyChangeView(for pie: Pie?) -> some View {
-        let changePercent = entry?.dailyChangePercent(for: pie)
-        let showDash = (changePercent?.isInfinite ?? true) || portfolioCoins.isEmpty
-        let safeChange = changePercent?.isInfinite ?? false ? 0 : changePercent
+        changeView(
+            value: entry?.dailyChangeValue(for: pie),
+            percent: entry?.dailyChangePercent(for: pie)
+        )
+    }
+    
+    @ViewBuilder
+    private func changeView(value: Double?, percent: Double?) -> some View {
+        let showDash = (percent?.isInfinite ?? true) || portfolioCoins.isEmpty
+        let safeChange = percent?.isInfinite ?? false ? 0 : percent
         let decimals = safeChange?.changePercentDecimalPoints ?? 2
         let roundedChange = safeChange?.roundTo(places: decimals) ?? 0
         let formattedChange = roundedChange.formatted(
@@ -103,7 +147,7 @@ struct MediumPortfolioWidget: View {
 
         OverflowLayout(spacing: 4) {
             PriceChangeValueView(
-                change: entry?.dailyChangeValue(for: pie),
+                change: value,
                 size: .small,
                 hideData: false,
                 accessibleTimeframe: "24 hour",
@@ -113,7 +157,7 @@ struct MediumPortfolioWidget: View {
 
             ShimmeringText(
                 text: "(\(showDash ? "-" : (formattedChange + "%")))",
-                isDownloading: entry == nil || changePercent == nil
+                isDownloading: entry == nil || percent == nil
             )
             .foregroundStyle(
                 showDash
@@ -121,6 +165,7 @@ struct MediumPortfolioWidget: View {
                     : safeChange?.changeColor(for: scheme) ?? Color.onSurfaceDim(for: scheme)
             )
             .font(.satoshiBold(14))
+            .opacity(0.75)
         }
     }
     

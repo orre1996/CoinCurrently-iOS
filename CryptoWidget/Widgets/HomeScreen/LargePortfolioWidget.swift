@@ -63,7 +63,7 @@ struct LargePortfolioWidget: View {
     private var statsRow: some View {
         HStack(alignment: .top, spacing: 16) {
             statColumn(
-                title: "Today's Change",
+                title: "24h Change",
                 value: entry?.portfolioDailyChangeValue,
                 percent: entry?.portfolioDailyChangePercent,
                 accessibleTimeframe: "24 hour"
@@ -170,6 +170,7 @@ struct LargePortfolioWidget: View {
                     : safeChange?.changeColor(for: scheme) ?? Color.onSurfaceDim(for: scheme)
             )
             .font(.satoshiBold(12))
+            .opacity(0.75)
         }
     }
     

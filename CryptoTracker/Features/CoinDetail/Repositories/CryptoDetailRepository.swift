@@ -35,10 +35,6 @@ protocol CryptoDetailRepository: Actor {
     func getCandleChart(id: String?, days: String) async -> CandleStickChartModel?
     func getBitcoin() async -> CurrencyDataModel?
     func getEthereum() async -> CurrencyDataModel?
-    func widgetCurrenciesChangedOrder(newOrder: [Toplist]) async
-    func removeWidgetCoin(coin: Toplist) async -> [Toplist]
-    func replacedWidget(at index: Int, toplist: Toplist) async
-    func addCurrencyToWidget(toplist: Toplist) async
     func getImage(url: String?) async -> UIImage?
     func connectSignalR(onMessage: (@Sendable (CGSimplePriceUpdate) -> Void)?) async -> Bool
     func getCurrency(coinId: String) async -> Bool
@@ -320,37 +316,6 @@ final actor CryptoDetailRepositoryImp: CryptoDetailRepository {
         }
 
         return ethereum
-    }
-    
-    func widgetCurrenciesChangedOrder(newOrder: [Toplist]) async {
-        widgetCurrencies = newOrder
-        await saveWidgetCurrenciesToStorageAndUpdateWidgets()
-    }
-    
-    func removeWidgetCoin(coin: Toplist) async -> [Toplist] {
-        widgetCurrencies.removeAll(where: { $0.id == coin.id })
-        await saveWidgetCurrenciesToStorageAndUpdateWidgets()
-
-        return widgetCurrencies
-    }
-    
-    func replacedWidget(at index: Int, toplist: Toplist) async {
-        widgetCurrencies[index] = toplist
-        await saveWidgetCurrenciesToStorageAndUpdateWidgets()
-    }
-    
-    func addCurrencyToWidget(toplist: Toplist) async {
-        let previousCount = Double(widgetCurrencies.count)
-        widgetCurrencies.append(toplist)
-        await saveWidgetCurrenciesToStorageAndUpdateWidgets()
-
-        Task { @MainActor in
-            await AchievementManager.shared.checkMetricUnlock(
-                for: .widgetCoinsCount,
-                previousValue: previousCount,
-                newValue: Double(widgetCurrencies.count)
-            )
-        }
     }
     
     func getImage(url: String?) async -> UIImage? {

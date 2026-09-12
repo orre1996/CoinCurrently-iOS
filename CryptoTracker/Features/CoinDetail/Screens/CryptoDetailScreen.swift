@@ -19,12 +19,8 @@ struct CryptoDetailScreen: View {
     @State private var newsViewModel = CryptoDetailNewsViewModel()
     @State private var portfolioViewModel = CryptoDetailPortfolioViewModel()
     @State private var alertsViewModel = CryptoDetailAlertsViewModel()
-    @State private var widgetViewModel: CryptoDetailWidgetViewModel
     
     @State private var currentPage: Int? = 0
-    
-    @State private var isAddToWidgetShowing = false
-    @State private var isEditWidgetShowing = false
     
     @State private var showCompareCoinSelector = false
     @State private var isSelectingMainCoin = false
@@ -70,7 +66,6 @@ struct CryptoDetailScreen: View {
     
     init(cryptoInfo: CurrencyDataModel) {
         _viewModel = State(wrappedValue: CryptoDetailViewModelImp(cryptoInfo: cryptoInfo))
-        _widgetViewModel = State(wrappedValue: CryptoDetailWidgetViewModel(cryptoInfo: cryptoInfo))
     }
     
     var body: some View {
@@ -367,9 +362,6 @@ struct CryptoDetailScreen: View {
             
             toolbarMenuButton
         }
-        .onReceive(NotificationCenter.default.publisher(for: .closeAllOverlays, object: nil)) { notification in
-            closeAllOverlays()
-        }
         .onReceive(NotificationCenter.default.publisher(for: .newTransaction, object: nil)) { notification in
             Task {
                 let previousTransactionCount = notification.userInfo?["previousTransactionCount"] as? Int
@@ -446,11 +438,9 @@ struct CryptoDetailScreen: View {
         .task {
             AchievementManager.shared.increment(.cryptoDetailsViewed)
             await viewModel.setStartData()
-            widgetViewModel.cryptoInfo = viewModel.cryptoInfo
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await alertsViewModel.load(coinId: viewModel.cryptoInfo?.id) }
                 group.addTask { await newsViewModel.loadCached(symbol: viewModel.cryptoInfo?.symbol) }
-                group.addTask { await widgetViewModel.load() }
                 group.addTask {
                     await viewModel.refresh(
                         showReload: viewModel.mainReloading
@@ -521,57 +511,6 @@ struct CryptoDetailScreen: View {
                 TabChanged(fromScreen: .cryptoDetail, selectedTabName: page.cryptoDetailPageTabName)
             )
         }
-        /*.sheet(isPresented: $isAddToWidgetShowing) {
-            AddToWidgetSheet(
-                widgetsCount: viewModel.widgetCurrencies.count,
-                deepLinkToWidget: {
-                    navigationViewModel.deepLink(to: .Widgets)
-                }
-            )
-        }*/
-        .sheet(isPresented: $isEditWidgetShowing) {
-            EditWidgetsSheet(
-                widgetCoins: widgetViewModel.widgetCurrencies,
-                currentCoinName: viewModel.cryptoInfo?.name ?? "coin",
-                replaceCoin: { toplist in
-                    let mainSymbol = viewModel.cryptoInfo?.symbol?.uppercased() ?? ""
-                    let replacedSymbol = toplist.symbol?.uppercased() ?? ""
-
-                    AnalyticsManager.shared.log(
-                        WidgetReplaced(
-                            fromScreen: .cryptoDetail,
-                            fromSymbol: mainSymbol,
-                            toSymbol: replacedSymbol
-                        )
-                    )
-
-                    Task {
-                        await widgetViewModel.replaceWidgetCurrency(coin: toplist)
-                    }
-                    
-                    navigationViewModel.showSnackbar(
-                        message: "Replaced \(mainSymbol) with \(replacedSymbol) in widgets.",
-                        buttonTitle: "Undo",
-                        snackBarType: .success,
-                        buttonCallback: {
-                            guard let toplistItem = viewModel.cryptoInfo?.toToplist() else { return }
-
-                            AnalyticsManager.shared.log(
-                                WidgetReplaceUndone(
-                                    fromScreen: .cryptoDetail,
-                                    fromSymbol: replacedSymbol,
-                                    toSymbol: mainSymbol
-                                )
-                            )
-
-                            Task {
-                                await widgetViewModel.replaceWidgetCurrency(coin: toplistItem, with: toplist)
-                            }
-                        }
-                    )
-                }
-            )
-        }
         .sheet(isPresented: $showCompareCoinSelector) {
             SearchScreen(
                 screenCase: .search(list: .onlyCoins),
@@ -596,7 +535,6 @@ struct CryptoDetailScreen: View {
                             )
                             portfolioViewModel.reset()
                             await viewModel.newMainCoin(id: id)
-                            widgetViewModel.cryptoInfo = viewModel.cryptoInfo
                             await withTaskGroup(of: Void.self) { group in
                                 group.addTask { await alertsViewModel.load(coinId: id) }
                                 group.addTask { await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol) }
@@ -849,49 +787,6 @@ struct CryptoDetailScreen: View {
     
     private var toolbarMenuButton: some View {
         Menu {
-            let containsCurrency = widgetViewModel.widgetCurrencies.contains(where: { $0.id == viewModel.cryptoInfo?.id })
-            
-            Button(action: {
-                if containsCurrency {
-                    AnalyticsManager.shared.log(
-                        Navigate(fromScreen: .cryptoDetail, toScreen: .widgets, coinName: viewModel.cryptoInfo?.name)
-                    )
-                    navigationViewModel.deepLink(to: .Widgets)
-                } else if widgetViewModel.widgetCurrencies.count < 8 {
-                    let addedSymbol = viewModel.cryptoInfo?.symbol?.uppercased() ?? ""
-                    AnalyticsManager.shared.log(
-                        WidgetAdded(fromScreen: .cryptoDetail, coinSymbol: addedSymbol)
-                    )
-
-                    Task {
-                        await widgetViewModel.addCurrencyToWidgets()
-                        
-                        navigationViewModel.showSnackbar(
-                            message: "\(viewModel.cryptoInfo?.symbol?.uppercased() ?? "Coin") added to widgets.",
-                            buttonTitle: "Manage",
-                            snackBarType: .success,
-                            buttonCallback: {
-                                AnalyticsManager.shared.log(
-                                    Navigate(fromScreen: .cryptoDetail, toScreen: .widgets, coinName: viewModel.cryptoInfo?.name)
-                                )
-                                navigationViewModel.deepLink(to: .Widgets)
-                            }
-                        )
-                    }
-                } else {
-                    AnalyticsManager.shared.log(
-                        SheetOpened(fromScreen: .cryptoDetail, sheet: .editWidgets)
-                    )
-                    isEditWidgetShowing = true
-                }
-            }, label: {
-                HStack(spacing: 8) {
-                    (containsCurrency ? Image.edit : Image.add)
-                    Text(containsCurrency ? "Manage Widgets" : "Add to widgets")
-                }
-                .foregroundStyle(Color.onSurface)
-            })
-
             Button(action: {
                 AnalyticsManager.shared.log(
                     SheetOpened(fromScreen: .cryptoDetail, sheet: .coinSearch)
@@ -1082,9 +977,5 @@ struct CryptoDetailScreen: View {
             selectedDirection = .up
             showAddAlert = true
         }
-    }
-    
-    private func closeAllOverlays() {
-        isEditWidgetShowing = false
     }
 }

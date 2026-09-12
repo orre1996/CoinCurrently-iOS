@@ -7,7 +7,6 @@
 
 import SwiftUI
 import UIKit
-import WidgetKit
 import StoreKit
 import Foundation
 import FirebaseMessaging
@@ -395,18 +394,6 @@ struct SettingsScreen: View {
                 .id(UUID())
             
             VStack(alignment: .leading, spacing: 16) {
-                SettingsNavigationView(
-                    title: "Widgets",
-                    accessibilityText: "Navigate to Widgets"
-                ) {
-                    AnalyticsManager.shared.log(
-                        Navigate(fromScreen: .settings, toScreen: .widgets)
-                    )
-                    navigationViewModel.navPath.append(NavigationScreens.Widgets)
-                }
-                
-                Separator()
-                
                 SettingsNavigationView(
                     title: "Converter",
                     accessibilityText: "Navigate to Converter"

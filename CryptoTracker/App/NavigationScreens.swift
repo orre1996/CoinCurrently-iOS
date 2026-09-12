@@ -81,7 +81,6 @@ enum NavigationScreens: Codable, Equatable, Hashable {
     // More
     case StartTab
     case CurrencySelector
-    case Widgets
     case Converter
     case PriceAlerts
     case Achievements
@@ -133,8 +132,6 @@ enum NavigationScreens: Codable, Equatable, Hashable {
             "StartTab"
         case .CurrencySelector:
             "CurrencySelector"
-        case .Widgets:
-            "Widgets"
         case .Converter:
             "Converter"
         case .PriceAlerts:
@@ -182,7 +179,6 @@ enum ScreenLabel: String {
     case derivativeDetail = "DerivativeDetail"
     case treasuryDetail = "TreasuryDetail"
     case currencySelector = "CurrencySelector"
-    case widgets = "Widgets"
     case converter = "Converter"
     case priceAlerts = "PriceAlerts"
     case achievements = "Achievements"
@@ -205,8 +201,6 @@ enum SheetLabel: String {
     case fearGreedHelp = "FearGreedHelp"
     case gasFeesHelp = "GasFeesHelp"
     case gasFeesCost = "GasFeesCost"
-    case widgetsHelp = "WidgetsHelp"
-    case editWidgets = "EditWidgets"
     case coinSearch = "CoinSearch"
     case currencySelector = "CurrencySelector"
     case theme = "Theme"

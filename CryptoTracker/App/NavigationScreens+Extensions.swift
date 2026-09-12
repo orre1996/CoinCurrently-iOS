@@ -115,9 +115,6 @@ extension NavigationScreens {
         case .CurrencySelector:
             CurrencySelectorScreen()
             
-        case .Widgets:
-            MyWidgetsScreen()
-            
         case .Converter:
             CalculatorScreen()
             

@@ -42,37 +42,4 @@ struct CryptoDetailRepositoryTests {
         let result = await repo.getCandleChart(id: nil, days: "7")
         #expect(result == nil)
     }
-
-    @Test("addCurrencyToWidget appends coin")
-    func addCurrencyToWidget() async {
-        let mock = MockRepoNetworkManager()
-
-        let repo = CryptoDetailRepositoryImp(
-            networkManager: mock,
-            storageManager: emptyStorageManager()
-        )
-
-        let coin = Toplist(id: "bitcoin_test", name: "Bitcoin")
-        await repo.addCurrencyToWidget(toplist: coin)
-
-        let widgets = await repo.widgetCurrencies
-        #expect(widgets.count == 1)
-        #expect(widgets.first?.id == "bitcoin_test")
-    }
-
-    @Test("removeWidgetCoin removes coin")
-    func removeWidgetCoin() async {
-        let mock = MockRepoNetworkManager()
-
-        let repo = CryptoDetailRepositoryImp(
-            networkManager: mock,
-            storageManager: emptyStorageManager()
-        )
-
-        let coin = Toplist(id: "bitcoin_test", name: "Bitcoin")
-        await repo.addCurrencyToWidget(toplist: coin)
-        let remaining = await repo.removeWidgetCoin(coin: coin)
-
-        #expect(remaining.isEmpty)
-    }
 }

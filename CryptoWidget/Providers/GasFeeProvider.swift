@@ -38,11 +38,11 @@ struct GasFeeProvider: AppIntentTimelineProvider {
             viewModel.getGasFees { result in
                 switch result {
                 case .success(let entry):
-                    let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * (entry.hasPro ? 3 : 15))))
+                    let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(WidgetRefreshInterval.loaded)))
                     continuation.resume(returning: timeline)
                 case .failure(let error):
                     print(error)
-                    let timeline = Timeline(entries: [GasFeeEntry.empty()], policy: .after(Date().addingTimeInterval(60 * 2)))
+                    let timeline = Timeline(entries: [GasFeeEntry.empty()], policy: .after(Date().addingTimeInterval(WidgetRefreshInterval.retry)))
                     continuation.resume(returning: timeline)
                 }
             }

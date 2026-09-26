@@ -7,21 +7,10 @@
 
 import AppIntents
 import Foundation
-import WidgetKit
 
-enum WidgetProAccess {
-    static func hasPro() async -> Bool {
-        if SettingsManager.shared.get(key: WidgetSettingKey.hasBoughtPro) == true {
-            return true
-        }
-
-        let status: String? = await CachedStorageManagerImp.shared.load(type: LocalStorageKeys.proStatus)
-        if status != nil {
-            SettingsManager.shared.set(data: true, key: WidgetSettingKey.hasBoughtPro)
-            return true
-        }
-        return false
-    }
+enum WidgetRefreshInterval {
+    static let loaded: TimeInterval = 60 * 15
+    static let retry: TimeInterval = 60 * 2
 }
 
 enum WidgetCoinStorage {
@@ -32,41 +21,23 @@ enum WidgetCoinStorage {
         return coins?.compactMap(\.id).filter { !$0.isEmpty } ?? []
     }
 
-    static func snapshotCoinIDs() async -> [String] {
+    static func snapshotCoinIDs(limit: Int = snapshotCoinLimit) async -> [String] {
         await ToplistRepositoryImp.shared.ensureCacheLoaded()
         if let toplist = await ToplistRepositoryImp.shared.cachedSmallToplist?.data {
             let ids = toplist.compactMap(\.id).filter { !$0.isEmpty }
             if !ids.isEmpty {
-                return Array(ids.prefix(snapshotCoinLimit))
+                return Array(ids.prefix(limit))
             }
         }
 
         return Array(
             ["bitcoin", "ethereum", "solana", "tether", "binancecoin", "ripple", "usd-coin", "cardano"]
-                .prefix(snapshotCoinLimit)
+                .prefix(limit)
         )
     }
 
-    static func toplistCoinIDs(limit: Int) async -> [String] {
-        Array(await snapshotCoinIDs().prefix(limit))
-    }
-
-    static func displayCoinIDs(configured: [String], limit: Int, requiresPro: Bool) async -> [String] {
-        if requiresPro, !(await WidgetProAccess.hasPro()) {
-            return await toplistCoinIDs(limit: limit)
-        }
-
-        return Array(configured.prefix(limit))
-    }
-
-    static func multiWidgetCoinLimit(for family: WidgetFamily) -> Int {
-        switch family {
-        case .accessoryRectangular: return 3
-        case .systemSmall: return 2
-        case .systemMedium: return 4
-        case .systemLarge: return 6
-        default: return 6
-        }
+    static func displayCoinIDs(configured: [String], limit: Int) -> [String] {
+        Array(configured.prefix(limit))
     }
 }
 
@@ -102,11 +73,6 @@ struct GasFeeWidgetConfigurationIntent: WidgetConfigurationIntent {
 struct FearGreedWidgetConfigurationIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource { "Fear and Greed Widget" }
     static var description: IntentDescription { IntentDescription("Display the fear and greed index.") }
-}
-
-struct PortfolioWidgetConfigurationIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource { "Portfolio Widget" }
-    static var description: IntentDescription { IntentDescription("Display your portfolio.") }
 }
 
 struct SingleCoinWidgetConfigurationIntent: WidgetConfigurationIntent {
@@ -172,16 +138,16 @@ struct QuadCoinWidgetConfigurationIntent: WidgetConfigurationIntent {
     static var description: IntentDescription { IntentDescription("Choose four coins to display.") }
 
     @Parameter(title: "First Coin")
-    var firstCoin: ProGatedCoinEntity?
+    var firstCoin: CoinEntity?
 
     @Parameter(title: "Second Coin")
-    var secondCoin: ProGatedCoinEntity?
+    var secondCoin: CoinEntity?
 
     @Parameter(title: "Third Coin")
-    var thirdCoin: ProGatedCoinEntity?
+    var thirdCoin: CoinEntity?
 
     @Parameter(title: "Fourth Coin")
-    var fourthCoin: ProGatedCoinEntity?
+    var fourthCoin: CoinEntity?
 
     init() {
         firstCoin = nil
@@ -192,6 +158,42 @@ struct QuadCoinWidgetConfigurationIntent: WidgetConfigurationIntent {
 
     func coinIDs(limit: Int = 4) async -> [String] {
         let configured = [firstCoin?.id, secondCoin?.id, thirdCoin?.id, fourthCoin?.id]
+            .compactMap { $0 }
+            .filter { !$0.isEmpty }
+        return Array(configured.prefix(limit))
+    }
+}
+
+struct TripleCoinWidgetConfigurationIntent: WidgetConfigurationIntent {
+    static var title: LocalizedStringResource { "Triple Widget" }
+    static var description: IntentDescription { IntentDescription("Choose three coins to display.") }
+
+    @Parameter(
+        title: "First Coin",
+        requestValueDialog: IntentDialog("Choose")
+    )
+    var firstCoin: CoinEntity?
+
+    @Parameter(
+        title: "Second Coin",
+        requestValueDialog: IntentDialog("Choose")
+    )
+    var secondCoin: CoinEntity?
+
+    @Parameter(
+        title: "Third Coin",
+        requestValueDialog: IntentDialog("Choose")
+    )
+    var thirdCoin: CoinEntity?
+
+    init() {
+        firstCoin = nil
+        secondCoin = nil
+        thirdCoin = nil
+    }
+
+    func coinIDs(limit: Int = 3) async -> [String] {
+        let configured = [firstCoin?.id, secondCoin?.id, thirdCoin?.id]
             .compactMap { $0 }
             .filter { !$0.isEmpty }
         return Array(configured.prefix(limit))
@@ -268,9 +270,9 @@ enum WidgetConfigurationIntentRegistry {
         SingleCoinWidgetConfigurationIntent.self,
         DuoCoinWidgetConfigurationIntent.self,
         QuadCoinWidgetConfigurationIntent.self,
+        TripleCoinWidgetConfigurationIntent.self,
         MultiCoinWidgetConfigurationIntent.self,
         GasFeeWidgetConfigurationIntent.self,
-        FearGreedWidgetConfigurationIntent.self,
-        PortfolioWidgetConfigurationIntent.self
+        FearGreedWidgetConfigurationIntent.self
     ]
 }

@@ -12,13 +12,11 @@ import WidgetKit
 struct FearGreedEntry: TimelineEntry {
     let date: Date = Date()
     let fearModel: FearGreed?
-    let hasPro: Bool
     let isPlaceholder: Bool
     
     func copyWithPlaceholder() -> FearGreedEntry {
         return FearGreedEntry(
             fearModel: fearModel,
-            hasPro: hasPro,
             isPlaceholder: true
         )
     }
@@ -26,7 +24,6 @@ struct FearGreedEntry: TimelineEntry {
     static func empty() -> FearGreedEntry {
         return FearGreedEntry(
             fearModel: nil,
-            hasPro: false,
             isPlaceholder: true
         )
     }

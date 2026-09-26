@@ -15,7 +15,6 @@ struct CryptoEntry: TimelineEntry {
     let currencyLogos: [UIImage]
     let selectedCurrency: CurrencyModel
     let selectedCoinIDs: [String]
-    let hasPro: Bool
     let isPlaceholder: Bool
     
     func copyWithPlaceholder() -> CryptoEntry {
@@ -24,18 +23,16 @@ struct CryptoEntry: TimelineEntry {
             currencyLogos: currencyLogos,
             selectedCurrency: selectedCurrency,
             selectedCoinIDs: selectedCoinIDs,
-            hasPro: hasPro,
             isPlaceholder: true
         )
     }
     
-    static func empty(selectedCoinIDs: [String] = [], hasPro: Bool = false) -> CryptoEntry {
+    static func empty(selectedCoinIDs: [String] = []) -> CryptoEntry {
         return CryptoEntry(
             cryptoInfos: [],
             currencyLogos: [],
             selectedCurrency: SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel(),
             selectedCoinIDs: selectedCoinIDs,
-            hasPro: hasPro,
             isPlaceholder: false
         )
     }

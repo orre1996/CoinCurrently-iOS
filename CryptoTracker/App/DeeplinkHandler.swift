@@ -8,7 +8,6 @@
 import Foundation
 
 enum DeeplinkHandler {
-    case buyPro
     case home
     case portfolio
     case marketTab
@@ -43,9 +42,7 @@ enum DeeplinkHandler {
     }
     
     static func getLink(url: String) -> DeeplinkHandler {
-        if url == "buyPro" {
-            return .buyPro
-        } else if url == "home" {
+        if url == "home" {
             return .home
         } else if url == "portfolio" {
             return .portfolio
@@ -71,7 +68,9 @@ enum DeeplinkHandler {
             return .referral(code: code)
         } else if url.lowercased().contains("www.") || url.lowercased().contains("https") {
             return .web(url: url)
-        } else if let id = url.split(separator: ",").first, let symbol = url.split(separator: ",").last {
+        } else if url.contains(","),
+                  let id = url.split(separator: ",").first,
+                  let symbol = url.split(separator: ",").last {
             return .cryptoDetail(id: String(id), symbol: String(symbol))
         } else {
             return .none

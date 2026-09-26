@@ -73,6 +73,17 @@ extension Color {
         }
     }
     
+    static func onSurfaceDimmest(for scheme: ColorScheme) -> Color {
+        switch scheme {
+        case .dark:
+            Color(hex: "#605E5E")
+        case .light:
+            Color(hex: "#929090")
+        @unknown default:
+            Color(hex: "#605E5E")
+        }
+    }
+    
     static func inverseOnSurface(for scheme: ColorScheme) -> Color {
         switch scheme {
         case .dark:

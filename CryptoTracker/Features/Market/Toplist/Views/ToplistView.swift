@@ -61,10 +61,6 @@ struct ToplistView: View {
                     
                     filterButtons
                     
-                    #if DEBUG
-                    heatmapButton
-                    #endif
-                    
                     ToplistHeaderView(
                         selectedChangeOption: viewModel.selectedPriceChangeOption
                     )
@@ -290,6 +286,24 @@ struct ToplistView: View {
                         isPriceChangeShowing = true
                     }
                 )
+
+                SecondaryButton(
+                    text: "Heatmap",
+                    accessibilityLabel: "Open heatmap",
+                    icon: .heatmap,
+                    action: {
+                        AnalyticsManager.shared.log(
+                            Navigate(
+                                fromScreen: viewModel.category == nil ? .toplist : .categoryDetail,
+                                toScreen: .heatmap
+                            )
+                        )
+
+                        navigationViewModel.navPath.append(
+                            NavigationScreens.Heatmap(category: viewModel.category)
+                        )
+                    }
+                )
             }
             .optionalGlassEffectContainer(spacing: 8)
             .padding(
@@ -303,39 +317,6 @@ struct ToplistView: View {
         }
     }
     
-    private var heatmapButton: some View {
-        HStack(spacing: 8) {
-            SecondaryButton(
-                text: "Heatmap",
-                accessibilityLabel: "Open heatmap",
-                icon: .heatmap,
-                action: {
-                    AnalyticsManager.shared.log(
-                        Navigate(
-                            fromScreen: viewModel.category == nil ? .toplist : .categoryDetail,
-                            toScreen: .heatmap
-                        )
-                    )
-                    
-                    navigationViewModel.navPath.append(
-                        NavigationScreens.Heatmap(category: viewModel.category)
-                    )
-                }
-            )
-            
-            Spacer(minLength: 0)
-        }
-        .optionalGlassEffectContainer(spacing: 8)
-        .padding(
-            EdgeInsets(
-                top: 0,
-                leading: 16 + safeAreaInsets.leading,
-                bottom: 8,
-                trailing: 16 + safeAreaInsets.trailing
-            )
-        )
-    }
-
     @ViewBuilder
     private var tempList: some View {
         ForEach(0..<(isPad ? 30 : 15), id: \.self) { index in

@@ -30,8 +30,8 @@ struct CircularCryptoWidget: View {
                         currency: CurrencyModel(currency: "", code: "", symbol: "", suffix: true),
                         maxDecimals: currentPrice < 100 ? 4 : 0
                     ))
-                        .font(.system(size: 15, weight: .semibold))
-                        .padding(.top, data == nil ? 0 : -1)
+                    .font(.system(size: 15, weight: .semibold))
+                    .padding(.top, data == nil ? 0 : -1)
                     
                     let decimals = abs(data?.price_change_percentage_7d_in_currency?.roundTo(places: 2) ?? 0) >= 100.0 ? 1 : 2
                     let change = data?.price_change_percentage_7d_in_currency ?? 0.00

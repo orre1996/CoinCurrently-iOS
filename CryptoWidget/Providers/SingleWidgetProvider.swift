@@ -24,24 +24,20 @@ struct Provider: AppIntentTimelineProvider {
             return await viewModel.fetchSnapshotEntry()
         }
 
-        let ids = await displayCoinIDs(for: configuration, family: context.family)
+        let ids = await displayCoinIDs(for: configuration)
         return await viewModel.fetchDisplayEntry(ids: ids)
     }
     
-    func timeline(for configuration: Intent, in context: Context) async -> Timeline<CryptoEntry> {
-        let ids = await displayCoinIDs(for: configuration, family: context.family)
+    func timeline(for configuration: Intent, in _: Context) async -> Timeline<CryptoEntry> {
+        let ids = await displayCoinIDs(for: configuration)
         let entry = await viewModel.fetchDisplayEntry(ids: ids)
-        let minutes = ids.isEmpty ? 2.0 : (entry.hasPro ? 3.0 : 15.0)
-        return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * minutes)))
+        let interval = ids.isEmpty ? WidgetRefreshInterval.retry : WidgetRefreshInterval.loaded
+        return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(interval)))
     }
 
-    private func displayCoinIDs(for configuration: Intent, family: WidgetFamily) async -> [String] {
+    private func displayCoinIDs(for configuration: Intent) async -> [String] {
         let configured = await configuration.coinIDs(limit: 1)
-        return await WidgetCoinStorage.displayCoinIDs(
-            configured: configured,
-            limit: 1,
-            requiresPro: family == .systemLarge
-        )
+        return WidgetCoinStorage.displayCoinIDs(configured: configured, limit: 1)
     }
 }
 
@@ -76,13 +72,6 @@ struct WidgetEntryView: View {
             )
             .widgetBackground(Color.clear)
             
-        case .accessoryRectangular:
-            RectangularSingleCryptoWidget(
-                data: entry.cryptoInfos.first,
-                selectedCurrency: entry.selectedCurrency
-            )
-            .widgetBackground(Color.clear)
-            
         default:
             Text("")
                 .widgetBackground(Color.clear)
@@ -105,7 +94,7 @@ struct SingleWidget: Widget {
             })
         .configurationDisplayName("Single widgets")
         .description("Track your favourite cryptocurrency. All in one widget")
-        .supportedFamilies([.systemSmall, .accessoryInline, .accessoryCircular, .accessoryRectangular])
+        .supportedFamilies([.systemSmall, .accessoryInline, .accessoryCircular])
         .contentMarginsDisabled()
     }
 }

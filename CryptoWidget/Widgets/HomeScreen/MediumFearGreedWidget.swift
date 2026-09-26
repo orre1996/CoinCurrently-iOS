@@ -11,10 +11,9 @@ struct MediumFearGreedWidget: View {
     @Environment(\.colorScheme) var scheme
 
     let fearGreedModel: FearGreed?
-    let hasBoughtPro: Bool
     
     var body: some View {
-        if let url = URL(string: hasBoughtPro ? "fearGreed" : "buyPro") {
+        if let url = URL(string: "fearGreed") {
             
             Link(destination: url) {
                 
@@ -105,11 +104,6 @@ struct MediumFearGreedWidget: View {
                     }
                     .frame(maxWidth: .infinity)
                     
-                }
-                .overlay {
-                    if !hasBoughtPro {
-                        WidgetBuyProOverlay()
-                    }
                 }
             }
         }

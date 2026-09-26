@@ -47,6 +47,7 @@ class WidgetReloadService {
             WidgetCenter.shared.reloadTimelines(ofKind: "My_Widget")
             WidgetCenter.shared.reloadTimelines(ofKind: "CoinCurrently_Duo_Widget")
             WidgetCenter.shared.reloadTimelines(ofKind: "My_Quad_Widget")
+            WidgetCenter.shared.reloadTimelines(ofKind: "My_Triple_Widget")
             WidgetCenter.shared.reloadTimelines(ofKind: "My_Multi_Widget")
         } else {
             WidgetCenter.shared.reloadAllTimelines()

@@ -17,7 +17,6 @@ struct PortfolioEntry: TimelineEntry {
     let totalValue: Double?
     let profitLossValue: Double?
     let profitLossPercent: Double?
-    let hasPro: Bool
     let isPlaceholder: Bool
     
     func copyWithPlaceholder() -> PortfolioEntry {
@@ -28,7 +27,6 @@ struct PortfolioEntry: TimelineEntry {
             totalValue: totalValue,
             profitLossValue: profitLossValue,
             profitLossPercent: profitLossPercent,
-            hasPro: hasPro,
             isPlaceholder: true
         )
     }
@@ -41,7 +39,6 @@ struct PortfolioEntry: TimelineEntry {
             totalValue: nil,
             profitLossValue: nil,
             profitLossPercent: nil,
-            hasPro: false,
             isPlaceholder: true)
     }
 }

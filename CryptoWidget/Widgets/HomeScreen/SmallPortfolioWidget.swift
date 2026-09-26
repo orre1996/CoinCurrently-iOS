@@ -23,7 +23,7 @@ struct SmallPortfolioWidget: View {
                 .font(.satoshiBold(12))
             
             ShimmeringText(
-                text: entry?.totalValue?.formatCurrency() ?? "000000",
+                text: entry?.totalValue?.formatCurrency(threshold: FormattingThreshold.million) ?? "000000",
                 isDownloading: entry == nil
             )
             .foregroundStyle(Color.onSurface(for: scheme))

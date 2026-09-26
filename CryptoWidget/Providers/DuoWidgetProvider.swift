@@ -25,24 +25,20 @@ struct DuoWidgetProvider: AppIntentTimelineProvider {
             return await viewModel.fetchSnapshotEntry()
         }
 
-        let ids = await displayCoinIDs(for: configuration, family: context.family)
+        let ids = await displayCoinIDs(for: configuration)
         return await viewModel.fetchDisplayEntry(ids: ids)
     }
     
-    func timeline(for configuration: Intent, in context: Context) async -> Timeline<CryptoEntry> {
-        let ids = await displayCoinIDs(for: configuration, family: context.family)
+    func timeline(for configuration: Intent, in _: Context) async -> Timeline<CryptoEntry> {
+        let ids = await displayCoinIDs(for: configuration)
         let entry = await viewModel.fetchDisplayEntry(ids: ids)
-        let minutes = ids.isEmpty ? 2.0 : (entry.hasPro ? 3.0 : 15.0)
-        return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * minutes)))
+        let interval = ids.isEmpty ? WidgetRefreshInterval.retry : WidgetRefreshInterval.loaded
+        return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(interval)))
     }
 
-    private func displayCoinIDs(for configuration: Intent, family: WidgetFamily) async -> [String] {
+    private func displayCoinIDs(for configuration: Intent) async -> [String] {
         let configured = await configuration.coinIDs(limit: 2)
-        return await WidgetCoinStorage.displayCoinIDs(
-            configured: configured,
-            limit: 2,
-            requiresPro: family == .accessoryRectangular
-        )
+        return WidgetCoinStorage.displayCoinIDs(configured: configured, limit: 2)
     }
 }
 
@@ -62,14 +58,6 @@ struct DuoWidgetEntryView: View {
                 selectedCoinIDs: entry.selectedCoinIDs
             )
             .widgetContainerBackground()
-            
-        case .accessoryRectangular:
-            RectangularDuoWidget(
-                data: entry.cryptoInfos,
-                selectedCurrency: entry.selectedCurrency,
-                hasBoughtPro: entry.hasPro
-            )
-            .widgetBackground(Color.clear)
             
         default:
             Text("")
@@ -94,7 +82,7 @@ struct DuoWidget: Widget {
         )
         .configurationDisplayName("Duo widgets")
         .description("Track your favourite cryptocurrencies. All in one widget")
-        .supportedFamilies([.accessoryRectangular, .systemMedium])
+        .supportedFamilies([.systemMedium])
         .contentMarginsDisabled()
     }
 }

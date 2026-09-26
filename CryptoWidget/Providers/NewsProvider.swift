@@ -40,10 +40,10 @@ struct NewsProvider: AppIntentTimelineProvider {
             viewModel.getNews(type: newsType, category: configuration.category, itemCount: 3) { result in
                 switch result {
                 case .success(let entry):
-                    let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * (entry.hasPro ? 3 : 15))))
+                    let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(WidgetRefreshInterval.loaded)))
                     continuation.resume(returning: timeline)
                 case .failure(_):
-                    let timeline = Timeline(entries: [NewsEntry.empty()], policy: .after(Date().addingTimeInterval(60 * 2)))
+                    let timeline = Timeline(entries: [NewsEntry.empty()], policy: .after(Date().addingTimeInterval(WidgetRefreshInterval.retry)))
                     continuation.resume(returning: timeline)
                 }
             }
@@ -60,10 +60,7 @@ struct NewsWidgetEntryView: View {
     var body: some View {
         switch family {
         case .systemSmall:
-            SmallNewsWidget(
-                newsItem: entry.newsModel.first,
-                showBuyProOverlay: entry.showBuyProOverlay
-            )
+            SmallNewsWidget(newsItem: entry.newsModel.first)
             .widgetContainerBackground()
             
         case .systemMedium:

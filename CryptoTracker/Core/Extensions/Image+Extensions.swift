@@ -101,6 +101,7 @@ extension Image {
     static let sort = Image("sort")
     static let search = Image("search")
     static let heatmap = Image(systemName: "square.grid.2x2")
+    static let widget = Image(systemName: "widget.small")
     
     static let arrowUp = Image("arrowUp")
     static let arrowLeft = Image(systemName: "arrow.left")

@@ -26,6 +26,8 @@ struct HeatmapGridView: View {
     let coinSelected: (Toplist) -> Void
     
     var body: some View {
+        let _ = Self._printChanges()
+        
         GeometryReader { reader in
             let topInset = safeAreaInsets.top + 48
             let bottomInset = safeAreaInsets.bottom + 48
@@ -201,6 +203,7 @@ private struct HeatmapCellView: View {
     let action: () -> Void
     
     var body: some View {
+        let _ = Self._printChanges()
         let change = coin.getPriceChange(selectedChangeOption: selectedTimeframe)
         
         GeometryReader { reader in

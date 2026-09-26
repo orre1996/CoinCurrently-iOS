@@ -25,32 +25,20 @@ struct MultiWidgetProvider: AppIntentTimelineProvider {
             return await viewModel.fetchSnapshotEntry()
         }
 
-        let ids = await displayCoinIDs(for: configuration, family: context.family)
+        let ids = await displayCoinIDs(for: configuration)
         return await viewModel.fetchDisplayEntry(ids: ids)
     }
     
-    func timeline(for configuration: Intent, in context: Context) async -> Timeline<CryptoEntry> {
-        let ids = await displayCoinIDs(for: configuration, family: context.family)
+    func timeline(for configuration: Intent, in _: Context) async -> Timeline<CryptoEntry> {
+        let ids = await displayCoinIDs(for: configuration)
         let entry = await viewModel.fetchDisplayEntry(ids: ids)
-        let minutes = ids.isEmpty ? 2.0 : (entry.hasPro ? 3.0 : 15.0)
-        return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * minutes)))
+        let interval = ids.isEmpty ? WidgetRefreshInterval.retry : WidgetRefreshInterval.loaded
+        return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(interval)))
     }
 
-    private func displayCoinIDs(for configuration: Intent, family: WidgetFamily) async -> [String] {
-        let limit = WidgetCoinStorage.multiWidgetCoinLimit(for: family)
-        let configured = await configuration.coinIDs(limit: limit)
-        return await WidgetCoinStorage.displayCoinIDs(
-            configured: configured,
-            limit: limit,
-            requiresPro: Self.requiresPro(for: family)
-        )
-    }
-
-    private static func requiresPro(for family: WidgetFamily) -> Bool {
-        switch family {
-        case .systemMedium, .systemLarge, .accessoryRectangular: return true
-        default: return false
-        }
+    private func displayCoinIDs(for configuration: Intent) async -> [String] {
+        let configured = await configuration.coinIDs(limit: 6)
+        return WidgetCoinStorage.displayCoinIDs(configured: configured, limit: 6)
     }
 }
 
@@ -67,18 +55,9 @@ struct MultiWidgetEntryView: View {
                 data: entry.cryptoInfos,
                 image: entry.currencyLogos,
                 selectedCurrency: entry.selectedCurrency,
-                selectedCoinIDs: entry.selectedCoinIDs,
-                hasBoughtPro: entry.hasPro
+                selectedCoinIDs: entry.selectedCoinIDs
             )
             .widgetContainerBackground()
-            
-        case .accessoryRectangular:
-            RectangularMultiCryptoWidget(
-                data: entry.cryptoInfos,
-                selectedCurrency: entry.selectedCurrency,
-                hasBoughtPro: entry.hasPro
-            )
-            .widgetBackground(Color.clear)
             
         default:
             Text("")
@@ -102,7 +81,7 @@ struct MultiWidget: Widget {
             })
             .configurationDisplayName("Multi widgets")
             .description("Track your favourite cryptocurrencies. All in one widget")
-            .supportedFamilies([.accessoryRectangular, .systemLarge])
+            .supportedFamilies([.systemLarge])
             .contentMarginsDisabled()
     }
 }

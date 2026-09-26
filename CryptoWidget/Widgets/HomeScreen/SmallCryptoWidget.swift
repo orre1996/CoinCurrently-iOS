@@ -14,7 +14,6 @@ struct SmallCryptoWidget: View {
     let image: UIImage?
     let selectedCurrency: CurrencyModel?
     let coinID: String?
-    var hasBoughtPro: Bool = true
     var showsEmptyPrompt: Bool = true
     
     @ScaledMetric private var scale: CGFloat = 1
@@ -35,7 +34,7 @@ struct SmallCryptoWidget: View {
             }
         } else {
             Group {
-                if hasBoughtPro, let url = coinURL {
+                if let url = coinURL {
                     Link(destination: url) {
                         coinContent
                     }
@@ -44,7 +43,7 @@ struct SmallCryptoWidget: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .widgetURL(hasBoughtPro ? coinURL : URL(string: "buyPro"))
+            .widgetURL(coinURL)
         }
     }
     
@@ -70,7 +69,6 @@ struct SmallCryptoWidget: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(16)
-        .blur(radius: hasBoughtPro ? 0 : 5)
     }
 
     private var coinImageView: some View {

@@ -30,35 +30,26 @@ struct WhatsNewSheet: View {
     
     private let sections: [WhatsNewSection] = [
         WhatsNewSection(
-            title: "Markets Upgrades",
-            icon: .market,
+            title: "Referrals",
+            icon: .referral,
             bulletPoints: [
-                "Faster market data and cleaner charts",
-                "More detailed coin pages"
+                "Invite your friends & family and get rewarded"
             ]
         ),
         WhatsNewSection(
-            title: "Portfolio Upgrades",
-            icon: .portfolio,
+            title: "Widgets",
+            icon: .widget,
             bulletPoints: [
-                "Track your portfolio value over time",
-                "Full transaction history with filters"
+                "Widgets have a new, fresh look",
+                "Everything about widgets has moved to the Home Screen, where they are now modified"
             ]
         ),
         WhatsNewSection(
-            title: "Alerts & News Upgrades",
-            icon: .alert,
+            title: "Heatmap",
+            icon: .heatmap,
             bulletPoints: [
-                "Improved price alerts",
-                "Cleaner crypto news experience"
-            ]
-        ),
-        WhatsNewSection(
-            title: "Faster & Cleaner",
-            icon: .lightning,
-            bulletPoints: [
-                "Faster performance across the app",
-                "Cleaner navigation and updated design"
+                "See the market as a color-coded heatmap",
+                "Browse favorites, your portfolio, or the toplist"
             ]
         )
     ]

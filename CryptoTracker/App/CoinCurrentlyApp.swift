@@ -70,8 +70,7 @@ struct CoinCurrentlyApp: View {
         !viewModel.navPath.contains(.MainFlow) &&
         (deeplinkHelper.deepLinkUrl.isEmpty ||
          deeplinkHelper.deepLinkUrl == .appName ||
-         deeplinkHelper.deepLinkUrl == "CoinCurrently,CNCR" ||
-         deeplinkHelper.deepLinkUrl == "buyPro")
+         deeplinkHelper.deepLinkUrl == "CoinCurrently,CNCR")
     }
     
     init(appDelegate: AppDelegate) {

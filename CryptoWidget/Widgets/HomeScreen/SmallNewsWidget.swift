@@ -11,16 +11,14 @@ struct SmallNewsWidget: View {
     @Environment(\.colorScheme) var scheme
 
     let newsItem: NewsItem?
-    var showBuyProOverlay: Bool = false
     var linksToNews: Bool = true
     var showsWidgetURL: Bool = true
     
     var body: some View {
-        let buyProURL = URL(string: "buyPro")
         let newsURL = URL(string: newsItem?.news_url ?? .appName)
 
         Group {
-            if linksToNews, !showBuyProOverlay, let newsURL {
+            if linksToNews, let newsURL {
                 Link(destination: newsURL) {
                     content
                 }
@@ -28,21 +26,7 @@ struct SmallNewsWidget: View {
                 content
             }
         }
-        .blur(radius: showBuyProOverlay ? 5 : 0)
-        .overlay {
-            if showBuyProOverlay {
-                WidgetBuyProOverlay()
-            }
-        }
-        .widgetURL(resolvedWidgetURL(buyProURL: buyProURL, newsURL: newsURL))
-    }
-
-    private func resolvedWidgetURL(buyProURL: URL?, newsURL: URL?) -> URL? {
-        if showBuyProOverlay {
-            return buyProURL
-        }
-        guard showsWidgetURL else { return nil }
-        return newsURL
+        .widgetURL(showsWidgetURL ? newsURL : nil)
     }
 
     private var content: some View {

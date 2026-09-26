@@ -11,14 +11,13 @@ struct LargeNewsWidget: View {
     @Environment(\.colorScheme) var scheme
 
     var entry: NewsEntry
-    let hasBoughtPro: Bool
     
     var body: some View {
         GeometryReader { reader in
             
            /* VStack(spacing: 0) {
                 
-                if let url = URL(string: hasBoughtPro ? entry.newsModel.first?.news_url ?? .appName : "buyPro") {
+                if let url = URL(string: entry.newsModel.first?.news_url ?? .appName) {
                     
                     Link(destination: url) {
                         

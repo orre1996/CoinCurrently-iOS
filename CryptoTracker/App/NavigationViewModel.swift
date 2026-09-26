@@ -161,11 +161,6 @@ final class NavigationViewModel {
         }
         
         switch DeeplinkHandler.getLink(url: url) {
-        case .buyPro:
-            AnalyticsManager.shared.log(
-                BuyProOpened(fromScreen: .mainFlow, action: .Deeplink)
-            )
-            showBuyPro = true
         case .home:
             AnalyticsManager.shared.log(DeeplinkNavigate(toScreen: .home))
             navigateToTab(0)

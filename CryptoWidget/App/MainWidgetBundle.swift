@@ -26,6 +26,7 @@ struct MainWidgetBundle: WidgetBundle {
 
     @WidgetBundleBuilder
     var body: some Widget {
+        AppShortcutWidget()
         SingleWidget()
         DuoWidget()
         QuadWidget()
@@ -40,5 +41,6 @@ struct RemainingWidgets: WidgetBundle {
         PortfolioWidget()
         NewsWidget()
         FearGreedWidget()
+        TripleWidget()
     }
 }

@@ -12,7 +12,7 @@ struct InlinePortfolioWidget: View {
     
     var body: some View {
         if let url = URL(string: "portfolio") {
-            let totalValue = entry?.totalValue?.formatCurrency() ?? "000000"
+            let totalValue = entry?.totalValue?.formatCurrency(threshold: FormattingThreshold.million) ?? "000000"
             let safeChange = entry?.profitLossPercent?.isInfinite ?? false ? 0 : entry?.profitLossPercent
             let decimals = safeChange?.changePercentDecimalPoints ?? 2
             let roundedChange = safeChange?.roundTo(places: decimals) ?? 0

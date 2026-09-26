@@ -27,7 +27,6 @@ protocol WidgetViewModel {
 }
 
 final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
-    private let storeKitManager: StoreKitManager
     private let networkManager: NetworkManager
     
     private let portfolioRepository: PortfolioRepository
@@ -37,7 +36,6 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
     private let gasFeesRepository: GasFeesRepository
     
     init(
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
         networkManager: NetworkManager = NetworkManagerImp.shared,
         portfolioRepository: PortfolioRepository = PortfolioRepositoryImp.shared,
         priceAlertsRepository: PriceAlertsRepository = PriceAlertsRepositoryImp.shared,
@@ -45,7 +43,6 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
         fearGreedRepository: FearGreedRepository = FearGreedRepositoryImp.shared,
         gasFeesRepository: GasFeesRepository = GasFeesRepositoryImp.shared
     ) {
-        self.storeKitManager = storeKitManager
         self.networkManager = networkManager
         self.portfolioRepository = portfolioRepository
         self.priceAlertsRepository = priceAlertsRepository
@@ -60,19 +57,15 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
 
     func getCoinsWithSparkline(ids: [String], completion: @escaping (Result<CryptoEntry, Error>) -> Void) {
         let box = CompletionBox(handler: completion)
-        let storeKit = storeKitManager
         let priceAlerts = priceAlertsRepository
         let net = networkManager
         Task { @MainActor in
-            await storeKit.setStartData(downloadSubscriptions: false)
-            
             guard let currencies = await priceAlerts.downloadRemainingCoins(ids: ids, withSparkline: true) else {
                 box.call(.failure(WidgetError.fail))
                 return
             }
             
             let imageDict = await fetchImages(for: currencies.compactMap({ $0.image }), networkManager: net)
-            let hasPro = await WidgetProAccess.hasPro()
             let orderedCurrencies = ids.compactMap { id in
                 currencies.first(where: { $0.id == id })
             }
@@ -92,7 +85,6 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
                         currencyLogos: displayImages,
                         selectedCurrency: SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel(),
                         selectedCoinIDs: displayCurrencies.compactMap(\.id),
-                        hasPro: hasPro,
                         isPlaceholder: false
                     )
                 )
@@ -102,11 +94,8 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
     
     func getPortfolio(completion: @escaping (Result<PortfolioEntry, Error>) -> Void) {
         let box = CompletionBox(handler: completion)
-        let storeKit = storeKitManager
         let portfolio = portfolioRepository
         Task { @MainActor in
-            await storeKit.setStartData(downloadSubscriptions: false)
-            
             guard let pieModel = await portfolio.getPortfolio() else {
                 box.call(.failure(WidgetError.fail))
                 return
@@ -117,7 +106,6 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
                 return
             }
             
-            let hasPro = await WidgetProAccess.hasPro()
             let selectedCurrency = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
             let portfolioData = pieModel.data
             let totalValue = Self.calculateTotalValue(
@@ -145,7 +133,6 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
                         totalValue: totalValue,
                         profitLossValue: profitLossValue,
                         profitLossPercent: profitLossPercent,
-                        hasPro: hasPro,
                         isPlaceholder: false
                     )
                 )
@@ -157,11 +144,8 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
     
     func getNews(type: NewsType, category: NewsWidgetCategory = .general, itemCount: Int = 3, completion: @escaping (Result<NewsEntry, Error>) -> Void) {
         let box = CompletionBox(handler: completion)
-        let storeKit = storeKitManager
         let newsRepo = newsRepository
         Task { @MainActor in
-            await storeKit.setStartData(downloadSubscriptions: false)
-
             let fetchCount = NewsWidgetCategoryResolver.fetchCount(for: type, itemCount: itemCount)
 
             guard var news = await newsRepo.getNews(type: type, count: fetchCount) else {
@@ -176,13 +160,10 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
                 return
             }
             
-            let hasPro = await WidgetProAccess.hasPro()
-            
             box.call(
                 .success(
                     NewsEntry(
                         newsModel: news,
-                        hasPro: hasPro,
                         selectedCategory: category,
                         isPlaceholder: false
                     )
@@ -195,23 +176,17 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
     
     func getFearGreed(completion: @escaping (Result<FearGreedEntry, Error>) -> Void) {
         let box = CompletionBox(handler: completion)
-        let storeKit = storeKitManager
         let fearGreed = fearGreedRepository
         Task { @MainActor in
-            await storeKit.setStartData(downloadSubscriptions: false)
-            
             guard let fearGreedModel = await fearGreed.getFearGreed() else {
                 box.call(.failure(WidgetError.fail))
                 return
             }
             
-            let hasPro = await WidgetProAccess.hasPro()
-            
             box.call(
                 .success(
                     FearGreedEntry(
                         fearModel: fearGreedModel,
-                        hasPro: hasPro,
                         isPlaceholder: false
                     )
                 )
@@ -223,23 +198,17 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
     
     func getGasFees(completion: @escaping (Result<GasFeeEntry, Error>) -> Void) {
         let box = CompletionBox(handler: completion)
-        let storeKit = storeKitManager
         let gasFees = gasFeesRepository
         Task { @MainActor in
-            await storeKit.setStartData(downloadSubscriptions: false)
-            
             guard let gasFeesModel = await gasFees.getGasFees() else {
                 box.call(.failure(WidgetError.fail))
                 return
             }
             
-            let hasPro = await WidgetProAccess.hasPro()
-            
             box.call(
                 .success(
                     GasFeeEntry(
                         gasFeesModel: gasFeesModel,
-                        hasPro: hasPro,
                         isPlaceholder: false
                     )
                 )
@@ -292,7 +261,6 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
 
     @MainActor
     func prefetchSnapshotCoins() async {
-        await storeKitManager.setStartData(downloadSubscriptions: false)
         let ids = await WidgetCoinStorage.snapshotCoinIDs()
         guard !ids.isEmpty,
               let currencies = await priceAlertsRepository.downloadRemainingCoins(ids: ids, withSparkline: true) else {
@@ -301,16 +269,15 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
         await CoinImageCache.prefetch(urlStrings: currencies.compactMap(\.image))
     }
 
-    func fetchSnapshotEntry() async -> CryptoEntry {
-        let ids = await WidgetCoinStorage.snapshotCoinIDs()
+    func fetchSnapshotEntry(limit: Int = 8) async -> CryptoEntry {
+        let ids = await WidgetCoinStorage.snapshotCoinIDs(limit: limit)
         let entry = await fetchDisplayEntry(ids: ids)
         return entry.selectedCoinIDs.isEmpty ? entry : entry.copyWithPlaceholder()
     }
 
     func fetchDisplayEntry(ids: [String]) async -> CryptoEntry {
-        let hasPro = await WidgetProAccess.hasPro()
         guard !ids.isEmpty else {
-            return CryptoEntry.empty(hasPro: hasPro)
+            return CryptoEntry.empty()
         }
 
         return await withCheckedContinuation { continuation in
@@ -319,7 +286,7 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
                 case .success(let entry):
                     continuation.resume(returning: entry)
                 case .failure:
-                    continuation.resume(returning: CryptoEntry.empty(selectedCoinIDs: ids, hasPro: hasPro))
+                    continuation.resume(returning: CryptoEntry.empty(selectedCoinIDs: ids))
                 }
             }
         }

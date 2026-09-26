@@ -11,7 +11,6 @@ struct LargeFearGreedWidget: View {
     @Environment(\.colorScheme) var scheme
 
     let fearGreedModel: FearGreed?
-    let hasBoughtPro: Bool
     
     var prices: [Double] {
         var prices = Array(fearGreedModel?.data?[0...29] ?? []).reversed().map({ Double(Int($0.value ?? "0") ?? 0) })
@@ -47,7 +46,7 @@ struct LargeFearGreedWidget: View {
     }
     
     var body: some View {
-        if let url = URL(string: hasBoughtPro ? "fearGreed" : "buyPro") {
+        if let url = URL(string: "fearGreed") {
             
             Link(destination: url) {
                 
@@ -164,11 +163,6 @@ struct LargeFearGreedWidget: View {
                             .frame(maxWidth: .infinity)
                             
                         }
-                    }
-                }
-                .overlay {
-                    if !hasBoughtPro {
-                        WidgetBuyProOverlay()
                     }
                 }
             }

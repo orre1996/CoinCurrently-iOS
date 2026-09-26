@@ -15,6 +15,5 @@ enum BuyProAction: String {
     case ImportWallet
     case AddTransaction
     case ExportPortfolio
-    case Deeplink
     case HomePromotion
 }

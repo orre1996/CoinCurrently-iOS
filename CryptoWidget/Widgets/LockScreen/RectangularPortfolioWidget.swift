@@ -23,52 +23,22 @@ struct RectangularPortfolioWidget: View {
                 AccessoryWidgetBackground()
                     .cornerRadius(8)
                 
-                VStack(spacing: 0) {
-                    HStack(spacing: 0) {
-                        Text("Value")
-                        
-                        Spacer(minLength: 8)
-                        
-                        ShimmeringText(
-                            text: entry?.totalValue?.formatCurrency() ?? "000000",
-                            isDownloading: entry == nil
-                        )
-                        .privacySensitive()
-                    }
-                    .layoutPriority(1)
-                    
-                    Separator()
-                    
-                    HStack(spacing: 0) {
-                        Text("24h")
-                        
-                        Spacer(minLength: 8)
-                        
-                        portfolioChangeView
-                    }
-                    .layoutPriority(1)
-                    
-                    Separator()
-                    
-                    coinChangeRow(
-                        symbol: entry?.dailyWinnerPie?.data?.symbol?.uppercased(),
-                        pie: entry?.dailyWinnerPie
+                VStack(spacing: 2) {
+                    ShimmeringText(
+                        text: entry?.totalValue?.formatCurrency(threshold: FormattingThreshold.million) ?? "000000",
+                        isDownloading: entry == nil
                     )
-                    .layoutPriority(1)
+                    .font(.satoshiBold(18))
+                    .foregroundStyle(Color.onSurface(for: scheme))
+                    .privacySensitive()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
                     
-                    Separator()
-                    
-                    coinChangeRow(
-                        symbol: entry?.dailyLoserPie?.data?.symbol?.uppercased(),
-                        pie: entry?.dailyLoserPie
-                    )
-                    .layoutPriority(1)
+                    portfolioChangeView
                 }
-                .padding(4)
+                .padding(6)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .frame(maxHeight: .infinity)
-            .minimumScaleFactor(0.7)
-            .lineLimit(1)
             .widgetURL(url)
         }
     }
@@ -84,7 +54,7 @@ struct RectangularPortfolioWidget: View {
             .number.precision(.fractionLength(decimals))
         ).changeWithSymbol
         
-        OverflowLayout(spacing: 4) {
+        HStack(spacing: 4) {
             PriceChangeValueView(
                 change: entry?.portfolioDailyChangeValue,
                 size: .extraSmall,
@@ -106,56 +76,7 @@ struct RectangularPortfolioWidget: View {
             .font(.satoshiBold(12))
             .opacity(0.75)
         }
-    }
-    
-    @ViewBuilder
-    private func coinChangeRow(symbol: String?, pie: Pie?) -> some View {
-        HStack(spacing: 0) {
-            ShimmeringText(
-                text: symbol ?? "0000",
-                isDownloading: entry == nil
-            )
-            
-            Spacer(minLength: 8)
-            
-            dailyChangeView(for: pie)
-        }
-        .frame(maxHeight: .infinity)
-        .opacity(symbol == nil ? 0 : 1)
-    }
-    
-    @ViewBuilder
-    private func dailyChangeView(for pie: Pie?) -> some View {
-        let changePercent = entry?.dailyChangePercent(for: pie)
-        let showDash = (changePercent?.isInfinite ?? true) || pie == nil
-        let safeChange = changePercent?.isInfinite ?? false ? 0 : changePercent
-        let decimals = safeChange?.changePercentDecimalPoints ?? 2
-        let roundedChange = safeChange?.roundTo(places: decimals) ?? 0
-        let formattedChange = roundedChange.formatted(
-            .number.precision(.fractionLength(decimals))
-        ).changeWithSymbol
-        
-        OverflowLayout(spacing: 4) {
-            PriceChangeValueView(
-                change: entry?.dailyChangeValue(for: pie),
-                size: .extraSmall,
-                hideData: false,
-                accessibleTimeframe: "24 hour",
-                isDownloading: entry == nil
-            )
-            .privacySensitive()
-            
-            ShimmeringText(
-                text: "(\(showDash ? "-" : (formattedChange + "%")))",
-                isDownloading: entry == nil || changePercent == nil
-            )
-            .foregroundStyle(
-                showDash
-                    ? Color.onSurfaceDim(for: scheme)
-                    : safeChange?.changeColor(for: scheme) ?? Color.onSurfaceDim(for: scheme)
-            )
-            .font(.satoshiBold(12))
-            .opacity(0.75)
-        }
+        .lineLimit(1)
+        .minimumScaleFactor(0.6)
     }
 }

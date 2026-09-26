@@ -58,7 +58,7 @@ enum AppSettingKey: String, SettingKeyable {
     case ratingPopupDate
     case actionRatingPopupDate
     case hasRatingPopupDate
-    case currentWhatsNewVersion = "3.0"
+    case currentWhatsNewVersion = "3.2"
     case storedWhatsNewVersion
     case colorBlindnessFilter
     case isPortfolioPieChartShowing
@@ -80,15 +80,6 @@ enum AppSettingKey: String, SettingKeyable {
 enum NewsSettingKey: String, SettingKeyable {
     case lastNewsCategory = "lastNewsCategory-1"
 
-    var data: Data? {
-        return UserDefaults(suiteName: .groupIdentifier)?.data(forKey: self.rawValue)
-    }
-}
-
-enum WidgetSettingKey: String, SettingKeyable {
-    case portfolioWidgetsHidden = "hidePortfolioWidgets"
-    case hasBoughtPro
-    
     var data: Data? {
         return UserDefaults(suiteName: .groupIdentifier)?.data(forKey: self.rawValue)
     }

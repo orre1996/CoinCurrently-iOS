@@ -267,7 +267,6 @@ struct SettingsScreen: View {
                 }
             }
             
-#if DEBUG
             Separator()
             
             SettingsNavigationView(
@@ -279,7 +278,6 @@ struct SettingsScreen: View {
                 )
                 navigationViewModel.navPath.append(.Referral(referralCode: ""))
             }
-#endif
         }
         .cardBackground()
     }

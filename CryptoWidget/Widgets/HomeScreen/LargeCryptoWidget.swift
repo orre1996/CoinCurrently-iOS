@@ -13,12 +13,11 @@ struct LargeCryptoWidget: View {
     let data: Toplist?
     let image: UIImage?
     let selectedCurrency: CurrencyModel?
-    let hasBoughtPro: Bool
     
     var body: some View {
         let price = data
         
-        if let url = URL(string: hasBoughtPro ? data?.id ?? .appName : "buyPro") {
+        if let url = URL(string: data?.id ?? .appName) {
             
             Link(destination: url) {
                 
@@ -208,11 +207,6 @@ struct LargeCryptoWidget: View {
                     .minimumScaleFactor(0.7)
                     .foregroundColor(Color.onSurface(for: scheme))
                     
-                }
-            }
-            .overlay {
-                if !hasBoughtPro {
-                    WidgetBuyProOverlay()
                 }
             }
         }

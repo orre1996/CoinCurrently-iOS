@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WidgetKit
 import StoreKit
 
 enum SubscriptionTypes {
@@ -68,20 +67,10 @@ struct PaywallScreen: View {
              proText: .image(.check),
              accessibilityLabel: "Portfolio tax software exports are available with pro only"),
         
-        Tier(title: "Home screen widgets",
-             freeText: .text("8"),
-             proText: .text("16"),
-             accessibilityLabel: "8 home screen widgets are included in the free version and 16 with pro"),
-        
         Tier(title: "Favorite coins",
              freeText: .text("2"),
              proText: .image(.infinity),
              accessibilityLabel: "2 currencies can be favorite marked with the free version and unlimited with pro"),
-        
-        Tier(title: "Lock screen widgets",
-             freeText: .text("7"),
-             proText: .text("10"),
-             accessibilityLabel: "9 lock screen widgets are included in the free version and 13 with pro"),
         
         Tier(title: "News categories",
              freeText: .text("4"),

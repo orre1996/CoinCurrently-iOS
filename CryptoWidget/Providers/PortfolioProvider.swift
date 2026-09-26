@@ -5,13 +5,11 @@
 //  Created by Oscar Berggren on 2020-11-06.
 //
 
-import AppIntents
 import SwiftUI
 @preconcurrency import WidgetKit
 
-struct PortfolioProvider: AppIntentTimelineProvider {
+struct PortfolioProvider: TimelineProvider {
     typealias Entry = PortfolioEntry
-    typealias Intent = PortfolioWidgetConfigurationIntent
     
     private let viewModel = WidgetViewModelImp()
     
@@ -19,30 +17,24 @@ struct PortfolioProvider: AppIntentTimelineProvider {
         PortfolioEntry.empty()
     }
     
-    func snapshot(for configuration: Intent, in context: Context) async -> PortfolioEntry {
-        await withCheckedContinuation { continuation in
-            viewModel.getPortfolio { result in
-                switch result {
-                case .success(let entry):
-                    continuation.resume(returning: entry.copyWithPlaceholder())
-                case .failure(_):
-                    continuation.resume(returning: placeholder(in: context))
-                }
+    func getSnapshot(in context: Context, completion: @escaping (PortfolioEntry) -> Void) {
+        viewModel.getPortfolio { result in
+            switch result {
+            case .success(let entry):
+                completion(entry.copyWithPlaceholder())
+            case .failure:
+                completion(self.placeholder(in: context))
             }
         }
     }
     
-    func timeline(for configuration: Intent, in context: Context) async -> Timeline<PortfolioEntry> {
-        await withCheckedContinuation { continuation in
-            viewModel.getPortfolio { result in
-                switch result {
-                case .success(let entry):
-                    let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * (entry.hasPro ? 3 : 15))))
-                    continuation.resume(returning: timeline)
-                case .failure(_):
-                    let timeline = Timeline(entries: [PortfolioEntry.empty()], policy: .after(Date().addingTimeInterval(60 * 2)))
-                    continuation.resume(returning: timeline)
-                }
+    func getTimeline(in _: Context, completion: @escaping (Timeline<PortfolioEntry>) -> Void) {
+        viewModel.getPortfolio { result in
+            switch result {
+            case .success(let entry):
+                completion(Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(WidgetRefreshInterval.loaded))))
+            case .failure:
+                completion(Timeline(entries: [PortfolioEntry.empty()], policy: .after(Date().addingTimeInterval(WidgetRefreshInterval.retry))))
             }
         }
     }
@@ -94,13 +86,9 @@ struct PortfolioWidget: Widget {
     private let kind = "My_Portfolio_Widget"
     
     var body: some WidgetConfiguration {
-        AppIntentConfiguration(
-            kind: kind,
-            intent: PortfolioWidgetConfigurationIntent.self,
-            provider: PortfolioProvider(),
-            content: { entry in
-                PortfolioWidgetEntryView(entry: entry)
-            })
+        StaticConfiguration(kind: kind, provider: PortfolioProvider()) { entry in
+            PortfolioWidgetEntryView(entry: entry)
+        }
         .configurationDisplayName("Portfolio widgets")
         .description("Keep track of your crypto portfolio. All in one widget")
         .supportedFamilies([.accessoryInline, .accessoryRectangular, .systemSmall, .systemMedium, .systemLarge])

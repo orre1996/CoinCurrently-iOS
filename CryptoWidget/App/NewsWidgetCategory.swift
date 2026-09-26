@@ -28,23 +28,14 @@ enum NewsWidgetCategory: String, AppEnum {
         .positive: "Positive",
         .neutral: "Neutral",
         .negative: "Negative",
-        .exchanges: "Exchanges (Pro)",
-        .nfts: "NFTs (Pro)",
-        .technicalAnalysis: "Technical Analysis (Pro)",
-        .bitcoin: "Bitcoin (Pro)",
-        .ethereum: "Ethereum (Pro)",
-        .xrp: "XRP (Pro)",
-        .sol: "SOL (Pro)"
+        .exchanges: "Exchanges",
+        .nfts: "NFTs",
+        .technicalAnalysis: "Technical Analysis",
+        .bitcoin: "Bitcoin",
+        .ethereum: "Ethereum",
+        .xrp: "XRP",
+        .sol: "SOL"
     ]
-
-    var requiresPro: Bool {
-        switch self {
-        case .exchanges, .nfts, .technicalAnalysis, .bitcoin, .ethereum, .xrp, .sol:
-            return true
-        default:
-            return false
-        }
-    }
 
     func toNewsType() async -> NewsType {
         switch self {
@@ -76,11 +67,7 @@ enum NewsWidgetCategory: String, AppEnum {
 
 enum NewsWidgetCategoryResolver {
     static func resolvedNewsType(for category: NewsWidgetCategory = .general) async -> NewsType {
-        if category.requiresPro, !(await WidgetProAccess.hasPro()) {
-            return .general
-        }
-
-        return await category.toNewsType()
+        await category.toNewsType()
     }
 
     static func filteredNews(_ news: [NewsItem], for type: NewsType) -> [NewsItem] {

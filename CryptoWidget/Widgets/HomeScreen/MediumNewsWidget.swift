@@ -8,16 +8,13 @@
 import SwiftUI
 
 struct MediumNewsWidget: View {
-    @Environment(\.colorScheme) var scheme
-
     var entry: NewsEntry
 
     var body: some View {
         HStack(spacing: 0) {
             SmallNewsWidget(
                 newsItem: entry.newsModel[safely: 0],
-                linksToNews: !entry.showBuyProOverlay,
-                showsWidgetURL: !entry.showBuyProOverlay
+                showsWidgetURL: false
             )
             
             VerticalSeparator()
@@ -25,16 +22,8 @@ struct MediumNewsWidget: View {
             
             SmallNewsWidget(
                 newsItem: entry.newsModel[safely: 1],
-                linksToNews: !entry.showBuyProOverlay,
-                showsWidgetURL: !entry.showBuyProOverlay
+                showsWidgetURL: false
             )
         }
-        .blur(radius: entry.showBuyProOverlay ? 5 : 0)
-        .overlay {
-            if entry.showBuyProOverlay {
-                WidgetBuyProOverlay()
-            }
-        }
-        .widgetURL(entry.showBuyProOverlay ? URL(string: "buyPro") : nil)
     }
 }

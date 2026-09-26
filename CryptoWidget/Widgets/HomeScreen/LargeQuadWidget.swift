@@ -6,27 +6,19 @@
 //
 
 import SwiftUI
-import WidgetKit
 
 struct LargeQuadWidget: View {
-    @Environment(\.colorScheme) var scheme
-
     let data: [Toplist]?
     let image: [UIImage]?
     let selectedCurrency: CurrencyModel?
     let selectedCoinIDs: [String]
-    let hasBoughtPro: Bool
     
     private var selectedCoinCount: Int {
         selectedCoinIDs.filter { !$0.isEmpty }.count
     }
-
-    private var displaySlotCount: Int {
-        hasBoughtPro ? selectedCoinCount : 4
-    }
     
     var body: some View {
-        if displaySlotCount == 0 {
+        if selectedCoinCount == 0 {
             WidgetEmptyView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
@@ -36,7 +28,6 @@ struct LargeQuadWidget: View {
                     
                     VerticalSeparator()
                         .padding(.vertical, 16)
-                        .blur(radius: hasBoughtPro ? 0 : 5)
                     
                     cellContent(at: 1)
                 }
@@ -44,11 +35,9 @@ struct LargeQuadWidget: View {
                 HStack(spacing: 0) {
                     Separator()
                         .padding(.horizontal, 16)
-                        .blur(radius: hasBoughtPro ? 0 : 5)
                     
                     Separator()
                         .padding(.horizontal, 16)
-                        .blur(radius: hasBoughtPro ? 0 : 5)
                 }
                 
                 HStack(spacing: 0) {
@@ -56,30 +45,22 @@ struct LargeQuadWidget: View {
                     
                     VerticalSeparator()
                         .padding(.vertical, 16)
-                        .blur(radius: hasBoughtPro ? 0 : 5)
                     
                     cellContent(at: 3)
                 }
             }
-            .overlay {
-                if !hasBoughtPro {
-                    WidgetBuyProOverlay()
-                }
-            }
-            .widgetURL(hasBoughtPro ? nil : URL(string: "buyPro"))
         }
     }
     
     @ViewBuilder
     private func cellContent(at index: Int) -> some View {
         let coinID = selectedCoinIDs[safely: index] ?? data?[safely: index]?.id
-        if !hasBoughtPro || !(coinID ?? "").isEmpty {
+        if !(coinID ?? "").isEmpty {
             SmallCryptoWidget(
                 data: data?[safely: index],
                 image: image?[safely: index],
                 selectedCurrency: selectedCurrency,
-                coinID: coinID,
-                hasBoughtPro: hasBoughtPro
+                coinID: coinID
             )
         } else if index == WidgetEmptyView.nextPromptIndex(
             selectedIDs: selectedCoinIDs,

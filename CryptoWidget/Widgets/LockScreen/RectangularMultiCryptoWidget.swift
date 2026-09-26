@@ -10,21 +10,25 @@ import WidgetKit
 
 struct RectangularMultiCryptoWidget: View {
     @Environment(\.colorScheme) var scheme
-
+    
     let data: [Toplist]?
     let selectedCurrency: CurrencyModel?
-    let hasBoughtPro: Bool
+    let selectedCoinIDs: [String]
+    
+    private var hasSelectedCoins: Bool {
+        selectedCoinIDs.contains { !$0.isEmpty }
+    }
     
     var body: some View {
-        if let url = URL(string: hasBoughtPro ? data == nil ? .appName : "\(data?.first?.id ?? ""),\(data?.first?.symbol ?? "")" : "buyPro") {
-            
+        if !hasSelectedCoins {
+            emptyPrompt
+        } else if let url = URL(string: data == nil ? .appName : "\(data?.first?.id ?? ""),\(data?.first?.symbol ?? "")") {
             ZStack {
-                
                 AccessoryWidgetBackground()
                     .cornerRadius(8)
                 
                 VStack(spacing: 0) {
-                    ForEach(0..<3, id: \.self) { index in
+                    ForEach(0..<min(data?.count ?? 0, 3), id: \.self) { index in
                         let coin = data?[safely: index]
                         
                         HStack(spacing: 0) {
@@ -48,6 +52,8 @@ struct RectangularMultiCryptoWidget: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
+                    
+                    Spacer(minLength: 0)
                 }
                 .padding(.vertical, 2)
                 .padding(.horizontal, 4)
@@ -55,11 +61,22 @@ struct RectangularMultiCryptoWidget: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .widgetURL(url)
             .minimumScaleFactor(0.5)
-            /*.overlay {
-                if !hasBoughtPro {
-                    WidgetBuyProOverlay(fromLockScreen: true)
-                }
-            }*/
         }
+    }
+    
+    private var emptyPrompt: some View {
+        ZStack {
+            AccessoryWidgetBackground()
+                .cornerRadius(8)
+            
+            Text("Tap widget when editing to select coins")
+                .font(.satoshiBold(12))
+                .multilineTextAlignment(.center)
+                .lineLimit(3)
+                .minimumScaleFactor(0.7)
+                .padding(6)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .widgetURL(URL(string: .appName))
     }
 }

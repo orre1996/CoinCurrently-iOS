@@ -29,20 +29,16 @@ struct QuadWidgetProvider: AppIntentTimelineProvider {
         return await viewModel.fetchDisplayEntry(ids: ids)
     }
     
-    func timeline(for configuration: Intent, in context: Context) async -> Timeline<CryptoEntry> {
+    func timeline(for configuration: Intent, in _: Context) async -> Timeline<CryptoEntry> {
         let ids = await displayCoinIDs(for: configuration)
         let entry = await viewModel.fetchDisplayEntry(ids: ids)
-        let minutes = ids.isEmpty ? 2.0 : (entry.hasPro ? 3.0 : 15.0)
-        return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * minutes)))
+        let interval = ids.isEmpty ? WidgetRefreshInterval.retry : WidgetRefreshInterval.loaded
+        return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(interval)))
     }
 
     private func displayCoinIDs(for configuration: Intent) async -> [String] {
         let configured = await configuration.coinIDs(limit: 4)
-        return await WidgetCoinStorage.displayCoinIDs(
-            configured: configured,
-            limit: 4,
-            requiresPro: true
-        )
+        return WidgetCoinStorage.displayCoinIDs(configured: configured, limit: 4)
     }
 }
 
@@ -59,8 +55,7 @@ struct QuadWidgetEntryView: View {
                 data: entry.cryptoInfos,
                 image: entry.currencyLogos,
                 selectedCurrency: entry.selectedCurrency,
-                selectedCoinIDs: entry.selectedCoinIDs,
-                hasBoughtPro: entry.hasPro
+                selectedCoinIDs: entry.selectedCoinIDs
             )
             .widgetContainerBackground()
             

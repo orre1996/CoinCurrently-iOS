@@ -109,11 +109,6 @@ actor StoreKitManagerImp: StoreKitManager {
         currentSubscription = await storageManager.load(type: LocalStorageKeys.proStatus)
         subscriptionExpirationDate = await storageManager.load(type: LocalStorageKeys.proExpirationDate)
 
-        if currentSubscription == nil,
-           SettingsManager.shared.get(key: WidgetSettingKey.hasBoughtPro) == true {
-            currentSubscription = "pro"
-        }
-
         guard runsInMainIOSApplication else { return }
 
         RevenueCatConfigurator.configureIfNeeded()
@@ -558,8 +553,6 @@ actor StoreKitManagerImp: StoreKitManager {
         let didChangeSubscription = newSubscriptionId != currentSubscription
         currentSubscription = newSubscriptionId
         subscriptionExpirationDate = newExpirationDate
-
-        SettingsManager.shared.set(data: newSubscriptionId != nil, key: WidgetSettingKey.hasBoughtPro)
 
         if let newSubscriptionId {
             await storageManager.save(type: LocalStorageKeys.proStatus, data: newSubscriptionId)

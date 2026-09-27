@@ -11,9 +11,17 @@ import WidgetKit
 struct CircularCryptoWidget: View {
     let data: Toplist?
     let selectedCurrency: CurrencyModel?
+    let coinID: String?
+    
+    private var hasSelectedCoin: Bool {
+        guard let coinID, !coinID.isEmpty else { return false }
+        return true
+    }
     
     var body: some View {
-        if let url = URL(string: data?.id == nil || data?.symbol == nil ? .appName : "\(data?.id ?? ""),\(data?.symbol ?? "")" ) {
+        if !hasSelectedCoin {
+            emptyPrompt
+        } else if let url = URL(string: data?.id == nil || data?.symbol == nil ? .appName : "\(data?.id ?? ""),\(data?.symbol ?? "")" ) {
             
             ZStack {
                 
@@ -51,5 +59,20 @@ struct CircularCryptoWidget: View {
             .multilineTextAlignment(.center)
             .widgetURL(url)
         }
+    }
+    
+    private var emptyPrompt: some View {
+        ZStack {
+            AccessoryWidgetBackground()
+            
+            Text("Tap\nWhile In\nEdit")
+                .font(.system(size: 11, weight: .semibold))
+                .multilineTextAlignment(.center)
+                .lineLimit(3)
+                .minimumScaleFactor(0.5)
+                .padding(4)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .widgetURL(URL(string: .appName))
     }
 }

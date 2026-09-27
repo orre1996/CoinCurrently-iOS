@@ -34,9 +34,7 @@ enum AppSettingKey: String, SettingKeyable {
     case graphType
     case timeframe
     case searchHistory
-    case portfolioCurrency = "portfolioTotalValueCurrency"
     case hidePortfolioValues
-    case hasSeenPortfolioTip
     case hasClosedApp
     case toplistSortOption
     case toplistPriceChange
@@ -53,7 +51,6 @@ enum AppSettingKey: String, SettingKeyable {
     case subscribesToBigMovers
     case isNFTChartFiat
     case candleChartSelected
-    case priceAlertsEnabled
     case hasOnboardedSettings
     case ratingPopupDate
     case actionRatingPopupDate
@@ -111,14 +108,6 @@ class SettingsManager {
 
     func setCandleChart(enabled: Bool) {
         set(data: enabled, key: AppSettingKey.candleChartSelected)
-    }
-
-    func getPriceAlertsEnabled() -> Bool {
-        get(key: AppSettingKey.priceAlertsEnabled) ?? true
-    }
-
-    func setPriceAlertsEnabled(enabled: Bool) {
-        set(data: enabled, key: AppSettingKey.priceAlertsEnabled)
     }
 
     func isWebSocketEnabled(hasPro: Bool) -> Bool {

@@ -10,58 +10,19 @@ import Foundation
 enum LocalStorageKeys: Keyable {
     case proStatus
     case proExpirationDate
-    case freeForAll
     case lastVersion
-    case toplist
-    case smallToplist
-    case globalMarket
-    case trendingIds
-    case trendingCoins
-    case coinList
-    case fearGreed
-    case derivativeDetail
-    case bitcoin
-    case ethereum
     case widgets
-    case calculatorPrices
     case alertPrices
     case priceAlerts
-    case derivatives
-    case exchanges
-    case categories
-    case categoryDetails
-    case searches
-    case exchangeDetail
-    case exchangePrices
-    case cryptoDetail
-    case cryptoPrices
-    case cryptoCandles
     case portfolioPies
     case portfolioPrices
     case walletRefreshDate
-    case newCoins
-    case nftToplist
-    case nftPlatforms
-    case nftPrices
-    case nftDetails
-    case nftTickers
     case homeShowFreeTrial
     case homeNextFreeTrialDate
-    case winners
-    case losers
-    case winnersLosers
     case favorites
-    case authenticateUsers
-    case isFreeForAll
-    case isExtraFreeForAll
     case didClosePromotions
     case didCloseWelcome
     case homeWelcomeOfferDate
-    case showPromotionalOffer
-    case bitcoinHalving
-    case gasFees
-    case gasFeePrices
-    case news
     case otherCoins
     case referralCode
 
@@ -71,110 +32,32 @@ enum LocalStorageKeys: Keyable {
             return "proStatus-1"
         case .proExpirationDate:
             return "proExpirationDate"
-        case .freeForAll:
-            return "freeForAll"
         case .lastVersion:
             return "lastVersion"
-        case .toplist:
-            return "toplist"
-        case .smallToplist:
-            return "smallToplist"
-        case .globalMarket:
-            return "globalMarket-1"
-        case .trendingIds:
-            return "trendingIds"
-        case .trendingCoins:
-            return "trendingCoins"
-        case .coinList:
-            return "coinList"
-        case .fearGreed:
-            return "fearGreed"
-        case .derivativeDetail:
-            return "derivativeDetail"
-        case .bitcoin:
-            return "bitcoin"
-        case .ethereum:
-            return "ethereum"
         case .widgets:
             return "widgets"
-        case .calculatorPrices:
-            return "calculatorPrices"
         case .alertPrices:
             return "alertPrices"
         case .priceAlerts:
             return "priceAlerts"
-        case .derivatives:
-            return "derivatives"
-        case .exchanges:
-            return "exchanges"
-        case .categories:
-            return "categories"
-        case .categoryDetails:
-            return "categoryDetails"
-        case .searches:
-            return "searches"
-        case .exchangeDetail:
-            return "exchangeDetail"
-        case .exchangePrices:
-            return "exchangePrices"
-        case .cryptoDetail:
-            return "cryptoDetail"
-        case .cryptoPrices:
-            return "cryptoPrices"
-        case .cryptoCandles:
-            return "cryptoCandles"
         case .portfolioPies:
             return "portfolioPies-2"
         case .portfolioPrices:
             return "portfolioPrices-1"
         case .walletRefreshDate:
             return "walletRefreshDate"
-        case .newCoins:
-            return "newCoins"
-        case .nftToplist:
-            return "nftToplist"
-        case .nftPlatforms:
-            return "nftPlatforms"
-        case .nftPrices:
-            return "nftPrices"
-        case .nftDetails:
-            return "nftDetails"
-        case .nftTickers:
-            return "nftTickers"
         case .homeShowFreeTrial:
             return "homeShowFreeTrial"
         case .homeNextFreeTrialDate:
             return "homeNextFreeTrialDate"
-        case .winners:
-            return "winners"
-        case .losers:
-            return "losers"
-        case .winnersLosers:
-            return "winnersLosers"
         case .favorites:
             return "favorites"
-        case .authenticateUsers:
-            return "authenticateUsers"
-        case .isFreeForAll:
-            return "isFreeForAll"
-        case .isExtraFreeForAll:
-            return "isExtraFreeForAll"
         case .didClosePromotions:
             return "didClosePromotions"
         case .didCloseWelcome:
             return "didCloseWelcome"
         case .homeWelcomeOfferDate:
             return "homeWelcomeOfferDate"
-        case .showPromotionalOffer:
-            return "showPromotionalOffer"
-        case .bitcoinHalving:
-            return "bitcoinHalving"
-        case .gasFees:
-            return "gasFees"
-        case .gasFeePrices:
-            return "gasFeePrices"
-        case .news:
-            return "news"
         case .otherCoins:
             return "otherCoins"
         case .referralCode:

@@ -26,7 +26,6 @@ struct MainWidgetBundle: WidgetBundle {
 
     @WidgetBundleBuilder
     var body: some Widget {
-        AppShortcutWidget()
         SingleWidget()
         DuoWidget()
         QuadWidget()

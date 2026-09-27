@@ -68,7 +68,8 @@ struct WidgetEntryView: View {
         case .accessoryCircular:
             CircularCryptoWidget(
                 data: entry.cryptoInfos.first,
-                selectedCurrency: entry.selectedCurrency
+                selectedCurrency: entry.selectedCurrency,
+                coinID: entry.selectedCoinIDs.first
             )
             .widgetBackground(Color.clear)
             

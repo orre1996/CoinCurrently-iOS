@@ -39,27 +39,6 @@ struct RoundedTriangle: Shape {
     }
 }
 
-struct FearGreedArrowHomeView: Shape {
-    func path(in rect: CGRect) -> Path {
-        let cen =  CGPoint(x: rect.size.width / 2, y: rect.size.height / 2)
-        let r0 = rect.size.height / 2 // Inner
-        
-        return Path { path in
-            path.addArc(center: cen, radius: r0, startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 360), clockwise: false)
-            
-            path.move(to: CGPoint(x: 0, y: 0.49 * rect.height))
-            
-            path.addLine(to: CGPoint(x: 0.5 * rect.width, y: 0.2 * rect.height))
-            
-            path.addLine(to: CGPoint(x: 0.5 * rect.width, y: 0.8 * rect.height))
-            
-            path.addLine(to: CGPoint(x: 0, y: 0.51   * rect.height))
-            
-            path.closeSubpath()
-        }
-    }
-}
-
 #if IS_APP
 func getIndexColor(indexValue: String) -> Color {
     let intValue = Int(indexValue) ?? 0

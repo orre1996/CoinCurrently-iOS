@@ -10,15 +10,13 @@ import SwiftUI
 import Intents
 import AppIntents
 import FirebaseCore
-import RevenueCat
 
 @main
 struct MainWidgetBundle: WidgetBundle {
 
     init() {
         _ = WidgetConfigurationIntentRegistry.supportedIntents
-        RevenueCatConfigurator.configureIfNeeded()
-        
+
         Task {
             await WidgetViewModelImp().prefetchSnapshotCoins()
         }

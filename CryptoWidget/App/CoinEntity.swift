@@ -70,6 +70,27 @@ enum CoinImageCache {
         #endif
     }
 
+    static func thumbnailPNGData(from data: Data, maxPixelSize: CGFloat = 48) -> Data? {
+        #if canImport(UIKit)
+        guard let image = UIImage(data: data) else { return nil }
+        let longestSide = max(image.size.width, image.size.height)
+        guard longestSide > 0 else { return nil }
+
+        let scale = min(1, maxPixelSize / longestSide)
+        let target = CGSize(
+            width: max(1, floor(image.size.width * scale)),
+            height: max(1, floor(image.size.height * scale))
+        )
+        let renderer = UIGraphicsImageRenderer(size: target)
+        let thumbnail = renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: target))
+        }
+        return thumbnail.pngData()
+        #else
+        return data
+        #endif
+    }
+
     static func downloadImageData(from urlString: String) async -> Data? {
         if let cached = imageData(for: urlString) {
             return cached
@@ -122,22 +143,13 @@ struct CoinEntity: AppEntity, Identifiable {
 
     var displayRepresentation: DisplayRepresentation {
         if let imageURL,
-           let cachedData = CoinImageCache.imageData(for: imageURL) {
-            #if canImport(UIKit)
-            if UIImage(data: cachedData) != nil {
-                return DisplayRepresentation(
-                    title: "\(name)",
-                    subtitle: "\(symbol.uppercased())",
-                    image: DisplayRepresentation.Image(data: cachedData)
-                )
-            }
-            #else
+           let cachedData = CoinImageCache.imageData(for: imageURL),
+           let thumbnail = CoinImageCache.thumbnailPNGData(from: cachedData) {
             return DisplayRepresentation(
                 title: "\(name)",
                 subtitle: "\(symbol.uppercased())",
-                image: DisplayRepresentation.Image(data: cachedData)
+                image: DisplayRepresentation.Image(data: thumbnail)
             )
-            #endif
         }
 
         return DisplayRepresentation(
@@ -164,30 +176,22 @@ struct CoinEntity: AppEntity, Identifiable {
 
 struct CoinEntityQuery: EntityStringQuery {
     func entities(for identifiers: [CoinEntity.ID]) async throws -> [CoinEntity] {
-        let available = await loadAvailableCoins()
-        let entities = identifiers.compactMap { id in
+        let available = await cachedCoins()
+        return identifiers.map { id in
             available.first(where: { $0.id == id })
+                ?? fallbackCoins.first(where: { $0.id == id })
+                ?? CoinEntity(id: id, name: id, symbol: "")
         }
-        return await prefetchImages(for: entities)
     }
 
     func suggestedEntities() async throws -> [CoinEntity] {
-        let available = await loadAvailableCoins()
-        guard !available.isEmpty else {
-            return await prefetchImages(for: fallbackCoins)
+        var coins = await cachedCoins()
+
+        if coins.count < fallbackCoins.count {
+            appendEntities(fallbackCoins, to: &coins)
         }
 
-        let widgetIDs = await WidgetCoinStorage.coinIDs()
-        if widgetIDs.isEmpty {
-            return await prefetchImages(for: Array(available.prefix(25)))
-        }
-
-        let selected = widgetIDs.compactMap { id in
-            available.first(where: { $0.id == id })
-        }
-
-        let entities = selected.isEmpty ? Array(available.prefix(25)) : selected
-        return await prefetchImages(for: entities)
+        return await prefetchImages(for: Array(coins.prefix(25)))
     }
 
     func defaultResult() async -> CoinEntity? {
@@ -229,6 +233,25 @@ struct CoinEntityQuery: EntityStringQuery {
         return entities
     }
 
+    private func cachedCoins() async -> [CoinEntity] {
+        var coins: [CoinEntity] = []
+        await ToplistRepositoryImp.shared.ensureCacheLoaded()
+
+        if let smallToplist = await ToplistRepositoryImp.shared.cachedSmallToplist?.data {
+            appendCoins(from: smallToplist, to: &coins)
+        }
+
+        if let favorites = await ToplistRepositoryImp.shared.cachedFavorites?.data {
+            appendCoins(from: favorites, to: &coins)
+        }
+
+        if let widgetCoins: [Toplist] = await CachedStorageManagerImp.shared.load(type: LocalStorageKeys.widgets) {
+            appendCoins(from: widgetCoins, to: &coins)
+        }
+
+        return coins
+    }
+
     private func loadAvailableCoins() async -> [CoinEntity] {
         var coins: [CoinEntity] = []
 
@@ -267,6 +290,12 @@ struct CoinEntityQuery: EntityStringQuery {
         for item in toplist {
             guard let entity = CoinEntity(toplist: item),
                   !coins.contains(where: { $0.id == entity.id }) else { continue }
+            coins.append(entity)
+        }
+    }
+
+    private func appendEntities(_ entities: [CoinEntity], to coins: inout [CoinEntity]) {
+        for entity in entities where !coins.contains(where: { $0.id == entity.id }) {
             coins.append(entity)
         }
     }

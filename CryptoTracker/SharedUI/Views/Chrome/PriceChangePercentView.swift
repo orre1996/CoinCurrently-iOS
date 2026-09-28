@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-enum DirectionPosition {
-    case left, right
-}
-
 struct PriceChangePercentView: View {
 #if IS_WIDGET
     @Environment(\.colorScheme) var scheme
@@ -19,7 +15,6 @@ struct PriceChangePercentView: View {
     let change: Double?
     var size: ChangeSize = .medium
     var accessibleTimeframe = String.timeframeAccessible
-    var directionPosition: DirectionPosition = .left
     var spacing: CGFloat = 4
     let isDownloading: Bool
     
@@ -30,13 +25,11 @@ struct PriceChangePercentView: View {
         let accessibleChange = safeChange?.changePercentAccessible ?? ""
         
         HStack(spacing: spacing) {
-            if directionPosition == .left {
-                PriceChangeDirectionView(
-                    change: roundedChange,
-                    size: size,
-                    isDownloading: isDownloading
-                )
-            }
+            PriceChangeDirectionView(
+                change: roundedChange,
+                size: size,
+                isDownloading: isDownloading
+            )
             
             ShimmeringText(
                 text: formattedChange,
@@ -46,14 +39,6 @@ struct PriceChangePercentView: View {
             .font(.satoshiBold(size.fontSize))
             .foregroundStyle(changeTextColor(for: roundedChange))
             .minimumScaleFactor(0.7)
-            
-            if directionPosition == .right {
-                PriceChangeDirectionView(
-                    change: roundedChange,
-                    size: size,
-                    isDownloading: isDownloading
-                )
-            }
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabelText(

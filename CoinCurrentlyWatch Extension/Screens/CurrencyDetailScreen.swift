@@ -174,7 +174,6 @@ struct CurrencyDetailScreen: View {
                 change: viewModel.cryptoInfo?.market_data?.price_change_percentage_24h,
                 size: .small,
                 accessibleTimeframe: "24 hour",
-                directionPosition: .right,
                 isDownloading: viewModel.cryptoInfo == nil
             )
         }
@@ -189,7 +188,6 @@ struct CurrencyDetailScreen: View {
                 change: viewModel.cryptoInfo?.market_data?.price_change_percentage_7d,
                 size: .small,
                 accessibleTimeframe: "7 days",
-                directionPosition: .right,
                 isDownloading: viewModel.cryptoInfo == nil
             )
         }
@@ -204,7 +202,6 @@ struct CurrencyDetailScreen: View {
                 change: viewModel.cryptoInfo?.market_data?.price_change_percentage_30d,
                 size: .small,
                 accessibleTimeframe: "30 days",
-                directionPosition: .right,
                 isDownloading: viewModel.cryptoInfo == nil
             )
         }

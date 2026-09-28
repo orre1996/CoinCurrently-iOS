@@ -32,6 +32,7 @@
 		1001958A26D4E6F800ACBCD9 /* CryptoTracker/Features/CoinDetail/Models/CandleStickChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DA1F61269C2297005A01CD /* CryptoTracker/Features/CoinDetail/Models/CandleStickChartModel.swift */; };
 		1001959326D4E8B000ACBCD9 /* CryptoTracker/Core/Domain/WidgetReloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10098FB925A9D137009589F6 /* CryptoTracker/Core/Domain/WidgetReloadService.swift */; };
 		1001964C26D6422A00ACBCD9 /* CurrencyDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1001964B26D6422A00ACBCD9 /* CurrencyDetailScreen.swift */; };
+		A7C3E1B42F60000100ACBCD1 /* WatchCurrencySelectorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C3E1B52F60000100ACBCD1 /* WatchCurrencySelectorScreen.swift */; };
 		100196CB26D6732A00ACBCD9 /* CryptoTracker/SharedUI/Modifiers/CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AA1691257FB5C0003569A5 /* CryptoTracker/SharedUI/Modifiers/CornerRadiusStyle.swift */; };
 		10098FBD25A9D13B009589F6 /* CryptoTracker/Core/Domain/WidgetReloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10098FB925A9D137009589F6 /* CryptoTracker/Core/Domain/WidgetReloadService.swift */; };
 		100991B325AF0744009589F6 /* CryptoTracker/Core/Extensions/Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AA1699257FB708003569A5 /* CryptoTracker/Core/Extensions/Array+Extensions.swift */; };
@@ -163,7 +164,6 @@
 		8E6DCA212DAD65AC00F23DF5 /* CryptoTracker/Fonts/Satoshi-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E6DCA0F2DAD65AC00F23DF5 /* CryptoTracker/Fonts/Satoshi-Regular.otf */; };
 		8E7C7BC62E139D3300D53FB4 /* CryptoTracker/Features/PriceAlerts/Repositories/PriceAlertsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F93F82C28B26CE3008A3B15 /* CryptoTracker/Features/PriceAlerts/Repositories/PriceAlertsRepository.swift */; };
 		8E8048ED2F09E69C0093FF60 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8048EC2F09E6950093FF60 /* Color+Extensions.swift */; };
-		8E832AF62D3DBABD00BFD138 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E832AF52D3DBABD00BFD138 /* GoogleService-Info.plist */; };
 		8E832AF92D3DBADF00BFD138 /* CryptoTracker/Core/Extensions/Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E832AF82D3DBADA00BFD138 /* CryptoTracker/Core/Extensions/Bundle+Extensions.swift */; };
 		8E832AFA2D3DBADF00BFD138 /* CryptoTracker/Core/Extensions/Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E832AF82D3DBADA00BFD138 /* CryptoTracker/Core/Extensions/Bundle+Extensions.swift */; };
 		8E84C99A2DDF7FA0003F1B36 /* CryptoTracker/Core/Extensions/Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E84C9982DDF7FA0003F1B36 /* CryptoTracker/Core/Extensions/Dictionary+Extensions.swift */; };
@@ -201,10 +201,6 @@
 		8E897BE22F53FDEB00D44F80 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = FB007CORE0000000000000001 /* FirebaseCore */; };
 		8E897BE32F53FDEB00D44F80 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FB001AUTH000000000000001 /* FirebaseAuth */; };
 		8E897BE42F53FDEB00D44F80 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = FB002RCONF00000000000001 /* FirebaseRemoteConfig */; };
-		8E897BE52F53FDEB00D44F80 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = FB007CORE0000000000000001 /* FirebaseCore */; };
-		8E897BE62F53FDEB00D44F80 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FB001AUTH000000000000001 /* FirebaseAuth */; };
-		8E897BE72F53FDEB00D44F80 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = FB004MESS00000000000001 /* FirebaseMessaging */; };
-		8E897BE82F53FDEB00D44F80 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = FB002RCONF00000000000001 /* FirebaseRemoteConfig */; };
 		8E897BE92F53FDEB00D44F80 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = FB007CORE0000000000000001 /* FirebaseCore */; };
 		8E897BEA2F53FDEB00D44F80 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = FB002RCONF00000000000001 /* FirebaseRemoteConfig */; };
 		8E897BEB2F53FDEB00D44F80 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FB001AUTH000000000000001 /* FirebaseAuth */; };
@@ -289,7 +285,6 @@
 		8ECA7B0B2DB70B1B00E3214E /* WatchConnectivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B0C3A226D8CFE500023AF5 /* WatchConnectivityViewModel.swift */; };
 		8ECA7B0C2DB70B1B00E3214E /* WatchConnectivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B0C3A226D8CFE500023AF5 /* WatchConnectivityViewModel.swift */; };
 		8ECA7B162DB7461000E3214E /* CryptoTracker/Core/Analytics/RemoteConfigKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA7B152DB7461000E3214E /* CryptoTracker/Core/Analytics/RemoteConfigKeys.swift */; };
-		8ECA7B172DB7461000E3214E /* CryptoTracker/Core/Analytics/RemoteConfigKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA7B152DB7461000E3214E /* CryptoTracker/Core/Analytics/RemoteConfigKeys.swift */; };
 		8ECA7B192DB7489F00E3214E /* CryptoTracker/Core/Analytics/FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AA18BD258512D9003569A5 /* CryptoTracker/Core/Analytics/FirebaseManager.swift */; };
 		8ECA7B1A2DB7489F00E3214E /* CryptoTracker/Core/Analytics/FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AA18BD258512D9003569A5 /* CryptoTracker/Core/Analytics/FirebaseManager.swift */; };
 		8ECFLG2F710000000000002 /* CryptoTracker/Features/Market/Exchanges/Models/CountryFlagEmojis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECFLG2F710000000000001 /* CryptoTracker/Features/Market/Exchanges/Models/CountryFlagEmojis.swift */; };
@@ -481,6 +476,7 @@
 		100195C326D4EFF700ACBCD9 /* CoinCurrentlyWatch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "CoinCurrentlyWatch Extension.entitlements"; sourceTree = "<group>"; };
 		100195C826D4EFFD00ACBCD9 /* CoinCurrentlyWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoinCurrentlyWatch.entitlements; sourceTree = "<group>"; };
 		1001964B26D6422A00ACBCD9 /* CurrencyDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyDetailScreen.swift; sourceTree = "<group>"; };
+		A7C3E1B52F60000100ACBCD1 /* WatchCurrencySelectorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCurrencySelectorScreen.swift; sourceTree = "<group>"; };
 		100408BA25D5BDC60066B7F3 /* CryptoTracker/Features/GlobalMarket/Models/GlobalMarketModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/Features/GlobalMarket/Models/GlobalMarketModel.swift; sourceTree = SOURCE_ROOT; };
 		10098FB925A9D137009589F6 /* CryptoTracker/Core/Domain/WidgetReloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/Core/Domain/WidgetReloadService.swift; sourceTree = SOURCE_ROOT; };
 		10098FC025A9D93B009589F6 /* CryptoTracker/Features/FearGreed/Views/PieChartPiece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/Features/FearGreed/Views/PieChartPiece.swift; sourceTree = SOURCE_ROOT; };
@@ -580,7 +576,6 @@
 		8E6DCA0E2DAD65AC00F23DF5 /* CryptoTracker/Fonts/Satoshi-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CryptoTracker/Fonts/Satoshi-Medium.otf"; sourceTree = SOURCE_ROOT; };
 		8E6DCA0F2DAD65AC00F23DF5 /* CryptoTracker/Fonts/Satoshi-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CryptoTracker/Fonts/Satoshi-Regular.otf"; sourceTree = SOURCE_ROOT; };
 		8E8048EC2F09E6950093FF60 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
-		8E832AF52D3DBABD00BFD138 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8E832AF82D3DBADA00BFD138 /* CryptoTracker/Core/Extensions/Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoTracker/Core/Extensions/Bundle+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		8E84C9982DDF7FA0003F1B36 /* CryptoTracker/Core/Extensions/Dictionary+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoTracker/Core/Extensions/Dictionary+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		8E87629F2DBBDDE40026BB4C /* CryptoTracker/App/DeeplinkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/App/DeeplinkHandler.swift; sourceTree = SOURCE_ROOT; };
@@ -767,11 +762,6 @@
 			path = CryptoTracker;
 			sourceTree = "<group>";
 		};
-		8E21AE042DA32C750003EDBC /* Modifiers */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Modifiers;
-			sourceTree = "<group>";
-		};
 		8E8772332F515D6100942DBA /* CoinCurrentlyTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = CoinCurrentlyTests;
@@ -825,10 +815,6 @@
 			files = (
 				8ERCAT032F6000000095B2E3 /* RevenueCat in Frameworks */,
 				8E3E932E2F5E39420095B2E1 /* Kingfisher in Frameworks */,
-				8E897BE72F53FDEB00D44F80 /* FirebaseMessaging in Frameworks */,
-				8E897BE52F53FDEB00D44F80 /* FirebaseCore in Frameworks */,
-				8E897BE62F53FDEB00D44F80 /* FirebaseAuth in Frameworks */,
-				8E897BE82F53FDEB00D44F80 /* FirebaseRemoteConfig in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -848,7 +834,6 @@
 		100193C126D3CAC700ACBCD9 /* CoinCurrentlyWatch */ = {
 			isa = PBXGroup;
 			children = (
-				8E832AF52D3DBABD00BFD138 /* GoogleService-Info.plist */,
 				100195C826D4EFFD00ACBCD9 /* CoinCurrentlyWatch.entitlements */,
 				100193C226D3CAD400ACBCD9 /* Assets.xcassets */,
 				100193C426D3CAD400ACBCD9 /* Info.plist */,
@@ -868,7 +853,6 @@
 				100193D826D3CADF00ACBCD9 /* Assets.xcassets */,
 				100195C326D4EFF700ACBCD9 /* CoinCurrentlyWatch Extension.entitlements */,
 				100193DD26D3CADF00ACBCD9 /* Info.plist */,
-				8E21AE042DA32C750003EDBC /* Modifiers */,
 				100193DE26D3CADF00ACBCD9 /* PushNotificationPayload.apns */,
 			);
 			path = "CoinCurrentlyWatch Extension";
@@ -1290,6 +1274,7 @@
 			children = (
 				1001964B26D6422A00ACBCD9 /* CurrencyDetailScreen.swift */,
 				100193D026D3CAD800ACBCD9 /* CurrencyToplistScreen.swift */,
+				A7C3E1B52F60000100ACBCD1 /* WatchCurrencySelectorScreen.swift */,
 				9F33FB4C2C4FEA3800AE4185 /* LoadingScreen.swift */,
 			);
 			path = Screens;
@@ -1333,10 +1318,6 @@
 			);
 			name = CoinCurrentlyWatch;
 			packageProductDependencies = (
-				FB007CORE0000000000000001 /* FirebaseCore */,
-				FB001AUTH000000000000001 /* FirebaseAuth */,
-				FB004MESS00000000000001 /* FirebaseMessaging */,
-				FB002RCONF00000000000001 /* FirebaseRemoteConfig */,
 				K1NGF1PROD000000000001 /* Kingfisher */,
 				RC001REVENUECAT00000001 /* RevenueCat */,
 			);
@@ -1499,7 +1480,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EAE879C28284BB200946181 /* CryptoTracker/Fonts/Poppins-Light.ttf in Resources */,
-				8E832AF62D3DBABD00BFD138 /* GoogleService-Info.plist in Resources */,
 				CC0A001B2F600000000000B /* Secrets.plist in Resources */,
 				100193DC26D3CADF00ACBCD9 /* Preview Assets.xcassets in Resources */,
 				8E6DCA1C2DAD65AC00F23DF5 /* CryptoTracker/Fonts/Satoshi-Black.otf in Resources */,
@@ -1715,6 +1695,7 @@
 				9F9D87562C4336C10082608D /* CryptoTracker/Core/Networking/DynamicCodingKeys.swift in Sources */,
 				8EC7154230256C2D00FEE248 /* CryptoTracker/Features/Achievements/Models/AchievementMetric.swift in Sources */,
 				1001964C26D6422A00ACBCD9 /* CurrencyDetailScreen.swift in Sources */,
+				A7C3E1B42F60000100ACBCD1 /* WatchCurrencySelectorScreen.swift in Sources */,
 				8E7C7BC62E139D3300D53FB4 /* CryptoTracker/Features/PriceAlerts/Repositories/PriceAlertsRepository.swift in Sources */,
 				9F33FB4F2C4FEEC500AE4185 /* LoadingScreen.swift in Sources */,
 				100193CF26D3CAD800ACBCD9 /* CoinCurrentlyApp.swift in Sources */,
@@ -1730,7 +1711,6 @@
 				8E84DAF52DBEB3280072A745 /* CryptoTracker/Features/Home/WinnersLosers/Repositories/WinnersLosersRepository.swift in Sources */,
 				1001952F26D4E56D00ACBCD9 /* WatchViewModel.swift in Sources */,
 				8EB2D6B13013AD230069FD57 /* CryptoTracker/Features/Treasuries/Models/TreasuryDetailHolding.swift in Sources */,
-				8ECA7B172DB7461000E3214E /* CryptoTracker/Core/Analytics/RemoteConfigKeys.swift in Sources */,
 				8EB2D244301075420069FD57 /* CryptoTracker/Features/Market/Treasuries/Models/TreasuryEntity.swift in Sources */,
 				8E5B9AAB2E84F33F00D61032 /* CryptoTracker/Core/Extensions/Collection+Extensions.swift in Sources */,
 				8E5B9A792E7BB4F000D61032 /* CryptoTracker/Core/Persistence/CoreDataManager.swift in Sources */,
@@ -1984,7 +1964,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = "CoinCurrentlyWatch Extension/CoinCurrentlyWatch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
 				"EXCLUDED_ARCHS[sdk=watchos*]" = armv7k;
 				INFOPLIST_FILE = CoinCurrentlyWatch/Info.plist;
@@ -2022,7 +2002,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = "CoinCurrentlyWatch Extension/CoinCurrentlyWatch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
 				"EXCLUDED_ARCHS[sdk=watchos*]" = armv7k;
 				INFOPLIST_FILE = CoinCurrentlyWatch/Info.plist;
@@ -2189,7 +2169,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = CryptoTracker/CryptoTracker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
@@ -2231,7 +2211,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = CryptoTracker/CryptoTracker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
@@ -2272,7 +2252,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = CryptoWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = CryptoWidget/Info.plist;
@@ -2305,7 +2285,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = CryptoWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = CryptoWidget/Info.plist;

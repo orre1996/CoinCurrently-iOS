@@ -16,42 +16,37 @@ struct CryptoListView: View {
     let currencySelected: (Toplist) -> Void
     
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 4) {
             ShimmeringImage(
                 imageUrl: coin?.image,
                 downloading: coin == nil,
-                size: 24 * min(scale, 1.5)
+                size: 16 * min(scale, 1.5)
             )
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 0) {
                 ShimmeringText(
                     text: coin == nil ? "00000000" : rankName,
                     isDownloading: coin == nil
                 )
-                .font(.satoshiBold(14))
+                .font(.satoshiBold(12))
+                .foregroundStyle(Color.onSurfaceDim)
                 
                 ShimmeringText(
                     text: coin?.current_price?.formatCurrency(threshold: FormattingThreshold.none) ?? "",
                     isDownloading: coin == nil
                 )
-                .font(.satoshiBold(16))
-                
-                HStack(spacing: 0) {
-                    Text("7d: ")
-                    .font(.satoshiBold(12))
-                    
-                    PriceChangePercentView(
-                        change: coin?.price_change_percentage_7d_in_currency,
-                        size: .small,
-                        accessibleTimeframe: "7 days",
-                        directionPosition: .right,
-                        isDownloading: coin == nil
-                    )
-                }
+                .font(.satoshiBold(14))
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            PriceChangePercentView(
+                change: coin?.price_change_percentage_7d_in_currency,
+                size: .extraSmall,
+                accessibleTimeframe: "7 days",
+                isDownloading: coin == nil
+            )
         }
         .padding(8)
-        .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.surfaceContainerHigh)
         .cornerRadius(10)
         .foregroundColor(Color.onSurface)

@@ -8,8 +8,6 @@
 import SwiftUI
 import WatchKit
 import ClockKit
-import FirebaseCore
-import FirebaseAuth
 import RevenueCat
 
 @main
@@ -25,7 +23,6 @@ struct CoinCurrentlyApp: App {
     
     
     init() {
-        FirebaseApp.configure()
         RevenueCatConfigurator.configureIfNeeded()
     }
     
@@ -40,6 +37,9 @@ struct CoinCurrentlyApp: App {
                         if screen == .MainFlow {
                             CurrencyToplistScreen()
                                 .environment(viewModel)
+                        } else if screen == .CurrencySelector {
+                            WatchCurrencySelectorScreen()
+                                .environment(viewModel)
                         } else if case .CryptoDetail(let currencyDataModel) = screen {
                             CurrencyDetailScreen(
                                 cryptoInfo: currencyDataModel
@@ -48,14 +48,12 @@ struct CoinCurrentlyApp: App {
                         }
                     })
                     .environment(viewModel)
-                    // .preferredColorScheme(scheme)
                     .colorScheme(.light)
                     .toolbarBackground(.visible, for: .navigationBar)
                     .toolbarBackground(.white, for: .navigationBar)
                     .preferredColorScheme(.dark)
             }
             .task {
-                _ = await FirebaseManagerImp.shared.login()
                 connectivityVM.sendSyncCall()
                 viewModel.navPath.append(.MainFlow)
                 

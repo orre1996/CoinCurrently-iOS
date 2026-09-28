@@ -19,7 +19,8 @@ struct LoadingScreen: View {
                     .scaledToFit()
                 
                 ActivityIndicator(
-                    size: 24
+                    size: 24,
+                    color: .onSurface
                 )
             }
             .padding(.horizontal, 16)

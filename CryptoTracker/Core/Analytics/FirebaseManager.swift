@@ -6,6 +6,27 @@
 //
 
 import Foundation
+
+#if IS_WATCH
+
+/// Watch does not link Firebase. Shared networking still asks for an auth token;
+/// the watch app does not call authenticated endpoints, so this returns nil.
+protocol FirebaseManager: Actor {
+    func getUserToken() async -> String?
+}
+
+final actor FirebaseManagerImp: FirebaseManager {
+    static let shared = FirebaseManagerImp()
+
+    private init() {}
+
+    func getUserToken() async -> String? {
+        nil
+    }
+}
+
+#else
+
 @preconcurrency import FirebaseRemoteConfig
 @preconcurrency import FirebaseAuth
 
@@ -247,3 +268,5 @@ final actor FirebaseManagerImp: FirebaseManager {
         }
     }
 }
+
+#endif

@@ -177,7 +177,7 @@ Subscriptions go through RevenueCat and StoreKit. Free users get markets, news, 
 1. Open `CoinCurrently.xcodeproj` in Xcode.
 2. Copy `Config/Secrets.example.plist` to `Config/Secrets.plist` and fill in local values. That file is gitignored. Keys are `API_BASE_URL`, `BACKEND_API_KEY`, `REVENUECAT_PRODUCTION_API_KEY`, `REVENUECAT_TEST_API_KEY`, and `APTABASE_APP_KEY`.
 3. Add `Config/Secrets.plist` to the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets if Xcode does not already include it. Widgets and Watch read the same secrets.
-4. Copy `Config/GoogleService-Info.example.plist` to `GoogleService-Info.plist` in each target folder (`CryptoTracker`, `CryptoWidget`, `CoinCurrentlyWatch`) and replace the placeholders from the Firebase console. Those files are gitignored.
+4. Copy `Config/GoogleService-Info.example.plist` to `GoogleService-Info.plist` in `CryptoTracker` and `CryptoWidget`, then replace the placeholders from the Firebase console. Those files are gitignored. The watch app does not use Firebase.
 5. Leave `DEVELOPMENT_TEAM` empty in the project unless you are signing locally. Do not commit a team ID or real keys.
 
 ## Tests

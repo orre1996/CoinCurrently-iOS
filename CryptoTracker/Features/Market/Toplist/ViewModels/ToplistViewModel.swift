@@ -73,7 +73,8 @@ final class ToplistViewModelImp: ToplistViewModel, ObservableObject {
         selectedSortOption = await storageManager.load(type: AppSettingKey.toplistSortOption.rawValue) ?? .mktCapDesc
         selectedPriceChangeOption = await storageManager.load(type: AppSettingKey.toplistPriceChange.rawValue) ?? .sevenDays
         
-        let cacheKey = "\(selectedSortOption.getOptionKey(priceChange: selectedPriceChangeOption))-\(category?.id ?? "")"
+        let currency: CurrencyModel = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
+        let cacheKey = "\(selectedSortOption.getOptionKey(priceChange: selectedPriceChangeOption))-\(category?.id ?? "")-\(currency.code)"
         if
             let toplist = await toplistRepository.cachedToplist[cacheKey]?.data,
             !toplist.isEmpty
@@ -94,6 +95,10 @@ final class ToplistViewModelImp: ToplistViewModel, ObservableObject {
     func setNewPriceChangeOption(newPriceChangeOption: PriceChange) {
         selectedPriceChangeOption = newPriceChangeOption
         Task { await storageManager.save(type: AppSettingKey.toplistPriceChange.rawValue, data: selectedPriceChangeOption) }
+    }
+
+    func clearToplist() {
+        toplist = []
     }
 
     func getToplist(

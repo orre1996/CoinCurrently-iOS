@@ -15,6 +15,7 @@ struct CurrencyToplistScreen: View {
     @State var searchViewModel = SearchViewModelImp()
     @State var searchInput = ""
     @State private var selectedCurrency: CurrencyModel = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
+    @State private var isReloadingForCurrency = false
     
     var body: some View {
         ScrollView(.vertical) {
@@ -23,7 +24,7 @@ struct CurrencyToplistScreen: View {
                 currencyButton
                 listHeader
                 
-                if searchViewModel.currentlySearching || viewModel.toplist.isEmpty {
+                if searchViewModel.currentlySearching || viewModel.toplist.isEmpty || isReloadingForCurrency {
                     tempList
                 } else if let searchResult = searchViewModel.searchResult, !(searchResult.coins?.isEmpty ?? true) {
                     searchList(list: searchResult.coins?.compactMap({ $0.toToplistCoin }) ?? [])
@@ -176,11 +177,14 @@ struct CurrencyToplistScreen: View {
         guard currency != selectedCurrency else { return }
 
         selectedCurrency = currency
+        isReloadingForCurrency = true
+        viewModel.clearToplist()
         Task {
             await viewModel.getToplist(
                 newSortOption: .mktCapDesc,
                 newPriceChangeOption: .sevenDays
             )
+            isReloadingForCurrency = false
         }
     }
 }

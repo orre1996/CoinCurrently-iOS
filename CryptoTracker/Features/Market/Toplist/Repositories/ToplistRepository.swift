@@ -77,28 +77,28 @@ final actor ToplistRepositoryImp: ToplistRepository {
         
         if selectedSortOption == .priceChangeDesc || selectedSortOption == .priceChangeAsc {
             if let winners: [Toplist] = await winnersLosersRepository.cachedWinnersCoins[selectedPriceChangeOption.rawValue]?.data {
-                let key = "\(SortOption.priceChangeDesc.getOptionKey(priceChange: selectedPriceChangeOption))-"
+                let key = "\(SortOption.priceChangeDesc.getOptionKey(priceChange: selectedPriceChangeOption))--\(currency.code)"
                 cachedToplist[key] = CachedData(data: winners, date: Date())
             }
             if let losers: [Toplist] = await winnersLosersRepository.cachedLosersCoins[selectedPriceChangeOption.rawValue]?.data {
-                let key = "\(SortOption.priceChangeAsc.getOptionKey(priceChange: selectedPriceChangeOption))-"
+                let key = "\(SortOption.priceChangeAsc.getOptionKey(priceChange: selectedPriceChangeOption))--\(currency.code)"
                 cachedToplist[key] = CachedData(data: losers, date: Date())
             }
         } else if let market: [Toplist] = await networkManager.getCached(
             endpoint: .toplist(itemsPerPage: 250, sortOption: selectedSortOption, currency: currency, platformId: nil)
         ) {
-            let marketKey = "\(selectedSortOption.getOptionKey(priceChange: selectedPriceChangeOption))-"
+            let marketKey = "\(selectedSortOption.getOptionKey(priceChange: selectedPriceChangeOption))--\(currency.code)"
             cachedToplist[SortOption.mktCapDesc.toplistApiValue] = CachedData(data: market, date: Date())
             cachedToplist[marketKey] = CachedData(data: market, date: Date())
         }
         
         for priceChange in PriceChange.allCases {
             if let winners: [Toplist] = await winnersLosersRepository.cachedWinnersCoins[priceChange.rawValue]?.data {
-                let key = "\(SortOption.priceChangeDesc.getOptionKey(priceChange: priceChange))-"
+                let key = "\(SortOption.priceChangeDesc.getOptionKey(priceChange: priceChange))--\(currency.code)"
                 cachedToplist[key] = CachedData(data: winners, date: Date())
             }
             if let losers: [Toplist] = await winnersLosersRepository.cachedLosersCoins[priceChange.rawValue]?.data {
-                let key = "\(SortOption.priceChangeAsc.getOptionKey(priceChange: priceChange))-"
+                let key = "\(SortOption.priceChangeAsc.getOptionKey(priceChange: priceChange))--\(currency.code)"
                 cachedToplist[key] = CachedData(data: losers, date: Date())
             }
         }
@@ -162,7 +162,7 @@ final actor ToplistRepositoryImp: ToplistRepository {
             return nil
         }
         
-        let cacheKey = "\(sortOption.getOptionKey(priceChange: priceChange))-\(platformId ?? "")"
+        let cacheKey = "\(sortOption.getOptionKey(priceChange: priceChange))-\(platformId ?? "")-\(currency.code)"
         cachedToplist[cacheKey] = CachedData(data: toplist, date: Date())
         if sortOption == .mktCapDesc && platformId == nil {
             cachedToplist[SortOption.mktCapDesc.toplistApiValue] = CachedData(data: toplist, date: Date())

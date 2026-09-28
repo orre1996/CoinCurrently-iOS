@@ -32,7 +32,7 @@ struct CryptoListView: View {
                 .foregroundStyle(Color.onSurfaceDim)
                 
                 ShimmeringText(
-                    text: coin?.current_price?.formatCurrency(threshold: FormattingThreshold.none) ?? "",
+                    text: coin?.current_price?.formatCurrency(threshold: FormattingThreshold.none) ?? "0000000",
                     isDownloading: coin == nil
                 )
                 .font(.satoshiBold(14))

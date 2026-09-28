@@ -10,13 +10,14 @@ import SwiftUI
 
 struct CardBackground: ViewModifier {
     var hasPadding: Bool = true
+    var padding: CGFloat = 16
     var backgroundColor = Color.surfaceContainerLow
     var cornerRadius: CGFloat = 12
     var outlineColor: Color = Color.clear
     
     func body(content: Content) -> some View {
         content
-            .padding(hasPadding ? 16 : 0)
+            .padding(hasPadding ? padding : 0)
             .background(backgroundColor)
             .cornerRadius(cornerRadius)
             .overlay(
@@ -31,6 +32,7 @@ struct CardBackground: ViewModifier {
 extension View {
     func cardBackground(
         hasPadding: Bool = true,
+        padding: CGFloat = 16,
         backgroundColor: Color = Color.surfaceContainerLow,
         cornerRadius: CGFloat = 12,
         outlineColor: Color = Color.clear
@@ -39,6 +41,7 @@ extension View {
             content: self,
             modifier: CardBackground(
                 hasPadding: hasPadding,
+                padding: padding,
                 backgroundColor: backgroundColor,
                 cornerRadius: cornerRadius,
                 outlineColor: outlineColor

@@ -15,7 +15,11 @@ struct ChartTimeStamps: View {
     private let dateFormatter = DateFormatter()
     
     var body: some View {
+        #if IS_WATCH
+        let numberOfSteps = 3
+        #else
         let numberOfSteps = !Date.uses24HourClock && currentTimeChart <= .aDay ? 4 : 5
+        #endif
         
         HStack(alignment: .center, spacing: 4) {
             ForEach(1..<numberOfSteps + 1, id: \.self) { index in

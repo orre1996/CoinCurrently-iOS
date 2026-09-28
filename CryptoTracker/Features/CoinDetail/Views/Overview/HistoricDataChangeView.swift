@@ -10,6 +10,14 @@ import SwiftUI
 struct HistoricDataChangeView: View {
     let timeframe: String
     let change: Double?
+
+    private var changeSize: ChangeSize {
+        #if IS_WATCH
+        .small
+        #else
+        .medium
+        #endif
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -20,6 +28,7 @@ struct HistoricDataChangeView: View {
             
             PriceChangePercentView(
                 change: change,
+                size: changeSize,
                 accessibleTimeframe: timeframe.lowercased(),
                 isDownloading: change == nil
             )

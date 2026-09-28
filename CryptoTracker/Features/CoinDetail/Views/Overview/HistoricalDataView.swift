@@ -16,12 +16,36 @@ struct HistoricalDataView: View {
     @ScaledMetric private var scale: CGFloat = 1
     
     private let selectedCurrency = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
+
+    private var isHorizontal: Bool {
+        #if IS_WATCH
+        false
+        #else
+        !category.isAccessibilityCategory || verticalSizeClass == .compact
+        #endif
+    }
+
+    private var valueFont: Font {
+        #if IS_WATCH
+        .satoshiBold(14)
+        #else
+        .satoshiBold(16)
+        #endif
+    }
+
+    private var valueChangeSize: ChangeSize {
+        #if IS_WATCH
+        .small
+        #else
+        .medium
+        #endif
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             headerView
             
-            VStack(spacing: 16) {
+            VStack(spacing: 8) {
                 changeView
                 
                 Separator()
@@ -40,7 +64,7 @@ struct HistoricalDataView: View {
                 
                 genesisDateView
             }
-            .cardBackground()
+            .cardBackground(padding: 8)
         }
     }
     
@@ -53,10 +77,36 @@ struct HistoricalDataView: View {
     
     @ViewBuilder
     private var changeView: some View {
-        let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
-        
-        VStack(spacing: 16) {
-            AdaptiveStack(isHorizontal: isHorizontal, spacing: 16, horizontalAlignment: .leading) {
+        #if IS_WATCH
+        VStack(spacing: 8) {
+            changePair(
+                leftTimeframe: "24 Hour",
+                leftChange: cryptoDetailModel?.market_data?.price_change_percentage_24h,
+                rightTimeframe: "7 Day",
+                rightChange: cryptoDetailModel?.market_data?.price_change_percentage_7d
+            )
+            
+            Separator()
+            
+            changePair(
+                leftTimeframe: "14 Day",
+                leftChange: cryptoDetailModel?.market_data?.price_change_percentage_14d,
+                rightTimeframe: "30 Day",
+                rightChange: cryptoDetailModel?.market_data?.price_change_percentage_30d
+            )
+            
+            Separator()
+            
+            changePair(
+                leftTimeframe: "60 Day",
+                leftChange: cryptoDetailModel?.market_data?.price_change_percentage_60d,
+                rightTimeframe: "1 Year",
+                rightChange: cryptoDetailModel?.market_data?.price_change_percentage_1y
+            )
+        }
+        #else
+        VStack(spacing: 8) {
+            AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? 16 : 8, horizontalAlignment: .leading) {
                 HistoricDataChangeView(
                     timeframe: "24 Hour",
                     change: cryptoDetailModel?.market_data?.price_change_percentage_24h
@@ -83,7 +133,7 @@ struct HistoricalDataView: View {
             
             Separator()
             
-            AdaptiveStack(isHorizontal: isHorizontal, spacing: 16, horizontalAlignment: .leading) {
+            AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? 16 : 8, horizontalAlignment: .leading) {
                 HistoricDataChangeView(
                     timeframe: "30 Day",
                     change: cryptoDetailModel?.market_data?.price_change_percentage_30d
@@ -108,12 +158,32 @@ struct HistoricalDataView: View {
                 )
             }
         }
+        #endif
     }
+
+    #if IS_WATCH
+    private func changePair(
+        leftTimeframe: String,
+        leftChange: Double?,
+        rightTimeframe: String,
+        rightChange: Double?
+    ) -> some View {
+        HStack(spacing: 16) {
+            HistoricDataChangeView(
+                timeframe: leftTimeframe,
+                change: leftChange
+            )
+            
+            HistoricDataChangeView(
+                timeframe: rightTimeframe,
+                change: rightChange
+            )
+        }
+    }
+    #endif
     
     @ViewBuilder
     private var allTimeRangeView: some View {
-        let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
-        
         let progress = (cryptoDetailModel?.market_data?.current_price?.getConvertedCurrency() ?? 1) / (cryptoDetailModel?.market_data?.ath?.getConvertedCurrency() ?? 0)
         
         let atlDate = cryptoDetailModel?.market_data?.atl_date?.getConvertedCurrency()?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)
@@ -134,7 +204,7 @@ struct HistoricalDataView: View {
             .padding(.vertical, 12)
             .accessibilityHidden(true)
             
-            AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? 0 : 16, horizontalAlignment: .leading) {
+            AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? 0 : 8, horizontalAlignment: .leading) {
                 let atlPrice = cryptoDetailModel?.market_data?.atl?.getConvertedCurrency()?.formatCurrency(threshold: FormattingThreshold.none)
                 
                 VStack(alignment: .leading, spacing: 4) {
@@ -143,7 +213,7 @@ struct HistoricalDataView: View {
                         isDownloading: cryptoDetailModel?.market_data?.atl == nil
                     )
                     .foregroundStyle(Color.onSurface)
-                    .font(.satoshiBold(16))
+                    .font(valueFont)
                     .accessibilityLabel("From \(atlPrice ?? "")")
                     
                     
@@ -168,7 +238,7 @@ struct HistoricalDataView: View {
                         isDownloading: cryptoDetailModel?.market_data?.ath == nil
                     )
                     .foregroundStyle(Color.onSurface)
-                    .font(.satoshiBold(16))
+                    .font(valueFont)
                     .accessibilityLabel("to \(athPrice ?? "")")
                     
                     ShimmeringText(
@@ -186,9 +256,7 @@ struct HistoricalDataView: View {
     
     @ViewBuilder
     private var allTimeLowView: some View {
-        let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
-        
-        AdaptiveStack(isHorizontal: isHorizontal, spacing: 16, horizontalAlignment: .leading, verticalAlignment: .top) {
+        AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? 16 : 8, horizontalAlignment: .leading, verticalAlignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
                 Text("All-Time Low %")
                     .foregroundStyle(Color.onSurfaceContainerDim)
@@ -197,6 +265,7 @@ struct HistoricalDataView: View {
                 
                 PriceChangePercentView(
                     change: cryptoDetailModel?.market_data?.atl_change_percentage?.getConvertedCurrency(),
+                    size: valueChangeSize,
                     accessibleTimeframe: "Change since all time low: ",
                     isDownloading: cryptoDetailModel?.market_data?.atl_change_percentage == nil
                 )
@@ -219,7 +288,7 @@ struct HistoricalDataView: View {
                     isDownloading: cryptoDetailModel?.market_data?.atl_date == nil
                 )
                 .foregroundStyle(Color.onSurface)
-                .font(.satoshiBold(16))
+                .font(valueFont)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityElement(children: .combine)
@@ -228,9 +297,7 @@ struct HistoricalDataView: View {
     
     @ViewBuilder
     private var allTimeHighView: some View {
-        let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
-        
-        AdaptiveStack(isHorizontal: isHorizontal, spacing: 16, horizontalAlignment: .leading, verticalAlignment: .top) {
+        AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? 16 : 8, horizontalAlignment: .leading, verticalAlignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
                 Text("All-Time High %")
                     .foregroundStyle(Color.onSurfaceContainerDim)
@@ -239,11 +306,12 @@ struct HistoricalDataView: View {
                 
                 PriceChangePercentView(
                     change: cryptoDetailModel?.market_data?.ath_change_percentage?.getConvertedCurrency(),
+                    size: valueChangeSize,
                     accessibleTimeframe: "Change since all time high: ",
                     isDownloading: cryptoDetailModel?.market_data?.ath_change_percentage == nil
                 )
                 .foregroundStyle(Color.onSurface)
-                .font(.satoshiBold(16))
+                .font(valueFont)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityElement(children: .combine)
@@ -263,7 +331,7 @@ struct HistoricalDataView: View {
                     isDownloading: cryptoDetailModel?.market_data?.ath_date == nil
                 )
                 .foregroundStyle(Color.onSurface)
-                .font(.satoshiBold(16))
+                .font(valueFont)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityElement(children: .combine)
@@ -285,7 +353,7 @@ struct HistoricalDataView: View {
                 isDownloading: cryptoDetailModel?.market_data?.market_cap == nil
             )
             .foregroundStyle(Color.onSurface)
-            .font(.satoshiBold(16))
+            .font(valueFont)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)

@@ -108,7 +108,6 @@ struct CurrencyToplistScreen: View {
         .font(.satoshiMedium(14))
         .foregroundStyle(Color.onSurfaceDim)
         .padding(.top, 8)
-        .background(Color.surface)
         .accessibilityHidden(true)
     }
     

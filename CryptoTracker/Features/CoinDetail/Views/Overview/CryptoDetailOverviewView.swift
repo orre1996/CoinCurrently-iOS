@@ -21,9 +21,20 @@ struct CryptoDetailOverviewView: View {
     
     let addNewAlert: () -> Void
     let deleteAlert: (AlertCoin) -> Void
+    var showsCurrencyConverter = true
+    var showsPriceAlerts = true
+    var horizontalPadding: CGFloat = 16
+
+    private var padding: CGFloat {
+        #if IS_WATCH
+        16
+        #else
+        32
+        #endif
+    }
     
     var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: padding) {
             CryptoDetailStatisticsView(
                 cryptoDetailModel: cryptoDetailModel,
                 timeChart: timeChart,
@@ -42,27 +53,33 @@ struct CryptoDetailOverviewView: View {
                 showCommunitySentimentHelp: $showCommunitySentimentHelp
             )
             
-            CurrencyConverterView(
-                cryptoDetailModel: cryptoDetailModel,
-                fromScreen: fromScreen,
-                isSelectingCurrency: $isSelectingCurrency,
-                selectedCurrency: $selectedCurrency
-            )
+            #if !IS_WATCH
+            if showsCurrencyConverter {
+                CurrencyConverterView(
+                    cryptoDetailModel: cryptoDetailModel,
+                    fromScreen: fromScreen,
+                    isSelectingCurrency: $isSelectingCurrency,
+                    selectedCurrency: $selectedCurrency
+                )
+            }
             
-            CryptoDetailAlertsView(
-                cryptoDetailModel: cryptoDetailModel,
-                alerts: alerts,
-                addNewAlert: addNewAlert,
-                deleteAlert: deleteAlert
-            )
+            if showsPriceAlerts {
+                CryptoDetailAlertsView(
+                    cryptoDetailModel: cryptoDetailModel,
+                    alerts: alerts,
+                    addNewAlert: addNewAlert,
+                    deleteAlert: deleteAlert
+                )
+            }
+            #endif
         }
         .ignoresSafeArea(edges: .bottom)
         .padding(
             EdgeInsets(
-                top: 32,
-                leading: 16,
+                top: padding,
+                leading: horizontalPadding,
                 bottom: 0,
-                trailing: 16
+                trailing: horizontalPadding
             )
         )
     }

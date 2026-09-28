@@ -41,6 +41,7 @@ struct SettingsScreen: View {
     
     // App settings
     @State private var selectedCurrency: CurrencyModel = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
+    @State private var selectedLanguage: AppLanguagePreference = .stored
     @State private var showTransactinosInGraph: Bool = SettingsManager.shared.get(key: AppSettingKey.transactionInGraph) ?? true
     @State private var lockRotation: Bool = SettingsManager.shared.get(key: AppSettingKey.lockRotation) ?? false
     @State private var isAuthenticationEnabled: Bool = SettingsManager.shared.get(key: AppSettingKey.authenticationEnabled) ?? false
@@ -51,6 +52,7 @@ struct SettingsScreen: View {
     @State private var isSelectingStartTab = false
     @State private var isSelectingTheme = false
     @State private var isSelectingCurrency = false
+    @State private var isSelectingLanguage = false
     @State private var currentSubscription: String?
     @State private var subscriptionExpirationDate: Date?
     
@@ -160,6 +162,18 @@ struct SettingsScreen: View {
                     SettingsManager.shared.set(data: selectedStartTab, key: AppSettingKey.startTab)
                     AnalyticsManager.shared.log(
                         StartTabSelected(fromScreen: .settings, tab: selectedStartTab)
+                    )
+                }
+            )
+        }
+        .sheet(isPresented: $isSelectingLanguage) {
+            LanguageOptionsSheet(
+                selectedOption: selectedLanguage,
+                newOptionSelected: {
+                    selectedLanguage = $0
+                    SettingsManager.shared.set(data: selectedLanguage.storageValue, key: AppSettingKey.selectedLanguage)
+                    AnalyticsManager.shared.log(
+                        LanguageSelected(fromScreen: .settings, language: selectedLanguage.storageValue)
                     )
                 }
             )
@@ -300,6 +314,19 @@ struct SettingsScreen: View {
                         SheetOpened(fromScreen: .settings, sheet: .currencySelector)
                     )
                     isSelectingCurrency = true
+                }
+                
+                Separator()
+                
+                SettingsNavigationView(
+                    title: "Language",
+                    subTitle: selectedLanguage.settingsSubtitle,
+                    accessibilityText: "Language, currently selected \(selectedLanguage.settingsSubtitle)"
+                ) {
+                    AnalyticsManager.shared.log(
+                        SheetOpened(fromScreen: .settings, sheet: .language)
+                    )
+                    isSelectingLanguage = true
                 }
                 
                 Separator()

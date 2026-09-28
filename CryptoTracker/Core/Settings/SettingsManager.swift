@@ -58,6 +58,7 @@ enum AppSettingKey: String, SettingKeyable {
     case currentWhatsNewVersion = "3.2"
     case storedWhatsNewVersion
     case colorBlindnessFilter
+    case selectedLanguage
     case isPortfolioPieChartShowing
     case treasuriesEntityFilter
     case treasuriesCoinId

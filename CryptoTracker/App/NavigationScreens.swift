@@ -203,6 +203,7 @@ enum SheetLabel: String {
     case gasFeesCost = "GasFeesCost"
     case coinSearch = "CoinSearch"
     case currencySelector = "CurrencySelector"
+    case language = "Language"
     case theme = "Theme"
     case startTab = "StartTab"
     case resetApp = "ResetApp"

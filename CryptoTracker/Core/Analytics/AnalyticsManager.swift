@@ -789,6 +789,21 @@ struct CurrencySelected: AnalyticsEvent {
     }
 }
 
+struct LanguageSelected: AnalyticsEvent {
+    static let eventName = "language_selected"
+
+    let fromScreen: ScreenLabel
+    let language: String
+
+    var parameters: [String: Any]? {
+        let payload: [String: Any] = [
+            "from_screen": fromScreen.rawValue,
+            "language": language
+        ]
+        return payload
+    }
+}
+
 struct SubscriptionOptionSelected: AnalyticsEvent {
     static let eventName = "subscription_option_selected"
 

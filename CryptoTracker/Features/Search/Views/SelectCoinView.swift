@@ -22,11 +22,12 @@ struct SelectCoinView: View {
     private var accessibilityLabelText: String {
         let name = toplist?.name ?? toplist?.symbol ?? ""
         
+        let type = Localization.string(itemType)
         if name.isEmpty {
-            return "\(itemType) \(index + 1) of \(totalCount)"
+            return Localization.format("%1$@ %2$d of %3$d", type, index + 1, totalCount)
         }
         
-        return "\(itemType) \(index + 1) of \(totalCount), \(name)"
+        return Localization.format("%1$@ %2$d of %3$d, %4$@", type, index + 1, totalCount, name)
     }
     
     var body: some View {

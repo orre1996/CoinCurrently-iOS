@@ -17,6 +17,7 @@ struct SearchScreen: View {
     @Environment(\.scenePhase) private var scenePhase
     
     @ScaledMetric private var scale: CGFloat = 1
+    @State private var appLanguage = AppLanguagePreference.stored
     
     @State private var toplistViewModel = ToplistViewModelImp()
     @State private var viewModel = SearchViewModelImp()
@@ -44,7 +45,7 @@ struct SearchScreen: View {
             
             VStack(alignment: .leading, spacing: 0) {
                 if isSheet {
-                    DragHandle(title: isSearch ? "Search" : screenCase.title)
+                    DragHandle(title: Localization.string(isSearch ? "Search" : screenCase.title))
                 }
                 
                 searchFieldView
@@ -144,9 +145,13 @@ struct SearchScreen: View {
             }
         }
         .presentationBackground(Color.surfaceContainerLow)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .ignoresSafeArea(edges: .bottom)
         .if(!isSheet) { view in
-            view.navigationTitle(screenCase.title)
+            view.navigationTitle(Localization.string(screenCase.title))
         }
         .task {
             await loadSearchScreenStartupData()
@@ -165,10 +170,10 @@ struct SearchScreen: View {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 
-                Button("Close") {
+                Button(Localization.string("Close")) {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
-                .accessibilityLabel("Close keyboard")
+                .accessibilityLabel(Localization.string("Close keyboard"))
             }
         }
         .onAppear {
@@ -220,7 +225,7 @@ struct SearchScreen: View {
         TextInputField(
             input: $searchInput,
             placeholder: screenCase.textfieldPlaceholder,
-            accessibilityValue: searchInput.isEmpty ? "Search for \(screenCase.textfieldPlaceholder)" : searchInput,
+            accessibilityValue: searchInput.isEmpty ? Localization.format("Search for %@", Localization.string(screenCase.textfieldPlaceholder)) : searchInput,
             inputDidChange: {
                 if case .fixedList = screenCase {
                     filteredList = getFilteredCoinsList()
@@ -251,8 +256,8 @@ struct SearchScreen: View {
     
     private var errorView: some View {
         EmptyContent(
-            title: "Something went wrong.",
-            subTitle: "Please try again later."
+            title: Localization.string("Something went wrong."),
+            subTitle: Localization.string("Please try again later.")
         )
         .accessibilityElement(children: .combine)
         .multilineTextAlignment(.center)
@@ -269,8 +274,8 @@ struct SearchScreen: View {
     
     private var emptyView: some View {
         EmptyContent(
-            title: "No results found",
-            subTitle: "Please check your spelling or search for something else."
+            title: Localization.string("No results found"),
+            subTitle: Localization.string("Please check your spelling or search for something else.")
         )
         .accessibilityElement(children: .combine)
         .multilineTextAlignment(.center)
@@ -458,7 +463,7 @@ struct SearchScreen: View {
         
         if !trendingList.isEmpty {
             searchHeader(
-                title: "Trending \(searchCase.rawValue) ↗"
+                title: Localization.format("Trending %@ ↗", Localization.string(searchCase.rawValue))
             )
             .padding(.top, searchHistory.isEmpty ? 0 : 12)
             
@@ -509,8 +514,8 @@ struct SearchScreen: View {
         
         if searchHistory.isEmpty && trendingList.isEmpty {
             EmptyContent(
-                title: "No search history yet",
-                subTitle: "Your past searches will appear here."
+                title: Localization.string("No search history yet"),
+                subTitle: Localization.string("Your past searches will appear here.")
             )
             .padding(
                 EdgeInsets(
@@ -611,7 +616,7 @@ struct SearchScreen: View {
     }
 
     private func searchHeader(title: String) -> some View {
-        Text(title)
+        Text(Localization.string(title))
             .font(.satoshiBold(22))
             .foregroundColor(.onSurfaceDim)
             .frame(maxWidth: .infinity, alignment: .leading)

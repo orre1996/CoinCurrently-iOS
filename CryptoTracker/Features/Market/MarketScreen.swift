@@ -15,6 +15,7 @@ struct MarketScreen: View {
     @State private var currentPage: Int? = 0
     @State private var viewID = UUID()
     @State private var colorBlindnessFilterEnabled: Bool = SettingsManager.shared.get(key: AppSettingKey.colorBlindnessFilter) ?? false
+    @State private var appLanguage = AppLanguagePreference.stored
 
     private let categories = ["Coins", "NFTs", "Treasuries", "Sectors", "Exchanges", "Derivatives"]
     private let sectorsPageIndex = 3
@@ -56,6 +57,10 @@ struct MarketScreen: View {
         }
         .id(colorBlindnessFilterEnabled)
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .onReceive(NotificationCenter.default.publisher(for: .colorBlindnessFilterChanged)) { _ in
             colorBlindnessFilterEnabled = SettingsManager.shared.get(key: AppSettingKey.colorBlindnessFilter) ?? false
         }

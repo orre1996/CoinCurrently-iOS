@@ -262,7 +262,7 @@ private struct HeatmapCellView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityAddTraits(.isButton)
         .accessibilityLabel(accessibilityLabel(change: change))
-        .accessibilityHint("Double tap for \(coin.name ?? "") details")
+        .accessibilityHint(Localization.format("Double tap for %@ details", coin.name ?? ""))
         .accessibilityAction(.default, action)
     }
     
@@ -313,10 +313,16 @@ private struct HeatmapCellView: View {
         let price = coin.current_price?.currencyAccessible() ?? ""
         let decimals = change.changePercentDecimalPoints
         let accessibleChange = change.numberAccessible(maxPlaces: decimals)
+        let direction = change.directionAccessible
         return [
             coin.name ?? coin.symbol ?? "",
-            "Price: \(price)",
-            "\(selectedTimeframe.accessibilityTimeframe) price change: \(change.directionAccessible) \(accessibleChange) percent"
+            Localization.format("Price: %@", price),
+            Localization.format(
+                "%@ price change: %@ %@ percent",
+                Localization.string(selectedTimeframe.accessibilityTimeframe),
+                direction.isEmpty ? "" : Localization.string(direction),
+                accessibleChange
+            )
         ].joined(separator: ". ")
     }
 }

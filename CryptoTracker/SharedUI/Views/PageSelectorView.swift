@@ -38,7 +38,7 @@ struct PageSelectorView: View {
                                 scrollReader.scrollTo(title, anchor: .center)
                             }
                         }) {
-                            Text(title)
+                            Text(Localization.string(title))
                                 .padding(.vertical, 16)
                                 .background(Color.black.opacity(0.001))
                                 .foregroundStyle(currentPage == index ? Color.onSurface : Color.onSurfaceDimmer)
@@ -54,7 +54,7 @@ struct PageSelectorView: View {
                         }
                         .id(title)
                         .accessibilityHidden(accessibilityVoiceOverEnabled)
-                        .accessibilityLabel("Page \(index + 1) of \(titles.count), \(title).")
+                        .accessibilityLabel(Localization.format("Page %d of %d, %@.", index + 1, titles.count, Localization.string(title)))
                         .accessibilityAddTraits(currentPage == index ? [.isSelected] : [])
                     }
                 }
@@ -80,7 +80,7 @@ struct PageSelectorView: View {
         .if(accessibilityVoiceOverEnabled) { view in
             view
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Page selector. Swipe up or down to change page.")
+                .accessibilityLabel(Localization.string("Page selector. Swipe up or down to change page."))
                 .accessibilityValue(selectedAccessibilityValue)
                 .accessibilityAdjustableAction { direction in
                     switch direction {
@@ -97,7 +97,7 @@ struct PageSelectorView: View {
     
     private var selectedAccessibilityValue: String {
         let title = titles[safely: voiceOverPageIndex] ?? ""
-        return "Page \(voiceOverPageIndex + 1) of \(titles.count), \(title)."
+        return Localization.format("Page %d of %d, %@.", voiceOverPageIndex + 1, titles.count, Localization.string(title))
     }
     
     private func syncVoiceOverPageIndex() {

@@ -85,6 +85,7 @@ struct HeatmapScreen: View {
     @State private var showHeatmapGrid = false
     @State private var userHasCycledDataSource = false
     @State private var colorBlindnessFilterEnabled: Bool = SettingsManager.shared.get(key: AppSettingKey.colorBlindnessFilter) ?? false
+    @State private var appLanguage = AppLanguagePreference.stored
     
     private let heatmapTimeframeCycle: [PriceChange] = [.sevenDays, .oneMonth, .oneDay]
     private let heatmapDataSourceCycle: [HeatmapDataSource] = [.favorites, .portfolio, .toplist]
@@ -110,7 +111,7 @@ struct HeatmapScreen: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Button(action: cycleWeighting) {
-                    Text(weighting.rawValue)
+                    Text(Localization.string(weighting.rawValue))
                         .font(.satoshiBold(17))
                         .foregroundStyle(Color.onSurface)
                         .lineLimit(1)
@@ -123,8 +124,8 @@ struct HeatmapScreen: View {
                         )
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("Sizing, currently selected: \(weighting.accessibilityTitle)")
-                .accessibilityHint("Double tap to switch sizing")
+                .accessibilityLabel(Localization.format("Sizing, currently selected: %@", Localization.string(weighting.accessibilityTitle)))
+                .accessibilityHint(Localization.string("Double tap to switch sizing"))
                 .accessibilityAddTraits(.isHeader)
             }
         }
@@ -161,6 +162,10 @@ struct HeatmapScreen: View {
         .refreshable {
             await viewModel.loadHeatmapData()
             updateShowHeatmapGrid()
+        }
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
         }
         .onReceive(NotificationCenter.default.publisher(for: .colorBlindnessFilterChanged)) { _ in
             colorBlindnessFilterEnabled = SettingsManager.shared.get(key: AppSettingKey.colorBlindnessFilter) ?? false
@@ -207,15 +212,15 @@ struct HeatmapScreen: View {
     private var heatmapOverlayButtons: some View {
         HStack(spacing: 8) {
             SecondaryButton(
-                text: selectedDataSource.rawValue,
-                accessibilityLabel: "Data source, currently selected: \(selectedDataSource.accessibilityTitle)",
+                text: Localization.string(selectedDataSource.rawValue),
+                accessibilityLabel: Localization.format("Data source, currently selected: %@", Localization.string(selectedDataSource.accessibilityTitle)),
                 icon: selectedDataSource.icon,
                 action: cycleDataSource
             )
             
             SecondaryButton(
-                text: selectedTimeframe.rawValue,
-                accessibilityLabel: "Timeframe, currently selected: \(selectedTimeframe.accessibilityTimeframe)",
+                text: Localization.string(selectedTimeframe.rawValue),
+                accessibilityLabel: Localization.format("Timeframe, currently selected: %@", Localization.string(selectedTimeframe.accessibilityTimeframe)),
                 icon: .percent,
                 action: cycleTimeframe
             )
@@ -323,19 +328,19 @@ struct HeatmapScreen: View {
         if selectedDataSource == .toplist,
            !userHasCycledDataSource,
            viewModel.toplist.isEmpty {
-            return "Couldn't load heatmap"
+            return Localization.string("Couldn't load heatmap")
         }
         
-        return selectedDataSource.emptyTitle
+        return Localization.string(selectedDataSource.emptyTitle)
     }
     
     private var emptyStateSubtitle: String {
         if selectedDataSource == .toplist,
            !userHasCycledDataSource,
            viewModel.toplist.isEmpty {
-            return "Pull to refresh and try again."
+            return Localization.string("Pull to refresh and try again.")
         }
         
-        return selectedDataSource.emptySubtitle
+        return Localization.string(selectedDataSource.emptySubtitle)
     }
 }

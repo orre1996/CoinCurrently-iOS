@@ -164,8 +164,8 @@ struct DerivativesListView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 SecondaryButton(
-                    text: viewModel.selectedSortOption.title,
-                    accessibilityLabel: "Sort, currently selected: \(viewModel.selectedSortOption.accessibilityTitle)",
+                    text: Localization.string(viewModel.selectedSortOption.title),
+                    accessibilityLabel: Localization.format("Sort, currently selected: %@", Localization.string(viewModel.selectedSortOption.accessibilityTitle)),
                     icon: .sort,
                     action: {
                         AnalyticsManager.shared.log(

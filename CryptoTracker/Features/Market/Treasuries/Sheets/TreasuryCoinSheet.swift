@@ -18,7 +18,7 @@ struct TreasuryCoinSheet: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Select Coin")
+            DragHandle(title: Localization.string("Select Coin"))
                 .readSize {
                     headerHeight = $0.height
                 }

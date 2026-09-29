@@ -17,6 +17,7 @@ struct ExchangeDetailScreen: View {
     @ScaledMetric private var scale: CGFloat = 1
     
     @State var viewModel: ExchangeDetailViewModelImp
+    @State private var appLanguage = AppLanguagePreference.stored
     
     @State private var currentPage: Int? = 0
     
@@ -224,6 +225,10 @@ struct ExchangeDetailScreen: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .navigationBarTitle(viewModel.exchangeInfo.name ?? "", displayMode: .inline)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarBackground(Color.surface, for: .navigationBar)
         .navigationPopGestureDisabled(viewModel.isDragging)

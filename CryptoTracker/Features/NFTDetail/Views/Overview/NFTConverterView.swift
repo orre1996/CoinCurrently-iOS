@@ -42,13 +42,13 @@ struct NFTConverterView: View {
                 Button("Close") {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
-                .accessibilityLabel("Close keyboard")
+                .accessibilityLabel(Localization.string("Close keyboard"))
             }
         }
     }
     
     private var headerView: some View {
-        Text("Currency Converter")
+        Text(Localization.string("Currency Converter"))
             .font(.satoshiBold(22))
             .foregroundStyle(Color.onSurfaceDim)
             .accessibilityAddTraits(.isHeader)

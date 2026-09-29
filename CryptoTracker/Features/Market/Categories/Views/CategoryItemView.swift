@@ -53,7 +53,7 @@ struct CategoryItemView: View {
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabelText)
-        .accessibilityHint("Double tap for \(currentCategory?.name ?? "") details")
+        .accessibilityHint(Localization.format("Double tap for %@ details", currentCategory?.name ?? ""))
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
             categorySelected()
@@ -64,19 +64,24 @@ struct CategoryItemView: View {
         var components: [String] = []
         
         if let listIndex, let listCount {
-            components.append("Category \(listIndex + 1) of \(listCount), \(currentCategory?.name ?? "")")
+            components.append(Localization.format("Category %d of %d, %@", listIndex + 1, listCount, currentCategory?.name ?? ""))
         } else {
             components.append(currentCategory?.name ?? "")
         }
         
         let marketCap = (currentCategory?.market_cap ?? 0.0) * (priceMultiplier ?? 0.0)
-        components.append("Market cap: \(marketCap.formatCurrency(accessible: true)), ")
+        components.append(Localization.format("Market cap: %@", marketCap.formatCurrency(accessible: true)))
         
         let change = currentCategory?.market_cap_change_24h
         let safeChange = change?.isInfinite ?? false ? 0 : change
         let decimals = safeChange?.changePercentDecimalPoints ?? 2
         let accessibleChange = safeChange?.numberAccessible(maxPlaces: decimals) ?? ""
-        components.append("24 hour price change: \(change?.directionAccessible ?? "") \(accessibleChange) percent")
+        let direction = change?.directionAccessible ?? ""
+        components.append(Localization.format(
+            "24 hour price change: %@ %@ percent",
+            direction.isEmpty ? "" : Localization.string(direction),
+            accessibleChange
+        ))
         
         return components.joined(separator: " - ")
     }
@@ -103,7 +108,7 @@ struct CategoryItemView: View {
     @ViewBuilder
     private var marketCapView: some View {
         MinimumTextSize(
-            text: "Market Cap",
+            text: Localization.string("Market Cap"),
             alignment: .trailing
         ) {
             ShimmeringText(

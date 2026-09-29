@@ -71,7 +71,11 @@ struct TreasuryTransactionItemView: View {
 
     private var formattedDate: String {
         guard let timestamp = transaction?.date else { return "000000" }
-        return Date(timeIntervalSince1970: timestamp / 1000).mediumDate
+        return Date(timeIntervalSince1970: timestamp / 1000).localizedDescription(
+            dateStyle: .medium,
+            timeStyle: .none,
+            locale: Localization.locale
+        )
     }
 
     private var coinName: String {
@@ -141,16 +145,16 @@ struct TreasuryTransactionItemView: View {
     private var accessibilityDate: String {
         guard let timestamp = transaction?.date else { return formattedDate }
         return Date(timeIntervalSince1970: timestamp / 1000)
-            .formatted(.dateTime.weekday(.wide).month(.wide).day().year())
+            .formatted(.dateTime.weekday(.wide).month(.wide).day().year().locale(Localization.locale))
     }
 
     private var accessibilityLabelText: String {
-        guard let transaction else { return "Loading transaction" }
+        guard let transaction else { return Localization.string("Loading transaction") }
 
         var components = [accessibilityDate]
 
         if let type = transaction.type {
-            components.append(type == .buy ? "Buy" : "Sell")
+            components.append(Localization.string(type == .buy ? "Buy" : "Sell"))
         }
 
         components.append(coinName)
@@ -162,16 +166,19 @@ struct TreasuryTransactionItemView: View {
             accessible: true
         )
         if change > 0 {
-            components.append("Change up \(changeAmount)")
+            components.append(Localization.format("Change up %@", changeAmount))
         } else if change < 0 {
-            components.append("Change down \(changeAmount)")
+            components.append(Localization.format("Change down %@", changeAmount))
         } else {
-            components.append("Change \(changeAmount)")
+            components.append(Localization.format("Change %@", changeAmount))
         }
 
         let balance = transaction.holding_balance ?? 0
         components.append(
-            "Balance: \(balance.formatCurrency(threshold: FormattingThreshold.none, currency: accessibleHoldingsCurrency(), accessible: true))"
+            Localization.format(
+                "Balance: %@",
+                balance.formatCurrency(threshold: FormattingThreshold.none, currency: accessibleHoldingsCurrency(), accessible: true)
+            )
         )
 
         return components.joined(separator: ". ")

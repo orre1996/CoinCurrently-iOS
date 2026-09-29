@@ -77,19 +77,27 @@ extension Date {
         
         if minuteAgo < self {
             let diff = Calendar.current.dateComponents([.second], from: self, to: Date()).second ?? 0
-            return diff == 1 ? "\(diff) second ago" : "\(diff) seconds ago"
+            return Self.localizedAgo(diff, diff == 1 ? "%d second ago" : "%d seconds ago")
         } else if hourAgo < self {
             let diff = Calendar.current.dateComponents([.minute], from: self, to: Date()).minute ?? 0
-            return diff == 1 ? "\(diff) minute ago" : "\(diff) minutes ago"
+            return Self.localizedAgo(diff, diff == 1 ? "%d minute ago" : "%d minutes ago")
         } else if dayAgo < self {
             let diff = Calendar.current.dateComponents([.hour], from: self, to: Date()).hour ?? 0
-            return diff == 1 ? "\(diff) hour ago" : "\(diff) hours ago"
+            return Self.localizedAgo(diff, diff == 1 ? "%d hour ago" : "%d hours ago")
         } else if weekAgo < self {
             let diff = Calendar.current.dateComponents([.day], from: self, to: Date()).day ?? 0
-            return diff == 1 ? "\(diff) day ago" : "\(diff) days ago"
+            return Self.localizedAgo(diff, diff == 1 ? "%d day ago" : "%d days ago")
         }
         let diff = Calendar.current.dateComponents([.weekOfYear], from: self, to: Date()).weekOfYear ?? 0
-        return diff == 1 ? "\(diff) week ago" : "\(diff) weeks ago"
+        return Self.localizedAgo(diff, diff == 1 ? "%d week ago" : "%d weeks ago")
+    }
+
+    private static func localizedAgo(_ count: Int, _ key: String) -> String {
+        #if IS_APP
+        Localization.format(key, count)
+        #else
+        String(format: key, count)
+        #endif
     }
     
     var alertTimeAgoDisplay: String {

@@ -19,7 +19,7 @@ struct TreasuriesSummaryView: View {
         let isHorizontal = category.isAccessibilityCategory && verticalSizeClass == .regular
 
         VStack(alignment: .leading, spacing: 4) {
-            Text("Total Holdings")
+            Text(Localization.string("Total Holdings"))
                 .font(.satoshiBold(18))
                 .foregroundStyle(Color.onSurfaceDim)
 
@@ -42,7 +42,7 @@ struct TreasuriesSummaryView: View {
         let formattedDominance = roundedDominance.formatted(.number.precision(.fractionLength(2)))
 
         OverflowLayout(spacing: 4) {
-            Text("Market Cap Dominance")
+            Text(Localization.string("Market Cap Dominance"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
 
@@ -98,7 +98,7 @@ struct TreasuriesSummaryView: View {
 
     private func summaryAccessibilityLabel(isHorizontal: Bool) -> String {
         guard totalHoldings != nil || marketCapDominance != nil else {
-            return "Loading total holdings"
+            return Localization.string("Loading total holdings")
         }
 
         let holdingsText = (totalHoldings ?? 0).formatCurrency(
@@ -108,6 +108,6 @@ struct TreasuriesSummaryView: View {
         )
         let dominanceText = (marketCapDominance ?? 0).numberAccessible(maxPlaces: 2)
 
-        return "Total Holdings: \(holdingsText). Market Cap Dominance: \(dominanceText) percent"
+        return Localization.format("Total Holdings: %@. Market Cap Dominance: %@ percent", holdingsText, dominanceText)
     }
 }

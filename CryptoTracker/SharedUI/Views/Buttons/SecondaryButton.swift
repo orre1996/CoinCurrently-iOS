@@ -58,7 +58,7 @@ struct SecondaryButton: View {
                 ActivityIndicator(size: 24, color: .onSurface)
                     .opacity(isLoading ? 1 : 0)
                     .accessibilityHidden(!isLoading)
-                    .accessibilityLabel("Loading")
+                    .accessibilityLabel(Localization.string("Loading"))
             )
         }
         .lineLimit(2)

@@ -16,6 +16,7 @@ struct TreasuryDetailScreen: View {
     @ScaledMetric private var scale: CGFloat = 1
 
     @State private var viewModel: TreasuryDetailViewModelImp
+    @State private var appLanguage = AppLanguagePreference.stored
     @State private var biggestChartValue: CGSize = .zero
     @State private var isHoldingFilterShowing = false
     @State private var showScrollToTopButton = false
@@ -195,6 +196,10 @@ struct TreasuryDetailScreen: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .navigationBarTitle(viewModel.treasuryDetail?.name ?? "", displayMode: .inline)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .navigationPopGestureDisabled(viewModel.isDragging)
         .task {
             AchievementManager.shared.increment(.treasuryVisits)

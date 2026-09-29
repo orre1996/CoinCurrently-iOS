@@ -21,13 +21,13 @@ struct ExchangeInfoCell: View {
 
     private var exchangeTypeText: String {
         guard let centralized = exchange.centralized else { return "—" }
-        return centralized ? "Centralized" : "Decentralized"
+        return Localization.string(centralized ? "Centralized" : "Decentralized")
     }
 
     var body: some View {
         if hasAnyInfo {
             VStack(alignment: .leading, spacing: 16) {
-                Text("Exchange Info")
+                Text(Localization.string("Exchange Info"))
                     .font(.satoshiBold(22))
                     .foregroundStyle(Color.onSurfaceDim)
                     .accessibilityAddTraits(.isHeader)
@@ -86,10 +86,10 @@ struct ExchangeInfoCell: View {
 
     private var exchangeTypeRow: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Exchange Type")
+            Text(Localization.string("Exchange Type"))
                 .foregroundStyle(Color.onSurfaceDim)
                 .font(.satoshiBold(12))
-                .accessibilityLabel("Exchange type: ")
+                .accessibilityLabel(Localization.string("Exchange type: "))
 
             Text(exchangeTypeText)
                 .foregroundStyle(Color.onSurface)
@@ -101,10 +101,10 @@ struct ExchangeInfoCell: View {
 
     private func infoItem(label: String, value: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(label)
+            Text(Localization.string(label))
                 .foregroundStyle(Color.onSurfaceDim)
                 .font(.satoshiBold(12))
-                .accessibilityLabel("\(label): ")
+                .accessibilityLabel(Localization.string(label) + ": ")
 
             Text(value)
                 .foregroundStyle(Color.onSurface)

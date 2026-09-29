@@ -24,7 +24,7 @@ struct NFTsPlatformsSheet: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Filter By Chain")
+            DragHandle(title: Localization.string("Filter By Chain"))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -46,8 +46,8 @@ struct NFTsPlatformsSheet: View {
         VStack(alignment: .leading, spacing: 4) {
             ForEach(allPlatforms, id: \.self) { platform in
                 SingleSelectView(
-                    title: platform.name ?? "",
-                    accessibilityTitle: platform.accessibilityTitle,
+                    title: platform.id == "all" ? Localization.string(platform.name ?? "All Chains") : (platform.name ?? ""),
+                    accessibilityTitle: platform.id == "all" ? Localization.string("All Chains") : platform.accessibilityTitle,
                     subtitle: nil,
                     imageCase: platform.image == nil ? .nothing : .image(platform.image?.small),
                     isSelected: platform == selectedPlatform,

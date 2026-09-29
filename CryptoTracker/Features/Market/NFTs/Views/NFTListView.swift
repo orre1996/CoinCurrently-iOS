@@ -208,7 +208,7 @@ struct NFTListView: View {
                         .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5))
                         .foregroundStyle(Color.onSurfaceDimmer)
                 })
-                .accessibilityLabel("Search for NFTs")
+                .accessibilityLabel(Localization.string("Search for NFTs"))
                 .padding(12)
                 .optionalGlassEffect(
                     color: Color.surfaceContainerHigh,
@@ -217,8 +217,8 @@ struct NFTListView: View {
                 )
                 
                 SecondaryButton(
-                    text: viewModel.selectedSortOption.title,
-                    accessibilityLabel: "Sort, currently selected: \(viewModel.selectedSortOption.accessibilityTitle)",
+                    text: Localization.string(viewModel.selectedSortOption.title),
+                    accessibilityLabel: Localization.format("Sort, currently selected: %@", Localization.string(viewModel.selectedSortOption.accessibilityTitle)),
                     icon: .sort,
                     action: {
                         AnalyticsManager.shared.log(
@@ -229,8 +229,8 @@ struct NFTListView: View {
                 )
 
                 SecondaryButton(
-                    text: viewModel.selectedPlatform.id == "all" ? "Chain" : viewModel.selectedPlatform.name ?? "All Chains",
-                    accessibilityLabel: "Chain, currently selected: \(viewModel.selectedPlatform.accessibilityTitle)",
+                    text: viewModel.selectedPlatform.id == "all" ? Localization.string("Chain") : viewModel.selectedPlatform.name ?? Localization.string("All Chains"),
+                    accessibilityLabel: Localization.format("Chain, currently selected: %@", viewModel.selectedPlatform.id == "all" ? Localization.string("All Chains") : viewModel.selectedPlatform.accessibilityTitle),
                     icon: .chevronDown,
                     isEnabled: viewModel.nftPlatforms != nil,
                     action: {

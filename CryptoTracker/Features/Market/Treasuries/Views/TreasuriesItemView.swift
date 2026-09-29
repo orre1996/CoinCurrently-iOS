@@ -47,7 +47,7 @@ struct TreasuriesItemView: View {
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabelText)
-        .accessibilityHint("Double tap for \(data?.name ?? "") details")
+        .accessibilityHint(Localization.format("Double tap for %@ details", data?.name ?? ""))
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
             handleTreasuryClick()
@@ -55,35 +55,35 @@ struct TreasuriesItemView: View {
     }
     
     private var accessibilityLabelText: String {
-        guard data != nil else { return "Loading treasury" }
+        guard data != nil else { return Localization.string("Loading treasury") }
         
         var components: [String] = []
         
         if let listIndex, let listCount {
-            components.append("Treasury \(listIndex + 1) of \(listCount), \(data?.name ?? "")")
+            components.append(Localization.format("Treasury %d of %d, %@", listIndex + 1, listCount, data?.name ?? ""))
         } else {
             components.append(data?.name ?? "")
         }
         
         if let entity {
-            components.append(entity.displayName)
+            components.append(Localization.string(entity.displayName))
         }
         
         if let country = data?.country,
-           let countryName = Locale.current.localizedString(forRegionCode: country),
+           let countryName = Localization.locale.localizedString(forRegionCode: country),
            !countryName.isEmpty {
-            components.append("Country: \(countryName)")
+            components.append(Localization.format("Country: %@", countryName))
         }
         
         let holdings = data?.total_holdings ?? 0
         components.append(
-            "Holdings: \(holdings.formatCurrency(threshold: FormattingThreshold.none, currency: accessibleHoldingsCurrency(), accessible: true))"
+            Localization.format("Holdings: %@", holdings.formatCurrency(threshold: FormattingThreshold.none, currency: accessibleHoldingsCurrency(), accessible: true))
         )
         
         if let priceMultiplier {
             let convertedValue = (data?.total_current_value_usd ?? 0) * priceMultiplier
             components.append(
-                "Current value: \(convertedValue.formatCurrency(threshold: FormattingThreshold.none, accessible: true))"
+                Localization.format("Current value: %@", convertedValue.formatCurrency(threshold: FormattingThreshold.none, accessible: true))
             )
         }
         

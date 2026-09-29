@@ -14,6 +14,7 @@ struct CategoryDetailScreen: View {
     @Environment(\.presentationMode) var presentationMode
     
     @ScaledMetric private var scale: CGFloat = 1
+    @State private var appLanguage = AppLanguagePreference.stored
     
     private let category: CryptoCategory
     
@@ -47,6 +48,10 @@ struct CategoryDetailScreen: View {
             .ignoresSafeArea(edges: .horizontal)
         }
         .navigationBarTitle(category.name ?? "", displayMode: .inline)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
         .onAppear {
             AchievementManager.shared.increment(.sectorDetailsViewed)

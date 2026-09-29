@@ -14,7 +14,7 @@ struct TreasuryTransactionHistoryView: View {
     let showHoldingFilter: () -> Void
 
     private var filterButtonTitle: String {
-        guard let selectedHoldingCoinId else { return "All Holdings" }
+        guard let selectedHoldingCoinId else { return Localization.string("All Holdings") }
 
         return holdings.first(where: { $0.id == selectedHoldingCoinId })?.name
             ?? selectedHoldingCoinId.capitalized
@@ -24,7 +24,7 @@ struct TreasuryTransactionHistoryView: View {
         VStack(alignment: .leading, spacing: 0) {
             SecondaryButton(
                 text: filterButtonTitle,
-                accessibilityLabel: "Holding, currently selected: \(filterButtonTitle)",
+                accessibilityLabel: Localization.format("Holding, currently selected: %@", filterButtonTitle),
                 icon: .chevronDown,
                 action: showHoldingFilter
             )

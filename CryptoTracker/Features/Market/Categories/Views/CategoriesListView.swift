@@ -186,7 +186,7 @@ struct CategoriesListView: View {
                         .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5))
                         .foregroundStyle(Color.onSurfaceDimmer)
                 })
-                .accessibilityLabel("Search for sectors")
+                .accessibilityLabel(Localization.string("Search for sectors"))
                 .padding(12)
                 .optionalGlassEffect(
                     color: Color.surfaceContainerHigh,
@@ -195,8 +195,8 @@ struct CategoriesListView: View {
                 )
                 
                 SecondaryButton(
-                    text: viewModel.selectedSortOption.title,
-                    accessibilityLabel: "Sort, currently selected: \(viewModel.selectedSortOption.accessibilityTitle)",
+                    text: Localization.string(viewModel.selectedSortOption.title),
+                    accessibilityLabel: Localization.format("Sort, currently selected: %@", Localization.string(viewModel.selectedSortOption.accessibilityTitle)),
                     icon: .sort,
                     action: {
                         AnalyticsManager.shared.log(

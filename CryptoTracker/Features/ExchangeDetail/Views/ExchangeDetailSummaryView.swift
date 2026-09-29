@@ -84,10 +84,10 @@ struct ExchangeDetailSummaryView: View {
     
     private func statItem(label: String, value: String, isDownloading: Bool) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(label)
+            Text(Localization.string(label))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
-                .accessibilityLabel("\(label): ")
+                .accessibilityLabel(Localization.string(label) + ": ")
             
             ShimmeringText(
                 text: value,
@@ -102,10 +102,10 @@ struct ExchangeDetailSummaryView: View {
     
     private var trustScoreItem: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Trust Score")
+            Text(Localization.string("Trust Score"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
-                .accessibilityLabel("Trust score: ")
+                .accessibilityLabel(Localization.string("Trust score: "))
             
             ShimmeringText(
                 text: "\(exchangeDetail?.trust_score ?? 0)/10",
@@ -113,7 +113,7 @@ struct ExchangeDetailSummaryView: View {
             )
             .font(.satoshiBold(16))
             .foregroundStyle(exchangeDetail?.trust_score?.trustColor ?? Color.onSurfaceDim)
-            .accessibilityLabel("\(exchangeDetail?.trust_score ?? 0) of 10")
+            .accessibilityLabel(Localization.format("%d of 10", exchangeDetail?.trust_score ?? 0))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)

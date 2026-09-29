@@ -20,18 +20,18 @@ struct ExchangesHeaderView: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            Text(isHorizontal ? "Exchange" : "Exchange / 24h Volume")
+            Text(Localization.string(isHorizontal ? "Exchange" : "Exchange / 24h Volume"))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             if isHorizontal {
-                Text("24h Volume")
+                Text(Localization.string("24h Volume"))
             }
             
             MinimumTextSize(
                 text: "10/10",
                 alignment: .trailing
             ) {
-                Text("Trust")
+                Text(Localization.string("Trust"))
                     .font(.satoshiMedium(14))
             }
             .font(.satoshiBold(16))

@@ -20,10 +20,10 @@ struct TreasuriesHeaderView: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            Text("Treasury")
+            Text(Localization.string("Treasury"))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            Text("Holdings")
+            Text(Localization.string("Holdings"))
         }
         .font(.satoshiMedium(14))
         .foregroundStyle(Color.onSurfaceDim)

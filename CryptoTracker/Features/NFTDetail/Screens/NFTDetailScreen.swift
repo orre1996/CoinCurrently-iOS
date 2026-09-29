@@ -20,6 +20,7 @@ struct NFTDetailScreen: View {
     @Environment(\.accessibilityVoiceOverEnabled) private var accessibilityVoiceOverEnabled
     
     @State var viewModel: NFTDetailViewModelImp
+    @State private var appLanguage = AppLanguagePreference.stored
     
     @State var currentPage: Int? = 0
     
@@ -259,6 +260,10 @@ struct NFTDetailScreen: View {
             
         }
         .navigationBarTitle(viewModel.nftDetailInfo.name ?? "", displayMode: .inline)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .navigationPopGestureDisabled(viewModel.isDragging)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarBackground(Color.surface, for: .navigationBar)
@@ -332,7 +337,7 @@ struct NFTDetailScreen: View {
             }, label: {
                 HStack(spacing: 8) {
                     Image.share
-                    Text("Share")
+                    Text(Localization.string("Share"))
                 }
                 .foregroundStyle(Color.onSurface)
             })
@@ -346,7 +351,7 @@ struct NFTDetailScreen: View {
                     .foregroundStyle(Color.onSurface)
             })
         }
-        .accessibilityLabel("More options")
+        .accessibilityLabel(Localization.string("More options"))
     }
     
     @ViewBuilder

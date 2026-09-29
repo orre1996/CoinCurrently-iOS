@@ -20,12 +20,12 @@ struct NFTsHeaderView: View {
     
     var body: some View {
         HStack(spacing: 8) {
-            Text(isHorizontal ? "Collection" : "Collection / Floor Price")
+            Text(Localization.string(isHorizontal ? "Collection" : "Collection / Floor Price"))
                 .font(.satoshiMedium(14))
                 .frame(maxWidth: isHorizontal ? nil : .infinity, alignment: .leading)
             
             if isHorizontal {
-                Text("Floor Price")
+                Text(Localization.string("Floor Price"))
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .padding(.horizontal, 8)
             }
@@ -36,7 +36,7 @@ struct NFTsHeaderView: View {
                 extraSize: 16 * min(scale, 1.5) + 4,
                 alignment: .trailing
             ) {
-                Text("24h %")
+                Text(Localization.string("24h %"))
                     .font(.satoshiMedium(14))
             }
             .lineLimit(1)

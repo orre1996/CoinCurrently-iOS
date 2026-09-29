@@ -21,6 +21,7 @@ struct DerivativeDetailScreen: View {
     @Environment(NavigationViewModel.self) private var navigationViewModel
     
     @State var viewModel: DerivativeDetailViewModelImp
+    @State private var appLanguage = AppLanguagePreference.stored
     
     @State var selectedItem: DerivativeDetail?
     @State var currentPage: Int? = 0
@@ -77,8 +78,8 @@ struct DerivativeDetailScreen: View {
                         
                         Section(header: pageSelector) {
                             SecondaryButton(
-                                text: viewModel.selectedSortOption.title,
-                                accessibilityLabel: "Sort, currently selected: \(viewModel.selectedSortOption.accessibilityTitle)",
+                                text: Localization.string(viewModel.selectedSortOption.title),
+                                accessibilityLabel: Localization.format("Sort, currently selected: %@", Localization.string(viewModel.selectedSortOption.accessibilityTitle)),
                                 icon: .sort,
                                 action: {
                                     AnalyticsManager.shared.log(
@@ -162,6 +163,10 @@ struct DerivativeDetailScreen: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarBackground(Color.surface, for: .navigationBar)
@@ -179,7 +184,7 @@ struct DerivativeDetailScreen: View {
                         .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5))
                         .foregroundStyle(Color.onSurface)
                 }
-                .accessibilityLabel("Navigate back")
+                .accessibilityLabel(Localization.string("Navigate back"))
                 .accessibilitySortPriority(2)
                 .accessibilityFocused($focusBackButton)
             }
@@ -266,10 +271,10 @@ struct DerivativeDetailScreen: View {
     @ViewBuilder
     private var tradingVolumeView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("24h Volume")
+            Text(Localization.string("24h Volume"))
                 .font(.satoshiBold(18))
                 .foregroundStyle(Color.onSurfaceDimmer)
-                .accessibilityLabel("24 hour volume")
+                .accessibilityLabel(Localization.string("24 hour volume"))
             
             let volume = (Double(viewModel.derativeDetail?.trade_volume_24h_btc ?? "0") ?? 0)
             let bitcoinPrice = viewModel.bitcoin?.market_data?.current_price?.getConvertedCurrency() ?? 0.0
@@ -292,10 +297,10 @@ struct DerivativeDetailScreen: View {
     private var summaryView: some View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("24h Open Interest")
+                Text(Localization.string("24h Open Interest"))
                     .font(.satoshiBold(12))
                     .foregroundStyle(Color.onSurfaceDim)
-                    .accessibilityLabel("24 hour open interest")
+                    .accessibilityLabel(Localization.string("24 hour open interest"))
                 
                 let interest = viewModel.derativeDetail?.open_interest_btc ?? 0
                 let bitcoinPrice = viewModel.bitcoin?.market_data?.current_price?.getConvertedCurrency() ?? 0.0
@@ -315,7 +320,7 @@ struct DerivativeDetailScreen: View {
             )
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("Pairs")
+                Text(Localization.string("Pairs"))
                     .font(.satoshiBold(12))
                     .foregroundStyle(Color.onSurfaceDim)
                 
@@ -357,15 +362,15 @@ struct DerivativeDetailScreen: View {
     @ViewBuilder
     private var sectionHeader: some View {
         HStack(spacing: 24) {
-            Text(currentPage == 0 ? "Symbol" : "Contract")
+            Text(Localization.string(currentPage == 0 ? "Symbol" : "Contract"))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             if isHorizontal {
-                Text("Price")
+                Text(Localization.string("Price"))
                 
-                Text("Open Interest")
+                Text(Localization.string("Open Interest"))
             } else {
-                Text("Price / Open Interest")
+                Text(Localization.string("Price / Open Interest"))
                 .multilineTextAlignment(.trailing)
             }
         }

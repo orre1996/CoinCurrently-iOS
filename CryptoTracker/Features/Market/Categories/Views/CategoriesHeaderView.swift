@@ -20,12 +20,12 @@ struct CategoriesHeaderView: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            Text(isHorizontal ? "Sector" : "Sector / Market Cap")
+            Text(Localization.string(isHorizontal ? "Sector" : "Sector / Market Cap"))
                 .font(.satoshiMedium(14))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             if isHorizontal {
-                Text("Market Cap")
+                Text(Localization.string("Market Cap"))
                     .font(.satoshiMedium(14))
             }
             
@@ -34,7 +34,7 @@ struct CategoriesHeaderView: View {
                 extraSize: 16 * min(scale, 1.5) + 4,
                 alignment: .trailing
             ) {
-                Text("24h %")
+                Text(Localization.string("24h %"))
                     .font(.satoshiMedium(14))
             }
             .lineLimit(1)

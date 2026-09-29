@@ -18,7 +18,7 @@ struct TreasuryHoldingFilterSheet: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Select Holding")
+            DragHandle(title: Localization.string("Select Holding"))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -39,8 +39,8 @@ struct TreasuryHoldingFilterSheet: View {
     private var bodyView: some View {
         VStack(alignment: .leading, spacing: 4) {
             SingleSelectView(
-                title: "All Holdings",
-                accessibilityTitle: "All Holdings",
+                title: Localization.string("All Holdings"),
+                accessibilityTitle: Localization.string("All Holdings"),
                 subtitle: nil,
                 imageCase: .nothing,
                 isSelected: selectedCoinId == nil,

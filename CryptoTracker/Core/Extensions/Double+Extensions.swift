@@ -20,26 +20,42 @@ extension Decimal {
 }
 
 extension Double {
+    fileprivate static func localizedCountdown(_ key: String) -> String {
+        #if IS_APP
+        Localization.string(key)
+        #else
+        key
+        #endif
+    }
+
+    fileprivate static func localizedCountdownCount(_ key: String, _ count: Int) -> String {
+        #if IS_APP
+        Localization.format(key, count)
+        #else
+        String(format: key, count)
+        #endif
+    }
+
     /// Returns a human-readable string for time until this Unix timestamp (e.g. "5 hours", "3 days", "2 months").
     /// Returns "Expired" if the date is in the past.
     var timeUntilExpired: String {
         let expirationDate = Date(timeIntervalSince1970: self)
         let now = Date()
-        guard expirationDate > now else { return "Expired" }
+        guard expirationDate > now else { return Self.localizedCountdown("Expired") }
         
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.hour, .day, .month], from: now, to: expirationDate)
+        let components = calendar.dateComponents([.minute, .hour, .day, .month], from: now, to: expirationDate)
         
         if let months = components.month, months > 0 {
-            return months == 1 ? "1 month" : "\(months) months"
+            return months == 1 ? Self.localizedCountdown("1 month") : Self.localizedCountdownCount("%d months", months)
         } else if let days = components.day, days > 0 {
-            return days == 1 ? "1 day" : "\(days) days"
+            return days == 1 ? Self.localizedCountdown("1 day") : Self.localizedCountdownCount("%d days", days)
         } else if let hours = components.hour, hours >= 0 {
-            return hours <= 1 ? "1 hour" : "\(hours) hours"
+            return hours <= 1 ? Self.localizedCountdown("1 hour") : Self.localizedCountdownCount("%d hours", hours)
         } else if let minutes = components.minute, minutes >= 0 {
-            return minutes <= 1 ? "1 minute" : "\(minutes) minutes"
+            return minutes <= 1 ? Self.localizedCountdown("1 minute") : Self.localizedCountdownCount("%d minutes", minutes)
         }
-        return "Less than 1 minute"
+        return Self.localizedCountdown("Less than 1 minute")
     }
 
     var roundToHundreds: Int {

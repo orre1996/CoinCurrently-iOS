@@ -33,7 +33,7 @@ struct NFTHistoricalDataView: View {
     }
     
     private var headerView: some View {
-        Text("Historical Data")
+        Text(Localization.string("Historical Data"))
             .foregroundStyle(Color.onSurfaceDim)
             .font(.satoshiBold(22))
             .accessibilityAddTraits(.isHeader)
@@ -104,10 +104,10 @@ struct NFTHistoricalDataView: View {
         
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 16, horizontalAlignment: .leading, verticalAlignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("All-Time High %")
+                Text(Localization.string("All-Time High %"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
-                    .accessibilityLabel("Change since all time high: ")
+                    .accessibilityLabel(Localization.string("Change since all time high: "))
                 
                 PriceChangePercentView(
                     change: nftDetailModel?.ath_change_percentage?.usd,
@@ -125,10 +125,10 @@ struct NFTHistoricalDataView: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("Since All-Time High")
+                Text(Localization.string("Since All-Time High"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
-                    .accessibilityLabel("Days since all time high: ")
+                    .accessibilityLabel(Localization.string("Days since all time high: "))
                 
                 ShimmeringText(
                     text: nftDetailModel?.ath_date?.usd?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)?.daysAgo ?? "00000000",

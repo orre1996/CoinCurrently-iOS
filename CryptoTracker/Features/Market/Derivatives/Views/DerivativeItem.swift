@@ -50,7 +50,7 @@ struct DerivativeItem: View {
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabelText)
-        .accessibilityHint("Double tap for \(currentDerivative?.name ?? "") details")
+        .accessibilityHint(Localization.format("Double tap for %@ details", currentDerivative?.name ?? ""))
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
             derivativeSelected()
@@ -61,7 +61,7 @@ struct DerivativeItem: View {
         var components: [String] = []
         
         if let listIndex, let listCount {
-            components.append("Derivative \(listIndex + 1) of \(listCount), \(currentDerivative?.name ?? "")")
+            components.append(Localization.format("Derivative %d of %d, %@", listIndex + 1, listCount, currentDerivative?.name ?? ""))
         } else {
             components.append(currentDerivative?.name ?? "")
         }
@@ -69,11 +69,11 @@ struct DerivativeItem: View {
         let bitcoinInterest = currentDerivative?.open_interest_btc ?? 0.0
         let bitcoinPrice = bitcoin?.market_data?.current_price?.getConvertedCurrency() ?? 0.0
         let totalInterest = bitcoinInterest * bitcoinPrice
-        components.append("Open interest: \(totalInterest.formatCurrency(accessible: true)), ")
+        components.append(Localization.format("Open interest: %@", totalInterest.formatCurrency(accessible: true)))
         
         let bitcoinVolume = Double(currentDerivative?.trade_volume_24h_btc ?? "0.0") ?? 0.0
         let totalVolume = bitcoinVolume * bitcoinPrice
-        components.append("24 hour volume: \(totalVolume.formatCurrency(accessible: true))")
+        components.append(Localization.format("24 hour volume: %@", totalVolume.formatCurrency(accessible: true)))
         
         return components.joined(separator: " - ")
     }
@@ -101,7 +101,7 @@ struct DerivativeItem: View {
     @ViewBuilder
     private var interestColumnView: some View {
         MinimumTextSize(
-            text: "24h Volume",
+            text: Localization.string("24h Volume"),
             alignment: .trailing
         ) {
             ShimmeringText(
@@ -144,7 +144,7 @@ struct DerivativeItem: View {
         let totalVolume = bitcoinVolume * bitcoinPrice
         
         MinimumTextSize(
-            text: "24h Volume",
+            text: Localization.string("24h Volume"),
             alignment: .trailing
         ) {
             ShimmeringText(

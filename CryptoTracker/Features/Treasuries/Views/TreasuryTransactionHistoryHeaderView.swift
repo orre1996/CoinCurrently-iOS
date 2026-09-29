@@ -12,14 +12,14 @@ struct TreasuryTransactionHistoryHeaderView: View {
                 text: "Dec 31, 2025",
                 alignment: .leading
             ) {
-                Text("Date")
+                Text(Localization.string("Date"))
                     .font(.satoshiMedium(14))
             }
             .font(.satoshiBold(16))
 
-            Text("Coin")
+            Text(Localization.string("Coin"))
 
-            Text("Balance")
+            Text(Localization.string("Balance"))
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
         .font(.satoshiMedium(14))

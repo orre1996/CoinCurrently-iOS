@@ -221,7 +221,7 @@ struct DerivativeDetailSheet: View {
         let accessibleTitle = titleAccessible ?? title
         
         VStack(alignment: .leading, spacing: 4) {
-            Text(title)
+            Text(Localization.string(title))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityHidden(valueAccessible != nil)
@@ -235,7 +235,7 @@ struct DerivativeDetailSheet: View {
         .if(valueAccessible != nil) { view in
             view
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(accessibleTitle): \(valueAccessible ?? "")")
+                .accessibilityLabel(Localization.format("%@: %@", Localization.string(accessibleTitle), valueAccessible ?? ""))
         }
         .if(valueAccessible == nil) { view in
             view.accessibilityElement(children: .combine)
@@ -254,7 +254,7 @@ struct DerivativeDetailSheet: View {
     
     private var changeView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("24h Price Change")
+            Text(Localization.string("24h Price Change"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityHidden(true)
@@ -296,7 +296,7 @@ struct DerivativeDetailSheet: View {
         return statView(
             title: "Funding Rate",
             value: "\(formattedRate)%",
-            valueAccessible: "\(rate.numberAccessible(maxPlaces: 7)) percent"
+            valueAccessible: Localization.format("%@ percent", rate.numberAccessible(maxPlaces: 7))
         )
     }
     
@@ -324,7 +324,7 @@ struct DerivativeDetailSheet: View {
             title: "Index Basis %",
             titleAccessible: "Index basis percent",
             value: "\(formattedBasis)%",
-            valueAccessible: "\(basis.numberAccessible()) percent"
+            valueAccessible: Localization.format("%@ percent", basis.numberAccessible())
         )
     }
     
@@ -335,13 +335,13 @@ struct DerivativeDetailSheet: View {
         return statView(
             title: "Bid Ask Spread",
             value: "\(formattedSpread)%",
-            valueAccessible: spread.map { "\($0.numberAccessible(maxPlaces: 7)) percent" } ?? "Not available"
+            valueAccessible: spread.map { Localization.format("%@ percent", $0.numberAccessible(maxPlaces: 7)) } ?? Localization.string("Not available")
         )
     }
     
     private var contractTypeView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Contract Type")
+            Text(Localization.string("Contract Type"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -355,7 +355,7 @@ struct DerivativeDetailSheet: View {
     
     private var exchangeView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Exchange")
+            Text(Localization.string("Exchange"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -370,9 +370,11 @@ struct DerivativeDetailSheet: View {
     private var expiryView: some View {
         let expiresIn = derivativeDetail.expired_at?.timeUntilExpired ?? "-"
         let accessibleExpiry: String = {
-            if expiresIn == "Expired" { return "expired" }
-            if expiresIn == "-" { return "Not available" }
-            return "expires in \(expiresIn)"
+            if let expiredAt = derivativeDetail.expired_at, Date(timeIntervalSince1970: expiredAt) <= Date() {
+                return Localization.string("expired")
+            }
+            if expiresIn == "-" { return Localization.string("Not available") }
+            return Localization.format("expires in %@", expiresIn)
         }()
         
         return statView(
@@ -388,14 +390,14 @@ struct DerivativeDetailSheet: View {
         return statView(
             title: "Last Traded",
             value: lastTraded,
-            valueAccessible: lastTraded == "-" ? "Not available" : lastTraded
+            valueAccessible: lastTraded == "-" ? Localization.string("Not available") : lastTraded
         )
     }
 
     private var actionButtons: some View {
         HStack(spacing: 8) {
             SecondaryButton(
-                text: "View Exchange",
+                text: Localization.string("View Exchange"),
                 icon: .external,
                 fullWidth: true,
                 opaqueBackground: true,

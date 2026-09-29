@@ -171,7 +171,7 @@ struct ExchangesView: View {
                         .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5))
                         .foregroundStyle(Color.onSurfaceDimmer)
                 })
-                .accessibilityLabel("Search for exchanges")
+                .accessibilityLabel(Localization.string("Search for exchanges"))
                 .padding(12)
                 .optionalGlassEffect(
                     color: Color.surfaceContainerHigh,
@@ -180,8 +180,8 @@ struct ExchangesView: View {
                 )
                 
                 SecondaryButton(
-                    text: viewModel.selectedSortOption.title,
-                    accessibilityLabel: "Sort, currently selected: \(viewModel.selectedSortOption.accessibilityTitle)",
+                    text: Localization.string(viewModel.selectedSortOption.title),
+                    accessibilityLabel: Localization.format("Sort, currently selected: %@", Localization.string(viewModel.selectedSortOption.accessibilityTitle)),
                     icon: .sort,
                     action: {
                         AnalyticsManager.shared.log(

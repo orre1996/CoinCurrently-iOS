@@ -18,10 +18,26 @@ struct HistoricDataChangeView: View {
         .medium
         #endif
     }
+
+    private var localizedTimeframe: String {
+        #if IS_APP
+        Localization.string(timeframe)
+        #else
+        timeframe
+        #endif
+    }
+
+    private var localizedAccessibleTimeframe: String {
+        #if IS_APP
+        timeframe
+        #else
+        timeframe.lowercased()
+        #endif
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("\(timeframe) %")
+            Text("\(localizedTimeframe) %")
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceContainerDim)
                 .accessibilityHidden(true)
@@ -29,7 +45,7 @@ struct HistoricDataChangeView: View {
             PriceChangePercentView(
                 change: change,
                 size: changeSize,
-                accessibleTimeframe: timeframe.lowercased(),
+                accessibleTimeframe: localizedAccessibleTimeframe,
                 isDownloading: change == nil
             )
         }

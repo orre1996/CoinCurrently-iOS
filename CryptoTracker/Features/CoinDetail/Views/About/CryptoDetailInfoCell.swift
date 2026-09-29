@@ -58,7 +58,7 @@ struct CryptoDetailInfoCell: View {
 
     private var headerView: some View {
         ShimmeringText(
-            text: title ?? "000000000",
+            text: title.map { Localization.string($0) } ?? "000000000",
             isDownloading: downloading
         )
         .font(.satoshiBold(22))

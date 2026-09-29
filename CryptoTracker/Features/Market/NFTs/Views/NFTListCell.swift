@@ -51,26 +51,26 @@ struct NFTListCell: View {
         })
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabelText)
-        .accessibilityHint("Double tap for \(nftToplist?.name ?? "") details")
+        .accessibilityHint(Localization.format("Double tap for %@ details", nftToplist?.name ?? ""))
     }
     
     private var accessibilityLabelText: String {
         var components: [String] = []
         
         if let listIndex, let listCount {
-            components.append("NFT \(listIndex + 1) of \(listCount), \(nftToplist?.name ?? "")")
+            components.append(Localization.format("NFT %d of %d, %@", listIndex + 1, listCount, nftToplist?.name ?? ""))
         } else {
             components.append(nftToplist?.name ?? "")
         }
         
         if let nativeFloorPrice = nftToplist?.floor_price?.native_currency {
-            components.append("Floor price: \(accessibleNativeFloorPrice(nativeFloorPrice))")
+            components.append(Localization.format("Floor price: %@", accessibleNativeFloorPrice(nativeFloorPrice)))
         }
         
         if let priceMultiplier {
             let convertedFloorPrice = (nftToplist?.floor_price?.usd ?? 0) * priceMultiplier
             components.append(
-                "Converted floor price: \(convertedFloorPrice.formatCurrency(threshold: FormattingThreshold.none, accessible: true)), "
+                Localization.format("Converted floor price: %@", convertedFloorPrice.formatCurrency(threshold: FormattingThreshold.none, accessible: true))
             )
         }
         
@@ -78,7 +78,12 @@ struct NFTListCell: View {
         let safeChange = change?.isInfinite ?? false ? 0 : change
         let decimals = safeChange?.changePercentDecimalPoints ?? 2
         let accessibleChange = safeChange?.numberAccessible(maxPlaces: decimals) ?? ""
-        components.append("24 hour price change: \(change?.directionAccessible ?? "") \(accessibleChange) percent")
+        let direction = change?.directionAccessible ?? ""
+        components.append(Localization.format(
+            "24 hour price change: %@ %@ percent",
+            direction.isEmpty ? "" : Localization.string(direction),
+            accessibleChange
+        ))
         
         return components.joined(separator: " - ")
     }

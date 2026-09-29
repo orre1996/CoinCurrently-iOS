@@ -74,8 +74,8 @@ struct DetailAboutView: View {
             }
         } else {
             EmptyContent(
-                title: "No details yet",
-                subTitle: emptyStateMessage
+                title: Localization.string("No details yet"),
+                subTitle: Localization.string(emptyStateMessage)
             )
             .frame(maxWidth: .infinity)
             .padding(

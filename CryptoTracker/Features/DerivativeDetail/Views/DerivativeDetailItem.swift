@@ -100,15 +100,16 @@ struct DerivativeDetailItem: View {
     }
     
     private var symbolAccessibilityLabel: String {
-        let typeLabel = isFutures ? "Future" : "Perpetual"
-        var label = "\(typeLabel) \(index + 1) of \(listCount), Symbol: \(derivativeDetail?.symbol?.map({ "\($0)" }).joined(separator: " ") ?? "")"
+        let typeLabel = Localization.string(isFutures ? "Future" : "Perpetual")
+        let symbol = derivativeDetail?.symbol?.map({ "\($0)" }).joined(separator: " ") ?? ""
+        var label = Localization.format("%1$@ %2$d of %3$d, Symbol: %4$@", typeLabel, index + 1, listCount, symbol)
         
         if isFutures, let expiredAt = derivativeDetail?.expired_at {
             let expiresIn = expiredAt.timeUntilExpired
-            if expiresIn == "Expired" {
-                label += ", expired"
+            if Date(timeIntervalSince1970: expiredAt) <= Date() {
+                label += Localization.string(", expired")
             } else {
-                label += ", expires in \(expiresIn)"
+                label += Localization.format(", expires in %@", expiresIn)
             }
         }
         
@@ -126,7 +127,7 @@ struct DerivativeDetailItem: View {
         .foregroundStyle(Color.onSurface)
         .font(.satoshiBold(16))
         .multilineTextAlignment(.trailing)
-        .accessibilityLabel("Price: \(lastPrice.currencyAccessible())")
+        .accessibilityLabel(Localization.format("Price: %@", lastPrice.currencyAccessible()))
     }
     
     private var formattedOpenInterest: String {
@@ -148,7 +149,7 @@ struct DerivativeDetailItem: View {
     @ViewBuilder
     private var openInterestColumnView: some View {
         MinimumTextSize(
-            text: "Open Interest",
+            text: Localization.string("Open Interest"),
             alignment: .trailing
         ) {
             ShimmeringText(

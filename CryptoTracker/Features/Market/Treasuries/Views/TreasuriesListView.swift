@@ -173,8 +173,8 @@ struct TreasuriesListView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 SecondaryButton(
-                    text: viewModel.selectedEntityFilter.title,
-                    accessibilityLabel: "Type, currently selected: \(viewModel.selectedEntityFilter.accessibilityTitle)",
+                    text: Localization.string(viewModel.selectedEntityFilter.title),
+                    accessibilityLabel: Localization.format("Type, currently selected: %@", Localization.string(viewModel.selectedEntityFilter.accessibilityTitle)),
                     icon: .chevronDown,
                     action: {
                         isEntityFilterShowing = true
@@ -183,7 +183,7 @@ struct TreasuriesListView: View {
 
                 SecondaryButton(
                     text: viewModel.selectedCoin?.name ?? viewModel.selectedCoinId.capitalized,
-                    accessibilityLabel: "Coin, currently selected: \(viewModel.selectedCoin?.name ?? viewModel.selectedCoinId)",
+                    accessibilityLabel: Localization.format("Coin, currently selected: %@", viewModel.selectedCoin?.name ?? viewModel.selectedCoinId),
                     icon: .chevronDown,
                     isEnabled: !viewModel.availableCoins.isEmpty,
                     action: {
@@ -221,11 +221,11 @@ struct TreasuriesListView: View {
     private var emptyTitle: String {
         switch viewModel.selectedEntityFilter {
         case .all:
-            "No treasuries yet"
+            Localization.string("No treasuries yet")
         case .companies:
-            "No company treasuries yet"
+            Localization.string("No company treasuries yet")
         case .governments:
-            "No government treasuries yet"
+            Localization.string("No government treasuries yet")
         }
     }
 
@@ -234,11 +234,11 @@ struct TreasuriesListView: View {
 
         switch viewModel.selectedEntityFilter {
         case .all:
-            return "No one currently holds \(coinName)."
+            return Localization.format("No one currently holds %@.", coinName)
         case .companies:
-            return "No companies currently hold \(coinName)."
+            return Localization.format("No companies currently hold %@.", coinName)
         case .governments:
-            return "No governments currently hold \(coinName)."
+            return Localization.format("No governments currently hold %@.", coinName)
         }
     }
 

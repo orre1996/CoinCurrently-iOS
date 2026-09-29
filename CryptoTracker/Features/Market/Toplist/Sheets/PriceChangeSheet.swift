@@ -24,7 +24,7 @@ struct PriceChangeSheet: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Price Change")
+            DragHandle(title: Localization.string("Price Change"))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -46,9 +46,9 @@ struct PriceChangeSheet: View {
         VStack(alignment: .leading, spacing: 4) {
             ForEach(options, id: \.self) { option in
                 SingleSelectView(
-                    title: option.rawValue,
-                    accessibilityTitle: option.accessibilityTimeframe   ,
-                    subtitle: option.subtitle,
+                    title: Localization.string(option.rawValue),
+                    accessibilityTitle: Localization.string(option.accessibilityTimeframe),
+                    subtitle: Localization.string(option.subtitle),
                     imageCase: .nothing,
                     isSelected: option == selectedPriceChangeOption,
                     didSelectOption: {

@@ -49,7 +49,7 @@ struct ExchangeListItem: View {
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabelText)
-        .accessibilityHint("Double tap for \(data?.name ?? "") details")
+        .accessibilityHint(Localization.format("Double tap for %@ details", data?.name ?? ""))
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
             handleCurrencyClick()
@@ -60,7 +60,7 @@ struct ExchangeListItem: View {
         var components: [String] = []
         
         if let listIndex, let listCount {
-            components.append("Exchange \(listIndex + 1) of \(listCount), \(data?.name ?? "")")
+            components.append(Localization.format("Exchange %d of %d, %@", listIndex + 1, listCount, data?.name ?? ""))
         } else {
             components.append(data?.name ?? "")
         }
@@ -68,10 +68,10 @@ struct ExchangeListItem: View {
         let volumeBtc = data?.trade_volume_24h_btc ?? 0.0
         let bitcoinPrice = bitcoin?.market_data?.current_price?.getConvertedCurrency() ?? 0.0
         let totalVolume = volumeBtc * bitcoinPrice
-        components.append("24 hour volume: \(totalVolume.formatCurrency(accessible: true))")
+        components.append(Localization.format("24 hour volume: %@", totalVolume.formatCurrency(accessible: true)))
         
         if let trustScore = data?.trust_score {
-            components.append("Trust score: \(trustScore) of 10")
+            components.append(Localization.format("Trust score: %d of 10", trustScore))
         }
         
         return components.joined(separator: ". ")

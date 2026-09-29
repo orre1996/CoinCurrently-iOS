@@ -17,7 +17,7 @@ struct TreasuryEntityFilterSheet: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Filter By Type")
+            DragHandle(title: Localization.string("Filter By Type"))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -39,8 +39,8 @@ struct TreasuryEntityFilterSheet: View {
         VStack(alignment: .leading, spacing: 4) {
             ForEach(TreasuryEntityFilter.allCases, id: \.self) { filter in
                 SingleSelectView(
-                    title: filter.title,
-                    accessibilityTitle: filter.accessibilityTitle,
+                    title: Localization.string(filter.title),
+                    accessibilityTitle: Localization.string(filter.accessibilityTitle),
                     subtitle: nil,
                     imageCase: .nothing,
                     isSelected: filter == selectedFilter,

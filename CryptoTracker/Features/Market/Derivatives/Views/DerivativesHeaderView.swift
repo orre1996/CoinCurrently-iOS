@@ -20,17 +20,17 @@ struct DerivativesHeaderView: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            Text(isHorizontal ? "Exchange" : "Exchange / Open Interest")
+            Text(Localization.string(isHorizontal ? "Exchange" : "Exchange / Open Interest"))
                 .font(.satoshiMedium(14))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             if isHorizontal {
-                Text("Open Interest")
+                Text(Localization.string("Open Interest"))
                     .font(.satoshiMedium(14))
                     .lineLimit(1)
             }
             
-            Text("24h Volume")
+            Text(Localization.string("24h Volume"))
                 .font(.satoshiMedium(14))
                 .lineLimit(isHorizontal ? 1 : nil)
                 .frame(alignment: .trailing)

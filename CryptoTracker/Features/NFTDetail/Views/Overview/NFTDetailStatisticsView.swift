@@ -44,7 +44,7 @@ struct NFTDetailStatisticsView: View {
     }
     
     private var headerView: some View {
-        Text("Statistics")
+        Text(Localization.string("Statistics"))
             .foregroundStyle(Color.onSurfaceDim)
             .font(.satoshiBold(22))
             .accessibilityAddTraits(.isHeader)
@@ -73,7 +73,7 @@ struct NFTDetailStatisticsView: View {
                 .foregroundStyle(Color.onSurface)
                 .font(.satoshiBold(16))
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .accessibilityLabel("From \(lowAccessible)")
+                .accessibilityLabel(Localization.format("From %@", lowAccessible))
                 
                 let high = prices?.max()?.formatCurrency(threshold: FormattingThreshold.none, currency: chartCurrency)
                 let highAccessible = accessibleRangePrice(prices?.max())
@@ -85,7 +85,7 @@ struct NFTDetailStatisticsView: View {
                 .foregroundStyle(Color.onSurface)
                 .font(.satoshiBold(16))
                 .frame(maxWidth: .infinity, alignment: isHorizontal ?  .trailing : .leading)
-                .accessibilityLabel("to \(highAccessible)")
+                .accessibilityLabel(Localization.format("to %@", highAccessible))
             }
         }
         .accessibilityElement(children: .combine)
@@ -117,7 +117,7 @@ struct NFTDetailStatisticsView: View {
         
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 16, horizontalAlignment: .leading, verticalAlignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Market Cap Rank")
+                Text(Localization.string("Market Cap Rank"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
@@ -141,7 +141,7 @@ struct NFTDetailStatisticsView: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("Market Cap")
+                Text(Localization.string("Market Cap"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
@@ -165,7 +165,7 @@ struct NFTDetailStatisticsView: View {
         
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 16, horizontalAlignment: .leading, verticalAlignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("24 Hour Sales")
+                Text(Localization.string("24 Hour Sales"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
@@ -186,7 +186,7 @@ struct NFTDetailStatisticsView: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("24 Hour Volume")
+                Text(Localization.string("24 Hour Volume"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
@@ -205,7 +205,7 @@ struct NFTDetailStatisticsView: View {
     
     private func shortCurrencyAccessibilityLabel(title: String, value: Double?, currency: CurrencyModel) -> String {
         let formattedValue = value?.formatAccessibleCurrency(currency: currency) ?? ""
-        return "\(title), \(formattedValue)"
+        return Localization.format("%@, %@", Localization.string(title), formattedValue)
     }
     
     private func accessibleRangePrice(_ value: Double?) -> String {
@@ -242,7 +242,7 @@ struct NFTDetailStatisticsView: View {
         
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 16, horizontalAlignment: .leading) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Unique Owners")
+                Text(Localization.string("Unique Owners"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
@@ -270,7 +270,7 @@ struct NFTDetailStatisticsView: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("Total Supply")
+                Text(Localization.string("Total Supply"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 

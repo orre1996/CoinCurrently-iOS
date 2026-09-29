@@ -40,7 +40,7 @@ struct NFTDetailInfoView: View {
     }
 
     private var emptyView: some View {
-        Text("Information missing")
+        Text(Localization.string("Information missing"))
             .foregroundColor(.onSurface)
             .font(.poppinsRegular(16))
             .frame(maxWidth: .infinity)

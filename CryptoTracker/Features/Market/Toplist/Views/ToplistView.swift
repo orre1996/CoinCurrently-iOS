@@ -255,7 +255,7 @@ struct ToplistView: View {
                         .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5))
                         .foregroundStyle(Color.onSurfaceDimmer)
                 })
-                .accessibilityLabel("Search for coins")
+                .accessibilityLabel(Localization.string("Search for coins"))
                 .padding(12)
                 .optionalGlassEffect(
                     color: Color.surfaceContainerHigh,
@@ -264,8 +264,8 @@ struct ToplistView: View {
                 )
                 
                 SecondaryButton(
-                    text: viewModel.selectedSortOption.title,
-                    accessibilityLabel: "Sort, currently selected: \(viewModel.selectedSortOption.accessibilityTitle)",
+                    text: Localization.string(viewModel.selectedSortOption.title),
+                    accessibilityLabel: Localization.format("Sort, currently selected: %@", Localization.string(viewModel.selectedSortOption.accessibilityTitle)),
                     icon: .sort,
                     action: {
                         AnalyticsManager.shared.log(
@@ -276,8 +276,8 @@ struct ToplistView: View {
                 )
 
                 SecondaryButton(
-                    text: viewModel.selectedPriceChangeOption.rawValue,
-                    accessibilityLabel: "Timeframe, currently selected: \(viewModel.selectedPriceChangeOption.accessibilityTimeframe)",
+                    text: Localization.string(viewModel.selectedPriceChangeOption.rawValue),
+                    accessibilityLabel: Localization.format("Timeframe, currently selected: %@", Localization.string(viewModel.selectedPriceChangeOption.accessibilityTimeframe)),
                     icon: .percent,
                     action: {
                         AnalyticsManager.shared.log(
@@ -288,8 +288,8 @@ struct ToplistView: View {
                 )
 
                 SecondaryButton(
-                    text: "Heatmap",
-                    accessibilityLabel: "Open heatmap",
+                    text: Localization.string("Heatmap"),
+                    accessibilityLabel: Localization.string("Open heatmap"),
                     icon: .heatmap,
                     action: {
                         AnalyticsManager.shared.log(
@@ -356,7 +356,7 @@ struct ToplistView: View {
                     }
                 } label: {
                     Label(title: {
-                        Text(isFavorited ? "Remove from favorites" : "Add to favorites")
+                        Text(Localization.string(isFavorited ? "Remove from favorites" : "Add to favorites"))
                     }, icon: {
                         isFavorited ? Image.starFill : Image.star
                     })

@@ -24,7 +24,7 @@ struct ToplistSortBySheet: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Sort By")
+            DragHandle(title: Localization.string("Sort By"))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -46,9 +46,9 @@ struct ToplistSortBySheet: View {
         VStack(alignment: .leading, spacing: 4) {
             ForEach(options, id: \.self) { option in
                 SingleSelectView(
-                    title: option.title,
-                    accessibilityTitle: option.accessibilityTitle,
-                    subtitle: option.subtitle,
+                    title: Localization.string(option.title),
+                    accessibilityTitle: Localization.string(option.accessibilityTitle),
+                    subtitle: Localization.string(option.subtitle),
                     imageCase: .nothing,
                     isSelected: option == selectedSortOption,
                     didSelectOption: {

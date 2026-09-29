@@ -89,7 +89,7 @@ struct ToplistCategoryView: View {
                     }
                 } label: {
                     Label(title: {
-                        Text(isFavorited ? "Remove from favorites" : "Add to favorites")
+                        Text(Localization.string(isFavorited ? "Remove from favorites" : "Add to favorites"))
                     }, icon: {
                         isFavorited ? Image.starFill : Image.star
                     })
@@ -99,10 +99,10 @@ struct ToplistCategoryView: View {
     }
     
     private var showAllButton: some View {
-        SecondaryButton(text: "View All") {
+        SecondaryButton(text: Localization.string("View All")) {
             viewAllPressed()
         }
-        .accessibilityLabel("View all \(carouselFilter.rawValue)")
+        .accessibilityLabel(Localization.format("View all %@", Localization.string(carouselFilter.rawValue)))
         .frame(maxWidth: .infinity, alignment: .top)
         .padding(.top, 6)
     }
@@ -110,8 +110,8 @@ struct ToplistCategoryView: View {
     private var emptyView: some View {
         VStack(spacing: 44) {
             EmptyContent(
-                title: "No favorites yet",
-                subTitle: "Tap the star on any coin to add it here and track it easily."
+                title: Localization.string("No favorites yet"),
+                subTitle: Localization.string("Tap the star on any coin to add it here and track it easily.")
             )
             .padding(.horizontal, 16)
             
@@ -122,7 +122,7 @@ struct ToplistCategoryView: View {
                     .foregroundStyle(Color.onSurfaceDim)
                     .accessibilityHidden(true)
                 
-                Text("Tip: Long press any coin to add it to favorites.")
+                Text(Localization.string("Tip: Long press any coin to add it to favorites."))
                     .foregroundStyle(Color.onSurfaceDim)
                     .font(.satoshiRegular(14))
             }

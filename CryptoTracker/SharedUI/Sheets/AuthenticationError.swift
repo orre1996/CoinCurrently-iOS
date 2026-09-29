@@ -29,14 +29,14 @@ struct AuthenticationError: View {
                         
                         VStack(spacing: 0) {
                             
-                            Text("Something went wrong.")
+                            Text(Localization.string("Something went wrong."))
                                 .foregroundColor(.onSurface)
                                 .font(.poppinsSemibold(16))
                                 .multilineTextAlignment(.center)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding(.top, 16)
                             
-                            Text("Is Face ID disabled in your settings?")
+                            Text(Localization.string("Is Face ID disabled in your settings?"))
                                 .foregroundColor(.onSurface)
                                 .font(.poppinsRegular(14))
                                 .multilineTextAlignment(.center)
@@ -45,7 +45,7 @@ struct AuthenticationError: View {
                         }
                     }
                     
-                    Button("Go to settings") {
+                    Button(Localization.string("Go to settings")) {
                         if let url = URL(string: UIApplication.openSettingsURLString) {
                             UIApplication.shared.open(url)
                         }

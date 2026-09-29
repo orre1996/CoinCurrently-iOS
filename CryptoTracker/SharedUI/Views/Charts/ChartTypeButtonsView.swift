@@ -90,7 +90,7 @@ struct ChartTypeButtonsView: View {
         .if(accessibilityVoiceOverEnabled) { view in
             view
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Chart type selector. Swipe up or down to change chart type.")
+                .accessibilityLabel(Localization.string("Chart type selector. Swipe up or down to change chart type."))
                 .accessibilityValue(selectedChartTypeAccessibilityValue)
                 .accessibilityAdjustableAction { direction in
                     switch direction {
@@ -129,7 +129,12 @@ struct ChartTypeButtonsView: View {
         let option = selectableChartTypes[safely: voiceOverChartTypeIndex]
         let title = option?.title ?? ""
         let count = selectableChartTypes.count
-        return "Chart type \(voiceOverChartTypeIndex + 1) of \(count), \(title)."
+        return Localization.format(
+            "Chart type %@ of %@, %@.",
+            String(voiceOverChartTypeIndex + 1),
+            String(count),
+            Localization.string(title)
+        )
     }
     
     private func syncVoiceOverChartTypeIndex() {
@@ -169,7 +174,7 @@ struct ChartTypeButtonsView: View {
         Button(action: {
             action()
         }, label: {
-            Text(title)
+            Text(Localization.string(title))
                 .lineLimit(1)
                 .foregroundStyle(isSelected ? Color.onPrimary.opacity(disabled ? 0.35 : 1) : Color.onSurfaceContainer.opacity(disabled ? 0.35 : 1))
                 .font(.satoshiMedium(16))
@@ -189,7 +194,7 @@ struct ChartTypeButtonsView: View {
         })
         .disabled(disabled)
         .accessibilityHidden(accessibilityVoiceOverEnabled)
-        .accessibilityLabel("Chart type: \(title)")
+        .accessibilityLabel(Localization.format("Chart type: %@", Localization.string(title)))
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
     
@@ -231,8 +236,8 @@ struct ChartTypeButtonsView: View {
     
     private var candleChartToggleAccessibilityLabel: String {
         if fromScreen == .nftDetail {
-            return isCandleChartEnabled ? "Switch to Fiat chart" : "Switch to NFT chart"
+            return Localization.string(isCandleChartEnabled ? "Switch to Fiat chart" : "Switch to NFT chart")
         }
-        return "Switch to \(isCandleChartEnabled ? "line chart" : "candle chart")"
+        return Localization.string(isCandleChartEnabled ? "Switch to line chart" : "Switch to candle chart")
     }
 }

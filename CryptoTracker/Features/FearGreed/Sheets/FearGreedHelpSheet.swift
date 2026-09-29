@@ -26,6 +26,7 @@ struct FearGreedHelpSheet: View {
     @Environment(\.presentationMode) var presentationMode
     
     @ScaledMetric private var scale: CGFloat = 1
+    @State private var appLanguage = AppLanguagePreference.stored
     
     private let levelExplanations: [FearGreedLevelExplanation] = [
         FearGreedLevelExplanation(
@@ -96,7 +97,7 @@ struct FearGreedHelpSheet: View {
     var body: some View {
         VStack(spacing: 0) {
             DragHandle(
-                title: "Fear & Greed",
+                title: Localization.string("Fear & Greed"),
                 leadingIcon: .info
             )
             
@@ -113,7 +114,7 @@ struct FearGreedHelpSheet: View {
                     Separator()
                         .padding(.bottom, 8)
                     
-                    Text("Index Factors")
+                    Text(Localization.string("Index Factors"))
                         .foregroundStyle(Color.onSurfaceDim)
                         .accessibilityAddTraits(.isHeader)
                     
@@ -135,6 +136,10 @@ struct FearGreedHelpSheet: View {
             .font(.satoshiBold(22))
         }
         .presentationBackground(Color.surfaceContainerLow)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .ignoresSafeArea(edges: .bottom)
     }
     
@@ -146,13 +151,13 @@ struct FearGreedHelpSheet: View {
                     .cornerRadius(4)
                     .accessibilityHidden(true)
                 
-                ((Text(explanation.title)
+                ((Text(Localization.string(explanation.title))
                     .font(.satoshiBold(16))
                     .foregroundStyle(Color.onSurface))
                  
                 +
                  
-                (Text(explanation.percent)
+                (Text(Localization.string(explanation.percent))
                     .font(.satoshiBold(16))
                     .foregroundStyle(Color.onSurfaceDimmer)))
                 .accessibilityElement(children: .ignore)
@@ -162,7 +167,7 @@ struct FearGreedHelpSheet: View {
                 ))
             }
             
-            Text(explanation.body)
+            Text(Localization.string(explanation.body))
                 .font(.satoshiRegular(16))
                 .foregroundStyle(Color.onSurfaceDim)
         }
@@ -171,11 +176,11 @@ struct FearGreedHelpSheet: View {
     
     private func helpSection(explanation: FearGreedPercentExplanation) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            ((Text(explanation.title)
+            ((Text(Localization.string(explanation.title))
                 .font(.satoshiBold(16))
                 .foregroundStyle(Color.onSurface))
             +
-            (Text(explanation.percent)
+            (Text(Localization.string(explanation.percent))
                 .font(.satoshiBold(16))
                 .foregroundStyle(Color.onSurfaceDimmer)))
             .accessibilityElement(children: .ignore)
@@ -184,7 +189,7 @@ struct FearGreedHelpSheet: View {
                 percent: explanation.percent
             ))
             
-            Text(explanation.body)
+            Text(Localization.string(explanation.body))
                 .font(.satoshiRegular(16))
                 .foregroundStyle(Color.onSurfaceDim)
         }
@@ -192,15 +197,32 @@ struct FearGreedHelpSheet: View {
     }
     
     private func titlePercentAccessibilityLabel(title: String, percent: String) -> String {
-        " \(title.lowercased()), \(accessiblePercent(percent))"
+        Localization.format("%@, %@", Localization.string(title), accessiblePercent(percent))
     }
     
     private func accessiblePercent(_ percent: String) -> String {
-        percent
-            .replacingOccurrences(of: "(", with: "")
-            .replacingOccurrences(of: ")", with: "")
-            .replacingOccurrences(of: "-", with: " to ")
-            .trimmingCharacters(in: .whitespaces)
+        switch percent {
+        case " (80-100)":
+            return Localization.string("80 to 100")
+        case " (60-79)":
+            return Localization.string("60 to 79")
+        case " (40-59)":
+            return Localization.string("40 to 59")
+        case " (20-39)":
+            return Localization.string("20 to 39")
+        case " (0-19)":
+            return Localization.string("0 to 19")
+        case " (25%)":
+            return Localization.string("25 percent")
+        case " (15%)":
+            return Localization.string("15 percent")
+        case " (15%) - Currently paused":
+            return Localization.string("15 percent, currently paused")
+        case " (10%)":
+            return Localization.string("10 percent")
+        default:
+            return percent
+        }
     }
 }
 

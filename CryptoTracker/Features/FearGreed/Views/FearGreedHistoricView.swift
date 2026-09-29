@@ -20,13 +20,16 @@ struct FearGreedHistoricView: View {
         
         VStack(spacing: 0) {
             MinimumTextSize(
-                text: "Last Month",
-                alignment: .top
+                text: Localization.string("Last month"),
+                alignment: .top,
+                fixesWidth: false
             ) {
-                Text(timeframe)
+                Text(Localization.string(timeframe))
             }
             .font(.satoshiBold(12))
             .foregroundStyle(Color.onSurfaceDimmer)
+            .lineLimit(2)
+            .minimumScaleFactor(0.6)
             .padding(.bottom, 4)
             
             ShimmeringText(
@@ -37,11 +40,11 @@ struct FearGreedHistoricView: View {
             .foregroundStyle(Color.onSurface)
             
             MinimumTextSize(
-                text: longestStatus?.replacingOccurrences(of: " ", with: isAccessibilityEnabled ? " " : "\n") ?? "",
+                text: wrappedStatus(longestStatus, isAccessibilityEnabled: isAccessibilityEnabled),
                 alignment: .top
             ) {
                 ShimmeringText(
-                    text: status?.replacingOccurrences(of: " ", with: isAccessibilityEnabled ? " " : "\n") ?? "000000",
+                    text: status == nil ? "000000" : wrappedStatus(status, isAccessibilityEnabled: isAccessibilityEnabled),
                     isDownloading: status == nil
                 )
             }
@@ -60,5 +63,14 @@ struct FearGreedHistoricView: View {
             )
         )
         .cardBackground(hasPadding: false)
+    }
+    
+    private func wrappedStatus(_ status: String?, isAccessibilityEnabled: Bool) -> String {
+        guard let status, !status.isEmpty else { return "" }
+        let localized = Localization.string(status)
+        guard !isAccessibilityEnabled else { return localized }
+        
+        let parts = localized.split(separator: " ", maxSplits: 1).map(String.init)
+        return parts.joined(separator: "\n")
     }
 }

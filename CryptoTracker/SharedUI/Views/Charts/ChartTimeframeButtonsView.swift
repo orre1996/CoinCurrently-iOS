@@ -34,7 +34,7 @@ struct ChartTimeframeButtonsView: View {
                         Button(action: {
                             selectTimeframe(currentTimeframe, scrollReader: scrollReader)
                         }) {
-                            Text(currentTimeframe.time)
+                            Text(Localization.string(currentTimeframe.time))
                                 .lineLimit(1)
                                 .padding(
                                     EdgeInsets(
@@ -54,7 +54,10 @@ struct ChartTimeframeButtonsView: View {
                                 .id(currentTimeframe)
                         }
                         .accessibilityHidden(isVoiceOverActive)
-                        .accessibilityLabel("Switch to \(currentTimeframe.accessibilityText).")
+                        .accessibilityLabel(Localization.format(
+                            "Switch to %@.",
+                            Localization.string(currentTimeframe.accessibilityText)
+                        ))
                         .accessibilityAddTraits(isSelected ? [.isSelected] : [])
                         
                         if currentTimeframe != chartButtons.last {
@@ -84,9 +87,9 @@ struct ChartTimeframeButtonsView: View {
         .if(isVoiceOverActive) { view in
             view
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Chart timeframe")
+                .accessibilityLabel(Localization.string("Chart timeframe"))
                 .accessibilityValue(selectedAccessibilityValue)
-                .accessibilityHint("Swipe up or down to change timeframe.")
+                .accessibilityHint(Localization.string("Swipe up or down to change timeframe."))
                 .accessibilityAdjustableAction { direction in
                     switch direction {
                     case .increment:
@@ -109,7 +112,12 @@ struct ChartTimeframeButtonsView: View {
             return ""
         }
         
-        return "Timeframe \(index + 1) of \(chartButtons.count), \(selectedButton.accessibilityText)."
+        return Localization.format(
+            "Timeframe %@ of %@, %@.",
+            String(index + 1),
+            String(chartButtons.count),
+            Localization.string(selectedButton.accessibilityText)
+        )
     }
     
     private var selectedButton: ChartButton? {

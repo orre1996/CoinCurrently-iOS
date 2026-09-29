@@ -14,6 +14,7 @@ struct LoadingScreen: View {
     var authenticateUser: () async -> Void = { }
     
     @State private var showActivityIndicator = false
+    @State private var appLanguage = AppLanguagePreference.stored
 
     var body: some View {
         ZStack {
@@ -33,11 +34,11 @@ struct LoadingScreen: View {
                     if !isAllDataDownloaded && showActivityIndicator {
                         ActivityIndicator(color: .onSurface)
                             .opacity(!isAllDataDownloaded ? 1 : 0)
-                            .accessibilityLabel("Loading")
+                            .accessibilityLabel(Localization.string("Loading"))
                     }
                     
                     if showUnlockButton {
-                        Button("Unlock app") {
+                        Button(Localization.string("Unlock app")) {
                             Task {
                                 await authenticateUser()
                             }
@@ -54,6 +55,7 @@ struct LoadingScreen: View {
             VStack {
                 Spacer()
                 
+                // Matches Launch Screen.storyboard, which cannot follow the in-app language.
                 Text("Privacy by Default")
                     .foregroundStyle(Color.onSurface)
                     .font(.system(size: 18, weight: .bold))
@@ -64,6 +66,10 @@ struct LoadingScreen: View {
             if showAuthenticationError {
                 AuthenticationError()
             }
+        }
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
         }
         .task {
             try? await Task.sleep(nanoseconds: 1_000_000_000)

@@ -23,17 +23,17 @@ struct ToplistHeaderView: View {
     var body: some View {
         HStack(spacing: 16) {
             MinimumTextSize(text: "9999") {
-                Text("#")
+                Text(Localization.string("#"))
                     .font(.satoshiMedium(14))
             }
             .font(.satoshiBold(16))
             .lineLimit(1)
             
-            Text(isHorizontal ? "Coin" : "Coin / Price")
+            Text(Localization.string(isHorizontal ? "Coin" : "Coin / Price"))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             if isHorizontal {
-                Text("Price")
+                Text(Localization.string("Price"))
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
             
@@ -43,7 +43,7 @@ struct ToplistHeaderView: View {
                 extraSize: 16 * min(scale, 1.5) + 4,
                 alignment: .trailing
             ) {
-                Text("\(selectedChangeOption.rawValue) %")
+                Text("\(Localization.string(selectedChangeOption.rawValue)) %")
                     .font(.satoshiBold(14))
             }
             .lineLimit(1)

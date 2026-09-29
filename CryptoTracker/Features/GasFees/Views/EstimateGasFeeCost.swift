@@ -71,10 +71,10 @@ struct EstimateGasFeeCost: View {
         accessibleValue: String?
     ) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(title)
+            Text(Localization.string(title))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
-                .accessibilityLabel("Estimated cost \(title)")
+                .accessibilityLabel(Localization.format("Estimated cost %@", Localization.string(title)))
             
             ShimmeringText(
                 text: value ?? "000000",

@@ -41,7 +41,7 @@ struct ChartAudioGraphDescriptor: AXChartDescriptorRepresentable {
         let maxX = xValues.max() ?? 1
         
         let xAxis = AXNumericDataAxisDescriptor(
-            title: "Time",
+            title: Localization.string("Time"),
             range: minX...maxX,
             gridlinePositions: [],
             valueDescriptionProvider: formattedX
@@ -67,7 +67,7 @@ struct ChartAudioGraphDescriptor: AXChartDescriptorRepresentable {
             if !compareData.isEmpty {
                 series.append(
                     AXDataSeriesDescriptor(
-                        name: compareSeriesName ?? "Compare",
+                        name: compareSeriesName ?? Localization.string("Compare"),
                         isContinuous: true,
                         dataPoints: makeAXDataPoints(from: compareData)
                     )

@@ -21,6 +21,7 @@ struct FearGreedScreen: View {
     @State private var showInfoSheet = false
     @State private var fearMeterWidth: CGFloat = 1
     @State private var biggestChartValue: CGSize = .zero
+    @State private var appLanguage = AppLanguagePreference.stored
     
     var body: some View {
         let halfBiggestChartValueHeight = biggestChartValue.height / 2
@@ -157,7 +158,11 @@ struct FearGreedScreen: View {
                 break
             }
         }
-        .navigationBarTitle("Fear & Greed", displayMode: .inline)
+        .navigationBarTitle(Localization.string("Fear & Greed"), displayMode: .inline)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .navigationPopGestureDisabled(viewModel.isDragging)
         .toolbar {
             Button(action: {
@@ -168,7 +173,7 @@ struct FearGreedScreen: View {
             }, label: {
                 Image.info
             })
-            .accessibilityLabel("Help understand the fear and greed index")
+            .accessibilityLabel(Localization.string("Help understand the fear and greed index"))
         }
         .sheet(isPresented: $showInfoSheet) {
             FearGreedHelpSheet()
@@ -206,7 +211,11 @@ struct FearGreedScreen: View {
                         status: currentStatus
                     )
                     .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("\(currentValueAccessible). \(currentStatus)")
+                    .accessibilityLabel(Localization.format(
+                        "%@. %@",
+                        currentValueAccessible,
+                        Localization.string(currentStatus)
+                    ))
                 }
             }
             .padding(
@@ -217,7 +226,7 @@ struct FearGreedScreen: View {
                     trailing: 16,
                 )
             )
-            .frame(minWidth: geometryProxy.size.width)
+            .frame(width: geometryProxy.size.width)
             .scrollDisabled(true)
         }
     }
@@ -294,11 +303,11 @@ struct FearGreedScreen: View {
     
     private var fearGreedMeterHeader: some View {
         HStack {
-            Text("Fear")
+            Text(Localization.string("Fear"))
             
             Spacer()
             
-            Text("Greed")
+            Text(Localization.string("Greed"))
         }
         .font(.satoshiMedium(14))
         .foregroundStyle(Color.onSurfaceDimmer)

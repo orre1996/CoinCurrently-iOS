@@ -33,14 +33,14 @@ struct PremiumView: View {
                     .accessibilityHidden(true)
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(title)
+                    Text(Localization.string(title))
                         .font(.satoshiBold(22))
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.trailing, 4 + 24 * min(scale, 1.5))
                         .padding(.bottom, 4)
                     
-                    Text(message)
+                    Text(Localization.string(message))
                         .font(.satoshiRegular(16))
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(Color.onSurfaceDim)
@@ -87,7 +87,7 @@ struct PremiumView: View {
                 .padding(12)
         })
         .padding(4)
-        .accessibilityLabel("Hide offer")
+        .accessibilityLabel(Localization.string("Hide offer"))
     }
     
     private var accessibilityLabelText: String {
@@ -95,10 +95,13 @@ struct PremiumView: View {
             return accessibleMessage
         }
         
+        let localizedTitle = Localization.string(title)
+        let localizedMessage = Localization.string(message)
+        
         if let timeLeft, title == "Welcome Offer!" {
-            return "\(title). \(message). \(timeLeft)"
+            return "\(localizedTitle). \(localizedMessage). \(timeLeft)"
         }
         
-        return "\(title). \(message)"
+        return "\(localizedTitle). \(localizedMessage)"
     }
 }

@@ -18,6 +18,7 @@ struct GlobalMarketScreen: View {
     
     @State private var viewModel = GlobalMarketViewModelImp()
     @State private var biggestChartValue: CGSize = .zero
+    @State private var appLanguage = AppLanguagePreference.stored
     
     private var isHorizontal: Bool {
         return !category.isAccessibilityCategory || verticalSizeClass == .compact
@@ -179,7 +180,11 @@ struct GlobalMarketScreen: View {
             EdgeSwipe(isDragging: viewModel.isDragging)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .navigationBarTitle("Market Cap", displayMode: .inline)
+        .navigationBarTitle(Localization.string("Market Cap"), displayMode: .inline)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .navigationPopGestureDisabled(viewModel.isDragging)
         .task {
             await viewModel.setStartData()
@@ -366,7 +371,7 @@ struct GlobalMarketScreen: View {
     @ViewBuilder
     private var marketCapChangeView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("24h Change")
+            Text(Localization.string("24h Change"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityHidden(true)
@@ -420,11 +425,14 @@ struct GlobalMarketScreen: View {
     ) -> some View {
         let accessibleTitle = titleAccessible ?? title
         
+        let localizedTitle = Localization.string(title)
+        let localizedAccessibleTitle = Localization.string(accessibleTitle)
+        
         let content = VStack(alignment: .leading, spacing: 4) {
-            Text(title)
+            Text(localizedTitle)
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceContainerDim)
-                .accessibilityLabel(accessibleTitle)
+                .accessibilityLabel(localizedAccessibleTitle)
                 .accessibilityHidden(valueAccessible != nil)
             
             ShimmeringText(
@@ -439,7 +447,7 @@ struct GlobalMarketScreen: View {
         if let valueAccessible {
             content
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(accessibleTitle): \(valueAccessible)")
+                .accessibilityLabel(Localization.format("%@: %@", localizedAccessibleTitle, valueAccessible))
         } else {
             content
                 .accessibilityElement(children: .combine)

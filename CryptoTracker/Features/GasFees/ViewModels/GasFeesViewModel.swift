@@ -191,7 +191,20 @@ class GasFeesViewModelImp: GasFeesViewModel, ChartHoverHosting {
     }
     
     func getCurrentTextAccessible(at index: Int, value: String) -> String {
-        return "The \(currentTimeFrames[index].1) ethereum gas fee is \(Double(value)?.numberAccessible(maxPlaces: 3) ?? "0") Gwei"
+        let amount = Double(value)?.numberAccessible(maxPlaces: 3) ?? "0"
+        let unit = Localization.string("Gwei")
+        let key: String
+        
+        switch index {
+        case 0:
+            key = "The current low Ethereum gas fee is %@ %@"
+        case 1:
+            key = "The current average Ethereum gas fee is %@ %@"
+        default:
+            key = "The current high Ethereum gas fee is %@ %@"
+        }
+        
+        return Localization.format(key, amount, unit)
     }
 
     func normalizedPosition(for value: Double) -> Double {

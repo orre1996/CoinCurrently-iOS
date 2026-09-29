@@ -63,7 +63,10 @@ struct ToplistCardView: View {
         })
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabelText)
-        .accessibilityHint("Double tap for \(coin?.name ?? "") details. Long press for more options")
+        .accessibilityHint(Localization.format(
+            "Double tap for %@ details. Long press for more options",
+            coin?.name ?? ""
+        ))
     }
     private var marketCapRankView: some View {
         MinimumTextSize(text: "9999") {
@@ -145,15 +148,32 @@ struct ToplistCardView: View {
     private var accessibilityLabelText: String {
         var components: [String] = []
         
-        components.append("Currency \(listIndex + 1) of \(listCount), \(coin?.name ?? "")")
-        components.append("Price: \(coin?.current_price?.currencyAccessible() ?? "")")
+        components.append(Localization.format(
+            "Currency %@ of %@, %@",
+            String(listIndex + 1),
+            String(listCount),
+            coin?.name ?? ""
+        ))
+        components.append(Localization.format(
+            "Price: %@",
+            coin?.current_price?.currencyAccessible() ?? ""
+        ))
         
         let change = coin?.getPriceChange(selectedChangeOption: selectedChangeOption)
         let safeChange = change?.isInfinite ?? false ? 0 : change
         let decimals = safeChange?.changePercentDecimalPoints ?? 2
         let accessibleChange = safeChange?.numberAccessible(maxPlaces: decimals) ?? ""
-        components.append("\(selectedChangeOption.accessibilityTimeframe) price change: \(change?.directionAccessible ?? "") \(accessibleChange) percent")
-        components.append("Market cap: \((coin?.market_cap ?? 0).formatCurrency(accessible: true))")
+        let direction = change?.directionAccessible ?? ""
+        components.append(Localization.format(
+            "%@ price change: %@ %@ percent",
+            Localization.string(selectedChangeOption.accessibilityTimeframe),
+            direction.isEmpty ? "" : Localization.string(direction),
+            accessibleChange
+        ))
+        components.append(Localization.format(
+            "Market cap: %@",
+            (coin?.market_cap ?? 0).formatCurrency(accessible: true)
+        ))
 
         return components.joined(separator: " - ")
     }

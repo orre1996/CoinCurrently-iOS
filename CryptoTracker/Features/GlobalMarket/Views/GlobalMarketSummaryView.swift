@@ -20,7 +20,7 @@ struct GlobalMarketSummaryView: View {
         let isHorizontal = category.isAccessibilityCategory && verticalSizeClass == .regular
 
         VStack(alignment: .leading, spacing: 4) {
-            Text("Market Cap")
+            Text(Localization.string("Market Cap"))
                 .font(.satoshiBold(18))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -68,7 +68,7 @@ struct GlobalMarketSummaryView: View {
             .foregroundStyle(roundedChange.changeColor)
             .font(.satoshiBold(12))
             
-            Text(selectedTimeframe.timeAgoText)
+            Text(Localization.string(selectedTimeframe.timeAgoText))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
         }
@@ -77,12 +77,17 @@ struct GlobalMarketSummaryView: View {
     private func categorySummaryAccessibilityLabel(isHorizontal: Bool) -> String {
         let marketCap = marketCap ?? 0
         let formattingThreshold: FormattingThreshold = isHorizontal ? .million : .none
-        let marketCapText = ", market cap: \(marketCap.formatCurrency(threshold: formattingThreshold, accessible: true))."
-        
+        let marketCapText = marketCap.formatCurrency(threshold: formattingThreshold, accessible: true)
         let roundedChange = changePercent ?? 0
         let formattedChangePercent = roundedChange.numberAccessible(maxPlaces: 2)
-        let changeDirection = roundedChange >= 0 ? "up" : "down"
+        let changeDirection = Localization.string(roundedChange >= 0 ? "Up" : "Down")
         
-        return "Market Cap\(marketCapText) \(selectedTimeframe.accessibilityTimeframe) market cap change: \(changeDirection) \(formattedChangePercent) percent"
+        return Localization.format(
+            "Market Cap, market cap: %@. %@ market cap change: %@ %@ percent",
+            marketCapText,
+            Localization.string(selectedTimeframe.accessibilityTimeframe),
+            changeDirection,
+            formattedChangePercent
+        )
     }
 }

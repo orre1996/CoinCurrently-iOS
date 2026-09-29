@@ -19,6 +19,7 @@ struct GasFeesScreen: View {
     @State private var fearMeterWidth: CGFloat = 1
     @State private var currentValueXOffset: CGFloat = 0
     @State private var biggestChartValue: CGSize = .zero
+    @State private var appLanguage = AppLanguagePreference.stored
     
     @ScaledMetric private var scale: CGFloat = 1
     
@@ -95,7 +96,7 @@ struct GasFeesScreen: View {
                             timeStamps: viewModel.timeStamps,
                             prices: viewModel.prices,
                             timeChart: .aWeek,
-                            priceFormatter: { "\($0.numberAccessible(maxPlaces: 2)) Gwei" },
+                            priceFormatter: { "\($0.numberAccessible(maxPlaces: 2)) \(Localization.string("Gwei"))" },
                             trailingPadding: biggestChartValue.width
                         )
                         .padding(.horizontal, 16)
@@ -159,6 +160,10 @@ struct GasFeesScreen: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .navigationPopGestureDisabled(viewModel.isDragging)
         .toolbar {
             gasFeesToolbar
@@ -174,8 +179,8 @@ struct GasFeesScreen: View {
     @ToolbarContentBuilder
     private var gasFeesToolbar: some ToolbarContent {
         ToolbarItem(placement: .principal) {
-            Text("ETH Gas Fee")
-                .accessibilityLabel("Ethereum gas fee")
+            Text(Localization.string("ETH Gas Fee"))
+                .accessibilityLabel(Localization.string("Ethereum gas fee"))
                 .accessibilityAddTraits(.isHeader)
         }
         
@@ -188,7 +193,7 @@ struct GasFeesScreen: View {
             }, label: {
                 Image.info
             })
-            .accessibilityLabel("Help understand how ethereum gas fees work")
+            .accessibilityLabel(Localization.string("Help understand how ethereum gas fees work"))
         }
     }
     
@@ -207,7 +212,11 @@ struct GasFeesScreen: View {
                         status: currentStatus
                     )
                     .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("\(currentValueAccessible). \(currentStatus)")
+                    .accessibilityLabel(Localization.format(
+                        "%@. %@",
+                        currentValueAccessible,
+                        Localization.string(currentStatus)
+                    ))
                 }
             }
             .padding(
@@ -287,11 +296,11 @@ struct GasFeesScreen: View {
     
     private var gasFeeMeterHeader: some View {
         HStack {
-            Text("Low")
+            Text(Localization.string("Low"))
             
             Spacer()
             
-            Text("High")
+            Text(Localization.string("High"))
         }
         .font(.satoshiMedium(14))
         .foregroundStyle(Color.onSurfaceDimmer)
@@ -301,7 +310,7 @@ struct GasFeesScreen: View {
     @ViewBuilder
     private var historyDataView: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Historical Data")
+            Text(Localization.string("Historical Data"))
                 .font(.satoshiBold(22))
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityAddTraits(.isHeader)
@@ -317,7 +326,7 @@ struct GasFeesScreen: View {
     private var estimateCostsView: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 0) {
-                Text("Estimated Cost")
+                Text(Localization.string("Estimated Cost"))
                     .font(.satoshiBold(22))
                     .foregroundStyle(Color.onSurfaceDim)
                     .accessibilityAddTraits(.isHeader)
@@ -336,7 +345,7 @@ struct GasFeesScreen: View {
                         .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5))
                         .padding(8)
                 })
-                .accessibilityLabel("Estimated Cost info")
+                .accessibilityLabel(Localization.string("Estimated Cost info"))
             }
             
             EstimateGasFeeCost(

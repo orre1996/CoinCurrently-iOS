@@ -52,7 +52,11 @@ struct DragHandle: View {
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityAddTraits(.isHeader)
-                .accessibilityLabel(leadingIcon == nil ? resolvedAccessibilityTitle : "\(resolvedAccessibilityTitle). info")
+                .accessibilityLabel(
+                    leadingIcon == nil
+                        ? resolvedAccessibilityTitle
+                        : Localization.format("%@. info", resolvedAccessibilityTitle)
+                )
                 .accessibilityFocused($focusHeader)
 
                 CloseButton {

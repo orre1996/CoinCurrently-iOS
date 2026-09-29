@@ -78,7 +78,7 @@ struct ChartAccessibilityOverlay: View {
     
     private func formattedPrice(at dataIndex: Int, from prices: [Double]) -> String {
         guard let price = prices[safely: dataIndex], price != -1 else {
-            return "N/A"
+            return Localization.string("N/A")
         }
         
         var priceText = formatAccessiblePrice(price)
@@ -135,7 +135,7 @@ private struct ChartAccessibilityOverlayModifier: ViewModifier {
     
     private var audioGraphDescriptor: ChartAudioGraphDescriptor {
         ChartAudioGraphDescriptor(
-            title: chartTitle,
+            title: Localization.string(chartTitle),
             summary: chartSummary,
             timeStamps: timeStamps,
             prices: prices,
@@ -145,7 +145,7 @@ private struct ChartAccessibilityOverlayModifier: ViewModifier {
             timeChart: timeChart,
             dontShowTime: dontShowTime,
             useExchangeDateFormat: useExchangeDateFormat,
-            yAxisTitle: yAxisTitle,
+            yAxisTitle: Localization.string(yAxisTitle),
             valueDescriptionProvider: { value in
                 if let priceFormatter {
                     return priceFormatter(value)

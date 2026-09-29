@@ -27,6 +27,6 @@ struct CloseButton: View {
             radius: 1000,
             isInteractive: true
         )
-        .accessibilityLabel("Close sheet")
+        .accessibilityLabel(Localization.string("Close sheet"))
     }
 }

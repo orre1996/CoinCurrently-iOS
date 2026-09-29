@@ -481,7 +481,13 @@ class HomeViewModelImp: HomeViewModel {
             }
 
             let components = Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: endDate)
-            offerTimeLeft = "Expires in \(components.day ?? 0)d \(components.hour ?? 0)h \(components.minute ?? 0)m \(components.second ?? 0)s"
+            offerTimeLeft = Localization.format(
+                "Expires in %@d %@h %@m %@s",
+                String(components.day ?? 0),
+                String(components.hour ?? 0),
+                String(components.minute ?? 0),
+                String(components.second ?? 0)
+            )
         }
     }
     
@@ -500,7 +506,7 @@ class HomeViewModelImp: HomeViewModel {
             let currency = offerProduct?.getCurrency() ?? settingsManager.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
             let priceAccessible = offer.price.doubleValue.currencyAccessible(currency: currency)
 
-            let description = offer.period.unit.localizedDescription.lowercased()
+            let description = localizedPeriodUnit(count: offer.periodCount, unit: offer.period.unit)
             promotionTitle = "Limited Time Offer!"
             promotionMessage = formattedOfferMessage(period: offer.periodCount, description: description, price: offer.displayPrice)
             promotionMessageAccessible = formattedOfferMessage(period: offer.periodCount, description: description, price: priceAccessible)
@@ -510,7 +516,7 @@ class HomeViewModelImp: HomeViewModel {
             let currency = welcomeProduct?.getCurrency() ?? settingsManager.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
             let priceAccessible = welcomeOffer.price.doubleValue.currencyAccessible(currency: currency)
 
-            let description = welcomeOffer.period.unit.localizedDescription.lowercased()
+            let description = localizedPeriodUnit(count: welcomeOffer.periodCount, unit: welcomeOffer.period.unit)
             promotionTitle = "Welcome Offer!"
             promotionMessage = formattedOfferMessage(period: welcomeOffer.periodCount, description: description, price: welcomeOffer.displayPrice)
             promotionMessageAccessible = formattedOfferMessage(period: welcomeOffer.periodCount, description: description, price: priceAccessible)
@@ -523,6 +529,26 @@ class HomeViewModelImp: HomeViewModel {
     }
 
     private func formattedOfferMessage(period: Int, description: String, price: String) -> String {
-        "Get \(period) \(description) of CoinCurrently Pro for only \(price)!"
+        Localization.format(
+            "Get %@ %@ of CoinCurrently Pro for only %@!",
+            String(period),
+            description,
+            price
+        )
+    }
+
+    private func localizedPeriodUnit(count: Int, unit: Product.SubscriptionPeriod.Unit) -> String {
+        switch unit {
+        case .day:
+            return Localization.string(count == 1 ? "day" : "days")
+        case .week:
+            return Localization.string(count == 1 ? "week" : "weeks")
+        case .month:
+            return Localization.string(count == 1 ? "month" : "months")
+        case .year:
+            return Localization.string(count == 1 ? "year" : "years")
+        @unknown default:
+            return Localization.string(count == 1 ? "period" : "periods")
+        }
     }
 }

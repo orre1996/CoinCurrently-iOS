@@ -15,6 +15,7 @@ struct HomeScreen: View {
     @Environment(\.scenePhase) private var scenePhase
     
     @State private var viewModel = HomeViewModelImp()
+    @State private var appLanguage = AppLanguagePreference.stored
     @State private var id = UUID()
     @State private var colorBlindnessFilterEnabled: Bool = SettingsManager.shared.get(key: AppSettingKey.colorBlindnessFilter) ?? false
     @State private var animateHomeFilterSelection = false
@@ -146,6 +147,13 @@ struct HomeScreen: View {
         }
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
         .ignoresSafeArea(edges: [.leading, .trailing])
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+            Task {
+                await viewModel.setStartData()
+            }
+        }
         .task {
             await downloadData()
         }

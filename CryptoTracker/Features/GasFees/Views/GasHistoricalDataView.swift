@@ -61,21 +61,21 @@ struct GasHistoricalDataView: View {
         VStack(alignment: .leading, spacing: 0) {
             let currentStatus = getGasIndexString(indexValue: "\(value ?? 0)")
 
-            Text(title)
+            Text(Localization.string(title))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
-                .accessibilityLabel("Estimated cost \(title)")
+                .accessibilityLabel(Localization.format("Estimated cost %@", Localization.string(title)))
                 .padding(.bottom, 4)
             
             ShimmeringText(
-                text: "\(value?.formatCurrency(currency: CurrencyModel.empty, minDecimals: 3, maxDecimals: 3) ?? " ") Gwei",
+                text: "\(value?.formatCurrency(currency: CurrencyModel.empty, minDecimals: 3, maxDecimals: 3) ?? " ") \(Localization.string("Gwei"))",
                 isDownloading: value == nil
             )
             .font(.satoshiBold(16))
             .foregroundStyle(Color.onSurface)
             
             ShimmeringText(
-                text: currentStatus,
+                text: Localization.string(currentStatus),
                 isDownloading: value == nil
             )
             .font(.satoshiBold(12))

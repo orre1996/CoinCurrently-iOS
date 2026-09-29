@@ -172,6 +172,7 @@ struct SettingsScreen: View {
                 newOptionSelected: {
                     selectedLanguage = $0
                     SettingsManager.shared.set(data: selectedLanguage.storageValue, key: AppSettingKey.selectedLanguage)
+                    NotificationCenter.default.post(name: .appLanguageDidChange, object: nil)
                     AnalyticsManager.shared.log(
                         LanguageSelected(fromScreen: .settings, language: selectedLanguage.storageValue)
                     )

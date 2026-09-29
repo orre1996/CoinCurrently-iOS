@@ -74,9 +74,10 @@ struct MarketStatsView: View {
             navigateToGlobalMarket()
         }, label: {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Market Cap")
+                Text(Localization.string("Market Cap"))
                     .font(.satoshiMedium(14))
                     .foregroundStyle(Color.onSurfaceContainerDim)
+                    .multilineTextAlignment(.leading)
                 
                 ShimmeringText(
                     text: marketCap?.formatCurrency() ?? "00000",
@@ -96,8 +97,13 @@ struct MarketStatsView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         })
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("The global market cap is \(marketCapAccessible ?? ""), - 24 hour price change: \(changeDirection) \(accessibleChange) percent")
-        .accessibilityHint("Double tap for more global market stats")
+        .accessibilityLabel(Localization.format(
+            "The global market cap is %@, - 24 hour price change: %@ %@ percent",
+            marketCapAccessible ?? "",
+            changeDirection.isEmpty ? "" : Localization.string(changeDirection),
+            accessibleChange
+        ))
+        .accessibilityHint(Localization.string("Double tap for more global market stats"))
     }
     
     @ViewBuilder
@@ -108,9 +114,10 @@ struct MarketStatsView: View {
             navigateToGasFees()
         }, label: {
             VStack(alignment: .leading, spacing: 4) {
-                Text("ETH Gas Fee")
+                Text(Localization.string("ETH Gas Fee"))
                     .font(.satoshiMedium(14))
                     .foregroundStyle(Color.onSurfaceContainerDim)
+                    .multilineTextAlignment(.leading)
                 
                 ShimmeringText(
                     text: gasFee?.formatted(.number.precision(.fractionLength(2))) ?? "0000",
@@ -120,15 +127,18 @@ struct MarketStatsView: View {
                 .foregroundStyle(Color.onSurfaceContainer)
                 .lineLimit(1)
                 
-                Text("Gwei")
+                Text(Localization.string("Gwei"))
                     .font(.satoshiBold(12))
                     .foregroundStyle(Color.onSurfaceContainerDim)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         })
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("The current average ethereum gas fee is \(gasFee?.numberAccessible(maxPlaces: 2) ?? "") Gwei.")
-        .accessibilityHint("Double tap for more gas fee stats")
+        .accessibilityLabel(Localization.format(
+            "The current average ethereum gas fee is %@ Gwei.",
+            gasFee?.numberAccessible(maxPlaces: 2) ?? ""
+        ))
+        .accessibilityHint(Localization.string("Double tap for more gas fee stats"))
     }
     
     @ViewBuilder
@@ -140,9 +150,10 @@ struct MarketStatsView: View {
             navigateToFearGreed()
         }, label: {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Fear & Greed")
+                Text(Localization.string("Fear & Greed"))
                     .font(.satoshiMedium(14))
                     .foregroundStyle(Color.onSurfaceContainerDim)
+                    .multilineTextAlignment(.leading)
                 
                 ShimmeringText(
                     text: firstValue ?? "00",
@@ -156,8 +167,12 @@ struct MarketStatsView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         })
-        .accessibilityLabel("The current fear and greed index is \(firstValue ?? ""). \(classification)")
-        .accessibilityHint("Double tap for more fear and greed stats")
+        .accessibilityLabel(Localization.format(
+            "The current fear and greed index is %@. %@",
+            firstValue ?? "",
+            classification.isEmpty ? "" : Localization.string(classification),
+        ))
+        .accessibilityHint(Localization.string("Double tap for more fear and greed stats"))
     }
     
     @ViewBuilder

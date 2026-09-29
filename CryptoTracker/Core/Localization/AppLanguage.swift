@@ -49,6 +49,8 @@ enum AppLanguage: String, CaseIterable, Identifiable, Equatable {
             return Locale(identifier: "zh-Hans")
         case .chineseTraditional:
             return Locale(identifier: "zh-Hant")
+        case .norwegian:
+            return Locale(identifier: "nb")
         default:
             return Locale(identifier: rawValue)
         }
@@ -240,4 +242,8 @@ enum AppLanguagePreference: Equatable {
         let stored: String? = SettingsManager.shared.get(key: AppSettingKey.selectedLanguage)
         return from(storage: stored)
     }
+}
+
+extension Notification.Name {
+    static let appLanguageDidChange = Notification.Name("appLanguageDidChange")
 }

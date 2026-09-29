@@ -103,11 +103,16 @@ class FearGreedViewModelImp: FearGreedViewModel, ChartHoverHosting {
     
     func getHistoricTextAccessible(at index: Int, value: String) -> String {
         if index == 0 {
-            return "The fear and greed index is currently \(value) out of 100"
-        } else {
-            let currentTimeframe = historicTimeframes[safely: index]?.1 ?? ""
-            return "The fear and greed index was \(value) out of 100 \(index == 0 ? "" : currentTimeframe)"
+            return Localization.format("The fear and greed index is currently %@ out of 100", value)
         }
+        
+        let timeframeKey = historicTimeframes[safely: index]?.1 ?? ""
+        let timeframe = timeframeKey.isEmpty ? "" : Localization.string(timeframeKey)
+        return Localization.format(
+            "The fear and greed index was %@ out of 100 %@",
+            value,
+            timeframe
+        )
     }
     
     // MARK: - Private functions

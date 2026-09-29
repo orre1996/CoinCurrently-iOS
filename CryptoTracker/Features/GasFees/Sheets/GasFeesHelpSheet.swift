@@ -13,6 +13,7 @@ struct GasFeesHelpSheet: View {
     
     @State private var headerHeight: CGFloat = 0
     @State private var contentHeight: CGFloat = 0
+    @State private var appLanguage = AppLanguagePreference.stored
     
     @ScaledMetric private var scale: CGFloat = 1
     
@@ -52,8 +53,8 @@ struct GasFeesHelpSheet: View {
     var body: some View {
         VStack(spacing: 0) {
             DragHandle(
-                title: "ETH Gas Fee",
-                accessibilityTitle: "Ethereum gas fee",
+                title: Localization.string("ETH Gas Fee"),
+                accessibilityTitle: Localization.string("Ethereum gas fee"),
                 leadingIcon: .info
             )
             .readSize {
@@ -86,6 +87,10 @@ struct GasFeesHelpSheet: View {
         }
         .presentationDetents([.height(max(1, headerHeight + contentHeight - safeAreaInsets.resolvedBottom))])
         .presentationBackground(Color.surfaceContainerLow)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .ignoresSafeArea(edges: .bottom)
     }
     
@@ -97,13 +102,13 @@ struct GasFeesHelpSheet: View {
                     .cornerRadius(4)
                     .accessibilityHidden(true)
                 
-                ((Text(explanation.title)
+                ((Text(Localization.string(explanation.title))
                     .font(.satoshiBold(16))
                     .foregroundStyle(Color.onSurface))
                  
                 +
                  
-                (Text(explanation.percent)
+                (Text(Localization.string(explanation.percent))
                     .font(.satoshiBold(16))
                     .foregroundStyle(Color.onSurfaceDimmer)))
                 .accessibilityElement(children: .ignore)
@@ -113,7 +118,7 @@ struct GasFeesHelpSheet: View {
                 ))
             }
             
-            Text(explanation.body)
+            Text(Localization.string(explanation.body))
                 .font(.satoshiRegular(16))
                 .foregroundStyle(Color.onSurfaceDim)
         }
@@ -121,15 +126,23 @@ struct GasFeesHelpSheet: View {
     }
     
     private func titlePercentAccessibilityLabel(title: String, percent: String) -> String {
-        " \(title.lowercased()), \(accessiblePercent(percent))"
+        Localization.format("%@, %@", Localization.string(title), accessiblePercent(percent))
     }
     
     private func accessiblePercent(_ percent: String) -> String {
-        percent
-            .replacingOccurrences(of: "(", with: "")
-            .replacingOccurrences(of: ")", with: "")
-            .replacingOccurrences(of: "-", with: " to ")
-            .replacingOccurrences(of: "+", with: " or more ")
-            .trimmingCharacters(in: .whitespaces)
+        switch percent {
+        case " (0-3 Gwei)":
+            return Localization.string("0 to 3 Gwei")
+        case " (3.1-10 Gwei)":
+            return Localization.string("3.1 to 10 Gwei")
+        case " (10.1-30 Gwei)":
+            return Localization.string("10.1 to 30 Gwei")
+        case " (30.1-80 Gwei)":
+            return Localization.string("30.1 to 80 Gwei")
+        case " (80+ Gwei)":
+            return Localization.string("80 or more Gwei")
+        default:
+            return percent
+        }
     }
 }

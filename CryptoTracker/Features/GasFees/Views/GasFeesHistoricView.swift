@@ -17,10 +17,10 @@ struct GasFeesHistoricView: View {
         
         VStack(spacing: 0) {
             MinimumTextSize(
-                text: "Current Average",
+                text: Localization.string("Current Average"),
                 alignment: .top,
             ) {
-                Text(timeframe)
+                Text(Localization.string(timeframe))
             }
             .font(.satoshiBold(12))
             .foregroundStyle(Color.onSurfaceDimmer)
@@ -38,10 +38,10 @@ struct GasFeesHistoricView: View {
             .foregroundStyle(Color.onSurface)
             
             MinimumTextSize(
-                text: "Very High"
+                text: Localization.string("Very High")
             ) {
                 ShimmeringText(
-                    text: status ?? "000000",
+                    text: status.map { Localization.string($0) } ?? "000000",
                     isDownloading: indexValue == nil
                 )
             }

@@ -27,10 +27,10 @@ struct ToplistFilterCarouselView: View {
                     ForEach(filters, id: \.self) { filter in
                         let index = filters.firstIndex(of: filter) ?? 0
                         let isSelected = filter.matchesForSelection(selectedFilter)
-                        let title = isSelected ? selectedFilter.rawValue : filter.rawValue
+                        let sourceTitle = isSelected ? selectedFilter.rawValue : filter.rawValue
                         
                         carouselChip(
-                            title: title,
+                            title: Localization.string(sourceTitle),
                             isSelected: isSelected,
                             filterPressed: {
                                 newFilterSelected(filter)
@@ -38,7 +38,12 @@ struct ToplistFilterCarouselView: View {
                         )
                         .id(index)
                         .accessibilityHidden(accessibilityVoiceOverEnabled)
-                        .accessibilityLabel("Category \(index + 1) of \(filters.count), \(accessibilityTitle(for: title)).")
+                        .accessibilityLabel(Localization.format(
+                            "Category %@ of %@, %@.",
+                            String(index + 1),
+                            String(filters.count),
+                            accessibilityTitle(for: sourceTitle)
+                        ))
                         .accessibilityAddTraits(isSelected ? [.isSelected] : [])
                     }
                 }
@@ -71,7 +76,7 @@ struct ToplistFilterCarouselView: View {
         .if(accessibilityVoiceOverEnabled) { view in
             view
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Category filter. Swipe up or down to change category.")
+                .accessibilityLabel(Localization.string("Category filter. Swipe up or down to change category."))
                 .accessibilityValue(selectedAccessibilityValue)
                 .accessibilityAdjustableAction { direction in
                     switch direction {
@@ -98,10 +103,15 @@ struct ToplistFilterCarouselView: View {
     private var selectedAccessibilityValue: String {
         let filter = filters[safely: voiceOverFilterIndex] ?? selectedFilter
         let title = filter.matchesForSelection(selectedFilter) ? selectedFilter.rawValue : filter.rawValue
-        let category = "Category \(voiceOverFilterIndex + 1) of \(filters.count), \(accessibilityTitle(for: title))."
+        let category = Localization.format(
+            "Category %@ of %@, %@.",
+            String(voiceOverFilterIndex + 1),
+            String(filters.count),
+            accessibilityTitle(for: title)
+        )
         
         if requiresVoiceOverActivation(for: filter) {
-            return "\(category) Double tap to select this Pro feature."
+            return "\(category) \(Localization.string("Double tap to select this Pro feature."))"
         }
         
         return category
@@ -142,9 +152,10 @@ struct ToplistFilterCarouselView: View {
     
     private func accessibilityTitle(for title: String) -> String {
         if title.contains("(Pro)") {
-            return title.replacingOccurrences(of: " (Pro)", with: ", Pro feature")
+            let base = title.replacingOccurrences(of: " (Pro)", with: "")
+            return Localization.format("%@, Pro feature", Localization.string(base))
         }
-        return title
+        return Localization.string(title)
     }
     
     private func carouselChip(

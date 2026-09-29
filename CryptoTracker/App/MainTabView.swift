@@ -10,6 +10,7 @@ import SwiftUI
 struct MainTabView: View {
     @Environment(NavigationViewModel.self) private var viewModel
     @Environment(\.safeAreaInsets) private var safeAreaInsets
+    @State private var appLanguage = AppLanguagePreference.stored
     
     var binding: Binding<Int> {
         Binding(
@@ -20,26 +21,33 @@ struct MainTabView: View {
     
     var body: some View {
         TabView(selection: binding) {
-            Tab("Home", image: .homeTab, value: 0) {
+            Tab(tabTitle("Home"), image: .homeTab, value: 0) {
                 HomeScreen()
             }
             
-            Tab("Portfolio", image: .portfolioTab, value: 1) {
+            Tab(tabTitle("Portfolio"), image: .portfolioTab, value: 1) {
                 PortfolioScreen()
             }
             
-            Tab("Market", image: .marketTab, value: 2) {
+            Tab(tabTitle("Market"), image: .marketTab, value: 2) {
                 MarketScreen()
             }
             
-            Tab("News", image: .newsTab, value: 3) {
+            Tab(tabTitle("News"), image: .newsTab, value: 3) {
                 NewsScreen()
             }
             
-            Tab("Settings", image: .settingsTab, value: 4) {
+            Tab(tabTitle("Settings"), image: .settingsTab, value: 4) {
                 SettingsScreen()
             }
         }
         .accentColor(.onSurface)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
+    }
+
+    private func tabTitle(_ key: String) -> String {
+        Localization.string(key, locale: appLanguage.resolve().locale)
     }
 }

@@ -20,7 +20,7 @@ struct MarketShareView: View {
             circleView
 
             ShimmeringText(
-                text: coin?.symbol.uppercased() ?? "000",
+                text: displaySymbol,
                 isDownloading: coin == nil
             )
             .foregroundStyle(Color.onSurface)
@@ -49,12 +49,23 @@ struct MarketShareView: View {
         ((coin?.percentage ?? 0) * 100).roundTo(places: 2)
     }
     
+    private var displaySymbol: String {
+        guard let symbol = coin?.symbol.uppercased() else { return "000" }
+        return symbol == "OTHER" ? Localization.string("Other") : symbol
+    }
+    
     private var accessibilityLabelText: String {
         let symbol = coin?.symbol ?? ""
-        let accessibleSymbol = symbol == "OTHER" ? symbol : symbol.symbolAccessible
+        let accessibleSymbol = symbol.uppercased() == "OTHER" ? Localization.string("Other") : symbol.symbolAccessible
         let accessibleChange = roundedChange.numberAccessible(maxPlaces: 2)
         
-        return "Currency \(listIndex + 1) of \(listCount): \(accessibleSymbol). Market share: \(accessibleChange) percent"
+        return Localization.format(
+            "Currency %@ of %@: %@. Market share: %@ percent",
+            String(listIndex + 1),
+            String(listCount),
+            accessibleSymbol,
+            accessibleChange
+        )
     }
     
     private var circleView: some View {

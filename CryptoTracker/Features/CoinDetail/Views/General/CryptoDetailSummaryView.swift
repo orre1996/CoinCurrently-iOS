@@ -81,7 +81,7 @@ struct CryptoDetailSummaryView: View {
         let formattedChangePercent = roundedChange.numberAccessible(maxPlaces: 2)
         let changeDirection = roundedChange >= 0 ? "up" : "down"
         
-        if changeMetricLabel == "volume" || changeMetricLabel == "holdings" {
+        if changeMetricLabel == "volume" || changeMetricLabel == "holdings" || changeMetricLabel == "price" {
             let valueText = currentPrice?.formatCurrency(threshold: accessibilityFormattingThreshold, currency: currency, accessible: true) ?? ""
             let direction = Localization.string(roundedChange >= 0 ? "Up" : "Down")
             let period = Localization.string(accessibilityChangePeriod)

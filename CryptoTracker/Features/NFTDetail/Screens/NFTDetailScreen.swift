@@ -135,7 +135,9 @@ struct NFTDetailScreen: View {
                                 prices: viewModel.getPrices(),
                                 timeChart: viewModel.selectedTimeFrame,
                                 currency: viewModel.selectedCurrency,
-                                trailingPadding: biggestChartValue.width
+                                trailingPadding: biggestChartValue.width,
+                                chartTitle: "Floor Price",
+                                yAxisTitle: "Floor Price"
                             )
                             .padding(.horizontal, 16)
                             

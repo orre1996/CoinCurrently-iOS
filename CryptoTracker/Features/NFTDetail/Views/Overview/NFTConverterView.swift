@@ -39,7 +39,7 @@ struct NFTConverterView: View {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 
-                Button("Close") {
+                Button(Localization.string("Close")) {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
                 .accessibilityLabel(Localization.string("Close keyboard"))
@@ -66,7 +66,12 @@ struct NFTConverterView: View {
         HStack(spacing: 8) {
             NumericInputField(
                 input: $coinAmount,
-                accessibilityValue: "\(coinAmount?.formatted() ?? "") \(currentCurrency?.name ?? "") equals \(valueAmount?.formatCurrency(threshold: FormattingThreshold.none, accessible: true) ?? "")",
+                accessibilityValue: Localization.format(
+                    "%1$@ %2$@ equals %3$@",
+                    coinAmount?.formatted() ?? "",
+                    currentCurrency?.name ?? "",
+                    valueAmount?.formatCurrency(threshold: FormattingThreshold.none, accessible: true) ?? ""
+                ),
                 trailingView: {
                     symbolView
                 },
@@ -105,7 +110,12 @@ struct NFTConverterView: View {
         HStack(spacing: 8) {
             NumericInputField(
                 input: $valueAmount,
-                accessibilityValue: "\(valueAmount?.formatCurrency(threshold: FormattingThreshold.none, accessible: true) ?? "") equals \(coinAmount?.formatted() ?? "") \(currentCurrency?.name ?? "")",
+                accessibilityValue: Localization.format(
+                    "%1$@ equals %2$@ %3$@",
+                    valueAmount?.formatCurrency(threshold: FormattingThreshold.none, accessible: true) ?? "",
+                    coinAmount?.formatted() ?? "",
+                    currentCurrency?.name ?? ""
+                ),
                 trailingView: {
                     currentCurrencyButton
                 },

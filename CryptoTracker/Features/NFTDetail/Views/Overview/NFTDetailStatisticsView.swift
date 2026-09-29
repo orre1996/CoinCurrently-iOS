@@ -55,7 +55,7 @@ struct NFTDetailStatisticsView: View {
         let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
         
         VStack(alignment: .leading, spacing: 12) {
-            Text(timeChart.rangeTitle)
+            Text(Localization.string(timeChart.rangeTitle))
                 .foregroundStyle(Color.onSurfaceContainerDim)
                 .font(.satoshiBold(12))
             
@@ -132,8 +132,8 @@ struct NFTDetailStatisticsView: View {
             .accessibilityElement(children: .combine)
             .accessibilityLabel(
                 nftDetailInfo?.market_cap_rank == nil
-                    ? "Market Cap Rank, No rank"
-                    : "Market Cap Rank, \(nftDetailInfo?.market_cap_rank ?? 0)"
+                    ? Localization.format("%@, %@", Localization.string("Market Cap Rank"), Localization.string("No rank"))
+                    : Localization.format("%@, %@", Localization.string("Market Cap Rank"), "\(nftDetailInfo?.market_cap_rank ?? 0)")
             )
             
             if !isHorizontal {
@@ -252,7 +252,7 @@ struct NFTDetailStatisticsView: View {
                 let decimals = percent?.changePercentDecimalPoints ?? 2
                 let roundedChange = percent?.roundTo(places: decimals)
                 
-                let formattedUniqueOwners = uniqueOwners?.formatted(.number.precision(.fractionLength(0))) ?? "Unknown"
+                let formattedUniqueOwners = uniqueOwners?.formatted(.number.precision(.fractionLength(0))) ?? Localization.string("Unknown")
                 let formattedPercentOwners = abs(roundedChange ?? 0).formatted(.number.precision(.fractionLength(decimals)))
                 
                 ShimmeringText(
@@ -275,7 +275,7 @@ struct NFTDetailStatisticsView: View {
                     .font(.satoshiBold(12))
                 
                 ShimmeringText(
-                    text: totalSupply?.formatted(.number.precision(.fractionLength(0))) ?? "Unknown",
+                    text: totalSupply?.formatted(.number.precision(.fractionLength(0))) ?? Localization.string("Unknown"),
                     isDownloading: nftDetailInfo?.total_supply == nil
                 )
                 .foregroundStyle(Color.onSurface)

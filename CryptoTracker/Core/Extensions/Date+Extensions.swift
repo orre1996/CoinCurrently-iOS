@@ -121,8 +121,15 @@ extension Date {
     
     var daysAgo: String {
         let diff = Calendar.current.dateComponents([.day], from: self, to: Date()).day ?? 0
+        #if IS_APP
+        if diff == 1 {
+            return Localization.format("%d day", diff)
+        }
+        return Localization.format("%d days", diff)
+        #else
         let formattedDiff = diff.formatted(.number)
         return diff == 1 ? "\(formattedDiff) day" : "\(formattedDiff) days"
+        #endif
     }
     
     var nearestHour: Date {

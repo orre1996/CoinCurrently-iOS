@@ -14,6 +14,7 @@ struct DerivativeDetailSheet: View {
     @Environment(\.sizeCategory) private var category
     
     @ScaledMetric private var scale: CGFloat = 1
+    @State private var appLanguage = AppLanguagePreference.stored
     
     @State private var headerHeight: CGFloat = 0
     @State private var contentHeight: CGFloat = 0
@@ -141,11 +142,11 @@ struct DerivativeDetailSheet: View {
                     AdaptiveStack(isHorizontal: isHorizontal, spacing: 16, horizontalAlignment: .leading, verticalAlignment: .top) {
                         lastTradedView
                         
-                        if !isHorizontal && derivativeDetail.contract_type == "Future" {
+                        if !isHorizontal && isFutureContract {
                             Separator()
                         }
                         
-                        if derivativeDetail.contract_type == "Future" {
+                        if isFutureContract {
                             expiryView
                         }
                     }
@@ -183,6 +184,10 @@ struct DerivativeDetailSheet: View {
         }
         .presentationDetents([.height(max(1, headerHeight + contentHeight + buttonsHeight + 40 - safeAreaInsets.resolvedBottom))])
         .presentationBackground(Color.surfaceContainerLow)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .ignoresSafeArea(edges: .bottom)
     }
     
@@ -339,13 +344,29 @@ struct DerivativeDetailSheet: View {
         )
     }
     
+    private var isFutureContract: Bool {
+        let type = derivativeDetail.contract_type?.lowercased()
+        return type == "future" || type == "futures"
+    }
+
+    private var contractTypeText: String {
+        switch derivativeDetail.contract_type?.lowercased() {
+        case "perpetual":
+            Localization.string("Perpetual")
+        case "future", "futures":
+            Localization.string("Futures")
+        default:
+            derivativeDetail.contract_type?.capitalized ?? ""
+        }
+    }
+
     private var contractTypeView: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(Localization.string("Contract Type"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
-            Text(derivativeDetail.contract_type?.capitalized ?? "")
+            Text(contractTypeText)
                 .foregroundStyle(Color.onSurface)
                 .font(.satoshiBold(16))
         }

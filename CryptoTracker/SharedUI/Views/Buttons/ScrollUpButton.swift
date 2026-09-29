@@ -30,5 +30,6 @@ struct ScrollUpButton: View {
         .opacity(isVisible ? 1 : 0)
         .animation(.default, value: isVisible)
         .allowsHitTesting(isVisible)
+        .accessibilityLabel(Localization.string("Scroll to top"))
     }
 }

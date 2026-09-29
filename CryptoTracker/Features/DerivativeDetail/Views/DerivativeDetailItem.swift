@@ -143,7 +143,7 @@ struct DerivativeDetailItem: View {
     
     private var openInterestAccessibilityLabel: String {
         let openInterest = (derivativeDetail?.open_interest_usd ?? 0) * (multiplier ?? 0)
-        return "Open interest: \(openInterest.formatCurrency(accessible: true))"
+        return Localization.format("Open interest: %@", openInterest.formatCurrency(accessible: true))
     }
     
     @ViewBuilder

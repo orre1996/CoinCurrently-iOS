@@ -116,7 +116,9 @@ struct ExchangeDetailScreen: View {
                                     timeStamps: viewModel.getTimestamps(),
                                     prices: viewModel.getPrices(),
                                     timeChart: viewModel.selectedTimeFrame,
-                                    trailingPadding: biggestChartValue.width
+                                    trailingPadding: biggestChartValue.width,
+                                    chartTitle: "24h Volume",
+                                    yAxisTitle: "24h Volume"
                                 )
                                 .padding(.horizontal, 16)
                                 

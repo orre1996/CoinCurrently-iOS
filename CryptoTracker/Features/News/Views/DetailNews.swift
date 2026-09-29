@@ -22,8 +22,11 @@ struct DetailNews: View {
     var body: some View {
         if showError {
             EmptyContent(
-                title: "No news yet",
-                subTitle: "When news about this \(errorMessage) appears, it’ll show up here."
+                title: Localization.string("No news yet"),
+                subTitle: Localization.format(
+                    "When news about this %@ appears, it'll show up here.",
+                    Localization.string(errorMessage)
+                )
             )
             .padding(
                 EdgeInsets(

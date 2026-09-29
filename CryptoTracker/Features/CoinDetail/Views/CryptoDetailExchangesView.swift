@@ -26,8 +26,8 @@ struct CryptoDetailExchangesView: View {
     var body: some View {
         if (items == nil || !(items?.isEmpty ?? false)) {
             SecondaryButton(
-                text: selectedSortOption.title,
-                accessibilityLabel: "Sort, currently selected: \(selectedSortOption.accessibilityTitle)",
+                text: Localization.string(selectedSortOption.title),
+                accessibilityLabel: Localization.format("Sort, currently selected: %@", Localization.string(selectedSortOption.accessibilityTitle)),
                 icon: .sort,
                 action: {
                     AnalyticsManager.shared.log(
@@ -54,8 +54,11 @@ struct CryptoDetailExchangesView: View {
             
             if items.isEmpty {
                 EmptyContent(
-                    title: "No markets yet",
-                    subTitle: "When this \(errorMessage) is added to a market, it'll show up here.",
+                    title: Localization.string("No markets yet"),
+                    subTitle: Localization.format(
+                        "When this %@ is added to a market, it'll show up here.",
+                        Localization.string(errorMessage)
+                    ),
                 )
                 .padding(
                     EdgeInsets(
@@ -83,19 +86,19 @@ struct CryptoDetailExchangesView: View {
         let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
         
         HStack(spacing: 16) {
-            Text(isHorizontal ? headerLabel : "\(headerLabel) / Price")
+            Text(isHorizontal ? Localization.string(headerLabel) : Localization.format("%@ / %@", Localization.string(headerLabel), Localization.string("Price")))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             if isHorizontal {
                 if showVolume {
-                    Text("Price")
+                    Text(Localization.string("Price"))
                     
-                    Text("24h Volume")
+                    Text(Localization.string("24h Volume"))
                 } else {
-                    Text("Price")
+                    Text(Localization.string("Price"))
                 }
             } else if showVolume {
-                Text("24h Volume")
+                Text(Localization.string("24h Volume"))
             }
         }
         .lineLimit(1)
@@ -198,8 +201,8 @@ struct CryptoDetailExchangeRow: View {
         )
         .frame(minHeight: 48)
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("\(headerLabel) \(item?.name ?? "")")
-        .accessibilityHint("Double tap for details. Long press for more options")
+        .accessibilityLabel(Localization.format("%@ %@", Localization.string(headerLabel), item?.name ?? ""))
+        .accessibilityHint(Localization.string("Double tap for details. Long press for more options"))
         .onTapGesture {
             guard let urlString = item?.tradeUrl, !urlString.isEmpty, let url = URL(string: urlString) else {
                 return
@@ -265,7 +268,7 @@ struct CryptoDetailExchangeRow: View {
         .foregroundStyle(Color.onSurface)
         .font(.satoshiBold(16))
         .fixedSize(horizontal: false, vertical: true)
-        .accessibilityLabel("Last price: \(item?.price?.currencyAccessible(currency: priceCurrency) ?? "000000000")")
+        .accessibilityLabel(Localization.format("Last price: %@", item?.price?.currencyAccessible(currency: priceCurrency) ?? "000000000"))
         .multilineTextAlignment(.trailing)
     }
     
@@ -287,7 +290,7 @@ struct CryptoDetailExchangeRow: View {
         let formattedVolume = item?.volume?.formatCurrency(currency: currency)
         
         MinimumTextSize(
-            text: "24h Volume",
+            text: Localization.string("24h Volume"),
             alignment: .trailing
         ) {
             ShimmeringText(
@@ -299,7 +302,7 @@ struct CryptoDetailExchangeRow: View {
         .foregroundStyle(Color.onSurface)
         .font(.satoshiMedium(14))
         .fixedSize(horizontal: false, vertical: true)
-        .accessibilityLabel("24 hour volume: \(item?.volume?.formatCurrency(currency: currency, accessible: true) ?? "000000000")")
+        .accessibilityLabel(Localization.format("24 hour volume: %@", item?.volume?.formatCurrency(currency: currency, accessible: true) ?? "000000000"))
         .multilineTextAlignment(.trailing)
     }
 }

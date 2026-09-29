@@ -83,7 +83,15 @@ struct CryptoDetailSummaryView: View {
         
         if changeMetricLabel == "volume" {
             let volumeText = currentPrice?.formatCurrency(threshold: accessibilityFormattingThreshold, currency: currency, accessible: true) ?? ""
-            return "\(name)\(accessibilityCountryText), \(valueAccessibilityLabel): \(volumeText). \(changeDirection) \(formattedChangePercent) percent \(accessibilityChangePeriod)"
+            return Localization.format(
+                "%1$@, %2$@: %3$@. %4$@ %5$@ percent %6$@",
+                name,
+                Localization.string(valueAccessibilityLabel),
+                volumeText,
+                Localization.string(roundedChange >= 0 ? "Up" : "Down"),
+                formattedChangePercent,
+                Localization.string(accessibilityChangePeriod)
+            )
         }
         
         let currentPriceText = ", \(valueAccessibilityLabel): \(currentPrice?.formatCurrency(threshold: accessibilityFormattingThreshold, currency: currency, accessible: true) ?? "")."

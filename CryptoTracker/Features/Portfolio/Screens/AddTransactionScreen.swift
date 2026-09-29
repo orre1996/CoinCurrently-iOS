@@ -21,6 +21,7 @@ struct AddTransactionScreen: View {
     @State private var activeDatePicker: DateRangePickerMode?
     @State private var textfieldHeight: CGFloat = 48
     @State private var isSelectingCurrency = false
+    @State private var appLanguage = AppLanguagePreference.stored
     
     init(
         transactionType: PortfolioTransactionType,
@@ -69,6 +70,10 @@ struct AddTransactionScreen: View {
             }
         }
         .ignoresSafeArea(edges: .bottom)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -80,10 +85,10 @@ struct AddTransactionScreen: View {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 
-                Button("Close") {
+                Button(Localization.string("Close")) {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
-                .accessibilityLabel("Close keyboard")
+                .accessibilityLabel(Localization.string("Close keyboard"))
             }
         }
         .task {
@@ -127,12 +132,12 @@ struct AddTransactionScreen: View {
     }
 
     private var navigationTitleText: String {
-        "\(viewModel.transactionType.rawValue) \(viewModel.currencyDetail?.symbol?.uppercased() ?? "")"
+        "\(Localization.string(viewModel.transactionType.rawValue)) \(viewModel.currencyDetail?.symbol?.uppercased() ?? "")"
     }
 
     private var navigationTitleAccessibilityLabel: String {
         let coinName = viewModel.currencyDetail?.name ?? viewModel.currencyDetail?.symbol?.uppercased() ?? ""
-        return "\(viewModel.transactionType.rawValue) \(coinName)"
+        return "\(Localization.string(viewModel.transactionType.rawValue)) \(coinName)"
     }
 
     @ViewBuilder
@@ -140,7 +145,7 @@ struct AddTransactionScreen: View {
         let accessibleAmount = viewModel.amount?.numberAccessible() ?? ""
         
         VStack(alignment: .leading, spacing: 8) {
-            Text("Amount")
+            Text(Localization.string("Amount"))
                 .font(.satoshiMedium(14))
                 .foregroundStyle(Color.onSurfaceDim)
                 .fixedSize(horizontal: false, vertical: true)
@@ -148,8 +153,13 @@ struct AddTransactionScreen: View {
             
             NumericInputField(
                 input: $viewModel.amount,
-                placeholder: "Enter Amount",
-                accessibilityValue: "Amount: \(viewModel.amount == nil ? "" : "\(accessibleAmount)"). Textfield",
+                placeholder: Localization.string("Enter Amount"),
+                accessibilityValue: Localization.format(
+                    "%@. Textfield",
+                    viewModel.amount == nil
+                        ? Localization.string("Amount")
+                        : Localization.format("Amount: %@", accessibleAmount)
+                ),
                 trailingView: {
                     Text(viewModel.currencyDetail?.symbol?.uppercased() ?? "")
                         .font(.satoshiBold(18))
@@ -166,10 +176,16 @@ struct AddTransactionScreen: View {
     
     @ViewBuilder
     private var pricePerCoinField: some View {
-        let accessiblePricePerCoin = "Unit Price: \((viewModel.averageCost == nil ? viewModel.currentPrice : viewModel.averageCost)?.currencyAccessible(currency: viewModel.selectedCurrency) ?? ""). Textfield"
+        let accessiblePricePerCoin = Localization.format(
+            "%@. Textfield",
+            Localization.format(
+                "Unit Price: %@",
+                (viewModel.averageCost == nil ? viewModel.currentPrice : viewModel.averageCost)?.currencyAccessible(currency: viewModel.selectedCurrency) ?? ""
+            )
+        )
         
         VStack(alignment: .leading, spacing: 8) {
-            Text("Unit Price")
+            Text(Localization.string("Unit Price"))
                 .font(.satoshiMedium(14))
                 .foregroundStyle(Color.onSurfaceDim)
                 .fixedSize(horizontal: false, vertical: true)
@@ -201,10 +217,15 @@ struct AddTransactionScreen: View {
     @ViewBuilder
     private var transactionFeeField: some View {
         let selectedCurrency = viewModel.selectedCurrency
-        let accessibleFees = "Transaction fee: \(viewModel.fees == nil ? "" : "\(viewModel.fees?.currencyAccessible(currency: selectedCurrency) ?? "")"). Textfield"
+        let accessibleFees = Localization.format(
+            "%@. Textfield",
+            viewModel.fees == nil
+                ? Localization.string("Fees")
+                : Localization.format("Transaction fee: %@", viewModel.fees?.currencyAccessible(currency: selectedCurrency) ?? "")
+        )
         
         VStack(alignment: .leading, spacing: 8) {
-            Text("Fees")
+            Text(Localization.string("Fees"))
                 .font(.satoshiMedium(14))
                 .foregroundStyle(Color.onSurfaceDim)
                 .fixedSize(horizontal: false, vertical: true)
@@ -212,7 +233,7 @@ struct AddTransactionScreen: View {
             
             NumericInputField(
                 input: $viewModel.fees,
-                placeholder: "Enter Fees",
+                placeholder: Localization.string("Enter Fees"),
                 currency: viewModel.selectedCurrency,
                 accessibilityValue: accessibleFees,
                 inputDidChange: { }
@@ -232,7 +253,7 @@ struct AddTransactionScreen: View {
     @ViewBuilder
     private var dateField: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Date")
+            Text(Localization.string("Date"))
                 .lineLimit(1)
                 .font(.satoshiMedium(14))
                 .foregroundStyle(Color.onSurfaceDim)
@@ -256,16 +277,16 @@ struct AddTransactionScreen: View {
                 activeDatePicker = .date
             }
             .fixedSize(horizontal: false, vertical: true)
-            .accessibilityLabel("Date: \(viewModel.date.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day().year()))")
+            .accessibilityLabel(Localization.format("Date: %@", viewModel.date.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day().year())))
             .accessibilityAddTraits(.isButton)
-            .accessibilityHint("Double tap to change date")
+            .accessibilityHint(Localization.string("Double tap to change date"))
         }
     }
     
     @ViewBuilder
     private var timeField: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Time")
+            Text(Localization.string("Time"))
                 .lineLimit(1)
                 .font(.satoshiMedium(14))
                 .foregroundStyle(Color.onSurfaceDim)
@@ -290,9 +311,9 @@ struct AddTransactionScreen: View {
                 activeDatePicker = .time
             }
             .fixedSize(horizontal: false, vertical: true)
-            .accessibilityLabel("Time: \(viewModel.date.formatted(date: .omitted, time: .shortened))")
+            .accessibilityLabel(Localization.format("Time: %@", viewModel.date.formatted(date: .omitted, time: .shortened)))
             .accessibilityAddTraits(.isButton)
-            .accessibilityHint("Double tap to change time")
+            .accessibilityHint(Localization.string("Double tap to change time"))
             .background(Color.black.opacity(0.0001))
         }
         .accessibilityElement(children: .contain)
@@ -302,7 +323,7 @@ struct AddTransactionScreen: View {
     @ViewBuilder
     private var noteField: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Notes")
+            Text(Localization.string("Notes"))
                 .font(.satoshiMedium(14))
                 .foregroundStyle(Color.onSurfaceDim)
                 .fixedSize(horizontal: false, vertical: true)
@@ -310,7 +331,7 @@ struct AddTransactionScreen: View {
             
             ZStack {
                 HStack(spacing: 0) {
-                    Text("Enter notes (Optional)")
+                    Text(Localization.string("Enter notes (Optional)"))
                         .font(.satoshiRegular(16))
                         .foregroundStyle(Color.onSurfaceDimmer)
                         .opacity(viewModel.note.isEmpty ? 1 : 0)
@@ -323,8 +344,13 @@ struct AddTransactionScreen: View {
                 UITextViewWrapper(text: $viewModel.note, calculatedHeight: .constant(132))
                     .padding(.leading, -4)
                     .accessibilityElement(children: .ignore)
-                    .accessibilityHint("Double tap to edit")
-                    .accessibilityLabel("\(viewModel.note.isEmpty ? "Input notes here, optional" : "Note: \(viewModel.note)"). Textfield")
+                    .accessibilityHint(Localization.string("Double tap to edit"))
+                    .accessibilityLabel(Localization.format(
+                        "%@. Textfield",
+                        viewModel.note.isEmpty
+                            ? Localization.string("Input notes here, optional")
+                            : Localization.format("Note: %@", viewModel.note)
+                    ))
             }
             .frame(maxWidth: .infinity, minHeight: 132, alignment: .topLeading)
             .background(Color.clear)
@@ -334,7 +360,7 @@ struct AddTransactionScreen: View {
             .cornerRadius(8)
             .modifier(BorderModifier(color: [viewModel.note.count <= 200 ? Color.outlineVariant : Color.trendDown]))
             
-            Text("\(viewModel.note.count) / 200 characters")
+            Text(Localization.format("%@ / 200 characters", "\(viewModel.note.count)"))
                 .font(.satoshiMedium(14))
                 .foregroundColor(viewModel.note.count <= 200 ? .onSurfaceDimmer : .trendDown)
                 .fixedSize(horizontal: false, vertical: true)
@@ -345,7 +371,7 @@ struct AddTransactionScreen: View {
     private var actionsView: some View {
         HStack(spacing: 8) {
             SecondaryButton(
-                text: "Cancel",
+                text: Localization.string("Cancel"),
                 fullWidth: true,
                 action: {
                     dismiss()
@@ -354,7 +380,7 @@ struct AddTransactionScreen: View {
             .frame(maxWidth: 400)
             
             PrimaryButton(
-                text: "Save",
+                text: Localization.string("Save"),
                 isEnabled: viewModel.isInputValid,
                 fullWidth: true
             ) {
@@ -364,7 +390,10 @@ struct AddTransactionScreen: View {
                 }
             }
             .frame(maxWidth: 400)
-            .accessibilityLabel("Save: \(viewModel.isInputValid ? "" : "Disabled because invalid or no amount is entered")")
+            .accessibilityLabel(Localization.format(
+                "Save: %@",
+                viewModel.isInputValid ? "" : Localization.string("Disabled because invalid or no amount is entered")
+            ))
         }
         .animation(.none, value: viewModel.isInputValid)
         .padding(

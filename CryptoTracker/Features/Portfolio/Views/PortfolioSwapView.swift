@@ -38,7 +38,7 @@ struct PortfolioSwapView: View {
     private var accessibilityLabelText: String {
         var components: [String] = []
         
-        components.append("Transaction \(index + 1) of \(totalCount)")
+        components.append(Localization.format("Transaction %1$d of %2$d", index + 1, totalCount))
         
         let fromName = coinName(
             id: transaction?.fromCurrencyId ?? "",
@@ -48,16 +48,16 @@ struct PortfolioSwapView: View {
             id: transaction?.toCurrencyId ?? "",
             symbol: transaction?.toCurrencySymbol ?? ""
         )
-        components.append("Swapped \(fromName) for \(toName)")
+        components.append(Localization.format("Swapped %1$@ for %2$@", fromName, toName))
         
         if hideData {
-            components.append("Amount hidden")
+            components.append(Localization.string("Amount hidden"))
         } else {
             let receivedAmount = abs(transaction?.toAmount ?? 0).formatCurrency(currency: CurrencyModel.empty, accessible: true)
-            components.append("Received \(receivedAmount) \(toName)".trimmingCharacters(in: .whitespaces))
+            components.append(Localization.format("Received %1$@ %2$@", receivedAmount, toName).trimmingCharacters(in: .whitespaces))
             
             let sentAmount = abs(transaction?.fromAmount ?? 0).formatCurrency(currency: CurrencyModel.empty, accessible: true)
-            components.append("Sent \(sentAmount) \(fromName)".trimmingCharacters(in: .whitespaces))
+            components.append(Localization.format("Sent %1$@ %2$@", sentAmount, fromName).trimmingCharacters(in: .whitespaces))
         }
         
         if let date = transaction?.date {
@@ -82,7 +82,11 @@ struct PortfolioSwapView: View {
             AdaptiveStack(isHorizontal: isHorizontal, spacing: 4, horizontalAlignment: .leading, verticalAlignment: .top) {
                 VStack(alignment: .leading, spacing: 4) {
                     ShimmeringText(
-                        text: "Swapped \(transaction?.fromCurrencySymbol.uppercased() ?? "0000") for \(transaction?.toCurrencySymbol.uppercased() ?? "0000")",
+                        text: Localization.format(
+                            "Swapped %1$@ for %2$@",
+                            transaction?.fromCurrencySymbol.uppercased() ?? "0000",
+                            transaction?.toCurrencySymbol.uppercased() ?? "0000"
+                        ),
                         isDownloading: transaction == nil
                     )
                     .foregroundStyle(Color.onSurface)

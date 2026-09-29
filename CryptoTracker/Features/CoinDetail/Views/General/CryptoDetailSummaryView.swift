@@ -144,7 +144,7 @@ struct CryptoDetailSummaryView: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(accessibilityLabel)
             .if(changeCoinAccessibilityHint != nil) { view in
-                view.accessibilityHint(changeCoinAccessibilityHint ?? "")
+                view.accessibilityHint(AppCopy.string(changeCoinAccessibilityHint ?? ""))
             }
             .onTapGesture {
                 changeCoin()

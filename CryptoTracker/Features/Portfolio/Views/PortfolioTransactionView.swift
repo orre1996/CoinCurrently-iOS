@@ -30,7 +30,7 @@ struct PortfolioTransactionView: View {
     private var accessibilityLabelText: String {
         var components: [String] = []
         
-        components.append("Transaction \(index + 1) of \(totalCount)")
+        components.append(Localization.format("Transaction %1$d of %2$d", index + 1, totalCount))
         
         let typeText = transaction?.transactionText ?? ""
         let coinName = coin?.name ?? coin?.symbol ?? ""
@@ -41,16 +41,16 @@ struct PortfolioTransactionView: View {
         }
         
         if hideData {
-            components.append("Value hidden")
-            components.append("Amount hidden")
+            components.append(Localization.string("Value hidden"))
+            components.append(Localization.string("Amount hidden"))
         } else {
             let value = (transaction?.amount ?? 0) * (currentPrice ?? 0)
-            components.append("Value \(value.formatAccessibleCurrency(currency: transactionCurrency))")
+            components.append(Localization.format("Value %@", value.formatAccessibleCurrency(currency: transactionCurrency)))
             
-            let prefix = transaction?.isAddOrInTransferTransaction == true ? "Plus" : "Minus"
+            let prefix = Localization.string(transaction?.isAddOrInTransferTransaction == true ? "Plus" : "Minus")
             let amountText = abs(transaction?.amount ?? 0).formatCurrency(currency: CurrencyModel.empty, accessible: true)
             let symbol = coin?.symbol ?? ""
-            components.append("\(prefix) \(amountText) \(symbol)".trimmingCharacters(in: .whitespaces))
+            components.append(Localization.format("%1$@ %2$@ %3$@", prefix, amountText, symbol).trimmingCharacters(in: .whitespaces))
         }
         
         if let date = transaction?.date {

@@ -49,7 +49,7 @@ struct CompareStatisticsView: View {
     }
     
     private var headerView: some View {
-        Text("Statistics")
+        Text(Localization.string("Statistics"))
             .foregroundStyle(Color.onSurfaceDim)
             .font(.satoshiBold(22))
             .accessibilityAddTraits(.isHeader)
@@ -62,7 +62,7 @@ struct CompareStatisticsView: View {
         let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
         
         VStack(alignment: .leading, spacing: 4) {
-            Text("Price")
+            Text(Localization.string("Price"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -113,7 +113,7 @@ struct CompareStatisticsView: View {
         let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
         
         VStack(alignment: .leading, spacing: 12) {
-            Text("Price Change")
+            Text(Localization.string("Price Change"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
 
@@ -165,7 +165,7 @@ struct CompareStatisticsView: View {
         let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
         
         VStack(alignment: .leading, spacing: 4) {
-            Text("Market Cap")
+            Text(Localization.string("Market Cap"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -256,7 +256,7 @@ struct CompareStatisticsView: View {
         let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
         
         VStack(alignment: .leading, spacing: 4) {
-            Text("24 Hour Volume")
+            Text(Localization.string("24 Hour Volume"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -326,7 +326,7 @@ struct CompareStatisticsView: View {
         let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
         
         VStack(alignment: .leading, spacing: 4) {
-            Text("Circulating Supply")
+            Text(Localization.string("Circulating Supply"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -395,20 +395,31 @@ struct CompareStatisticsView: View {
     
     private func accessibleMarketCapLabel(name: String?, value: Double?, rank: Int?) -> String {
         let marketCap = value?.formatCurrency(accessible: true) ?? ""
-        let rankLabel = rank.map { "rank \($0)" } ?? "no rank"
-        return "\(name ?? ""): \(marketCap), \(rankLabel)"
+        let rankLabel = rank.map { Localization.format("rank %d", $0) } ?? Localization.string("No rank")
+        return Localization.format("%1$@: %2$@, %3$@", name ?? "", marketCap, rankLabel)
     }
     
     private func accessiblePriceChangeLabel(name: String?, change: Double?) -> String {
+        let timeframe = Localization.string(selectedTimeframe.accessibilityTimeframe)
         guard let change else {
-            return "\(name ?? ""): \(selectedTimeframe.accessibilityTimeframe) price change: not available"
+            return Localization.format(
+                "%1$@: %2$@ price change: %3$@",
+                name ?? "",
+                timeframe,
+                Localization.string("Not available")
+            )
         }
         
         let safeChange = change.isInfinite ? 0 : change
         let decimals = safeChange.changePercentDecimalPoints
         let accessibleChange = safeChange.numberAccessible(maxPlaces: decimals)
-        let direction = change.directionAccessible
-        return "\(name ?? ""): \(selectedTimeframe.accessibilityTimeframe) price change: \(direction) \(accessibleChange) percent"
+        return Localization.format(
+            "%1$@: %2$@ price change: %3$@ %4$@ percent",
+            name ?? "",
+            timeframe,
+            Localization.string(change.directionAccessible),
+            accessibleChange
+        )
     }
     
     private func accessibleSupplyLabel(name: String?, value: Double?) -> String {

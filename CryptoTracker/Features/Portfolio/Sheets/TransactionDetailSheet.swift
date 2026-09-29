@@ -213,12 +213,12 @@ struct TransactionDetailSheet: View {
             .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(transaction.transactionText) \(coinName)")
+        .accessibilityLabel(Localization.format("%1$@ %2$@", transaction.transactionText, coinName))
     }
     
     private var amountView: some View {
         statView(
-            title: "Amount",
+            title: Localization.string("Amount"),
             value: hideData
                 ? String.stars
                 : transaction.amount.formatCurrency(
@@ -227,35 +227,39 @@ struct TransactionDetailSheet: View {
                     maxDecimals: 7
                 ),
             valueAccessible: hideData
-                ? "hidden"
-                : "\(transaction.amount.formatCurrency(currency: CurrencyModel.empty, maxDecimals: 7, accessible: true)) \(coinName)"
+                ? Localization.string("hidden")
+                : Localization.format(
+                    "%1$@ %2$@",
+                    transaction.amount.formatCurrency(currency: CurrencyModel.empty, maxDecimals: 7, accessible: true),
+                    coinName
+                )
         )
     }
     
     private var unitPriceView: some View {
         statView(
-            title: "Unit Price",
+            title: Localization.string("Unit Price"),
             value: hideData
                 ? String.stars
                 : transaction.pricePerCoin?.formatCurrency(
                     threshold: FormattingThreshold.million,
                     currency: transactionCurrency
-                ) ?? "N/A",
+                ) ?? Localization.string("N/A"),
             valueAccessible: hideData
-                ? "hidden"
+                ? Localization.string("hidden")
                 : transaction.pricePerCoin.map {
                     $0.formatCurrency(
                         threshold: FormattingThreshold.million,
                         currency: transactionCurrency,
                         accessible: true
                     )
-                } ?? "Not available"
+                } ?? Localization.string("Not available")
         )
     }
     
     private var feesView: some View {
         statView(
-            title: "Fee",
+            title: Localization.string("Fee"),
             value: hideData
                 ? String.stars
                 : transaction.fee.formatCurrency(
@@ -263,7 +267,7 @@ struct TransactionDetailSheet: View {
                     currency: transactionCurrency
                 ),
             valueAccessible: hideData
-                ? "hidden"
+                ? Localization.string("hidden")
                 : transaction.fee.formatCurrency(
                     threshold: FormattingThreshold.million,
                     currency: transactionCurrency,
@@ -274,7 +278,7 @@ struct TransactionDetailSheet: View {
     
     private var totalCostView: some View {
         statView(
-            title: "Total Cost",
+            title: Localization.string("Total Cost"),
             value: hideData
                 ? String.stars
                 : transaction.totalSpent.formatCurrency(
@@ -282,7 +286,7 @@ struct TransactionDetailSheet: View {
                     currency: transactionCurrency
                 ),
             valueAccessible: hideData
-                ? "hidden"
+                ? Localization.string("hidden")
                 : transaction.totalSpent.formatCurrency(
                     threshold: FormattingThreshold.million,
                     currency: transactionCurrency,
@@ -293,7 +297,7 @@ struct TransactionDetailSheet: View {
     
     private var dateView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Date")
+            Text(Localization.string("Date"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -307,7 +311,7 @@ struct TransactionDetailSheet: View {
     
     private var timeView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Time")
+            Text(Localization.string("Time"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -321,7 +325,7 @@ struct TransactionDetailSheet: View {
     
     private var notesView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Notes")
+            Text(Localization.string("Notes"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -336,7 +340,7 @@ struct TransactionDetailSheet: View {
     private var actionButtons: some View {
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 8) {
             SecondaryButton(
-                text: "Delete",
+                text: Localization.string("Delete"),
                 icon: .delete,
                 fullWidth: true,
                 opaqueBackground: true,
@@ -347,7 +351,7 @@ struct TransactionDetailSheet: View {
             )
             
             SecondaryButton(
-                text: "Edit",
+                text: Localization.string("Edit"),
                 icon: .edit,
                 fullWidth: true,
                 opaqueBackground: true,

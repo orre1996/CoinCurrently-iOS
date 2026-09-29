@@ -65,7 +65,7 @@ struct DateRangePickerSheet: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Select \(dateComponents == .date ? "Date" : "Time")")
+            DragHandle(title: Localization.format("Select %@", Localization.string(dateComponents == .date ? "Date" : "Time")))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -74,7 +74,7 @@ struct DateRangePickerSheet: View {
             
             datePicker
                 .labelsHidden()
-                .accessibilityLabel(dateComponents == .date ? "Select date" : "Select time")
+                .accessibilityLabel(Localization.string(dateComponents == .date ? "Select date" : "Select time"))
                 .datePickerStyle(.wheel)
                 .colorScheme(.light)
                 .environment(\.locale, Date.uses24HourClock ? Locale(identifier: "en_GB") : Locale(identifier: "en_US"))
@@ -124,7 +124,7 @@ struct DateRangePickerSheet: View {
 
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 8) {
             SecondaryButton(
-                text: "Cancel",
+                text: Localization.string("Cancel"),
                 fullWidth: true,
                 opaqueBackground: true,
                 action: {
@@ -133,7 +133,7 @@ struct DateRangePickerSheet: View {
             )
 
             PrimaryButton(
-                text: "Apply",
+                text: Localization.string("Apply"),
                 accessibilityLabel: "Apply filters",
                 fullWidth: true,
                 opaqueBackground: true,

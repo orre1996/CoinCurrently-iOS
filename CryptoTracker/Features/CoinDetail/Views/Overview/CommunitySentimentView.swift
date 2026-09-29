@@ -48,7 +48,7 @@ struct CommunitySentimentView: View {
     }
 
     private var sentimentTitle: some View {
-        Text("Community Sentiment")
+        Text(AppCopy.string("Community Sentiment"))
             .foregroundStyle(Color.onSurfaceDim)
             .font(.satoshiBold(22))
             .accessibilityAddTraits(.isHeader)
@@ -68,13 +68,13 @@ struct CommunitySentimentView: View {
                 .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5))
                 .padding(12)
         })
-        .accessibilityLabel("Community sentiment info")
+        .accessibilityLabel(AppCopy.string("Community sentiment info"))
     }
     #endif
     
     private var votesView: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Sentiment Votes")
+            Text(AppCopy.string("Sentiment Votes"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceContainerDim)
             
@@ -114,7 +114,7 @@ struct CommunitySentimentView: View {
             .foregroundStyle(Color.extremeGreed)
             .font(valueFont)
             
-            Text("Bullish")
+            Text(AppCopy.string("Bullish"))
                 .foregroundStyle(Color.onSurfaceDimmer)
                 .font(.satoshiBold(12))
         }
@@ -130,7 +130,7 @@ struct CommunitySentimentView: View {
             .foregroundStyle(Color.extremeFear)
             .font(valueFont)
             
-            Text("Bearish")
+            Text(AppCopy.string("Bearish"))
                 .foregroundStyle(Color.onSurfaceDimmer)
                 .font(.satoshiBold(12))
         }

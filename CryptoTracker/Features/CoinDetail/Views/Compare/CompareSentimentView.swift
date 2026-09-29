@@ -30,7 +30,7 @@ struct CompareSentimentView: View {
     
     private var headerView: some View {
         HStack(spacing: 0) {
-            Text("Community Sentiment")
+            Text(Localization.string("Community Sentiment"))
                 .foregroundStyle(Color.onSurfaceDim)
                 .font(.satoshiBold(22))
                 .accessibilityAddTraits(.isHeader)
@@ -49,13 +49,13 @@ struct CompareSentimentView: View {
                     .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5))
                     .padding(12)
             })
-            .accessibilityLabel("Community sentiment info")
+            .accessibilityLabel(Localization.string("Community sentiment info"))
         }
     }
     
     private var votesView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Sentiment Votes")
+            Text(Localization.string("Sentiment Votes"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceContainerDim)
             
@@ -102,7 +102,7 @@ struct CompareSentimentView: View {
                 .font(.satoshiBold(16))
                 .accessibilityHidden(true)
                 
-                Text("Bullish")
+                Text(Localization.string("Bullish"))
                     .foregroundStyle(Color.onSurfaceDimmer)
                     .font(.satoshiBold(16))
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -127,7 +127,7 @@ struct CompareSentimentView: View {
                 .font(.satoshiBold(16))
                 .accessibilityHidden(true)
                 
-                Text("Bullish")
+                Text(Localization.string("Bullish"))
                     .foregroundStyle(Color.onSurfaceDimmer)
                     .font(.satoshiBold(16))
                     .accessibilityHidden(true)

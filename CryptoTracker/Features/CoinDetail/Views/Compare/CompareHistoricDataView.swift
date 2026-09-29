@@ -45,7 +45,7 @@ struct CompareHistoricDataView: View {
     }
     
     private var headerView: some View {
-        Text("Historical Data")
+        Text(Localization.string("Historical Data"))
             .foregroundStyle(Color.onSurfaceDim)
             .font(.satoshiBold(22))
             .accessibilityAddTraits(.isHeader)
@@ -80,11 +80,11 @@ struct CompareHistoricDataView: View {
         let progress = (cryptoInfo?.market_data?.current_price?.getConvertedCurrency() ?? 1) / (cryptoInfo?.market_data?.ath?.getConvertedCurrency() ?? 0)
         
         let atlDate = cryptoInfo?.market_data?.atl_date?.getConvertedCurrency()?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)
-        let formattedAtlDate = atlDate?.formatted(date: .abbreviated, time: .omitted)
+        let formattedAtlDate = atlDate?.localizedAbbreviatedDate
         let atlPrice = cryptoInfo?.market_data?.atl?.getConvertedCurrency()
         
         let athDate = cryptoInfo?.market_data?.ath_date?.getConvertedCurrency()?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)
-        let formattedAthDate = athDate?.formatted(date: .abbreviated, time: .omitted)
+        let formattedAthDate = athDate?.localizedAbbreviatedDate
         let athPrice = cryptoInfo?.market_data?.ath?.getConvertedCurrency()
         
         let atlPriceFormatted = atlPrice?.formatCurrency(threshold: FormattingThreshold.none) ?? "0000"
@@ -92,13 +92,13 @@ struct CompareHistoricDataView: View {
         
         VStack(alignment: .leading, spacing: 0) {
             ShimmeringText(
-                text: "All-Time Range (\(cryptoInfo?.symbol?.uppercased() ?? "0000"))",
+                text: Localization.format("All-Time Range (%@)", cryptoInfo?.symbol?.uppercased() ?? "0000"),
                 isDownloading: isDownloading
             )
             .font(.satoshiBold(12))
             .foregroundStyle(Color.onSurfaceContainerDim)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("\(cryptoInfo?.name ?? "") All-Time Range")
+            .accessibilityLabel(Localization.format("%@ All-Time Range", cryptoInfo?.name ?? ""))
             
             CustomProgressBarView(
                 progress: progress,
@@ -165,7 +165,7 @@ struct CompareHistoricDataView: View {
         let compareDaysAgo = compareCryptoInfo?.market_data?.ath_date?.getConvertedCurrency()?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)?.daysAgo
         
         VStack(alignment: .leading, spacing: 12) {
-            Text("Since All-Time High")
+            Text(Localization.string("Since All-Time High"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceContainerDim)
             
@@ -177,7 +177,7 @@ struct CompareHistoricDataView: View {
                     .accessibilityHidden(true)
                     
                     ShimmeringText(
-                        text: mainDaysAgo ?? "Unknown",
+                        text: mainDaysAgo ?? Localization.string("Unknown"),
                         isDownloading: mainCryptoInfo?.market_data?.ath_date == nil
                     )
                     .foregroundStyle(Color.onSurface)
@@ -195,7 +195,7 @@ struct CompareHistoricDataView: View {
                     .accessibilityHidden(true)
                     
                     ShimmeringText(
-                        text: compareDaysAgo ?? "Unknown",
+                        text: compareDaysAgo ?? Localization.string("Unknown"),
                         isDownloading: compareCryptoInfo?.market_data?.ath_date == nil
                     )
                     .foregroundStyle(Color.onSurface)
@@ -218,7 +218,7 @@ struct CompareHistoricDataView: View {
         let compareDaysAgo = compareCryptoInfo?.market_data?.atl_date?.getConvertedCurrency()?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)?.daysAgo
         
         VStack(alignment: .leading, spacing: 12) {
-            Text("Since All-Time Low")
+            Text(Localization.string("Since All-Time Low"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceContainerDim)
             
@@ -266,13 +266,13 @@ struct CompareHistoricDataView: View {
     @ViewBuilder
     private var genesisDateView: some View {
         let mainGenesisDate = mainCryptoInfo?.genesis_date?.convertStringToDate(dateFormat: .yyyyMMdd, gmtTimeZone: false)
-        let mainFormattedGenesisDate = mainGenesisDate?.formatted(date: .abbreviated, time: .omitted)
+        let mainFormattedGenesisDate = mainGenesisDate?.localizedAbbreviatedDate
         let compareGenesisDate = compareCryptoInfo?.genesis_date?.convertStringToDate(dateFormat: .yyyyMMdd, gmtTimeZone: false)
-        let compareFormattedGenesisDate = compareGenesisDate?.formatted(date: .abbreviated, time: .omitted)
+        let compareFormattedGenesisDate = compareGenesisDate?.localizedAbbreviatedDate
         let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
         
         VStack(alignment: .leading, spacing: 12) {
-            Text("Genesis Date")
+            Text(Localization.string("Genesis Date"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceContainerDim)
             
@@ -284,7 +284,7 @@ struct CompareHistoricDataView: View {
                     .accessibilityHidden(true)
                     
                     ShimmeringText(
-                        text: mainFormattedGenesisDate ?? "Unknown",
+                        text: mainFormattedGenesisDate ?? Localization.string("Unknown"),
                         isDownloading: mainCryptoInfo?.market_data?.atl_date == nil
                     )
                     .foregroundStyle(Color.onSurface)
@@ -302,7 +302,7 @@ struct CompareHistoricDataView: View {
                     .accessibilityHidden(true)
                     
                     ShimmeringText(
-                        text: compareFormattedGenesisDate ?? "Unknown",
+                        text: compareFormattedGenesisDate ?? Localization.string("Unknown"),
                         isDownloading: compareCryptoInfo?.market_data?.atl_date == nil
                     )
                     .foregroundStyle(Color.onSurface)
@@ -319,15 +319,16 @@ struct CompareHistoricDataView: View {
     
     private func accessibleRangeEndpointLabel(prefix: String, price: Double?, date: String?) -> String {
         let priceText = price?.formatAccessibleCurrency() ?? ""
-        let dateText = date ?? "unknown date"
-        return "\(prefix) \(priceText) on \(dateText)"
+        let dateText = date ?? Localization.string("Unknown date")
+        let key = prefix == "to" ? "to %1$@ on %2$@" : "From %1$@ on %2$@"
+        return Localization.format(key, priceText, dateText)
     }
     
     private func accessibleDaysAgoLabel(name: String?, daysAgo: String?) -> String {
-        "\(name ?? ""): \(daysAgo ?? "unknown")"
+        Localization.format("%1$@: %2$@", name ?? "", daysAgo ?? Localization.string("Unknown"))
     }
     
     private func accessibleGenesisDateLabel(name: String?, date: String?) -> String {
-        "\(name ?? ""): \(date ?? "unknown")"
+        Localization.format("%1$@: %2$@", name ?? "", date ?? Localization.string("Unknown"))
     }
 }

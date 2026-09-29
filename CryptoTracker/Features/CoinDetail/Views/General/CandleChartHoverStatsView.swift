@@ -18,7 +18,7 @@ struct CandleChartHoverStatsView: View {
             HStack(spacing: 8) {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 4) {
-                        Text("Open")
+                        Text(Localization.string("Open"))
                             .foregroundStyle(Color.onSurfaceDimmer)
                         
                         Text(currentCandle?.open.formatCurrency(threshold: FormattingThreshold.none) ?? "")
@@ -26,7 +26,7 @@ struct CandleChartHoverStatsView: View {
                     }
                     
                     HStack(spacing: 4) {
-                        Text("Close")
+                        Text(Localization.string("Close price"))
                             .foregroundStyle(Color.onSurfaceDimmer)
                         
                         Text(currentCandle?.close.formatCurrency(threshold: FormattingThreshold.none) ?? "")
@@ -36,7 +36,7 @@ struct CandleChartHoverStatsView: View {
                 
                 VStack(alignment: .trailing, spacing: 4) {
                     HStack(spacing: 4) {
-                        Text("High")
+                        Text(Localization.string("High"))
                             .foregroundStyle(Color.onSurfaceDimmer)
                         
                         Text(currentCandle?.high.formatCurrency(threshold: FormattingThreshold.none) ?? "")
@@ -44,7 +44,7 @@ struct CandleChartHoverStatsView: View {
                     }
                     
                     HStack(spacing: 4) {
-                        Text("Low")
+                        Text(Localization.string("Low"))
                             .foregroundStyle(Color.onSurfaceDimmer)
                         
                         Text(currentCandle?.low.formatCurrency(threshold: FormattingThreshold.none) ?? "")

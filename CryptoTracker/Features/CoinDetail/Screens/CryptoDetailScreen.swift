@@ -56,6 +56,7 @@ struct CryptoDetailScreen: View {
     
     @State private var showAddTransactionSheet = false
     @State private var selectedEvent: PortfolioEventWrapper?
+    @State private var appLanguage = AppLanguagePreference.stored
     
     var binding: Binding<String?> {
         Binding(
@@ -225,7 +226,7 @@ struct CryptoDetailScreen: View {
                                         deleteAlert: { alert in
                                             Task {
                                                 showSnackBar(
-                                                    message: "Price alert deleted.",
+                                                    message: Localization.string("Price alert deleted."),
                                                     type: .success
                                                 )
                                                 await alertsViewModel.deleteAlert(alert: alert)
@@ -354,6 +355,10 @@ struct CryptoDetailScreen: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .navigationBarTitle(viewModel.cryptoInfo?.name ?? "", displayMode: .inline)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .navigationPopGestureDisabled(viewModel.isDragging)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarBackground(Color.surface, for: .navigationBar)
@@ -378,8 +383,8 @@ struct CryptoDetailScreen: View {
 
                 if let transaction = event as? PortfolioTransaction {
                     navigationViewModel.showSnackbar(
-                        message: "\(coin.symbol?.uppercased() ?? "Coin") transaction added to your portfolio!",
-                        buttonTitle: "View Details",
+                        message: Localization.format("%@ transaction added to your portfolio!", coin.symbol?.uppercased() ?? Localization.string("Coin")),
+                        buttonTitle: Localization.string("View Details"),
                         snackBarType: .success,
                         buttonCallback: {
                             AnalyticsManager.shared.log(
@@ -390,8 +395,8 @@ struct CryptoDetailScreen: View {
                     )
                 } else if let swap = event as? PortfolioSwapTransaction {
                     navigationViewModel.showSnackbar(
-                        message: "\(coin.symbol?.uppercased() ?? "Coin") transaction added to your portfolio!",
-                        buttonTitle: "View Details",
+                        message: Localization.format("%@ transaction added to your portfolio!", coin.symbol?.uppercased() ?? Localization.string("Coin")),
+                        buttonTitle: Localization.string("View Details"),
                         snackBarType: .success,
                         buttonCallback: {
                             AnalyticsManager.shared.log(
@@ -406,8 +411,12 @@ struct CryptoDetailScreen: View {
                     }
 
                     navigationViewModel.showSnackbar(
-                        message: "\(wallet.address.uppercased().prefix(5))...\(wallet.address.uppercased().suffix(5)) (\(coin.symbol?.uppercased() ?? "Coin")) imported to your portfolio!",
-                        buttonTitle: "View Details",
+                        message: Localization.format(
+                            "%1$@ (%2$@) imported to your portfolio!",
+                            "\(wallet.address.uppercased().prefix(5))...\(wallet.address.uppercased().suffix(5))",
+                            coin.symbol?.uppercased() ?? Localization.string("Coin")
+                        ),
+                        buttonTitle: Localization.string("View Details"),
                         snackBarType: .success,
                         buttonCallback: {
                             AnalyticsManager.shared.log(
@@ -604,7 +613,7 @@ struct CryptoDetailScreen: View {
                         switch await alertsViewModel.addPriceAlert(alertCoin: alert) {
                         case .success:
                             showSnackBar(
-                                message: "Price alert added.",
+                                message: Localization.string("Price alert added."),
                                 type: .success
                             )
 
@@ -619,7 +628,7 @@ struct CryptoDetailScreen: View {
                             showAddAlert = false
                         case .fcmTokenUnavailable:
                             showSnackBar(
-                                message: "Something went wrong. Restart the app and try again.",
+                                message: Localization.string("Something went wrong. Restart the app and try again."),
                                 type: .failure
                             )
                         case .failure:
@@ -782,7 +791,7 @@ struct CryptoDetailScreen: View {
                 .foregroundStyle(isFavorited ? Color.primary : Color.onSurface)
         }
         .buttonStyle(PlainButtonStyle())
-        .accessibilityLabel(isFavorited ? "Remove \(name) from favorites" : "Add \(name) to favorites")
+        .accessibilityLabel(Localization.format(isFavorited ? "Remove %@ from favorites" : "Add %@ to favorites", name))
     }
     
     private var toolbarMenuButton: some View {
@@ -796,7 +805,7 @@ struct CryptoDetailScreen: View {
             }, label: {
                 HStack(spacing: 8) {
                     Image.converter
-                    Text("Compare")
+                    Text(Localization.string("Compare"))
                 }
                 .foregroundStyle(Color.onSurface)
             })
@@ -808,10 +817,10 @@ struct CryptoDetailScreen: View {
             }, label: {
                 HStack(spacing: 8) {
                     Image.alert
-                    Text("Add Alert")
+                    Text(Localization.string("Add Alert"))
                 }
                 .foregroundStyle(Color.onSurface)
-                .accessibilityLabel("Add new \(viewModel.cryptoInfo?.name ?? "") price alert")
+                .accessibilityLabel(Localization.format("Add new %@ price alert", viewModel.cryptoInfo?.name ?? ""))
             })
             
             Button(action: {
@@ -819,7 +828,7 @@ struct CryptoDetailScreen: View {
             }, label: {
                 HStack(spacing: 8) {
                     Image.share
-                    Text("Share")
+                    Text(Localization.string("Share"))
                 }
                 .foregroundStyle(Color.onSurface)
             })
@@ -833,7 +842,7 @@ struct CryptoDetailScreen: View {
                     .foregroundStyle(Color.onSurface)
             })
         }
-        .accessibilityLabel("More options")
+        .accessibilityLabel(Localization.string("More options"))
     }
     
     @ViewBuilder

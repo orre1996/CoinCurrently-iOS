@@ -22,7 +22,7 @@ struct SelectTransactionTypeSheet: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Select Transaction Type")
+            DragHandle(title: Localization.string("Select Transaction Type"))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -44,8 +44,8 @@ struct SelectTransactionTypeSheet: View {
     private var bodyView: some View {
         VStack(alignment: .leading, spacing: 4) {
             TransactionTypeView(
-                title: "Buy",
-                subtitle: "Bought coins with cash.",
+                title: Localization.string("Buy"),
+                subtitle: Localization.string("Bought coins with cash."),
                 image: .plus,
                 isMultiSelectEnabled: false,
                 isSelected: false,
@@ -56,8 +56,8 @@ struct SelectTransactionTypeSheet: View {
             )
             
             TransactionTypeView(
-                title: "Sell",
-                subtitle: "Sold coins with cash.",
+                title: Localization.string("Sell"),
+                subtitle: Localization.string("Sold coins with cash."),
                 image: .minus,
                 isMultiSelectEnabled: false,
                 isSelected: false,
@@ -68,8 +68,8 @@ struct SelectTransactionTypeSheet: View {
             )
             
             TransactionTypeView(
-                title: "Swap",
-                subtitle: "Swapped one coin for another.",
+                title: Localization.string("Swap"),
+                subtitle: Localization.string("Swapped one coin for another."),
                 image: .trade,
                 isMultiSelectEnabled: false,
                 isSelected: false,
@@ -80,8 +80,8 @@ struct SelectTransactionTypeSheet: View {
             )
             
             TransactionTypeView(
-                title: "Deposit",
-                subtitle: "Deposited coins into your wallet.",
+                title: Localization.string("Deposit"),
+                subtitle: Localization.string("Deposited coins into your wallet."),
                 image: .deposit,
                 isMultiSelectEnabled: false,
                 isSelected: false,
@@ -92,8 +92,8 @@ struct SelectTransactionTypeSheet: View {
             )
             
             TransactionTypeView(
-                title: "Withdraw",
-                subtitle: "Withdrawn coins out of your wallet.",
+                title: Localization.string("Withdraw"),
+                subtitle: Localization.string("Withdrawn coins out of your wallet."),
                 image: .withdraw,
                 isMultiSelectEnabled: false,
                 isSelected: false,

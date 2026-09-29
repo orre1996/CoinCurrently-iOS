@@ -17,6 +17,24 @@ enum DateFormat: String {
 }
 
 
+enum AppCopy {
+    static func string(_ key: String) -> String {
+        #if IS_APP
+        Localization.string(key)
+        #else
+        key
+        #endif
+    }
+
+    static func format(_ key: String, _ arguments: CVarArg...) -> String {
+        #if IS_APP
+        String(format: Localization.string(key), locale: Localization.locale, arguments: arguments)
+        #else
+        String(format: key, arguments: arguments)
+        #endif
+    }
+}
+
 extension StringProtocol  {
     var digits: [Int] { compactMap(\.wholeNumberValue) }
 }

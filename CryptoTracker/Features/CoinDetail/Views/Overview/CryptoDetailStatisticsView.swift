@@ -78,7 +78,7 @@ struct CryptoDetailStatisticsView: View {
     }
     
     private var headerView: some View {
-        Text("Statistics")
+        Text(AppCopy.string("Statistics"))
             .foregroundStyle(Color.onSurfaceDim)
             .font(.satoshiBold(22))
             .accessibilityAddTraits(.isHeader)
@@ -87,7 +87,7 @@ struct CryptoDetailStatisticsView: View {
     @ViewBuilder
     private var rangeView: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(timeChart.rangeTitle)
+            Text(AppCopy.string(timeChart.rangeTitle))
                 .foregroundStyle(Color.onSurfaceContainerDim)
                 .font(.satoshiBold(12))
             
@@ -104,7 +104,7 @@ struct CryptoDetailStatisticsView: View {
                 .foregroundStyle(Color.onSurface)
                 .font(valueFont)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .accessibilityLabel("From \(low ?? "")")
+                .accessibilityLabel(AppCopy.format("From %@", low ?? ""))
                 
                 let high = prices?.max()?.formatCurrency(threshold: FormattingThreshold.none)
                 
@@ -115,7 +115,7 @@ struct CryptoDetailStatisticsView: View {
                 .foregroundStyle(Color.onSurface)
                 .font(valueFont)
                 .frame(maxWidth: .infinity, alignment: isRangeHorizontal ? .trailing : .leading)
-                .accessibilityLabel("to \(high ?? "")")
+                .accessibilityLabel(AppCopy.format("to %@", high ?? ""))
             }
         }
         .accessibilityElement(children: .combine)
@@ -146,7 +146,7 @@ struct CryptoDetailStatisticsView: View {
         
         AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? horizontalPadding : 8, horizontalAlignment: .leading, verticalAlignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Market Cap Rank")
+                Text(AppCopy.string("Market Cap Rank"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
@@ -161,8 +161,8 @@ struct CryptoDetailStatisticsView: View {
             .accessibilityElement(children: .combine)
             .accessibilityLabel(
                 cryptoDetailModel?.market_cap_rank == nil
-                    ? "Market Cap Rank, No rank"
-                    : "Market Cap Rank, \(cryptoDetailModel?.market_cap_rank ?? 0)"
+                    ? AppCopy.format("%@, %@", AppCopy.string("Market Cap Rank"), AppCopy.string("No rank"))
+                    : AppCopy.format("%@, %@", AppCopy.string("Market Cap Rank"), "\(cryptoDetailModel?.market_cap_rank ?? 0)")
             )
             
             if !isHorizontal {
@@ -170,7 +170,7 @@ struct CryptoDetailStatisticsView: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("Market Cap")
+                Text(AppCopy.string("Market Cap"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
@@ -193,7 +193,7 @@ struct CryptoDetailStatisticsView: View {
         
         AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? horizontalPadding : 8, horizontalAlignment: .leading, verticalAlignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Market Dominance")
+                Text(AppCopy.string("Market Dominance"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
@@ -223,7 +223,7 @@ struct CryptoDetailStatisticsView: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("24 Hour Volume")
+                Text(AppCopy.string("24 Hour Volume"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
@@ -242,7 +242,7 @@ struct CryptoDetailStatisticsView: View {
     
     private func shortCurrencyAccessibilityLabel(title: String, value: Double?) -> String {
         let formattedValue = value?.formatAccessibleCurrency() ?? ""
-        return "\(title), \(formattedValue)"
+        return AppCopy.format("%@, %@", AppCopy.string(title), formattedValue)
     }
     
     private func compressedPriceText(
@@ -302,7 +302,7 @@ struct CryptoDetailStatisticsView: View {
         let maxSupply = cryptoDetailModel?.market_data?.max_supply
 
         VStack(alignment: .leading, spacing: 0) {
-            Text("Supply Circulation")
+            Text(AppCopy.string("Supply Circulation"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceContainerDim)
             
@@ -328,12 +328,12 @@ struct CryptoDetailStatisticsView: View {
                     .foregroundStyle(Color.onSurface)
                     .font(valueFont)
                     
-                    Text("Circulating Supply")
+                    Text(AppCopy.string("Circulating Supply"))
                     .foregroundStyle(Color.onSurfaceDimmer)
                     .font(.satoshiBold(12))
                 }
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Circulating Supply: \(supply)")
+                .accessibilityLabel(AppCopy.format("Circulating Supply: %@", supply))
                 
                 if isHorizontal {
                     Spacer(minLength: 16)
@@ -345,8 +345,8 @@ struct CryptoDetailStatisticsView: View {
                     currency: CurrencyModel.empty,
                     maxDecimals: 0) ?? "∞"
                 let maxSupplyAccessibility = maxSupplyValue == nil
-                    ? "Max supply: unlimited"
-                    : "Max supply: \(maxSupplyText)"
+                    ? AppCopy.string("Max supply: unlimited")
+                    : AppCopy.format("Max supply: %@", maxSupplyText)
                 
                 VStack(alignment: isHorizontal ? .trailing : .leading, spacing: 4) {
                     ShimmeringText(
@@ -357,7 +357,7 @@ struct CryptoDetailStatisticsView: View {
                     .font(valueFont)
                     
                     ShimmeringText(
-                        text: "Max Supply",
+                        text: AppCopy.string("Max Supply"),
                         isDownloading: cryptoDetailModel?.market_data == nil
                     )
                     .foregroundStyle(Color.onSurfaceDimmer)
@@ -375,7 +375,7 @@ struct CryptoDetailStatisticsView: View {
     private var supplyViewNoMax: some View {
         AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? horizontalPadding : 8, horizontalAlignment: .leading, verticalAlignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Circulating Supply")
+                Text(AppCopy.string("Circulating Supply"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
@@ -398,7 +398,7 @@ struct CryptoDetailStatisticsView: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("Max Supply")
+                Text(AppCopy.string("Max Supply"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                 
@@ -408,7 +408,7 @@ struct CryptoDetailStatisticsView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("Max supply: unlimited")
+            .accessibilityLabel(AppCopy.string("Max supply: unlimited"))
         }
     }
 }

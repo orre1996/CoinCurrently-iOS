@@ -138,7 +138,7 @@ struct CryptoDetailInfoCell: View {
     }
     
     private var viewMoreButton: some View {
-        Text(showMore ? "View Less" : "View More")
+        Text(Localization.string(showMore ? "View Less" : "View More"))
             .foregroundStyle(Color.onSurfaceContainer)
             .font(.satoshiBold(18))
             .padding(

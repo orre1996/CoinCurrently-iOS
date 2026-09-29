@@ -26,20 +26,20 @@ struct PortfolioImportTransactionView: View {
     private var accessibilityLabelText: String {
         var components: [String] = []
         
-        components.append("Transaction \(index + 1) of \(totalCount)")
+        components.append(Localization.format("Transaction %1$d of %2$d", index + 1, totalCount))
         
         let walletName = walletImport?.walletName ?? ""
-        components.append("Imported \(walletName)".trimmingCharacters(in: .whitespaces))
+        components.append(Localization.format("Imported %@", walletName).trimmingCharacters(in: .whitespaces))
         
         let coinName = coin?.name ?? coin?.symbol ?? ""
         if !coinName.isEmpty, let walletImport {
-            components.append("\(coinName) Mainnet, \(walletImport.accessibilityAddressDescription)")
+            components.append(Localization.format("%1$@ Mainnet, %2$@", coinName, walletImport.accessibilityAddressDescription))
         }
         
         if hideData {
-            components.append("Value hidden")
+            components.append(Localization.string("Value hidden"))
         } else if let value = walletImport?.totalValue(mainId: coin?.id, prices: prices) {
-            components.append("Value \(value.formatAccessibleCurrency(currency: currency))")
+            components.append(Localization.format("Value %@", value.formatAccessibleCurrency(currency: currency)))
         }
         
         if let date = walletImport?.date {
@@ -81,14 +81,18 @@ struct PortfolioImportTransactionView: View {
                 AdaptiveStack(isHorizontal: isHorizontal, spacing: 4, horizontalAlignment: .leading, verticalAlignment: .top) {
                     VStack(alignment: .leading, spacing: 4) {
                         ShimmeringText(
-                            text: "Imported \(walletImport?.walletName ?? "")",
+                            text: Localization.format("Imported %@", walletImport?.walletName ?? ""),
                             isDownloading: coin == nil
                         )
                         .foregroundStyle(Color.onSurface)
                         .font(.satoshiBold(16))
                         
                         ShimmeringText(
-                            text: "\(coin?.symbol?.uppercased() ?? "") Mainnet · \(walletImport?.address.uppercased().prefix(4) ?? "")...\(walletImport?.address.uppercased().suffix(4) ?? "")",
+                            text: Localization.format(
+                                "%1$@ Mainnet · %2$@",
+                                coin?.symbol?.uppercased() ?? "",
+                                "\(walletImport?.address.uppercased().prefix(4) ?? "")...\(walletImport?.address.uppercased().suffix(4) ?? "")"
+                            ),
                             isDownloading: coin == nil
                         )
                         .foregroundStyle(Color.onSurfaceDimmer)

@@ -23,8 +23,8 @@ struct CryptoDetailAlertsView: View {
                 if let alerts {
                     if alerts.isEmpty {
                         EmptyContent(
-                            title: "No price alerts yet",
-                            subTitle: "Tap + to create your first alert."
+                            title: Localization.string("No price alerts yet"),
+                            subTitle: Localization.string("Tap + to create your first alert.")
                         )
                         .padding(16)
                     } else {
@@ -41,7 +41,7 @@ struct CryptoDetailAlertsView: View {
     
     private var headerView: some View {
         HStack(spacing: 0) {
-            Text("Alerts")
+            Text(Localization.string("Alerts"))
                 .font(.satoshiBold(22))
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityAddTraits(.isHeader)
@@ -57,7 +57,7 @@ struct CryptoDetailAlertsView: View {
                     .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5))
                     .padding(12)
             })
-            .accessibilityLabel("Add new \(cryptoDetailModel?.name ?? "") price alert")
+            .accessibilityLabel(Localization.format("Add new %@ price alert", cryptoDetailModel?.name ?? ""))
         }
     }
 

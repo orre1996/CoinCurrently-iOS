@@ -107,16 +107,32 @@ extension Date {
         let dayAgo = calendar.date(byAdding: .day, value: -1, to: Date())!
         
         if minuteAgo < self {
-            return "just now"
+            return AppCopy.string("just now")
         } else if hourAgo < self {
             let diff = Calendar.current.dateComponents([.minute], from: self, to: Date()).minute ?? 0
-            return diff == 1 ? "\(diff) minute ago" : "\(diff) minutes ago"
+            return diff == 1 ? AppCopy.format("%d minute ago", diff) : AppCopy.format("%d minutes ago", diff)
         } else if dayAgo < self {
             let diff = Calendar.current.dateComponents([.hour], from: self, to: Date()).hour ?? 0
-            return diff == 1 ? "\(diff) hour ago" : "\(diff) hours ago"
+            return diff == 1 ? AppCopy.format("%d hour ago", diff) : AppCopy.format("%d hours ago", diff)
         } else {
-            return self.formatted(date: .long, time: .omitted)
+            return localizedLongDate
         }
+    }
+
+    var localizedAbbreviatedDate: String {
+        #if IS_APP
+        formatted(Date.FormatStyle(date: .abbreviated, time: .omitted).locale(Localization.locale))
+        #else
+        formatted(date: .abbreviated, time: .omitted)
+        #endif
+    }
+
+    var localizedLongDate: String {
+        #if IS_APP
+        formatted(Date.FormatStyle(date: .long, time: .omitted).locale(Localization.locale))
+        #else
+        formatted(date: .long, time: .omitted)
+        #endif
     }
     
     var daysAgo: String {

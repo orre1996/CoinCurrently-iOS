@@ -39,16 +39,16 @@ struct CurrencyConverterView: View {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 
-                Button("Close") {
+                Button(Localization.string("Close")) {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
-                .accessibilityLabel("Close keyboard")
+                .accessibilityLabel(Localization.string("Close keyboard"))
             }
         }
     }
     
     private var headerView: some View {
-        Text("Currency Converter")
+        Text(Localization.string("Currency Converter"))
             .font(.satoshiBold(22))
             .foregroundStyle(Color.onSurfaceDim)
             .accessibilityAddTraits(.isHeader)
@@ -66,7 +66,12 @@ struct CurrencyConverterView: View {
         HStack(spacing: 8) {
             NumericInputField(
                 input: $coinAmount,
-                accessibilityValue: "\(coinAmount?.formatted() ?? "") \(cryptoDetailModel?.name ?? "") equals \(valueAmount?.formatCurrency(threshold: FormattingThreshold.none, accessible: true) ?? "")",
+                accessibilityValue: Localization.format(
+                    "%1$@ %2$@ equals %3$@",
+                    coinAmount?.formatted() ?? "",
+                    cryptoDetailModel?.name ?? "",
+                    valueAmount?.formatCurrency(threshold: FormattingThreshold.none, accessible: true) ?? ""
+                ),
                 trailingView: {
                     symbolView
                 },
@@ -105,7 +110,12 @@ struct CurrencyConverterView: View {
         HStack(spacing: 8) {
             NumericInputField(
                 input: $valueAmount,
-                accessibilityValue: "\(valueAmount?.formatCurrency(threshold: FormattingThreshold.none, accessible: true) ?? "") equals \(coinAmount?.formatted() ?? "") \(cryptoDetailModel?.name ?? "")",
+                accessibilityValue: Localization.format(
+                    "%1$@ equals %2$@ %3$@",
+                    valueAmount?.formatCurrency(threshold: FormattingThreshold.none, accessible: true) ?? "",
+                    coinAmount?.formatted() ?? "",
+                    cryptoDetailModel?.name ?? ""
+                ),
                 trailingView: {
                     currentCurrencyButton
                 },

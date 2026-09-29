@@ -250,12 +250,12 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel, ChartHoverHosting {
         
         let chartLabel: String
         switch currentChartType {
-        case .price: 
-            chartLabel = "price"
+        case .price:
+            chartLabel = Localization.string("price")
         case .volume:
-            chartLabel = "volume"
+            chartLabel = Localization.string("volume")
         case .mktCap:
-            chartLabel = "market cap"
+            chartLabel = Localization.string("market cap")
         }
         
         return (1..<5).map { step in
@@ -268,7 +268,14 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel, ChartHoverHosting {
             let name = cryptoInfo?.name ?? ""
             let compareName = comparedCryptoInfo?.name ?? ""
             
-            return "The \(chartLabel) was \(price) for \(name) and \(comparePrice) for \(compareName) on"
+            return Localization.format(
+                "The %1$@ was %2$@ for %3$@ and %4$@ for %5$@ on",
+                chartLabel,
+                price,
+                name,
+                comparePrice,
+                compareName
+            )
         }
     }
     

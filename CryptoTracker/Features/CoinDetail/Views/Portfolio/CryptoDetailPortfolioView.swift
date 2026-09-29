@@ -31,9 +31,9 @@ struct CryptoDetailPortfolioView: View {
         VStack(spacing: 32) {
             if let groupedTransactions, groupedTransactions.isEmpty {
                 EmptyContent(
-                    title: "No transactions yet",
-                    subTitle: "Add your \(cryptoInfo?.name ?? "") transactions to start tracking your portfolio holdings here.",
-                    buttonTitle: "Add Transaction",
+                    title: Localization.string("No transactions yet"),
+                    subTitle: Localization.format("Add your %@ transactions to start tracking your portfolio holdings here.", cryptoInfo?.name ?? ""),
+                    buttonTitle: Localization.string("Add Transaction"),
                     buttonAction: {
                         Task {
                             let hasBoughtPro = await viewModel.hasBoughtPro()
@@ -83,7 +83,7 @@ struct CryptoDetailPortfolioView: View {
     
     private var overviewHeaderView: some View {
         HStack(spacing: 0) {
-            Text("Statistics")
+            Text(Localization.string("Statistics"))
                 .font(.satoshiBold(22))
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityAddTraits(.isHeader)
@@ -103,7 +103,7 @@ struct CryptoDetailPortfolioView: View {
                         AnalyticsManager.shared.log(PortfolioDataShow(fromScreen: .cryptoDetail))
                     }
                 }
-                .accessibilityLabel("\(viewModel.hidePortfolioData ? "Show" : "Hide") portfolio data")
+                .accessibilityLabel(Localization.string(viewModel.hidePortfolioData ? "Show portfolio data" : "Hide portfolio data"))
         }
         .animation(.none, value: viewModel.hidePortfolioData)
         .accessibilityElement(children: .contain)
@@ -150,7 +150,7 @@ struct CryptoDetailPortfolioView: View {
         let coinName = cryptoInfo?.name ?? symbol
         
         return VStack(alignment: .leading, spacing: 4) {
-            Text("Total Holdings")
+            Text(Localization.string("Total Holdings"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -163,7 +163,11 @@ struct CryptoDetailPortfolioView: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
-            "Total Holdings, \((amount ?? 0).formatCurrency(currency: CurrencyModel.empty, accessible: true)) \(coinName)"
+            Localization.format(
+                "Total Holdings, %1$@ %2$@",
+                (amount ?? 0).formatCurrency(currency: CurrencyModel.empty, accessible: true),
+                coinName
+            )
         )
     }
     
@@ -183,7 +187,7 @@ struct CryptoDetailPortfolioView: View {
         let currentPrice = holdingCurrentPrice
         
         VStack(alignment: .leading, spacing: 4) {
-            Text("Current Value")
+            Text(Localization.string("Current Value"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -197,7 +201,7 @@ struct CryptoDetailPortfolioView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
             currencyStatAccessibilityLabel(
-                title: "Current Value",
+                title: Localization.string("Current Value"),
                 value: amount * currentPrice
             )
         )
@@ -212,7 +216,7 @@ struct CryptoDetailPortfolioView: View {
         )
         
         VStack(alignment: .leading, spacing: 4) {
-            Text("Purchase Cost")
+            Text(Localization.string("Purchase Cost"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -226,7 +230,7 @@ struct CryptoDetailPortfolioView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
             currencyStatAccessibilityLabel(
-                title: "Purchase Cost",
+                title: Localization.string("Purchase Cost"),
                 value: cost
             )
         )
@@ -240,7 +244,7 @@ struct CryptoDetailPortfolioView: View {
         let profitPercent = transactions?.getProfitPercent(prices: prices, showCurrency: selectedCurrency.code)
         
         VStack(alignment: .leading, spacing: 4) {
-            Text("Profit/Loss")
+            Text(Localization.string("Profit/Loss"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -279,22 +283,22 @@ struct CryptoDetailPortfolioView: View {
         let safeChange = (percent ?? 0).isInfinite ? 0 : (percent ?? 0)
         let decimals = safeChange.changePercentDecimalPoints
         let accessiblePercent = abs(safeChange).numberAccessible(maxPlaces: decimals)
-        let direction = safeChange.directionAccessible.lowercased()
-        let percentText = "\(direction) \(accessiblePercent) percent"
+        let direction = Localization.string(safeChange.directionAccessible)
+        let percentText = Localization.format("%1$@ %2$@ percent", direction, accessiblePercent)
         
         if viewModel.hidePortfolioData {
-            return "Profit/Loss, \(percentText)"
+            return Localization.format("Profit/Loss, %@", percentText)
         }
         
         let changeValue = value ?? 0
-        let valueDirection = changeValue.directionAccessible.lowercased()
+        let valueDirection = Localization.string(changeValue.directionAccessible)
         let valueText = abs(changeValue).formatAccessibleCurrency()
-        return "Profit/Loss, \(valueDirection) \(valueText), \(percentText)"
+        return Localization.format("Profit/Loss, %1$@ %2$@, %3$@", valueDirection, valueText, percentText)
     }
     
     private var headerView: some View {
         HStack(spacing: 0) {
-            Text("Transactions")
+            Text(Localization.string("Transactions"))
                 .font(.satoshiBold(22))
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityAddTraits(.isHeader)
@@ -323,7 +327,7 @@ struct CryptoDetailPortfolioView: View {
                     .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5))
                     .padding(12)
             })
-            .accessibilityLabel("Add new transaction")
+            .accessibilityLabel(Localization.string("Add new transaction"))
             .opacity((groupedTransactions?.isEmpty ?? true) ? 0 : 1)
         }
     }

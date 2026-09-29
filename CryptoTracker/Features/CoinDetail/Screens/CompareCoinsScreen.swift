@@ -21,6 +21,7 @@ struct CompareCoinsScreen: View {
     @State private var compareWrapper: CompareWrapper?
     
     @State private var showCommunitySentimentHelp = false
+    @State private var appLanguage = AppLanguagePreference.stored
     
     init(
         cryptoInfo: CurrencyDataModel?,
@@ -261,7 +262,11 @@ struct CompareCoinsScreen: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
         }
-        .navigationBarTitle("Compare", displayMode: .inline)
+        .navigationBarTitle(Localization.string("Compare"), displayMode: .inline)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .navigationPopGestureDisabled(viewModel.isDragging)
         .toolbar {
             Button(action: {
@@ -282,7 +287,7 @@ struct CompareCoinsScreen: View {
                     .frame(width: 24 * min(scale, 1.25), height: 24 * min(scale, 1.25), alignment: .center)
                     .foregroundStyle(Color.onSurface)
             })
-            .accessibilityLabel("Change compare coin")
+            .accessibilityLabel(Localization.string("Change compare coin"))
         }
         .refreshable {
             await viewModel.refresh()

@@ -624,12 +624,12 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
         guard let iosURL = URL(string: "https://tinyurl.com/ygznuo76"),
               let androidURL = URL(string: "https://tinyurl.com/yz5w8ozj") else { return }
         
-        let text = """
-        Track \(cryptoInfo?.name ?? "") and other coins in real time with CoinCurrently.
-        Download the app for free.
-        iOS: \(iosURL)
-        Android: \(androidURL)
-        """
+        let text = [
+            Localization.format("Track %@ and other coins in real time with CoinCurrently.", cryptoInfo?.name ?? ""),
+            Localization.string("Download the app for free."),
+            Localization.format("iOS: %@", iosURL.absoluteString),
+            Localization.format("Android: %@", androidURL.absoluteString)
+        ].joined(separator: "\n")
         
         let activityItemSource = ActivityControllerItemSource(title: "CoinCurrently", text: text)
         let activityViewController = UIActivityViewController(activityItems: [image, activityItemSource], applicationActivities: nil)

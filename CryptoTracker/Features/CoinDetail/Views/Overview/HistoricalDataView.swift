@@ -69,7 +69,7 @@ struct HistoricalDataView: View {
     }
     
     private var headerView: some View {
-        Text("Historical Data")
+        Text(AppCopy.string("Historical Data"))
             .foregroundStyle(Color.onSurfaceDim)
             .font(.satoshiBold(22))
             .accessibilityAddTraits(.isHeader)
@@ -187,13 +187,13 @@ struct HistoricalDataView: View {
         let progress = (cryptoDetailModel?.market_data?.current_price?.getConvertedCurrency() ?? 1) / (cryptoDetailModel?.market_data?.ath?.getConvertedCurrency() ?? 0)
         
         let atlDate = cryptoDetailModel?.market_data?.atl_date?.getConvertedCurrency()?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)
-        let formattedAtlDate = atlDate?.formatted(date: .abbreviated, time: .omitted)
+        let formattedAtlDate = atlDate?.localizedAbbreviatedDate
         
         let athDate = cryptoDetailModel?.market_data?.ath_date?.getConvertedCurrency()?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)
-        let formattedAthDate = athDate?.formatted(date: .abbreviated, time: .omitted)
+        let formattedAthDate = athDate?.localizedAbbreviatedDate
 
         VStack(alignment: .leading, spacing: 0) {
-            Text("All-Time Range")
+            Text(AppCopy.string("All-Time Range"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceContainerDim)
             
@@ -214,7 +214,7 @@ struct HistoricalDataView: View {
                     )
                     .foregroundStyle(Color.onSurface)
                     .font(valueFont)
-                    .accessibilityLabel("From \(atlPrice ?? "")")
+                    .accessibilityLabel(AppCopy.format("From %@", atlPrice ?? ""))
                     
                     
                     ShimmeringText(
@@ -223,7 +223,7 @@ struct HistoricalDataView: View {
                     )
                     .foregroundStyle(Color.onSurfaceDimmer)
                     .font(.satoshiBold(12))
-                    .accessibilityLabel("on \(formattedAtlDate?.description ?? "")")
+                    .accessibilityLabel(AppCopy.format("on %@", formattedAtlDate ?? ""))
                 }
                 
                 if isHorizontal {
@@ -239,7 +239,7 @@ struct HistoricalDataView: View {
                     )
                     .foregroundStyle(Color.onSurface)
                     .font(valueFont)
-                    .accessibilityLabel("to \(athPrice ?? "")")
+                    .accessibilityLabel(AppCopy.format("to %@", athPrice ?? ""))
                     
                     ShimmeringText(
                         text: formattedAthDate ?? "0000000",
@@ -247,7 +247,7 @@ struct HistoricalDataView: View {
                     )
                     .foregroundStyle(Color.onSurfaceDimmer)
                     .font(.satoshiBold(12))
-                    .accessibilityLabel("on \(formattedAthDate?.description ?? "")")
+                    .accessibilityLabel(AppCopy.format("on %@", formattedAthDate ?? ""))
                 }
             }
         }
@@ -258,7 +258,7 @@ struct HistoricalDataView: View {
     private var allTimeLowView: some View {
         AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? 16 : 8, horizontalAlignment: .leading, verticalAlignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("All-Time Low %")
+                Text(AppCopy.string("All-Time Low %"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                     .accessibilityHidden(true)
@@ -278,10 +278,10 @@ struct HistoricalDataView: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("Since All-Time Low")
+                Text(AppCopy.string("Since All-Time Low"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
-                    .accessibilityLabel("Days since all time low: ")
+                    .accessibilityLabel(AppCopy.string("Days since all time low: "))
                 
                 ShimmeringText(
                     text: cryptoDetailModel?.market_data?.atl_date?.getConvertedCurrency()?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)?.daysAgo ?? "00000000",
@@ -299,7 +299,7 @@ struct HistoricalDataView: View {
     private var allTimeHighView: some View {
         AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? 16 : 8, horizontalAlignment: .leading, verticalAlignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("All-Time High %")
+                Text(AppCopy.string("All-Time High %"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
                     .accessibilityHidden(true)
@@ -321,10 +321,10 @@ struct HistoricalDataView: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("Since All-Time High")
+                Text(AppCopy.string("Since All-Time High"))
                     .foregroundStyle(Color.onSurfaceContainerDim)
                     .font(.satoshiBold(12))
-                    .accessibilityLabel("Days since all time high: ")
+                    .accessibilityLabel(AppCopy.string("Days since all time high: "))
                 
                 ShimmeringText(
                     text: cryptoDetailModel?.market_data?.ath_date?.getConvertedCurrency()?.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)?.daysAgo ?? "00000000",
@@ -341,15 +341,15 @@ struct HistoricalDataView: View {
     @ViewBuilder
     private var genesisDateView: some View {
         let genesisDate = cryptoDetailModel?.genesis_date?.convertStringToDate(dateFormat: .yyyyMMdd, gmtTimeZone: false)
-        let formattedGenesisDate = genesisDate?.formatted(date: .abbreviated, time: .omitted)
+        let formattedGenesisDate = genesisDate?.localizedAbbreviatedDate
         
         VStack(alignment: .leading, spacing: 4) {
-            Text("Genesis Date")
+            Text(AppCopy.string("Genesis Date"))
                 .foregroundStyle(Color.onSurfaceContainerDim)
                 .font(.satoshiBold(12))
             
             ShimmeringText(
-                text: formattedGenesisDate ?? "Unknown",
+                text: formattedGenesisDate ?? AppCopy.string("Unknown"),
                 isDownloading: cryptoDetailModel?.market_data?.market_cap == nil
             )
             .foregroundStyle(Color.onSurface)

@@ -21,16 +21,24 @@ struct CryptoDetailAlertCellView: View {
     
     private var accessibilityLabelText: String {
         guard let alert else {
-            return "Price alert \(index + 1) of \(alertsCount)"
+            return Localization.format("Price alert %1$d of %2$d", index + 1, alertsCount)
         }
         
         let currency = CurrencyModel.allCurrencies.first(where: { $0.code.lowercased() == alert.preferredCurrency }) ?? CurrencyModel()
-        let recurringText = alert.isRecurringAlert ? "Recurring" : "One-time"
+        let recurringText = Localization.string(alert.isRecurringAlert ? "Recurring" : "One-time")
         let createdText = alert.createdDate.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)?.alertTimeAgoDisplay ?? ""
-        let directionText = alert.direction.rawValue
+        let directionText = Localization.string(alert.direction.rawValue.capitalized)
         let targetText = alert.targetPrice.currencyAccessible(currency: currency)
         
-        return "Price alert \(index + 1) of \(alertsCount), \(name ?? ""), trigger when \(directionText) \(targetText), \(recurringText) alert, created \(createdText)"
+        return [
+            Localization.format("Price alert %1$d of %2$d", index + 1, alertsCount),
+            name ?? "",
+            Localization.format("Trigger when %1$@ %2$@", directionText, targetText),
+            Localization.format("%@ alert", recurringText),
+            Localization.format("Created %@", createdText)
+        ]
+        .filter { !$0.isEmpty }
+        .joined(separator: ", ")
     }
     
     var body: some View {
@@ -58,7 +66,7 @@ struct CryptoDetailAlertCellView: View {
                         .foregroundStyle(Color.onSurface)
                         .font(.satoshiBold(16))
                     } else {
-                        Text("\(alert?.direction.rawValue.capitalized ?? "") ")
+                        Text(Localization.string(alert?.direction.rawValue.capitalized ?? ""))
                             .foregroundStyle(Color.onSurface)
                             .font(.satoshiRegular(16))
                         
@@ -70,10 +78,11 @@ struct CryptoDetailAlertCellView: View {
                     }
                 }
                 
-                let recurringText = alert?.isRecurringAlert ?? false ? "Recurring" : "One-time"
+                let recurringText = Localization.string(alert?.isRecurringAlert ?? false ? "Recurring" : "One-time")
+                let createdText = alert?.createdDate.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)?.alertTimeAgoDisplay ?? "000"
                 
                 ShimmeringText(
-                    text: "\(recurringText) · Created \(alert?.createdDate.convertStringToDate(dateFormat: .yyyyMMddTHHmmssSSSZ)?.alertTimeAgoDisplay ?? "000")",
+                    text: Localization.format("%1$@ · Created %2$@", recurringText, createdText),
                     isDownloading: alert == nil
                 )
                 .foregroundStyle(Color.onSurfaceDimmer)
@@ -97,8 +106,8 @@ struct CryptoDetailAlertCellView: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabelText)
-        .accessibilityHint(alert != nil ? "Swipe down to delete." : "")
-        .accessibilityAction(named: "Delete") {
+        .accessibilityHint(alert != nil ? Localization.string("Swipe down to delete.") : "")
+        .accessibilityAction(named: Localization.string("Delete")) {
             guard alert != nil else { return }
             deleteAlert()
         }

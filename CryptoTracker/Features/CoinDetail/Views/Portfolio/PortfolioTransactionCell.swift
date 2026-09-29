@@ -140,7 +140,7 @@ struct PortfolioTransactionCell: View {
                 if isRefreshingAddress {
                     ActivityIndicator(size:size)
                         .padding(4)
-                        .accessibilityLabel("Syncing address")
+                        .accessibilityLabel(Localization.string("Syncing address"))
                         .accessibilitySortPriority(3)
                 } else {
                     Button(action: {
@@ -154,7 +154,7 @@ struct PortfolioTransactionCell: View {
                             .scaledToFit()
                             .padding(4)
                     })
-                    .accessibilityLabel("Sync address")
+                    .accessibilityLabel(Localization.string("Sync address"))
                     .accessibilitySortPriority(3)
                 }
             }
@@ -168,7 +168,7 @@ struct PortfolioTransactionCell: View {
                     .scaledToFit()
                     .padding(4)
             })
-            .accessibilityLabel("Edit transaction")
+            .accessibilityLabel(Localization.string("Edit transaction"))
             .accessibilitySortPriority(2)
             
             Button(action: {
@@ -180,7 +180,7 @@ struct PortfolioTransactionCell: View {
                     .scaledToFit()
                     .padding(4)
             })
-            .accessibilityLabel("Delete transaction")
+            .accessibilityLabel(Localization.string("Delete transaction"))
             .accessibilitySortPriority(1)
         }
         .foregroundColor(.onSurface)
@@ -228,7 +228,7 @@ struct PortfolioTransactionCell: View {
         let accessibleTotalValue = totalValue.formatCurrency(accessible: true, currency: selectedCurrency)
 
         VStack(alignment: .leading, spacing: 2) {
-            Text("Value")
+            Text(Localization.string("Value"))
                 .font(.poppinsRegular(12))
                 .foregroundColor(.primarySubtitleColor)
                 .fixedSize(horizontal: false, vertical: true)
@@ -255,7 +255,7 @@ struct PortfolioTransactionCell: View {
         let symbol = cryptoInfo?.symbol?.uppercased() ?? ""
 
         VStack(alignment: .leading, spacing: 2) {
-            Text("Amount")
+            Text(Localization.string("Amount"))
                 .font(.poppinsRegular(12))
                 .foregroundColor(Color.primarySubtitleColor)
                 .fixedSize(horizontal: false, vertical: true)
@@ -278,7 +278,7 @@ struct PortfolioTransactionCell: View {
         let accessiblePricePerCoin = pricePerCoin?.formatCurrency(accessible: true, currency: selectedCurrency) ?? ""
     
         VStack(alignment: .leading, spacing: 2) {
-            Text("Price per coin")
+            Text(Localization.string("Price per coin"))
                 .font(.poppinsRegular(12))
                 .foregroundColor(.primarySubtitleColor)
                 .fixedSize(horizontal: false, vertical: true)
@@ -309,7 +309,7 @@ struct PortfolioTransactionCell: View {
         let accessibleValue = "\(profitValue.roundTo(places: abs(profitValue) < 1 ? 7 : 4) < 0 ? "down" : "up") \(profitValue.formatCurrency(accessible: true, currency: selectedCurrency))"
 
         VStack(alignment: .leading, spacing: 2) {
-            Text("Profit/Loss")
+            Text(Localization.string("Profit/Loss"))
                 .font(.poppinsRegular(12))
                 .foregroundColor(.primarySubtitleColor)
                 .fixedSize(horizontal: false, vertical: true)
@@ -380,7 +380,7 @@ struct PortfolioTransactionCell: View {
         let accessibleFee = fee.formatCurrency(accessible: true, currency: selectedCurrency)
 
         VStack(alignment: .leading, spacing: 2) {
-            Text("Fee")
+            Text(Localization.string("Fee"))
                 .font(.poppinsRegular(12))
                 .foregroundColor(.primarySubtitleColor)
                 .fixedSize(horizontal: false, vertical: true)
@@ -401,7 +401,7 @@ struct PortfolioTransactionCell: View {
 
     private var noteView: some View {
         VStack(spacing: 2) {
-            Text("Note")
+            Text(Localization.string("Note"))
                 .font(.poppinsRegular(12))
                 .foregroundColor(.primarySubtitleColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -430,7 +430,7 @@ struct PortfolioTransactionCell: View {
             .scaledToFill()
             .frame(width: 16 * min(scale, 1.5), height: 8 * min(scale, 1.5))
             .rotationEffect(.init(degrees: 180))
-            .accessibilityLabel("Expand transaction for more information")
+            .accessibilityLabel(Localization.string("Expand transaction for more information"))
             .accessibility(addTraits: .isButton)
             .accessibilitySortPriority(1)
     }*/

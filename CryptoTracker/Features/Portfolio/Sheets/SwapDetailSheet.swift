@@ -235,7 +235,11 @@ struct SwapDetailSheet: View {
             )
             
             ShimmeringText(
-                text: "Swapped \(transaction.fromCurrencySymbol.uppercased()) for \(transaction.toCurrencySymbol.uppercased())",
+                text: Localization.format(
+                    "Swapped %1$@ for %2$@",
+                    transaction.fromCurrencySymbol.uppercased(),
+                    transaction.toCurrencySymbol.uppercased()
+                ),
                 isDownloading: coin == nil
             )
             .fixedSize(horizontal: false, vertical: true)
@@ -244,37 +248,37 @@ struct SwapDetailSheet: View {
             .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Swapped \(fromCoinName) for \(toCoinName)")
+        .accessibilityLabel(Localization.format("Swapped %1$@ for %2$@", fromCoinName, toCoinName))
     }
     
     private var swappedFromView: some View {
         statView(
-            title: "Swapped From",
+            title: Localization.string("Swapped From"),
             value: hideData
                 ? String.stars
                 : "\(transaction.fromAmount.formatCurrency(threshold: FormattingThreshold.million, currency: CurrencyModel.empty, maxDecimals: 7))\(transaction.fromCurrencySymbol.uppercased())",
             valueAccessible: hideData
-                ? "hidden"
+                ? Localization.string("hidden")
                 : "\(transaction.fromAmount.formatCurrency(currency: CurrencyModel.empty, maxDecimals: 7, accessible: true)) \(fromCoinName)"
         )
     }
     
     private var swappedToView: some View {
         statView(
-            title: "Swapped To",
+            title: Localization.string("Swapped To"),
             value: hideData
                 ? String.stars
                 : "\(transaction.toAmount.formatCurrency(threshold: FormattingThreshold.million, currency: CurrencyModel.empty, maxDecimals: 7))\(transaction.toCurrencySymbol.uppercased())",
             valueAccessible: hideData
-                ? "hidden"
+                ? Localization.string("hidden")
                 : "\(transaction.toAmount.formatCurrency(currency: CurrencyModel.empty, maxDecimals: 7, accessible: true)) \(toCoinName)"
         )
     }
     
     private var fromUnitPriceView: some View {
         statView(
-            title: "Unit Price (\(transaction.fromCurrencySymbol.uppercased()))",
-            titleAccessible: "Unit Price, \(fromCoinName)",
+            title: Localization.format("Unit Price (%@)", transaction.fromCurrencySymbol.uppercased()),
+            titleAccessible: Localization.format("Unit Price, %@", fromCoinName),
             value: hideData
                 ? String.stars
                 : transaction.fromUnitPrice.formatCurrency(
@@ -282,7 +286,7 @@ struct SwapDetailSheet: View {
                     currency: transactionCurrency
                 ),
             valueAccessible: hideData
-                ? "hidden"
+                ? Localization.string("hidden")
                 : transaction.fromUnitPrice.formatCurrency(
                     threshold: FormattingThreshold.million,
                     currency: transactionCurrency,
@@ -293,8 +297,8 @@ struct SwapDetailSheet: View {
     
     private var toUnitPriceView: some View {
         statView(
-            title: "Unit Price (\(transaction.toCurrencySymbol.uppercased()))",
-            titleAccessible: "Unit Price, \(toCoinName)",
+            title: Localization.format("Unit Price (%@)", transaction.toCurrencySymbol.uppercased()),
+            titleAccessible: Localization.format("Unit Price, %@", toCoinName),
             value: hideData
                 ? String.stars
                 : transaction.toUnitPrice.formatCurrency(
@@ -302,7 +306,7 @@ struct SwapDetailSheet: View {
                     currency: transactionCurrency
                 ),
             valueAccessible: hideData
-                ? "hidden"
+                ? Localization.string("hidden")
                 : transaction.toUnitPrice.formatCurrency(
                     threshold: FormattingThreshold.million,
                     currency: transactionCurrency,
@@ -320,18 +324,23 @@ struct SwapDetailSheet: View {
         )
         
         return statView(
-            title: "Rate",
+            title: Localization.string("Rate"),
             value: "1 \(transaction.fromCurrencySymbol.uppercased()) = \(hideData ? String.stars : formattedRate) \(transaction.toCurrencySymbol.uppercased())",
             valueAccessible: hideData
-                ? "hidden"
-                : "1 \(fromCoinName) equals \(rate.formatCurrency(threshold: FormattingThreshold.million, currency: CurrencyModel.empty, maxDecimals: 7, accessible: true)) \(toCoinName)"
+                ? Localization.string("hidden")
+                : Localization.format(
+                    "%1$@ equals %2$@ %3$@",
+                    "1 \(fromCoinName)",
+                    rate.formatCurrency(threshold: FormattingThreshold.million, currency: CurrencyModel.empty, maxDecimals: 7, accessible: true),
+                    toCoinName
+                )
         )
     }
 
     
     private var feesView: some View {
         statView(
-            title: "Fee",
+            title: Localization.string("Fee"),
             value: hideData
                 ? String.stars
                 : transaction.fee.formatCurrency(
@@ -339,7 +348,7 @@ struct SwapDetailSheet: View {
                     currency: transactionCurrency
                 ),
             valueAccessible: hideData
-                ? "hidden"
+                ? Localization.string("hidden")
                 : transaction.fee.formatCurrency(
                     threshold: FormattingThreshold.million,
                     currency: transactionCurrency,
@@ -352,7 +361,7 @@ struct SwapDetailSheet: View {
         let swappedValue = transaction.fromAmount * transaction.fromUnitPrice
         
         return statView(
-            title: "Swapped Value",
+            title: Localization.string("Swapped Value"),
             value: hideData
                 ? String.stars
                 : swappedValue.formatCurrency(
@@ -360,7 +369,7 @@ struct SwapDetailSheet: View {
                     currency: transactionCurrency
                 ),
             valueAccessible: hideData
-                ? "hidden"
+                ? Localization.string("hidden")
                 : swappedValue.formatCurrency(
                     threshold: FormattingThreshold.million,
                     currency: transactionCurrency,
@@ -371,7 +380,7 @@ struct SwapDetailSheet: View {
     
     private var dateView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Date")
+            Text(Localization.string("Date"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -385,7 +394,7 @@ struct SwapDetailSheet: View {
     
     private var timeView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Time")
+            Text(Localization.string("Time"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -399,7 +408,7 @@ struct SwapDetailSheet: View {
     
     private var notesView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Notes")
+            Text(Localization.string("Notes"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -414,7 +423,7 @@ struct SwapDetailSheet: View {
     private var actionButtons: some View {
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 8) {
             SecondaryButton(
-                text: "Delete",
+                text: Localization.string("Delete"),
                 icon: .delete,
                 fullWidth: true,
                 opaqueBackground: true,
@@ -425,7 +434,7 @@ struct SwapDetailSheet: View {
             )
             
             SecondaryButton(
-                text: "Edit",
+                text: Localization.string("Edit"),
                 icon: .edit,
                 fullWidth: true,
                 opaqueBackground: true,

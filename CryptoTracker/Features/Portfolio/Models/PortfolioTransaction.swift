@@ -83,17 +83,17 @@ struct PortfolioTransaction: PortfolioEvent {
     var transactionText: String {
         switch transactionType {
         case .buy:
-            "Bought"
+            AppCopy.string("Bought")
         case .sell:
-            "Sold"
+            AppCopy.string("Sold")
         case .swap:
-            "Swapped"
+            AppCopy.string("Swapped")
         case .transferIn:
-            "Received"
+            AppCopy.string("Received")
         case .transferOut:
-            "Sent"
+            AppCopy.string("Sent")
         case .importAddress:
-            "Imported"
+            AppCopy.string("Imported")
         }
     }
     

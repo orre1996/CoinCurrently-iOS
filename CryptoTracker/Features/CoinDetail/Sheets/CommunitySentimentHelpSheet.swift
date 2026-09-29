@@ -19,7 +19,7 @@ struct CommunitySentimentHelpSheet: View {
     var body: some View {
         VStack(spacing: 0) {
             DragHandle(
-                title: "Community Sentiment",
+                title: Localization.string("Community Sentiment"),
                 leadingIcon: .info
             )
             .readSize {
@@ -31,7 +31,7 @@ struct CommunitySentimentHelpSheet: View {
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 32) {
-                    Text("Community Sentiment reflects votes from CoinGecko users on whether they feel bullish or bearish about this asset. It does not represent financial advice or market forecasts.")
+                    Text(Localization.string("Community Sentiment reflects votes from CoinGecko users on whether they feel bullish or bearish about this asset. It does not represent financial advice or market forecasts."))
                 }
                 .foregroundColor(.onSurfaceDim)
                 .font(.satoshiRegular(18))

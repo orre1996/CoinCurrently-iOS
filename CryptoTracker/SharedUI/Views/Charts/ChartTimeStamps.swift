@@ -68,7 +68,11 @@ struct ChartTimeStamps: View {
         
         let date = Date(timeIntervalSince1970: currentTimeStamp / 1000)
         
+        #if IS_APP
+        dateFormatter.locale = Localization.locale
+        #else
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        #endif
         dateFormatter.dateFormat = currentTimeChart.dateFormat
         
         return dateFormatter.string(from: date)

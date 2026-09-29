@@ -15,6 +15,7 @@ struct TreasuryHoldingFilterSheet: View {
 
     @State private var contentHeight: CGFloat = 0
     @State private var headerHeight: CGFloat = 0
+    @State private var appLanguage = AppLanguagePreference.stored
 
     var body: some View {
         VStack(spacing: 0) {
@@ -33,6 +34,10 @@ struct TreasuryHoldingFilterSheet: View {
         }
         .presentationDetents([.height(max(1, contentHeight + headerHeight - safeAreaInsets.resolvedBottom))])
         .presentationBackground(Color.surfaceContainerLow)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .ignoresSafeArea(edges: .bottom)
     }
 

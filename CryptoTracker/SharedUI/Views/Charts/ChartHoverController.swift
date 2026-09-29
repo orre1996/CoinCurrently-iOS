@@ -35,9 +35,30 @@ class ChartHoverController {
     var latestComparePosition = 0
     
     init() {
+        applyDisplayLocale()
+    }
+    
+    private var localizedAt: String {
+        #if IS_APP
+        Localization.string("at").replacingOccurrences(of: "'", with: "''")
+        #else
+        "at"
+        #endif
+    }
+    
+    private func applyDisplayLocale() {
+        #if IS_APP
+        let locale = Localization.locale
+        dateFormatter.locale = locale
+        let symbols = DateFormatter()
+        symbols.locale = locale
+        dateFormatter.amSymbol = symbols.amSymbol
+        dateFormatter.pmSymbol = symbols.pmSymbol
+        #else
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.amSymbol = "AM"
         dateFormatter.pmSymbol = "PM"
+        #endif
     }
     
     func resetValues() {
@@ -71,6 +92,7 @@ class ChartHoverController {
         }
         
         // Second pass: format hover times (one dateFormat set)
+        applyDisplayLocale()
         dateFormatter.dateFormat = getHoverDateFormat(timeChart: timeChart, dontShowTime: inFearGreedView)
         for index in indices {
             let date = Date(timeIntervalSince1970: (lowestTimeStamp[safely: index] ?? 0.0) / 1000)
@@ -79,7 +101,7 @@ class ChartHoverController {
         
         // Third pass: format temporary times (one dateFormat set)
         let timeSuffix = Date.uses24HourClock ? "HH:mm" : "hh:mm a"
-        dateFormatter.dateFormat = "dd MMM 'at' \(timeSuffix)"
+        dateFormatter.dateFormat = "dd MMM '\(localizedAt)' \(timeSuffix)"
         for index in indices {
             let date = Date(timeIntervalSince1970: (lowestTimeStamp[safely: index] ?? 0.0) / 1000)
             temporaryTimes.append(dateFormatter.string(from: date))
@@ -104,25 +126,27 @@ class ChartHoverController {
         
         switch timeChart {
         case .aWeek:
-            return dontShowTime ? "MMM dd, YYYY" : "MMM dd 'at' \(timeSuffix)"
+            return dontShowTime ? "MMM dd, YYYY" : "MMM dd '\(localizedAt)' \(timeSuffix)"
         case .aMonth, .threeMonths, .aYear:
             return "MMM dd, YYYY"
         case .max:
             return "MMM YYYY"
         default:
-            return "MMM dd 'at' \(timeSuffix)"
+            return "MMM dd '\(localizedAt)' \(timeSuffix)"
         }
     }
     
     func getTimeOnHover(index: Int, dates: [Double], timeChart: TimeCharts?, dontShowTime: Bool = false) -> String {
         let date = Date(timeIntervalSince1970: (dates[safely: index] ?? 0.0) / 1000)
+        applyDisplayLocale()
         dateFormatter.dateFormat = getHoverDateFormat(timeChart: timeChart, dontShowTime: dontShowTime)
         return dateFormatter.string(from: date)
     }
     
     func getTemporaryTimeOnHover(index: Int, dates: [Double]) -> String {
         let date = Date(timeIntervalSince1970: (dates[safely: index] ?? 0.0) / 1000)
-        dateFormatter.dateFormat = "dd MMM 'at' \(Date.uses24HourClock ? "HH:mm" : "hh:mm a")"
+        applyDisplayLocale()
+        dateFormatter.dateFormat = "dd MMM '\(localizedAt)' \(Date.uses24HourClock ? "HH:mm" : "hh:mm a")"
         return dateFormatter.string(from: date)
     }
     
@@ -147,6 +171,7 @@ class ChartHoverController {
         }
         
         // Second pass: format times (one dateFormat set)
+        applyDisplayLocale()
         dateFormatter.dateFormat = getExchangeDateFormat(timeChart: timeChart)
         for position in tempPositions {
             let date = Date(timeIntervalSince1970: (dates[safely: position] ?? 0.0) / 1000)
@@ -167,13 +192,13 @@ class ChartHoverController {
         
         switch timeChart {
         case .aDay, .aWeek:
-            return "MMM dd 'at' \(timeSuffix)"
+            return "MMM dd '\(localizedAt)' \(timeSuffix)"
         case .aMonth, .aYear:
             return "MMM dd, YYYY"
         case .max:
             return "MMM YYYY"
         default:
-            return "dd MMM 'at' \(timeSuffix)"
+            return "dd MMM '\(localizedAt)' \(timeSuffix)"
         }
     }
     
@@ -181,6 +206,7 @@ class ChartHoverController {
         let position = chartLinearSeriesIndex(x: offset.x, width: readerSize.width, pointCount: prices.count)
         
         let date = Date(timeIntervalSince1970: (dates[safely: position] ?? 0.0) / 1000)
+        applyDisplayLocale()
         dateFormatter.dateFormat = getExchangeDateFormat(timeChart: timeChart)
         return dateFormatter.string(from: date)
     }
@@ -216,6 +242,7 @@ class ChartHoverController {
     
     func getTimeOnHoverCandle(position: Int, prices: [Candle], timeChart: TimeCharts?) -> String {
         let date = Date(timeIntervalSince1970: (prices[safely: position]?.timestamp ?? 0.0) / 1000)
+        applyDisplayLocale()
         dateFormatter.dateFormat = getHoverDateFormat(timeChart: timeChart)
         return dateFormatter.string(from: date)
     }

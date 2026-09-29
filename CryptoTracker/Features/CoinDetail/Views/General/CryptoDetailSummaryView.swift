@@ -81,16 +81,36 @@ struct CryptoDetailSummaryView: View {
         let formattedChangePercent = roundedChange.numberAccessible(maxPlaces: 2)
         let changeDirection = roundedChange >= 0 ? "up" : "down"
         
-        if changeMetricLabel == "volume" {
-            let volumeText = currentPrice?.formatCurrency(threshold: accessibilityFormattingThreshold, currency: currency, accessible: true) ?? ""
+        if changeMetricLabel == "volume" || changeMetricLabel == "holdings" {
+            let valueText = currentPrice?.formatCurrency(threshold: accessibilityFormattingThreshold, currency: currency, accessible: true) ?? ""
+            let direction = Localization.string(roundedChange >= 0 ? "Up" : "Down")
+            let period = Localization.string(accessibilityChangePeriod)
+            let valueLabel = Localization.string(valueAccessibilityLabel)
+            
+            if changeMetricLabel == "holdings",
+               let countryCode,
+               let countryName = Localization.locale.localizedString(forRegionCode: countryCode),
+               !countryName.isEmpty {
+                return Localization.format(
+                    "%1$@. %2$@. %3$@: %4$@. %5$@ %6$@ percent %7$@",
+                    name,
+                    Localization.format("Country: %@", countryName),
+                    valueLabel,
+                    valueText,
+                    direction,
+                    formattedChangePercent,
+                    period
+                )
+            }
+            
             return Localization.format(
                 "%1$@, %2$@: %3$@. %4$@ %5$@ percent %6$@",
                 name,
-                Localization.string(valueAccessibilityLabel),
-                volumeText,
-                Localization.string(roundedChange >= 0 ? "Up" : "Down"),
+                valueLabel,
+                valueText,
+                direction,
                 formattedChangePercent,
-                Localization.string(accessibilityChangePeriod)
+                period
             )
         }
         
@@ -243,7 +263,7 @@ struct CryptoDetailSummaryView: View {
             changeValueLabel
             changePercentLabel
             
-            Text(selectedTimeframe.timeAgoText)
+            Text(Localization.string(selectedTimeframe.timeAgoText))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
         }

@@ -218,29 +218,46 @@ extension Date {
         switch timeChart {
         case .aWeek:
             if dontShowTime {
-                return formatted(.dateTime.month(.wide).day().year())
+                return chartHoverDate(.dateTime.month(.wide).day().year())
             }
-            return "\(formatted(.dateTime.month(.wide).day())) at \(accessibleChartHoverTime)"
+            return chartHoverDateAtTime(.dateTime.month(.wide).day())
         case .aMonth, .threeMonths, .aYear:
-            return formatted(.dateTime.month(.wide).day().year())
+            return chartHoverDate(.dateTime.month(.wide).day().year())
         case .max:
-            return formatted(.dateTime.month(.wide).day().year())
+            return chartHoverDate(.dateTime.month(.wide).day().year())
         default:
-            return "\(formatted(.dateTime.month(.wide).day())) at \(accessibleChartHoverTime)"
+            return chartHoverDateAtTime(.dateTime.month(.wide).day())
         }
     }
     
     private func accessibleChartExchangeHoverDate(timeChart: TimeCharts) -> String {
         switch timeChart {
         case .aDay, .aWeek:
-            return "\(formatted(.dateTime.month(.wide).day())) at \(accessibleChartHoverTime)"
+            return chartHoverDateAtTime(.dateTime.month(.wide).day())
         case .aMonth, .aYear:
-            return formatted(.dateTime.month(.wide).day().year())
+            return chartHoverDate(.dateTime.month(.wide).day().year())
         case .max:
-            return formatted(.dateTime.month(.wide).day().year())
+            return chartHoverDate(.dateTime.month(.wide).day().year())
         default:
-            return "\(formatted(.dateTime.day().month(.wide))) at \(accessibleChartHoverTime)"
+            return chartHoverDateAtTime(.dateTime.day().month(.wide))
         }
+    }
+    
+    private func chartHoverDate(_ style: Date.FormatStyle) -> String {
+        #if IS_APP
+        formatted(style.locale(Localization.locale))
+        #else
+        formatted(style)
+        #endif
+    }
+    
+    private func chartHoverDateAtTime(_ style: Date.FormatStyle) -> String {
+        let dateText = chartHoverDate(style)
+        #if IS_APP
+        return Localization.format("%1$@ at %2$@", dateText, accessibleChartHoverTime)
+        #else
+        return "\(dateText) at \(accessibleChartHoverTime)"
+        #endif
     }
     
     private var accessibleChartHoverTime: String {

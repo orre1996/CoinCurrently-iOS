@@ -21,7 +21,7 @@ struct CurrencyOptionsSheet: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Select Currency")
+            DragHandle(title: Localization.string("Select Currency"))
             
             searchFieldView
                 .padding(
@@ -50,6 +50,7 @@ struct CurrencyOptionsSheet: View {
         let filteredOptions = CurrencyModel.allCurrencies.filter({
             searchInput.isEmpty ||
             $0.currency.containsCaseInsensitive(string: searchInput) ||
+            $0.localizedName.containsCaseInsensitive(string: searchInput) ||
             $0.code.containsCaseInsensitive(string: searchInput) ||
             $0.symbol.containsCaseInsensitive(string: searchInput)
         }).sorted(by: { $0.currency < $1.currency })
@@ -57,7 +58,7 @@ struct CurrencyOptionsSheet: View {
         VStack(alignment: .leading, spacing: 4) {
             ForEach(filteredOptions, id: \.self) { option in
                 SingleSelectView(
-                    title: option.currency,
+                    title: option.localizedName,
                     subtitle: "\(option.code) (\(option.symbol))",
                     imageCase: .nothing,
                     isSelected: option == selectedSortOption,
@@ -83,7 +84,7 @@ struct CurrencyOptionsSheet: View {
         TextInputField(
             input: $searchInput,
             placeholder: "Search for currency",
-            accessibilityValue: searchInput.isEmpty ? "Search for currency" : searchInput,
+            accessibilityValue: searchInput.isEmpty ? Localization.string("Search for currency") : searchInput,
             inputDidChange: { },
             onCommit: { }
         )

@@ -18,11 +18,11 @@ struct AchievementRowView: View {
                     .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(progress.definition.title)
+                    Text(Localization.string(progress.definition.title))
                         .font(.satoshiBold(16))
                         .foregroundStyle(Color.onSurface)
 
-                    Text(progress.definition.description)
+                    Text(Localization.string(progress.definition.description))
                         .font(.satoshiMedium(14))
                         .foregroundStyle(Color.onSurfaceDim)
 
@@ -63,7 +63,7 @@ struct AchievementRowView: View {
     private var subtitleText: String {
         let unlockedCount = max(0, progress.unlockedLevelIndex + 1)
         let totalCount = progress.definition.levels.count
-        return "\(unlockedCount)/\(totalCount) levels unlocked"
+        return Localization.format("%d/%d levels unlocked", unlockedCount, totalCount)
     }
 
     private func scrollToActiveLevel(using scrollReader: ScrollViewProxy) {

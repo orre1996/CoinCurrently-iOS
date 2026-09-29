@@ -18,7 +18,7 @@ private struct CalculatorRowItem: Identifiable {
             id: "placeholder-\(index)",
             coin: nil,
             formattedAmount: nil,
-            accessibilityLabel: "Loading currency \(index + 1) of 25"
+            accessibilityLabel: Localization.format("Loading currency %d of %d", index + 1, 25)
         )
     }
 }
@@ -45,15 +45,15 @@ struct CalculatorScreen: View {
             }
         }
         .ignoresSafeArea(edges: .bottom)
-        .navigationBarTitle("Converter", displayMode: .inline)
+        .navigationBarTitle(Localization.string("Converter"), displayMode: .inline)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
 
-                Button("Close") {
+                Button(Localization.string("Close")) {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
-                .accessibilityLabel("Close keyboard")
+                .accessibilityLabel(Localization.string("Close keyboard"))
             }
         }
         .onAppear {
@@ -169,7 +169,16 @@ struct CalculatorScreen: View {
                 id: coin?.id ?? "placeholder-\(index)",
                 coin: coin,
                 formattedAmount: amount?.formatCurrency(threshold: .million, currency: CurrencyModel.empty),
-                accessibilityLabel: "Currency \(index + 1) of \(totalCount), \(coin?.name ?? ""), \(input) \(selectedCurrency.currency) equals \(amount?.numberAccessible(maxPlaces: places) ?? "") \(coin?.name ?? "")"
+                accessibilityLabel: Localization.format(
+                    "Currency %d of %d, %@, %@ %@ equals %@ %@",
+                    index + 1,
+                    totalCount,
+                    coin?.name ?? "",
+                    input,
+                    selectedCurrency.localizedName,
+                    amount?.numberAccessible(maxPlaces: places) ?? "",
+                    coin?.name ?? ""
+                )
             )
         }
     }

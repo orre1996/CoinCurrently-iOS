@@ -26,7 +26,7 @@ struct CurrencyRowView: View {
                     .clipShape(Circle())
                 
                 VStack(alignment: .leading) {
-                    Text(currency.currency)
+                    Text(currency.localizedName)
                         .font(.poppinsRegular(16))
                         .foregroundColor(.onSurface)
                         .fixedSize(horizontal: false, vertical: true)

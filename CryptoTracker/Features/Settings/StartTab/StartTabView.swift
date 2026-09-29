@@ -33,7 +33,7 @@ struct StartTabView: View {
                         .clipShape(Circle())
                         .padding(.trailing, 16)
 
-                    Text(tab.rawValue)
+                    Text(Localization.string(tab.rawValue))
                         .font(.poppinsRegular(16))
                         .fixedSize(horizontal: false, vertical: true)
                         .foregroundColor(.onSurface)
@@ -55,7 +55,11 @@ struct StartTabView: View {
             }
             .padding(.horizontal, 16)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("\(tab == .lastUsed ? "Last used" : "Tab \(index + 1) of \(totalCount). \(tab.rawValue)").")
+            .accessibilityLabel(
+                tab == .lastUsed
+                    ? Localization.format("%@, tab %d of %d.", Localization.string(tab.rawValue), index + 1, totalCount)
+                    : Localization.format("Tab %d of %d. %@.", index + 1, totalCount, Localization.string(tab.rawValue))
+            )
             .accessibilityAddTraits(selectedTab == tab ? [.isSelected] : [])
             
             if tab == .market && selectedTab == .market {
@@ -74,7 +78,7 @@ struct StartTabView: View {
         Separator()
             .padding(.vertical, 16)
         
-        Text("Page")
+        Text(Localization.string("Page"))
             .font(.poppinsRegular(16))
             .padding(.horizontal, 16)
             .padding(.bottom, 16)
@@ -92,7 +96,7 @@ struct StartTabView: View {
             }
             .padding(.bottom, page == marketPages.last ? 0 : 16)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("Market page \(index + 1) of \(marketPages.count). \(page.rawValue).")
+            .accessibilityLabel(Localization.format("Market page %d of %d. %@.", index + 1, marketPages.count, Localization.string(page.rawValue)))
             .accessibilityAddTraits(selectedMarketPage == page ? [.isSelected] : [])
         }
     }

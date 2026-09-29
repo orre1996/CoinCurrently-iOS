@@ -30,7 +30,7 @@ struct PriceAlertView: View {
                         .frame(width: 16 * min(scale, 1.5), height: 12 * min(scale, 1.5))
                         .padding(.bottom, 1)
                     
-                    Text(alert?.direction == .above ? "Above: " : "Below: ")
+                    Text(Localization.string(alert?.direction == .above ? "Above:" : "Below:"))
                         .font(.poppinsRegular(14))
                         .foregroundColor(.onSurface)
                         .fixedSize(horizontal: false, vertical: true)
@@ -58,7 +58,7 @@ struct PriceAlertView: View {
                         .foregroundColor(.onSurface)
                 })
                 .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5), alignment: .center)
-                .accessibilityLabel("Edit price alert")
+                .accessibilityLabel(Localization.string("Edit price alert"))
                 
                 Button(action: {
                     if let alert {
@@ -72,7 +72,7 @@ struct PriceAlertView: View {
                 })
                 .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5), alignment: .center)
                 .padding(.leading, 4)
-                .accessibilityLabel("Delete price alert")
+                .accessibilityLabel(Localization.string("Delete price alert"))
             }
         }
         .padding(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 12))

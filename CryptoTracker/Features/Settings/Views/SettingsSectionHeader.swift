@@ -11,7 +11,7 @@ struct SettingsSectionHeader: View {
     let title: String
 
     var body: some View {
-        Text(title)
+        Text(Localization.string(title))
             .font(.satoshiBold(22))
             .foregroundStyle(Color.onSurfaceDim)
             .frame(maxWidth: .infinity, alignment: .leading)

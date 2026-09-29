@@ -35,7 +35,7 @@ struct AchievementsScreen: View {
                 .padding(16)
             }
         }
-        .navigationBarTitle("Achievements", displayMode: .inline)
+        .navigationBarTitle(Localization.string("Achievements"), displayMode: .inline)
         .task {
             await viewModel.loadAchievements()
         }
@@ -48,24 +48,24 @@ struct AchievementsScreen: View {
 
     private var summarySection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Your progress")
+            Text(Localization.string("Your progress"))
                 .font(.satoshiBold(22))
                 .foregroundStyle(Color.onSurface)
 
             HStack(spacing: 16) {
                 summaryStat(
-                    title: "Levels",
+                    title: Localization.string("Levels"),
                     value: "\(viewModel.summary.unlockedLevels)/\(viewModel.summary.totalLevels)"
                 )
 
                 summaryStat(
-                    title: "Current streak",
-                    value: "\(viewModel.summary.currentStreak) days"
+                    title: Localization.string("Current streak"),
+                    value: Localization.format("%d days", viewModel.summary.currentStreak)
                 )
 
                 summaryStat(
-                    title: "Best streak",
-                    value: "\(viewModel.summary.longestStreak) days"
+                    title: Localization.string("Best streak"),
+                    value: Localization.format("%d days", viewModel.summary.longestStreak)
                 )
             }
         }
@@ -73,7 +73,13 @@ struct AchievementsScreen: View {
         .cardBackground(hasPadding: false)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
-            "Your progress. \(viewModel.summary.unlockedLevels) of \(viewModel.summary.totalLevels) levels unlocked. Current streak \(viewModel.summary.currentStreak) days. Best streak \(viewModel.summary.longestStreak) days."
+            Localization.format(
+                "Your progress. %d of %d levels unlocked. Current streak %d days. Best streak %d days.",
+                viewModel.summary.unlockedLevels,
+                viewModel.summary.totalLevels,
+                viewModel.summary.currentStreak,
+                viewModel.summary.longestStreak
+            )
         )
     }
 

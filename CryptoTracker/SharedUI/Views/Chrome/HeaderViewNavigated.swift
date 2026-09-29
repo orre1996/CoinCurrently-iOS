@@ -34,7 +34,7 @@ struct HeaderViewNavigated: View {
                 }
                 .frame(width: 40, height: 40)
                 .accessibilitySortPriority(5)
-                .accessibilityLabel("Navigate back")
+                .accessibilityLabel(Localization.string("Navigate back"))
                 
                 Spacer()
                 

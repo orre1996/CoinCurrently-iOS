@@ -40,7 +40,7 @@ struct CoinRowView: View {
         .modifier(CardBackground())
         .padding(.horizontal, 16)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Currency \(index + 1) of \(totalCount). \(coin.name ?? "")")
+        .accessibilityLabel(Localization.format("Currency %d of %d. %@.", index + 1, totalCount, coin.name ?? ""))
     }
 }
 

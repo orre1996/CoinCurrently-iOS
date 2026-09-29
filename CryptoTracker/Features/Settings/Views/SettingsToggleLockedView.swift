@@ -27,11 +27,11 @@ struct SettingsToggleLockedView: View {
 
         AdaptiveStack(isHorizontal: isHorizontal, spacing: isHorizontal ? 16 : 8, horizontalAlignment: .leading) {
             VStack(alignment: .leading, spacing: 4) {
-                Text(title)
+                Text(Localization.string(title))
                     .font(.satoshiBold(16))
                     .foregroundStyle(Color.onSurface)
                 
-                Text(subTitle)
+                Text(Localization.string(subTitle))
                     .font(.satoshiBold(12))
                     .foregroundStyle(Color.onSurfaceDimmer)
                     .accessibilityHidden(true)
@@ -45,9 +45,9 @@ struct SettingsToggleLockedView: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityRemoveTraits(.isButton)
-        .accessibilityLabel("\(title), switch button")
-        .accessibilityHint(subTitle)
-        .accessibilityValue(isOn ? "On" : "Off")
+        .accessibilityLabel(Localization.format("%@, switch button", Localization.string(title)))
+        .accessibilityHint(Localization.string(subTitle))
+        .accessibilityValue(Localization.string(isOn ? "On" : "Off"))
         .accessibilityAction {
             action()
         }

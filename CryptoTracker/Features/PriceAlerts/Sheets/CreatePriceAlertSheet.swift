@@ -62,12 +62,16 @@ struct CreatePriceAlertSheet: View {
         let change = targetPercentChange
         let decimals = change.changePercentDecimalPoints
         let accessibleChange = change.numberAccessible(maxPlaces: decimals)
-        return "Change from current price: \(change.directionAccessible.lowercased()) \(accessibleChange) percent"
+        return Localization.format(
+            "Change from current price: %@ %@ percent",
+            Localization.string(change >= 0 ? "Up" : "Down"),
+            accessibleChange
+        )
     }
     
     private var currentPriceAccessibilityLabel: String {
         let price = currentPrice?.currencyAccessible(currency: selectedCurrency) ?? ""
-        return "Current \(currencyDataModel?.name ?? "") price: \(price)"
+        return Localization.format("Current %@ price: %@", currencyDataModel?.name ?? "", price)
     }
     
     var percentColor: Color {
@@ -81,7 +85,7 @@ struct CreatePriceAlertSheet: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             VStack(alignment: .leading, spacing: 0) {
-                DragHandle(title: "Set Price Alert")
+                DragHandle(title: Localization.string("Set Price Alert"))
                     .readSize {
                         headerHeight = $0.height
                     }
@@ -101,7 +105,7 @@ struct CreatePriceAlertSheet: View {
                                 )
                             )
                         
-                        Text(isAlertByPriceSelected ? "Target Price" : "Target Price Change %")
+                        Text(Localization.string(isAlertByPriceSelected ? "Target Price" : "Target Price Change %"))
                             .foregroundStyle(Color.onSurfaceDimmer)
                             .font(.satoshiMedium(14))
                             .accessibilityHidden(true)
@@ -131,7 +135,7 @@ struct CreatePriceAlertSheet: View {
                             let formattedTargetPrice = targetPrice.formatCurrency(threshold: FormattingThreshold.none, currency: selectedCurrency).withoutSymbol
                             
                             priceChangeView(formattedTargetPrice: formattedTargetPrice)
-                                .accessibilityLabel("Target Price: \(formattedTargetPrice)")
+                                .accessibilityLabel(Localization.format("Target Price: %@", formattedTargetPrice))
                                 .padding(.horizontal, 16)
                         }
                         
@@ -187,7 +191,7 @@ struct CreatePriceAlertSheet: View {
             
             SnackbarView(
                 showSnackBar: $showSnackbar,
-                message: .constant("Couldn’t add \(currencyDataModel?.symbol?.uppercased() ?? "coin") alert. Please try again."),
+                message: .constant(Localization.format("Couldn’t add %@ alert. Please try again.", currencyDataModel?.symbol?.uppercased() ?? Localization.string("coin"))),
                 buttonTitle: .constant(""),
                 type: .failure,
                 isTabbarHidden: true,
@@ -218,7 +222,7 @@ struct CreatePriceAlertSheet: View {
     private var alertTypeView: some View {
         HStack(spacing: 8) {
             chartButton(
-                title: "By Price",
+                title: Localization.string("By Price"),
                 isSelected: isAlertByPriceSelected,
                 action: {
                     isAlertByPriceSelected = true
@@ -226,10 +230,10 @@ struct CreatePriceAlertSheet: View {
             )
             .accessibilityHidden(accessibilityVoiceOverEnabled)
             .accessibilityAddTraits(isAlertByPriceSelected ? .isSelected : [])
-            .accessibilityLabel("Alert by price")
+            .accessibilityLabel(Localization.string("Alert by price"))
             
             chartButton(
-                title: "By Δ%",
+                title: Localization.string("By Δ%"),
                 isSelected: !isAlertByPriceSelected,
                 action: {
                     isAlertByPriceSelected = false
@@ -237,16 +241,16 @@ struct CreatePriceAlertSheet: View {
             )
             .accessibilityHidden(accessibilityVoiceOverEnabled)
             .accessibilityAddTraits(isAlertByPriceSelected ? [] : .isSelected)
-            .accessibilityLabel("Alert by percent")
+            .accessibilityLabel(Localization.string("Alert by percent"))
         }
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
         .lineLimit(2)
         .if(accessibilityVoiceOverEnabled) { view in
             view
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Alert type")
+                .accessibilityLabel(Localization.string("Alert type"))
                 .accessibilityValue(selectedAlertTypeAccessibilityValue)
-                .accessibilityHint("Swipe up or down to change alert type.")
+                .accessibilityHint(Localization.string("Swipe up or down to change alert type."))
                 .accessibilityAdjustableAction { direction in
                     switch direction {
                     case .increment:
@@ -262,8 +266,8 @@ struct CreatePriceAlertSheet: View {
     
     private var selectedAlertTypeAccessibilityValue: String {
         let index = isAlertByPriceSelected ? 0 : 1
-        let label = isAlertByPriceSelected ? "Alert by price" : "Alert by percent"
-        return "Type \(index + 1) of 2, \(label)."
+        let label = Localization.string(isAlertByPriceSelected ? "Alert by price" : "Alert by percent")
+        return Localization.format("Type %d of %d, %@.", index + 1, 2, label)
     }
     
     private func selectAdjacentAlertType(offset: Int) {
@@ -299,7 +303,7 @@ struct CreatePriceAlertSheet: View {
     
     @ViewBuilder
     private func priceChangeView(formattedTargetPrice: String) -> some View {
-        Text("Target Price")
+        Text(Localization.string("Target Price"))
             .foregroundStyle(Color.onSurfaceDim)
             .font(.satoshiMedium(14))
         
@@ -318,18 +322,26 @@ struct CreatePriceAlertSheet: View {
         
         +
         
-        Text(" from current Price")
+        Text(Localization.string(" from current Price"))
             .foregroundStyle(Color.onSurfaceDim)
             .font(.satoshiMedium(14))
     }
     
     @ViewBuilder
     private var inputField: some View {
-        let priceText = "Trigger alert at \(priceInput?.formatCurrency(threshold: FormattingThreshold.none, currency: selectedCurrency) ?? "")"
+        let priceText = Localization.format(
+            "Trigger alert at %@",
+            priceInput?.formatCurrency(threshold: FormattingThreshold.none, currency: selectedCurrency) ?? ""
+        )
         
         let decimals = percentInput?.changePercentDecimalPoints ?? 2
         let formattedPercent = percentInput?.formatted(.number.precision(.fractionLength(decimals))) ?? ""
-        let percentText = "Trigger alert when \(currencyDataModel?.name ?? "") is \(selectedDirection.rawValue) \(formattedPercent) percent"
+        let percentText = Localization.format(
+            "Trigger alert when %@ is %@ %@ percent",
+            currencyDataModel?.name ?? "",
+            Localization.string(selectedDirection == .up ? "Up" : "Down"),
+            formattedPercent
+        )
         
         NumericInputField(
             input: isAlertByPriceSelected ? $priceInput : $percentInput,
@@ -361,7 +373,7 @@ struct CreatePriceAlertSheet: View {
                         .frame(width: 20 * min(scale, 1.5), height: 20 * min(scale, 1.5))
                 }
             })
-            .accessibilityLabel("Change currency, currently selected: \(selectedCurrency.currency)")
+            .accessibilityLabel(Localization.format("Change currency, currently selected: %@", selectedCurrency.localizedName))
         } else {
             Menu {
                 if !isAlertByPriceSelected {
@@ -376,22 +388,22 @@ struct CreatePriceAlertSheet: View {
             } label: {
                 ChangeButton(direction: selectedDirection, action: { })
             }
-            .accessibilityLabel("Change percent direction, currently selected: \(selectedDirection.rawValue)")
+            .accessibilityLabel(Localization.format("Change percent direction, currently selected: %@", Localization.string(selectedDirection == .up ? "Up" : "Down")))
         }
     }
     
     private var recurringView: some View {
         CheckboxView(
-            trailingText: "Set as recurring alert",
+            trailingText: Localization.string("Set as recurring alert"),
             isChecked: $isRecurringAlertOn
         )
     }
     
     private var currentPriceView: some View {
-        Text("Current \(currencyDataModel?.symbol?.uppercased() ?? "") Price ")
+        Text(Localization.format("Current %@ Price ", currencyDataModel?.symbol?.uppercased() ?? ""))
             .foregroundStyle(Color.onSurfaceDimmer)
             .font(.satoshiMedium(14))
-            .accessibilityLabel("Current \(currencyDataModel?.name ?? "") price: ")
+            .accessibilityLabel(Localization.format("Current %@ price: ", currencyDataModel?.name ?? ""))
         
         +
         
@@ -402,7 +414,7 @@ struct CreatePriceAlertSheet: View {
     
     private var addAlertButtonView: some View {
         PrimaryButton(
-            text: "Set Price Alert",
+            text: Localization.string("Set Price Alert"),
             isEnabled: (isAlertByPriceSelected && priceInput != nil) || (!isAlertByPriceSelected && percentInput != nil),
             isLoading: isLoading,
             fullWidth: true,

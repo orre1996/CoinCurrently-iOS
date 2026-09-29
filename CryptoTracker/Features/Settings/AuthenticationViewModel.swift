@@ -47,7 +47,7 @@ final class AuthenticationViewModelImp: AuthenticationViewModel, ObservableObjec
             // check whether biometric authentication is possible
             if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
                 // it's possible, so go ahead and use it
-                let reason = "Unlock to access the app"
+                let reason = Localization.string("Unlock to access the app")
                 
                 context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, authenticationError in
                     guard success else { return }
@@ -64,7 +64,7 @@ final class AuthenticationViewModelImp: AuthenticationViewModel, ObservableObjec
             } else {
                 Task { @MainActor in
                     showSnackBar(
-                        message: "Something went wrong. Make sure Face ID/Touch ID is enabled and try again.",
+                        message: Localization.string("Something went wrong. Make sure Face ID/Touch ID is enabled and try again."),
                         type: .failure
                     )
                 }

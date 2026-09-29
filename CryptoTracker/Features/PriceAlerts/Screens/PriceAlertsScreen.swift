@@ -66,7 +66,7 @@ struct PriceAlertsScreen: View {
             }
             .ignoresSafeArea(edges: .bottom)
         }
-        .navigationBarTitle("Price Alerts", displayMode: .inline)
+        .navigationBarTitle(Localization.string("Price Alerts"), displayMode: .inline)
         .toolbar {
             Group {
                 if isLoading {
@@ -96,7 +96,7 @@ struct PriceAlertsScreen: View {
                     }, label: {
                         Image.add
                     })
-                    .accessibilityLabel("Add new price alert")
+                    .accessibilityLabel(Localization.string("Add new price alert"))
                 }
             }
             .frame(width: 24, height: 24)
@@ -105,10 +105,10 @@ struct PriceAlertsScreen: View {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 
-                Button("Close") {
+                Button(Localization.string("Close")) {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
-                .accessibilityLabel("Close keyboard")
+                .accessibilityLabel(Localization.string("Close keyboard"))
             }
         }
         .task {
@@ -207,7 +207,7 @@ struct PriceAlertsScreen: View {
                         switch await viewModel.addPriceAlert(alertCoin: alert) {
                         case .success:
                             showSnackBar(
-                                message: "\(selectedCoin?.symbol?.uppercased() ?? "Price") alert added.",
+                                message: Localization.format("%@ alert added.", selectedCoin?.symbol?.uppercased() ?? Localization.string("Price")),
                                 type: .success
                             )
                             
@@ -223,7 +223,7 @@ struct PriceAlertsScreen: View {
                             selectedCoin = nil
                         case .fcmTokenUnavailable:
                             showSnackBar(
-                                message: "Something went wrong. Restart the app and try again.",
+                                message: Localization.string("Something went wrong. Restart the app and try again."),
                                 type: .failure
                             )
                         case .failure:
@@ -307,7 +307,7 @@ struct PriceAlertsScreen: View {
                                         PriceAlertDeleted(fromScreen: .priceAlerts, coinName: currentCoin?.name ?? "")
                                     )
                                     showSnackBar(
-                                        message: "\(currentCoin?.symbol?.uppercased() ?? "Coin") alert deleted.",
+                                        message: Localization.format("%@ alert deleted.", currentCoin?.symbol?.uppercased() ?? Localization.string("Coin")),
                                         type: .success
                                     )
                                 }
@@ -326,8 +326,8 @@ struct PriceAlertsScreen: View {
 
     private var emptyMessage: some View {
         EmptyContent(
-            title: "No price alerts yet",
-            subTitle: "Tap + to create your first alert."
+            title: Localization.string("No price alerts yet"),
+            subTitle: Localization.string("Tap + to create your first alert.")
         )
         .padding(
             EdgeInsets(
@@ -341,9 +341,9 @@ struct PriceAlertsScreen: View {
     
     private var enablePushNotificationsView: some View {
         EmptyContent(
-            title: "Notifications are off",
-            subTitle: "Enable push notifications in your device settings to receive price alerts.",
-            buttonTitle: "Open Settings",
+            title: Localization.string("Notifications are off"),
+            subTitle: Localization.string("Enable push notifications in your device settings to receive price alerts."),
+            buttonTitle: Localization.string("Open Settings"),
             buttonAction: {
                 AnalyticsManager.shared.log(
                     OpenNotificationSettingsPressed(fromScreen: .priceAlerts)

@@ -64,7 +64,8 @@ class PaywallViewModelImp: PaywallViewModel {
     }
     
     var subscribeButtonText: String {
-        return selectedProduct?.id != promotionalName && selectedProduct?.id != welcomeName && isEligableForTrial ? "Start Your Free Trial" : "Upgrade Now"
+        let key = selectedProduct?.id != promotionalName && selectedProduct?.id != welcomeName && isEligableForTrial ? "Start Your Free Trial" : "Upgrade Now"
+        return Localization.string(key)
     }
     
     func setStartData() async {
@@ -144,12 +145,12 @@ class PaywallViewModelImp: PaywallViewModel {
         switch status {
         case .invalidReceipt:
             logPurchase(.failed)
-            snackbarMessage = "Purchase could not be verified. If you're testing in Xcode, upload your StoreKit public certificate to RevenueCat, or test on a device with a Sandbox Apple Account."
+            snackbarMessage = Localization.string("Purchase could not be verified. If you're testing in Xcode, upload your StoreKit public certificate to RevenueCat, or test on a device with a Sandbox Apple Account.")
             showSnackBar.toggle()
             return false
         case .failed:
             logPurchase(.failed)
-            snackbarMessage = "Something went wrong. Please try again later."
+            snackbarMessage = Localization.string("Something went wrong. Please try again later.")
             showSnackBar.toggle()
             return false
         case .cancelled:
@@ -175,7 +176,9 @@ class PaywallViewModelImp: PaywallViewModel {
 
         asyncMain(delay: 0.5) {
             CoinCurrently.showSnackBar(
-                message: "Purchase complete. Thank you so much for your support! \(shouldSchedulePush ? "A reminder has been scheduled." : "")",
+                message: shouldSchedulePush
+                    ? Localization.string("Purchase complete. Thank you so much for your support! A reminder has been scheduled.")
+                    : Localization.string("Purchase complete. Thank you so much for your support!"),
                 type: .success
             )
             
@@ -201,7 +204,7 @@ class PaywallViewModelImp: PaywallViewModel {
             logRestore(.restored)
             asyncMain(delay: 0.5) {
                 CoinCurrently.showSnackBar(
-                    message: "Purchase restored.",
+                    message: Localization.string("Purchase restored."),
                     type: .success
                 )
 
@@ -212,7 +215,7 @@ class PaywallViewModelImp: PaywallViewModel {
             return true
         case .nothingToRestore:
             logRestore(.nothingToRestore)
-            snackbarMessage = "No purchases to restore"
+            snackbarMessage = Localization.string("No purchases to restore")
             showSnackBar.toggle()
             return false
         case .cancelled:
@@ -220,7 +223,7 @@ class PaywallViewModelImp: PaywallViewModel {
             return false
         case .failed:
             logRestore(.failed)
-            snackbarMessage = "Something went wrong. Please try again later."
+            snackbarMessage = Localization.string("Something went wrong. Please try again later.")
             showSnackBar.toggle()
             return false
         }
@@ -228,8 +231,8 @@ class PaywallViewModelImp: PaywallViewModel {
     
     private func addNotification() {
         let content = UNMutableNotificationContent()
-        content.title = "CoinCurrently reminder"
-        content.body = "Your free trial is ending in 1 day"
+        content.title = Localization.string("CoinCurrently reminder")
+        content.body = Localization.string("Your free trial is ending in 1 day")
         content.userInfo["cryptoID"] = String.trialReminder
         
         let date = Calendar.current.date(byAdding: .day, value: 6, to: Date()) ?? Date()
@@ -243,7 +246,7 @@ class PaywallViewModelImp: PaywallViewModel {
     }
     
     private func accessiblePricePerPeriod(_ price: Double, period: String, currency: CurrencyModel) -> String {
-        "\(price.currencyAccessible(currency: currency)) per \(period)"
+        Localization.format("%@ per %@", price.currencyAccessible(currency: currency), Localization.string(period))
     }
     
     private func setAvailableProducts(_ products: [Product]?) async {
@@ -263,12 +266,12 @@ class PaywallViewModelImp: PaywallViewModel {
             newButtons.append(
                 TierButton(
                     title: "Limited Offer",
-                    formattedPrice: "\(offerProduct.introductoryPrice?.formatCurrency(threshold: FormattingThreshold.none, currency: currency) ?? "Couldn't retrieve price") / year",
+                    formattedPrice: Localization.format("%@ / year", offerProduct.introductoryPrice?.formatCurrency(threshold: FormattingThreshold.none, currency: currency) ?? Localization.string("Couldn't retrieve price")),
                     formattedPriceAccessibilityLabel: offerProduct.introductoryPrice.map {
                         accessiblePricePerPeriod($0, period: "year", currency: currency)
-                    } ?? "Couldn't retrieve price",
-                    subTitle: "For the first year, then \(regularPrice.formatCurrency(threshold: FormattingThreshold.none, currency: currency)) per year",
-                    subTitleAccessibilityLabel: "For the first year, then \(accessiblePricePerPeriod(regularPrice, period: "year", currency: currency))",
+                    } ?? Localization.string("Couldn't retrieve price"),
+                    subTitle: Localization.format("For the first year, then %@ per year", regularPrice.formatCurrency(threshold: FormattingThreshold.none, currency: currency)),
+                    subTitleAccessibilityLabel: Localization.format("For the first year, then %@", accessiblePricePerPeriod(regularPrice, period: "year", currency: currency)),
                     saveAmount: abs(Double.getDifferenceInPercent(between: offerProduct.introductoryPrice ?? 0, and: monthlyYearlyPrice) ?? 0),
                     timeLeft: nil,
                     product: offerProduct
@@ -281,12 +284,12 @@ class PaywallViewModelImp: PaywallViewModel {
             newButtons.append(
                 TierButton(
                     title: "Welcome Plan",
-                    formattedPrice: "\(welcomeProduct.introductoryPrice?.formatCurrency(threshold: FormattingThreshold.none, currency: currency) ?? "Couldn't retrieve price") / year",
+                    formattedPrice: Localization.format("%@ / year", welcomeProduct.introductoryPrice?.formatCurrency(threshold: FormattingThreshold.none, currency: currency) ?? Localization.string("Couldn't retrieve price")),
                     formattedPriceAccessibilityLabel: welcomeProduct.introductoryPrice.map {
                         accessiblePricePerPeriod($0, period: "year", currency: currency)
-                    } ?? "Couldn't retrieve price",
-                    subTitle: "For the first year, then \(regularPrice.formatCurrency(threshold: FormattingThreshold.none, currency: currency)) per year",
-                    subTitleAccessibilityLabel: "For the first year, then \(accessiblePricePerPeriod(regularPrice, period: "year", currency: currency))",
+                    } ?? Localization.string("Couldn't retrieve price"),
+                    subTitle: Localization.format("For the first year, then %@ per year", regularPrice.formatCurrency(threshold: FormattingThreshold.none, currency: currency)),
+                    subTitleAccessibilityLabel: Localization.format("For the first year, then %@", accessiblePricePerPeriod(regularPrice, period: "year", currency: currency)),
                     saveAmount: abs(Double.getDifferenceInPercent(between: welcomeProduct.introductoryPrice ?? 0, and: monthlyYearlyPrice) ?? 0),
                     timeLeft: nil,
                     product: welcomeProduct
@@ -304,10 +307,10 @@ class PaywallViewModelImp: PaywallViewModel {
             newButtons.append(
                 TierButton(
                     title: "Annual Plan",
-                    formattedPrice: "\(price.formatCurrency(threshold: FormattingThreshold.none, currency: currency)) / year",
+                    formattedPrice: Localization.format("%@ / year", price.formatCurrency(threshold: FormattingThreshold.none, currency: currency)),
                     formattedPriceAccessibilityLabel: accessiblePricePerPeriod(price, period: "year", currency: currency),
-                    subTitle: "Equivalent to \(monthlyEquivalent.formatCurrency(threshold: FormattingThreshold.none, currency: currency)) per month.",
-                    subTitleAccessibilityLabel: "Equivalent to \(accessiblePricePerPeriod(monthlyEquivalent, period: "month", currency: currency))",
+                    subTitle: Localization.format("Equivalent to %@ per month.", monthlyEquivalent.formatCurrency(threshold: FormattingThreshold.none, currency: currency)),
+                    subTitleAccessibilityLabel: Localization.format("Equivalent to %@", accessiblePricePerPeriod(monthlyEquivalent, period: "month", currency: currency)),
                     saveAmount: abs(Double.getDifferenceInPercent(between: price, and: monthlyYearlyPrice) ?? 0),
                     timeLeft: nil,
                     product: annualProduct
@@ -323,10 +326,10 @@ class PaywallViewModelImp: PaywallViewModel {
             newButtons.append(
                 TierButton(
                     title: "Monthly Plan",
-                    formattedPrice: "\(monthlyPrice.formatCurrency(threshold: FormattingThreshold.none, currency: currency)) / month",
+                    formattedPrice: Localization.format("%@ / month", monthlyPrice.formatCurrency(threshold: FormattingThreshold.none, currency: currency)),
                     formattedPriceAccessibilityLabel: accessiblePricePerPeriod(monthlyPrice, period: "month", currency: currency),
-                    subTitle: "For a total of \(yearlyTotal.formatCurrency(threshold: FormattingThreshold.none, currency: currency)) per year",
-                    subTitleAccessibilityLabel: "For a total of \(accessiblePricePerPeriod(yearlyTotal, period: "year", currency: currency))",
+                    subTitle: Localization.format("For a total of %@ per year", yearlyTotal.formatCurrency(threshold: FormattingThreshold.none, currency: currency)),
+                    subTitleAccessibilityLabel: Localization.format("For a total of %@", accessiblePricePerPeriod(yearlyTotal, period: "year", currency: currency)),
                     saveAmount: nil,
                     timeLeft: nil,
                     product: monthlyProduct
@@ -391,7 +394,7 @@ class PaywallViewModelImp: PaywallViewModel {
             let seconds = components.second ?? 0
             
             if let index = buttons?.firstIndex(where: { $0.title == "Welcome Plan" }),
-                let newTierButton = buttons?[index].copy(withTimeLeft: "Expires in \(days)d \(hours)h \(minutes)m \(seconds)s") {
+                let newTierButton = buttons?[index].copy(withTimeLeft: Localization.format("Expires in %dd %dh %dm %ds", days, hours, minutes, seconds)) {
                 buttons?[index] = newTierButton
             }
         }

@@ -110,7 +110,7 @@ struct PaywallScreen: View {
                                         premiumTitle: $0.proText
                                     )
                                     .accessibilityElement(children: .combine)
-                                    .accessibilityLabel($0.accessibilityLabel)
+                                    .accessibilityLabel(Localization.string($0.accessibilityLabel))
                                     .padding(.vertical, $0 == features.first ? 8 : 0)
                                     
                                     if $0 != features.last {
@@ -131,7 +131,7 @@ struct PaywallScreen: View {
                             )
                             
                             SecondaryButton(
-                                text: showAllFeatures ? "Show less features" : "Show all features",
+                                text: Localization.string(showAllFeatures ? "Show less features" : "Show all features"),
                                 fullWidth: true,
                                 action: {
                                     showAllFeatures.toggle()
@@ -139,7 +139,7 @@ struct PaywallScreen: View {
                             )
                             .padding(.top, 16)
                             
-                            Text("Select Plan")
+                            Text(Localization.string("Select Plan"))
                                 .font(.satoshiBold(22))
                                 .foregroundStyle(Color.onSurfaceDim)
                                 .padding(
@@ -161,7 +161,7 @@ struct PaywallScreen: View {
                             if viewModel.isEligableForTrial {
                                 freeTrialInformation
                             } else {
-                                Text("Cancel anytime")
+                                Text(Localization.string("Cancel anytime"))
                                     .padding(.top, 16)
                                     .font(.satoshiRegular(14))
                                     .foregroundStyle(Color.onSurfaceDimmer)
@@ -224,11 +224,11 @@ struct PaywallScreen: View {
                     }
                 }
             }, label: {
-                Text("Restore")
+                Text(Localization.string("Restore"))
                     .font(.satoshiBold(18))
                     .foregroundStyle(Color.primary)
             })
-            .accessibilityLabel("Restore previous purchase")
+            .accessibilityLabel(Localization.string("Restore previous purchase"))
             
             Spacer(minLength: 0)
             
@@ -243,7 +243,7 @@ struct PaywallScreen: View {
                     .foregroundStyle(Color.onSurface)
                     .clipShape(Circle())
             })
-            .accessibilityLabel("Close window")
+            .accessibilityLabel(Localization.string("Close window"))
         }
         .padding(
             EdgeInsets(
@@ -264,12 +264,12 @@ struct PaywallScreen: View {
                 .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("CoinCurrently Pro")
+                Text(Localization.string("CoinCurrently Pro"))
                     .font(.satoshiBold(22))
                     .foregroundStyle(Color.onSurface)
                     .fixedSize(horizontal: false, vertical: true)
                 
-                Text("Upgrade to CoinCurrently Pro for enhanced features.")
+                Text(Localization.string("Upgrade to CoinCurrently Pro for enhanced features."))
                     .font(.satoshiRegular(16))
                     .foregroundStyle(Color.onSurfaceDim)
                     .fixedSize(horizontal: false, vertical: true)
@@ -295,10 +295,10 @@ struct PaywallScreen: View {
             Spacer(minLength: 0)
             
             MinimumTextSize(
-                text: "FREE",
+                text: Localization.string("FREE"),
                 extraSize: 16
             ) {
-                Text("FREE")
+                Text(Localization.string("FREE"))
                     .font(.satoshiBold(12))
                     .padding(
                         EdgeInsets(
@@ -315,10 +315,10 @@ struct PaywallScreen: View {
             .font(.satoshiBold(16))
             
             MinimumTextSize(
-                text: "FREE",
+                text: Localization.string("PRO"),
                 extraSize: 16
             ) {
-                Text("PRO")
+                Text(Localization.string("PRO"))
                     .font(.satoshiBold(12))
                     .padding(
                         EdgeInsets(
@@ -347,14 +347,14 @@ struct PaywallScreen: View {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(alignment: .center, spacing: 12) {
                     ShimmeringText(
-                        text: button?.title ?? "00000000",
+                        text: button?.title.map { Localization.string($0) } ?? "00000000",
                         isDownloading: button?.title == nil
                     )
                     .font(.satoshiBold(18))
                     .foregroundColor(.primary90)
                     
                     if let saveAmount = button?.saveAmount {
-                        Text("Save \(saveAmount.formatted(.number.precision(.fractionLength(2))))%")
+                        Text(Localization.format("Save %@%%", saveAmount.formatted(.number.precision(.fractionLength(2)))))
                             .font(.satoshiBold(12))
                             .foregroundStyle(Color.primary90)
                             .padding(
@@ -419,12 +419,12 @@ struct PaywallScreen: View {
         premiumTitle: TierType
     ) -> some View {
         HStack(spacing: 24) {
-            Text(title)
+            Text(Localization.string(title))
                 .font(.satoshiBold(16))
                 .foregroundStyle(Color.onSurfaceDim)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            MinimumTextSize(text: "FREE", extraSize: 16) {
+            MinimumTextSize(text: Localization.string("FREE"), extraSize: 16) {
                 switch freeTitle {
                 case .text(let string):
                     Text(string)
@@ -436,7 +436,7 @@ struct PaywallScreen: View {
             }
             .foregroundStyle(Color.onSurface)
             
-            MinimumTextSize(text: "FREE", extraSize: 16) {
+            MinimumTextSize(text: Localization.string("FREE"), extraSize: 16) {
                 switch premiumTitle {
                 case .text(let string):
                     Text(string)
@@ -483,11 +483,11 @@ struct PaywallScreen: View {
     private var freeTrialInformation: some View {
         ZStack {
             if viewModel.hasPush {
-                Text("All plans include a 7-day trial, with limited offers excluded. You’ll get a push notification reminder a day before the trial ends. Cancel anytime.")
+                Text(Localization.string("All plans include a 7-day trial, with limited offers excluded. You’ll get a push notification reminder a day before the trial ends. Cancel anytime."))
             } else {
                 Text(
                     underlinedLinks(
-                        "All plans include a 7-day trial, with limited offers excluded. You’ll get a push notification reminder a day before the trial ends. Please enable notifications in the app [settings](https://www.google.se) to get reminders. Cancel anytime."
+                        Localization.string("All plans include a 7-day trial, with limited offers excluded. You’ll get a push notification reminder a day before the trial ends. Please enable notifications in the app [settings](https://www.google.se) to get reminders. Cancel anytime.")
                     )
                 )
             }
@@ -507,7 +507,7 @@ struct PaywallScreen: View {
     private var termsAndConditionsView: some View {
         Text(
             underlinedLinks(
-                "By subscribing, you agree to the [Terms & Conditions](https://coincurrently.app/terms) and [Privacy Policy](https://coincurrently.app/privacy)."
+                Localization.string("By subscribing, you agree to the [Terms & Conditions](https://coincurrently.app/terms) and [Privacy Policy](https://coincurrently.app/privacy).")
             )
         )
         .padding(.top, 16)

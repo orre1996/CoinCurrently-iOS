@@ -29,14 +29,14 @@ struct ResetAppSheet: View {
             VStack(spacing: 24) {
                 AdaptiveScroll(isScrollable: isScrollable) {
                     VStack(alignment: .leading, spacing: 24) {
-                        Text("Reset App?")
+                        Text(Localization.string("Reset App?"))
                             .foregroundColor(.onSurface)
                             .font(.satoshiBold(22))
                             .fixedSize(horizontal: false, vertical: true)
                             .accessibilityAddTraits(.isHeader)
                             .accessibilityFocused($focusHeader)
                         
-                        Text("This will delete all app settings and saved data on this device. This action cannot be undone.")
+                        Text(Localization.string("This will delete all app settings and saved data on this device. This action cannot be undone."))
                             .foregroundColor(.onSurfaceDim)
                             .font(.satoshiRegular(16))
                             .fixedSize(horizontal: false, vertical: true)
@@ -49,7 +49,7 @@ struct ResetAppSheet: View {
                 ) {
                     if !deleteInProgress {
                         SecondaryButton(
-                            text: "Cancel",
+                            text: Localization.string("Cancel"),
                             fullWidth: true,
                             opaqueBackground: true,
                             action: {
@@ -60,7 +60,7 @@ struct ResetAppSheet: View {
                     }
                     
                     PrimaryButton(
-                        text: "Reset App",
+                        text: Localization.string("Reset App"),
                         isLoading: deleteInProgress,
                         fullWidth: true,
                         opaqueBackground: true

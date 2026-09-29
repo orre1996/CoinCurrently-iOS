@@ -68,15 +68,15 @@ struct DeletePriceAlertOverlay: View {
                         isHorizontal: !category.isAccessibilityCategory || verticalSizeClass == .compact,
                         spacing: 16
                     ) {
-                        PrimaryButton(text: "No") {
+                        PrimaryButton(text: Localization.string("No")) {
                             noPressed()
                         }
-                        .accessibilityLabel("No, close window")
+                        .accessibilityLabel(Localization.string("No, close window"))
                         
-                        PrimaryButton(text: "Yes") {
+                        PrimaryButton(text: Localization.string("Yes")) {
                             yesPressed()
                         }
-                        .accessibilityLabel("Yes, close window")
+                        .accessibilityLabel(Localization.string("Yes, close window"))
                     }
                 }
                 .padding(EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16))

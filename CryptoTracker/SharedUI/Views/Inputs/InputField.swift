@@ -47,7 +47,7 @@ struct InputField: View {
                     .padding(.trailing, 4)
             }*/
 
-            CustomTextField(placeholder: Text(placeholder).font(.satoshiBold(16)).foregroundColor(Color.onSurfaceDim), 
+            CustomTextField(placeholder: Text(Localization.string(placeholder)).font(.satoshiBold(16)).foregroundColor(Color.onSurfaceDim), 
                             text: $input,
                             editingChanged: { editing in
                 isEditing = editing
@@ -73,7 +73,7 @@ struct InputField: View {
             .foregroundColor(.onSurface)
             .cornerRadius(8)
             .accessibilityElement(children: .ignore)
-            .accessibilityHint("Double tap to edit")
+            .accessibilityHint(Localization.string("Double tap to edit"))
             .accessibilityValue(accessibilityText)
             .onChange(of: input) {
                 onValueChanged()

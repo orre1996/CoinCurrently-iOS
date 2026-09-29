@@ -36,7 +36,7 @@ struct AlertCoinSelection: View {
                 }
             
             VStack(alignment: .center, spacing: 0) {
-                Text("Select Coin")
+                Text(Localization.string("Select Coin"))
                     .font(.poppinsSemibold(20))
                     .lineLimit(verticalSizeClass == .compact ? 1 : 2)
                     .multilineTextAlignment(.center)
@@ -47,7 +47,7 @@ struct AlertCoinSelection: View {
                 InputField(placeholder: "Search",
                            input: $input,
                            isEditing: $isEditing,
-                           accessibilityText: "\(input.isEmpty ? "\("Search")" : "\(input)"). Textfield",
+                           accessibilityText: Localization.format("%@. Textfield", input.isEmpty ? Localization.string("Search") : input),
                            leadingView: .magnifyingGlass,
                            trailingView: .clearButton,
                            keyboardType: .default,
@@ -83,11 +83,11 @@ struct AlertCoinSelection: View {
                 Separator()
                     .padding(.bottom, 16)
                 
-                PrimaryButton(text: "Close") {
+                PrimaryButton(text: Localization.string("Close")) {
                     close(nil)
                     endTextEditing()
                 }
-                .accessibilityLabel("Close window")
+                .accessibilityLabel(Localization.string("Close window"))
             }
             .padding(.vertical, 16)
             .frame(minWidth: 0, maxWidth: verticalSizeClass == .compact ? 500 : 340, maxHeight: 524, alignment: .center)
@@ -105,13 +105,13 @@ struct AlertCoinSelection: View {
     
     private var emptySearchView: some View {
         VStack(spacing: 0) {
-            Text("We couldn't find the currency you were looking for.")
+            Text(Localization.string("We couldn't find the currency you were looking for."))
                 .foregroundColor(.onSurface)
                 .font(.poppinsSemibold(16))
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 8)
             
-            Text("Try searching for something else.")
+            Text(Localization.string("Try searching for something else."))
                 .foregroundColor(.onSurface)
                 .font(.poppinsRegular(14))
                 .fixedSize(horizontal: false, vertical: true)

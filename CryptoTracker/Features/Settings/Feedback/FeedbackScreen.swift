@@ -31,7 +31,7 @@ struct FeedbackScreen: View {
             VStack(spacing: 0) {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
-                        Text("How’s your experience with CoinCurrently?")
+                        Text(Localization.string("How’s your experience with CoinCurrently?"))
                             .font(.satoshiMedium(14))
                             .padding(.horizontal, 16)
                         
@@ -73,7 +73,7 @@ struct FeedbackScreen: View {
             }
             .ignoresSafeArea(edges: .bottom)
         }
-        .navigationBarTitle("Help us Improve")
+        .navigationBarTitle(Localization.string("Help us Improve"))
     }
     
     private var ratingView: some View {
@@ -104,7 +104,7 @@ struct FeedbackScreen: View {
                                 radius: 1000,
                                 isInteractive: true
                             )
-                            .accessibilityLabel("Vote \(index) av \(5).")
+                            .accessibilityLabel(Localization.format("Vote %d of %d.", index, 5))
                             .accessibilityAddTraits(rating == index ? [.isSelected] : [])
                     })
                 }
@@ -124,7 +124,7 @@ struct FeedbackScreen: View {
     @ViewBuilder
     private var inputField: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("How can we improve? (Optional)")
+            Text(Localization.string("How can we improve? (Optional)"))
                 .font(.satoshiMedium(14))
                 .foregroundStyle(Color.onSurfaceDim)
                 .fixedSize(horizontal: false, vertical: true)
@@ -132,7 +132,7 @@ struct FeedbackScreen: View {
             
             ZStack {
                 HStack(spacing: 0) {
-                    Text("Enter your feedback")
+                    Text(Localization.string("Enter your feedback"))
                         .font(.satoshiRegular(16))
                         .foregroundStyle(Color.onSurfaceDimmer)
                         .opacity(feedback.isEmpty ? 1 : 0)
@@ -145,8 +145,8 @@ struct FeedbackScreen: View {
                 UITextViewWrapper(text: $feedback, calculatedHeight: .constant(132))
                     .padding(.leading, -4)
                     .accessibilityElement(children: .ignore)
-                    .accessibilityHint("Double tap to edit")
-                    .accessibilityLabel("\(feedback.isEmpty ? "Input feedback here" : "feedback: \(feedback)"). Textfield")
+                    .accessibilityHint(Localization.string("Double tap to edit"))
+                    .accessibilityLabel(Localization.format("%@. Textfield", feedback.isEmpty ? Localization.string("Input feedback here") : Localization.format("feedback: %@", feedback)))
             }
             .frame(maxWidth: .infinity, minHeight: 132, alignment: .topLeading)
             .background(Color.clear)
@@ -155,7 +155,7 @@ struct FeedbackScreen: View {
             .cornerRadius(8)
             .modifier(BorderModifier(color: [feedback.count <= 800 ? Color.outlineVariant : Color.trendDown]))
             
-            Text("\(feedback.count) / 800 characters")
+            Text(Localization.format("%d / 800 characters", feedback.count))
                 .font(.satoshiMedium(14))
                 .foregroundColor(feedback.count <= 200 ? .onSurfaceDimmer : .trendDown)
                 .fixedSize(horizontal: false, vertical: true)
@@ -165,7 +165,7 @@ struct FeedbackScreen: View {
     
     private var actionButton: some View {
         PrimaryButton(
-            text: "Submit Feedback",
+            text: Localization.string("Submit Feedback"),
             isEnabled: rating != nil,
             isLoading: isLoading,
             fullWidth: true,
@@ -183,7 +183,7 @@ struct FeedbackScreen: View {
                 if success {
                     presentationMode.wrappedValue.dismiss()
                     showSnackBar(
-                        message: "Feedback sent, thank you very much!",
+                        message: Localization.string("Feedback sent, thank you very much!"),
                         type: .success
                     )
                     
@@ -197,6 +197,6 @@ struct FeedbackScreen: View {
                 }
             }
         }
-        .accessibilityLabel("Submit: \(validInput ? "" : "Disabled because invalid or no rating is entered")")
+        .accessibilityLabel(validInput ? Localization.string("Submit Feedback") : Localization.string("Submit: Disabled because invalid or no rating is entered"))
     }
 }

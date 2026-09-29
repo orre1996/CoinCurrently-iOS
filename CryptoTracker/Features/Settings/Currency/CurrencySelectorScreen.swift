@@ -23,7 +23,7 @@ struct CurrencySelectorScreen: View {
                 .ignoresSafeArea()
             
             VStack(alignment: .center, spacing: 0) {
-                HeaderViewNavigated(presentationMode: presentationMode, title: "Currency")
+                HeaderViewNavigated(presentationMode: presentationMode, title: Localization.string("Currency"))
                 
                 Separator()
                 
@@ -65,7 +65,7 @@ struct CurrencySelectorScreen: View {
                                 })
                             })
                             .accessibilityElement(children: .combine)
-                            .accessibilityLabel("Currency \(index + 1) of \(currencies.count). \(currency.currency).")
+                            .accessibilityLabel(Localization.format("Currency %d of %d. %@.", index + 1, currencies.count, currency.localizedName))
                             .accessibilityAddTraits(selectedCurrency.code == currency.code ? [.isSelected] : [])
                         }
                     }

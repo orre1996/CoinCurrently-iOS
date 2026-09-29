@@ -33,7 +33,11 @@ struct AchievementSnackbarView: View {
     }
 
     private var accessibilityLabel: String {
-        "Achievement unlocked, \(achievementTitle), \(levelName)"
+        Localization.format(
+            "Achievement unlocked, %@, %@",
+            Localization.string(achievementTitle),
+            Localization.string(levelName)
+        )
     }
 
     var body: some View {
@@ -78,12 +82,12 @@ struct AchievementSnackbarView: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(achievementTitle)
+                    Text(Localization.string(achievementTitle))
                         .font(.satoshiBold(15))
                         .foregroundStyle(Color.onSurface)
                         .lineLimit(1)
 
-                    Text(levelName)
+                    Text(Localization.string(levelName))
                         .font(.satoshiMedium(13))
                         .foregroundStyle(Color.onSurfaceDim)
                         .lineLimit(1)

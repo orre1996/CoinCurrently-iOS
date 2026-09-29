@@ -32,6 +32,24 @@ public struct CurrencyModel: Codable, Equatable, Hashable, Sendable {
         let pluralSuffix = locale.isEmpty ? "" : "s"
         return "\(name)\(pluralSuffix)"
     }
+
+    /// Fiat name in the in-app language. Crypto names stay as written.
+    var localizedName: String {
+        #if IS_APP
+        guard Localization.locale.language.languageCode?.identifier != "en",
+              code.count == 3,
+              code.allSatisfy(\.isLetter),
+              let name = Localization.locale.localizedString(forCurrencyCode: code)?
+                .trimmingCharacters(in: .whitespacesAndNewlines),
+              !name.isEmpty
+        else {
+            return currency
+        }
+        return name
+        #else
+        return currency
+        #endif
+    }
     
     static var ´default´: CurrencyModel {
         CurrencyModel()

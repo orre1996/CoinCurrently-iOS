@@ -36,7 +36,7 @@ struct ReferralScreen: View {
                 }
             }
         }
-        .navigationBarTitle("Referral Program")
+        .navigationBarTitle(Localization.string("Referral Program"))
         .task {
             await viewModel.setStartData()
             
@@ -72,12 +72,12 @@ struct ReferralScreen: View {
     
     private func referralCodeSection(reader: GeometryProxy) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Your referral code")
+            Text(Localization.string("Your referral code"))
                 .font(.satoshiBold(22))
                 .foregroundStyle(Color.onSurface)
             
             ShimmeringText(
-                text: "\(viewModel.currentReferrals)/3 towards earnings 6 months of CoinCurrently Pro. Thereafter 1 month per referral.",
+                text: Localization.format("%d/3 towards earnings 6 months of CoinCurrently Pro. Thereafter 1 month per referral.", viewModel.currentReferrals),
                 isDownloading: viewModel.user == nil
             )
             .font(.satoshiMedium(16))
@@ -99,7 +99,7 @@ struct ReferralScreen: View {
                 }
             }
             .frame(width: (reader.size.width / 3) * 2, height: (reader.size.width / 3) * 2)
-            .accessibilityLabel("Referral QR code")
+            .accessibilityLabel(Localization.string("Referral QR code"))
             .frame(maxWidth: .infinity, alignment: .center)
             .padding(.vertical, 16)
             
@@ -114,7 +114,7 @@ struct ReferralScreen: View {
                 
                 HStack(spacing: 8) {
                     SecondaryButton(
-                        text: "Copy link",
+                        text: Localization.string("Copy link"),
                         isEnabled: viewModel.referralLink != nil,
                         fullWidth: true,
                         action: copyReferralLink
@@ -122,7 +122,7 @@ struct ReferralScreen: View {
                     .frame(maxWidth: 400)
                     
                     PrimaryButton(
-                        text: "Share",
+                        text: Localization.string("Share"),
                         isEnabled: viewModel.referralLink != nil,
                         fullWidth: true
                     ) {
@@ -138,11 +138,11 @@ struct ReferralScreen: View {
     
     private var redeemCodeSection: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Redeem a code")
+            Text(Localization.string("Redeem a code"))
                 .font(.satoshiBold(22))
                 .foregroundStyle(Color.onSurface)
             
-            Text("Redeem a code and get 7 days of CoinCurrently Pro for free")
+            Text(Localization.string("Redeem a code and get 7 days of CoinCurrently Pro for free"))
                 .font(.satoshiMedium(16))
                 .foregroundStyle(Color.onSurfaceDim)
             
@@ -150,7 +150,7 @@ struct ReferralScreen: View {
                 TextInputField(
                     input: $viewModel.redeemCodeInput,
                     placeholder: "Enter referral code",
-                    accessibilityValue: viewModel.redeemCodeInput.isEmpty ? "Enter referral code" : viewModel.redeemCodeInput,
+                    accessibilityValue: viewModel.redeemCodeInput.isEmpty ? Localization.string("Enter referral code") : viewModel.redeemCodeInput,
                     leadingIcon: nil,
                     isSearchField: false,
                     outlineColor: [viewModel.showError ? Color.trendDown : Color.outlineVariant],
@@ -163,7 +163,7 @@ struct ReferralScreen: View {
                 )
                 
                 if viewModel.redeemSucceeded {
-                    Text("Referral code redeemed successfully.")
+                    Text(Localization.string("Referral code redeemed successfully."))
                         .font(.satoshiMedium(14))
                         .foregroundStyle(Color.trendUp)
                 } else if let errorMessage = viewModel.redeemErrorMessage {
@@ -173,7 +173,7 @@ struct ReferralScreen: View {
                 }
                 
                 PrimaryButton(
-                    text: "Redeem Code",
+                    text: Localization.string("Redeem Code"),
                     isEnabled: !viewModel.redeemCodeInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !viewModel.isRedeemingCode,
                     isLoading: viewModel.isRedeemingCode
                 ) {
@@ -194,7 +194,7 @@ struct ReferralScreen: View {
         
         UIPasteboard.general.string = link
         navigationViewModel.showSnackbar(
-            message: "Referral link copied to clipboard.",
+            message: Localization.string("Referral link copied to clipboard."),
             buttonTitle: "",
             snackBarType: .success,
             buttonCallback: {}
@@ -204,10 +204,10 @@ struct ReferralScreen: View {
     private func shareReferralLink() {
         guard let link = viewModel.referralLink else { return }
         
-        let text = """
-        Join me on CoinCurrently and track crypto in real time!
-        \(link)
-        """
+        let text = [
+            Localization.string("Join me on CoinCurrently and track crypto in real time!"),
+            link
+        ].joined(separator: "\n")
         
         let activityViewController = UIActivityViewController(
             activityItems: [ActivityControllerItemSource(title: "CoinCurrently", text: text)],

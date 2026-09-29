@@ -25,7 +25,7 @@ struct StartMarketPageView: View {
                     .background(page == selectedPage ? Color.primary : .clear)
                     .clipShape(Circle())
                 
-                Text(page.rawValue)
+                Text(Localization.string(page.rawValue))
                     .font(.poppinsRegular(16))
                     .foregroundColor(.onSurface)
                     .fixedSize(horizontal: false, vertical: true)

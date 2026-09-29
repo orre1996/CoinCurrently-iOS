@@ -42,6 +42,7 @@ struct SettingsScreen: View {
     // App settings
     @State private var selectedCurrency: CurrencyModel = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
     @State private var selectedLanguage: AppLanguagePreference = .stored
+    @State private var appLanguage = AppLanguagePreference.stored
     @State private var showTransactinosInGraph: Bool = SettingsManager.shared.get(key: AppSettingKey.transactionInGraph) ?? true
     @State private var lockRotation: Bool = SettingsManager.shared.get(key: AppSettingKey.lockRotation) ?? false
     @State private var isAuthenticationEnabled: Bool = SettingsManager.shared.get(key: AppSettingKey.authenticationEnabled) ?? false
@@ -133,10 +134,10 @@ struct SettingsScreen: View {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 
-                Button("Close") {
+                Button(Localization.string("Close")) {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
-                .accessibilityLabel("Close keyboard")
+                .accessibilityLabel(Localization.string("Close keyboard"))
             }
         }
         .sheet(isPresented: $isSelectingTheme) {
@@ -214,26 +215,35 @@ struct SettingsScreen: View {
         .onDisappear {
             resetAppOpen = false
         }
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+            selectedLanguage = .stored
+        }
+    }
+
+    private func abbreviatedDate(_ date: Date) -> String {
+        date.formatted(Date.FormatStyle(date: .abbreviated, time: .omitted).locale(Localization.locale))
     }
     
     private var subscriptionStatusAccessibilityLabel: String {
-        guard currentSubscription != nil else { return "Inactive" }
-        guard let expirationDate = subscriptionExpirationDate else { return "Active" }
-        return "Active · Expires \(expirationDate.formatted(date: .abbreviated, time: .omitted))"
+        guard currentSubscription != nil else { return Localization.string("Inactive") }
+        guard let expirationDate = subscriptionExpirationDate else { return Localization.string("Active") }
+        return Localization.format("Active · Expires %@", abbreviatedDate(expirationDate))
     }
 
     @ViewBuilder
     private var subscriptionStatusSubtitle: some View {
         if currentSubscription == nil {
-            Text("Inactive")
+            Text(Localization.string("Inactive"))
                 .foregroundStyle(Color.onSurfaceDimmer)
         } else if let expirationDate = subscriptionExpirationDate {
-            Text("Active")
+            Text(Localization.string("Active"))
                 .foregroundStyle(Color.primary)
-            + Text(" · Expires \(expirationDate.formatted(date: .abbreviated, time: .omitted))")
+            + Text(Localization.format(" · Expires %@", abbreviatedDate(expirationDate)))
                 .foregroundStyle(Color.onSurfaceDimmer)
         } else {
-            Text("Active")
+            Text(Localization.string("Active"))
                 .foregroundStyle(Color.primary)
         }
     }
@@ -254,7 +264,7 @@ struct SettingsScreen: View {
                         .accessibilityHidden(true)
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("CoinCurrently Pro")
+                        Text(Localization.string("CoinCurrently Pro"))
                             .font(.satoshiBold(16))
                             .foregroundStyle(Color.onSurface)
                             .multilineTextAlignment(.leading)
@@ -309,7 +319,7 @@ struct SettingsScreen: View {
                 SettingsNavigationView(
                     title: "Currency",
                     subTitle: "\(selectedCurrency.code) (\(selectedCurrency.symbol))",
-                    accessibilityText: "Currency, currently selected \(selectedCurrency.currency)"
+                    accessibilityText: Localization.format("Currency, currently selected %@", selectedCurrency.localizedName)
                 ) {
                     AnalyticsManager.shared.log(
                         SheetOpened(fromScreen: .settings, sheet: .currencySelector)
@@ -322,7 +332,7 @@ struct SettingsScreen: View {
                 SettingsNavigationView(
                     title: "Language",
                     subTitle: selectedLanguage.settingsSubtitle,
-                    accessibilityText: "Language, currently selected \(selectedLanguage.settingsSubtitle)"
+                    accessibilityText: Localization.format("Language, currently selected %@", Localization.string(selectedLanguage.settingsSubtitle))
                 ) {
                     AnalyticsManager.shared.log(
                         SheetOpened(fromScreen: .settings, sheet: .language)
@@ -335,7 +345,7 @@ struct SettingsScreen: View {
                 SettingsNavigationView(
                     title: "Start Tab",
                     subTitle: selectedStartTab.rawValue,
-                    accessibilityText: "Start tab, currently selected \(selectedStartTab.rawValue)"
+                    accessibilityText: Localization.format("Start tab, currently selected %@", Localization.string(selectedStartTab.rawValue))
                 ) {
                     AnalyticsManager.shared.log(
                         SheetOpened(fromScreen: .settings, sheet: .startTab)
@@ -348,7 +358,7 @@ struct SettingsScreen: View {
                 SettingsNavigationView(
                     title: "Theme",
                     subTitle: appColorScheme.rawValue,
-                    accessibilityText: "Theme, currently selected \(appColorScheme.rawValue)"
+                    accessibilityText: Localization.format("Theme, currently selected %@", Localization.string(appColorScheme.rawValue))
                 ) {
                     AnalyticsManager.shared.log(
                         SheetOpened(fromScreen: .settings, sheet: .theme)
@@ -515,13 +525,13 @@ struct SettingsScreen: View {
                     resetAppOpen = true
                 }) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Reset The App")
+                        Text(Localization.string("Reset The App"))
                             .font(.satoshiBold(16))
                             .foregroundColor(.trendDown)
                             .multilineTextAlignment(.leading)
                             .fixedSize(horizontal: false, vertical: true)
                         
-                        Text("Delete your settings and data")
+                        Text(Localization.string("Delete your settings and data"))
                             .font(.satoshiBold(12))
                             .foregroundStyle(Color.onSurfaceDimmer)
                             .multilineTextAlignment(.leading)
@@ -667,11 +677,11 @@ struct SettingsScreen: View {
                 .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5), alignment: .center)
                 .accessibilityHidden(true)
 
-            Text("Powered by CoinGecko")
+            Text(Localization.string("Powered by CoinGecko"))
                 .font(.satoshiMedium(16))
                 .foregroundStyle(Color.onSurfaceDimmer)
                 .fixedSize(horizontal: false, vertical: true)
-                .accessibilityLabel("Powered by coin gecko")
+                .accessibilityLabel(Localization.string("Powered by coin gecko"))
         }
         .padding(.horizontal, 16)
     }
@@ -679,12 +689,12 @@ struct SettingsScreen: View {
     private func actionSheet() {
         guard let iOSUrlShare = URL(string: "https://tinyurl.com/ygznuo76") else { return }
         guard let androidUrlShare = URL(string: "https://tinyurl.com/yz5w8ozj") else { return }
-        let text = """
-        Track crypto in real time with CoinCurrently.
-        Download the app for free.
-        iOS: \(iOSUrlShare)
-        Android: \(androidUrlShare)
-        """
+        let text = [
+            Localization.string("Track crypto in real time with CoinCurrently."),
+            Localization.string("Download the app for free."),
+            Localization.format("iOS: %@", iOSUrlShare.absoluteString),
+            Localization.format("Android: %@", androidUrlShare.absoluteString)
+        ].joined(separator: "\n")
 
         let activityViewController = UIActivityViewController(activityItems: [ActivityControllerItemSource(title: "CoinCurrently", text: text)], applicationActivities: nil)
 

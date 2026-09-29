@@ -52,7 +52,7 @@ struct SettingsImageView: View {
                                 }
                         }
                         
-                        Text(title)
+                        Text(Localization.string(title))
                             .font(.poppinsRegular(16))
                             .multilineTextAlignment(.leading)
                             .foregroundStyle(Color.onSurface)
@@ -81,7 +81,7 @@ struct SettingsImageView: View {
                 }
             }
             .accessibilityElement(children: .combine)
-            .accessibilityLabel(accessibilityText ?? title)
+            .accessibilityLabel(Localization.string(accessibilityText ?? title))
             .padding(.vertical, 12)
             .padding(.trailing, 8)
         }

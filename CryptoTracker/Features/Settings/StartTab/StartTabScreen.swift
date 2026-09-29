@@ -24,7 +24,7 @@ struct StartTabScreen: View {
                 .ignoresSafeArea()
             
             VStack(alignment: .center, spacing: 0) {
-                HeaderViewNavigated(presentationMode: presentationMode, title: "Start tab")
+                HeaderViewNavigated(presentationMode: presentationMode, title: Localization.string("Start tab"))
                 
                 Separator()
                 

@@ -24,14 +24,14 @@ struct SettingsNavigationView: View {
         }) {
             HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(title)
+                    Text(Localization.string(title))
                         .font(.satoshiBold(16))
                         .foregroundStyle(Color.onSurface)
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
 
                     if let subTitle {
-                        Text(subTitle)
+                        Text(Localization.string(subTitle))
                             .font(.satoshiBold(12))
                             .foregroundStyle(Color.onSurfaceDimmer)
                             .fixedSize(horizontal: false, vertical: true)
@@ -51,7 +51,7 @@ struct SettingsNavigationView: View {
             }
             .foregroundStyle(Color.onSurface)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel(accessibilityText ?? title)
+            .accessibilityLabel(accessibilityText ?? Localization.string(title))
             .padding(.trailing, 8)
         }
         .multilineTextAlignment(.leading)

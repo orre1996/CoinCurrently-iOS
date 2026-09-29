@@ -22,7 +22,7 @@ struct AchievementLevelCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text(level.name)
+                Text(Localization.string(level.name))
                     .font(.satoshiBold(14))
                     .foregroundStyle(state == .locked ? Color.onSurfaceDimmer : Color.onSurface)
 
@@ -39,7 +39,7 @@ struct AchievementLevelCardView: View {
                 }
             }
 
-            Text(level.description)
+            Text(Localization.string(level.description))
                 .font(.satoshiMedium(12))
                 .foregroundStyle(Color.onSurfaceDim)
                 .lineLimit(2)
@@ -57,11 +57,11 @@ struct AchievementLevelCardView: View {
                     .font(.satoshiMedium(12))
                     .foregroundStyle(Color.onSurfaceDim)
             } else if state == .unlocked {
-                Text("Unlocked")
+                Text(Localization.string("Unlocked"))
                     .font(.satoshiMedium(12))
                     .foregroundStyle(Color.primary)
             } else {
-                Text("Locked")
+                Text(Localization.string("Locked"))
                     .font(.satoshiMedium(12))
                     .foregroundStyle(Color.onSurfaceDimmer)
             }
@@ -113,12 +113,17 @@ struct AchievementLevelCardView: View {
         let status: String
         switch state {
         case .unlocked:
-            status = "unlocked"
+            status = Localization.string("unlocked")
         case .inProgress:
-            status = "in progress, \(progressLabel)"
+            status = Localization.format("in progress, %@", progressLabel)
         case .locked:
-            status = "locked"
+            status = Localization.string("locked")
         }
-        return "\(level.name) level, \(level.description), \(status)"
+        return Localization.format(
+            "%@ level, %@, %@",
+            Localization.string(level.name),
+            Localization.string(level.description),
+            status
+        )
     }
 }

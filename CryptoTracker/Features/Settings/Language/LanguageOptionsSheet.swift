@@ -15,7 +15,7 @@ struct LanguageOptionsSheet: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Select Language")
+            DragHandle(title: Localization.string("Select Language"))
 
             searchFieldView
                 .padding(
@@ -51,8 +51,8 @@ struct LanguageOptionsSheet: View {
         VStack(alignment: .leading, spacing: 4) {
             if searchInput.isEmpty {
                 SingleSelectView(
-                    title: "System",
-                    subtitle: "Currently \(AppLanguage.matching().nativeName)",
+                    title: Localization.string("System"),
+                    subtitle: Localization.format("Currently %@", AppLanguage.matching().nativeName),
                     imageCase: .nothing,
                     isSelected: selectedOption == .system,
                     didSelectOption: {
@@ -88,7 +88,7 @@ struct LanguageOptionsSheet: View {
         TextInputField(
             input: $searchInput,
             placeholder: "Search for language",
-            accessibilityValue: searchInput.isEmpty ? "Search for language" : searchInput,
+            accessibilityValue: searchInput.isEmpty ? Localization.string("Search for language") : searchInput,
             inputDidChange: { },
             onCommit: { }
         )

@@ -80,13 +80,13 @@ enum RedeemCodeResult: Equatable {
         case .success:
             nil
         case .invalidCode:
-            "Invalid code"
+            Localization.string("Invalid code")
         case .alreadyReferred:
-            "You've already been referred by someone else."
+            Localization.string("You've already been referred by someone else.")
         case .selfRedeem:
-            "You can't redeem yourself, silly."
+            Localization.string("You can't redeem yourself, silly.")
         case .failure:
-            "Something went wrong. Please try again."
+            Localization.string("Something went wrong. Please try again.")
         }
     }
 }

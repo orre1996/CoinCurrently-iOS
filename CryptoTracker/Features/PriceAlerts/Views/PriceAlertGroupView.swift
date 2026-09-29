@@ -77,13 +77,13 @@ struct PriceAlertGroupView: View {
 
                 addNewPriceAlert(coin)
             }) {
-                Text(coin == nil ? "+ Add new alert" : "+ Add new \(coin?.name ?? "") alert")
+                Text(coin == nil ? Localization.string("+ Add new alert") : Localization.format("+ Add new %@ alert", coin?.name ?? ""))
                     .font(.poppinsRegular(14))
                     .foregroundColor(.onSurface)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .padding(EdgeInsets(top: 6, leading: 0, bottom: 16, trailing: 0))
-            .accessibilityLabel("Add new \(coin?.name ?? "") price alert")
+            .accessibilityLabel(Localization.format("Add new %@ price alert", coin?.name ?? ""))
         }
         .frame(maxWidth: .infinity)
         //.background(Color.cardBackground)

@@ -25,7 +25,7 @@ struct SettingsOptionsSheet: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: title)
+            DragHandle(title: Localization.string(title))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -47,7 +47,7 @@ struct SettingsOptionsSheet: View {
         VStack(alignment: .leading, spacing: 4) {
             ForEach(options, id: \.self) { option in
                 SingleSelectView(
-                    title: option,
+                    title: Localization.string(option),
                     subtitle: nil,
                     imageCase: .nothing,
                     isSelected: option == selectedSortOption,

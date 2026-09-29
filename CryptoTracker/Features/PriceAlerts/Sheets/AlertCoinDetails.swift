@@ -50,7 +50,7 @@ struct AlertCoinDetails: View {
                         }
                     
                     VStack(alignment: .center, spacing: 0) {
-                        Text(alertCoin != nil ? "Edit price alert" : "Add price alert")
+                        Text(Localization.string(alertCoin != nil ? "Edit price alert" : "Add price alert"))
                             .font(.poppinsSemibold(20))
                             .multilineTextAlignment(.center)
                             .lineLimit(verticalSizeClass == .compact ? 1 : 2)
@@ -69,7 +69,7 @@ struct AlertCoinDetails: View {
                                     .fixedSize(horizontal: false, vertical: true)
                                     .padding(.top, 16)
                                 
-                                Text("Target price")
+                                Text(Localization.string("Target price"))
                                     .foregroundColor(.onSurface)
                                     .font(.poppinsRegular(12))
                                     .fixedSize(horizontal: false, vertical: true)
@@ -91,13 +91,13 @@ struct AlertCoinDetails: View {
                                 
                                 let currentPrice = coinPrices?.first(where: { $0.id == selectedCoin?.id ?? "" })?.prices[currentlySelectedCurrency.code.lowercased()]
 
-                                Text("Current price: \(currentPrice?.formatted(style: .exact(currency: currentlySelectedCurrency)) ?? "$0.00")")
+                                Text(Localization.format("Current price: %@", currentPrice?.formatted(style: .exact(currency: currentlySelectedCurrency)) ?? "$0.00"))
                                     .font(.poppinsRegular(12))
                                     .foregroundColor(Color.onSurface)
                                     .fixedSize(horizontal: false, vertical: true)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .padding(EdgeInsets(top: 6, leading: 18, bottom: 16, trailing: 18))
-                                    .accessibilityLabel("Current price: \(currentPrice?.currencyAccessible(currency: currentlySelectedCurrency) ?? "$0.00")")
+                                    .accessibilityLabel(Localization.format("Current price: %@", currentPrice?.currencyAccessible(currency: currentlySelectedCurrency) ?? "$0.00"))
                             }
                         }
                         .id(viewID)
@@ -195,7 +195,7 @@ struct AlertCoinDetails: View {
         InputField(placeholder: "Enter target price",
                    input: $targetPrice,
                    isEditing: $isEditing,
-                   accessibilityText: targetPrice.isEmpty ? "Enter target price" : "\(Double(targetPrice.replacingOccurrences(of: ",", with: "."))?.currencyAccessible(currency: currentlySelectedCurrency) ?? "$0.00")",
+                   accessibilityText: targetPrice.isEmpty ? Localization.string("Enter target price") : (Double(targetPrice.replacingOccurrences(of: ",", with: "."))?.currencyAccessible(currency: currentlySelectedCurrency) ?? "$0.00"),
                    leadingView: currentlySelectedCurrency.suffix ? nil : .leadingIcon(text: currentlySelectedCurrency.symbol),
                    trailingView: !currentlySelectedCurrency.suffix ? nil : .trailingIcon(text: currentlySelectedCurrency.symbol),
                    editingChanged: { isEditing in
@@ -236,15 +236,15 @@ struct AlertCoinDetails: View {
         let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
 
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 16) {
-            PrimaryButton(text: "Cancel") {
+            PrimaryButton(text: Localization.string("Cancel")) {
                 close(nil, isEditingAlert)
             }
-            .accessibilityLabel("Cancel, close window")
+            .accessibilityLabel(Localization.string("Cancel, close window"))
             
             //let price = coinPrices?.first(where: { $0.id == selectedCoin?.id ?? "" })?.prices[currentlySelectedCurrency.code.lowercased()] ?? 0
            // let targetPrice = Double(targetPrice.replacingOccurrences(of: ",", with: ".")) ?? 0
             
-            PrimaryButton(text: "Save", isEnabled: validInput) {
+            PrimaryButton(text: Localization.string("Save"), isEnabled: validInput) {
                 if selectedCoin?.id != nil, validInput && !isEditingAlert {
                     /*close(AlertCoin(id: id,
                                     aboveOrBelow: targetPrice > price ? "above" : "below",
@@ -261,7 +261,7 @@ struct AlertCoinDetails: View {
                     close(editingCoin, isEditingAlert)
                 }
             }
-            .accessibilityLabel("Save price alert. \(!validInput ? "Enter valid target price to continue" : "Close window")")
+            .accessibilityLabel(Localization.format("Save price alert. %@", Localization.string(!validInput ? "Enter valid target price to continue" : "Close window")))
         }
         .padding(16)
     }
@@ -296,7 +296,7 @@ struct AlertCoinDetails: View {
                 .padding(.horizontal, 4)
                 .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50)
                 //.background(selectedPreSetPrice == 0 ? Color.trendDown : Color.cardBackground)
-                .accessibilityLabel("Set target price to -15%. \(targetMinus15Clean)")
+                .accessibilityLabel(Localization.format("Set target price to %@. %@", "-15%", targetMinus15Clean))
                 
                 Rectangle()
                     .frame(minWidth: 1, maxWidth: 1, minHeight: 50, maxHeight: 50, alignment: .center)
@@ -321,7 +321,7 @@ struct AlertCoinDetails: View {
                 .padding(.horizontal, 4)
                 .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50)
               //  .background(selectedPreSetPrice == 1 ? Color.mainRed : Color.cardBackground)
-                .accessibilityLabel("Set target price to -10%. \(targetMinus10Clean)")
+                .accessibilityLabel(Localization.format("Set target price to %@. %@", "-10%", targetMinus10Clean))
                 
                 Rectangle()
                     .frame(minWidth: 1, maxWidth: 1, minHeight: 50, maxHeight: 50, alignment: .center)
@@ -346,7 +346,7 @@ struct AlertCoinDetails: View {
                 .padding(.horizontal, 4)
                 .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50)
                 // .background(selectedPreSetPrice == 2 ? Color.mainRed : Color.cardBackground)
-                .accessibilityLabel("Set target price to -5%. \(targetMinus5Clean)")
+                .accessibilityLabel(Localization.format("Set target price to %@. %@", "-5%", targetMinus5Clean))
                 
                 Rectangle()
                     .frame(minWidth: 1, maxWidth: 1, minHeight: 50, maxHeight: 50, alignment: .center)
@@ -371,7 +371,7 @@ struct AlertCoinDetails: View {
                 .padding(.horizontal, 4)
                 .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50)
                // .background(selectedPreSetPrice == 3 ? Color.mainGreen : Color.cardBackground)
-                .accessibilityLabel("Set target price to +5%. \(targetPlus5Clean)")
+                .accessibilityLabel(Localization.format("Set target price to %@. %@", "+5%", targetPlus5Clean))
 
                 Rectangle()
                     .frame(minWidth: 1, maxWidth: 1, minHeight: 50, maxHeight: 50, alignment: .center)
@@ -396,7 +396,7 @@ struct AlertCoinDetails: View {
                 .padding(.horizontal, 4)
                 .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50)
                 //.background(selectedPreSetPrice == 4 ? Color.mainGreen : Color.cardBackground)
-                .accessibilityLabel("Set target price to +10%. \(targetPlus10Clean)")
+                .accessibilityLabel(Localization.format("Set target price to %@. %@", "+10%", targetPlus10Clean))
 
                 Rectangle()
                     .frame(minWidth: 1, maxWidth: 1, minHeight: 50, maxHeight: 50, alignment: .center)
@@ -421,7 +421,7 @@ struct AlertCoinDetails: View {
                 .padding(.horizontal, 4)
                 .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50)
                 //.background(selectedPreSetPrice == 5 ? Color.mainGreen : Color.cardBackground)
-                .accessibilityLabel("Set target price to +15%. \(targetPlus15Clean)")
+                .accessibilityLabel(Localization.format("Set target price to %@. %@", "+15%", targetPlus15Clean))
             }
             .font(.poppinsRegular(14))
             // .background(Color.cardBackground)

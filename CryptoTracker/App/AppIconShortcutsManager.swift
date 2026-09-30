@@ -19,7 +19,12 @@ class AppIconShortcutsManager {
     func configure() {
         items = []
         
-        addItem(.feedback, "Uninstalling the app?", subtitle: "Share your feedback", UIApplicationShortcutIcon(systemImageName: "envelope"))
+        addItem(
+            .feedback,
+            Localization.string("Uninstalling the app?"),
+            subtitle: Localization.string("Share your feedback"),
+            UIApplicationShortcutIcon(systemImageName: "envelope")
+        )
 
         UIApplication.shared.shortcutItems = items
     }

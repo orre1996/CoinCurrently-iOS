@@ -33,8 +33,12 @@ struct CustomTextField: View {
             .accessibilityElement(children: .ignore)
             .multilineTextAlignment(.leading)
             .font(.satoshiBold(16))
-            .accessibilityHint("Double tap to edit")
-            .accessibilityValue("\(text.isEmpty ? "\(placeholder)" : "\(text)"). Textfield")
+            .accessibilityHint(AppCopy.string("Double tap to edit"))
+            .accessibilityValue(
+                text.isEmpty
+                    ? AppCopy.string("Textfield")
+                    : AppCopy.format("%@. Textfield", text)
+            )
 #if !os(watchOS)
             .disableAutocorrection(true)
 #endif

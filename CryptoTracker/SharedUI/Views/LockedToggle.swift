@@ -36,6 +36,9 @@ struct LockedToggle: View {
                 action()
             }
             .animation(Animation.easeInOut(duration: 0.2), value: isOn)
-            .accessibilityLabel("Switch button, \(isOn ? "checked" : "unchecked")")
+            .accessibilityLabel(Localization.format(
+                "Switch button, %@",
+                Localization.string(isOn ? "checked" : "unchecked")
+            ))
     }
 }

@@ -27,6 +27,7 @@ struct WhatsNewSheet: View {
     @State private var buttonsHeight: CGFloat = 0
     
     @ScaledMetric private var scale: CGFloat = 1
+    @State private var appLanguage = AppLanguagePreference.stored
     
     private let sections: [WhatsNewSection] = [
         WhatsNewSection(
@@ -57,7 +58,7 @@ struct WhatsNewSheet: View {
     var body: some View {
         VStack(spacing: 0) {
             DragHandle(
-                title: "What's New"
+                title: Localization.string("What's New")
             )
             .readSize {
                 headerHeight = $0.height
@@ -91,7 +92,7 @@ struct WhatsNewSheet: View {
                     .padding(.horizontal, 16)
                 
                 PrimaryButton(
-                    text: "Explore",
+                    text: Localization.string("Explore"),
                     fullWidth: true,
                     action: {
                         presentationMode.wrappedValue.dismiss()
@@ -113,6 +114,10 @@ struct WhatsNewSheet: View {
         .presentationDetents([.height(max(1, headerHeight + contentHeight + buttonsHeight - safeAreaInsets.resolvedBottom))])
         .presentationBackground(Color.surfaceContainerLow)
         .ignoresSafeArea(edges: .bottom)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
+        .environment(\.locale, appLanguage.resolve().locale)
     }
     
     private func whatsNewSectionView(section: WhatsNewSection) -> some View {
@@ -123,7 +128,7 @@ struct WhatsNewSheet: View {
                     .frame(width: 16 * min(scale, 1.5), height: 16 * min(scale, 1.5))
                     .foregroundStyle(Color.primary)
                 
-                Text(section.title)
+                Text(Localization.string(section.title))
                     .font(.satoshiBold(16))
                     .foregroundStyle(Color.onSurface)
             }
@@ -132,7 +137,7 @@ struct WhatsNewSheet: View {
                 HStack(alignment: .firstTextBaseline, spacing: 4) {
                     Text("·")
                     
-                    Text(point)
+                    Text(Localization.string(point))
                 }
                 .font(.satoshiRegular(16))
                 .foregroundStyle(Color.onSurfaceDim)

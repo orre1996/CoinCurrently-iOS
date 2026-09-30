@@ -18,7 +18,7 @@ struct SmallPortfolioWidget: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Portfolio Value")
+            Text(AppCopy.string("Portfolio Value"))
                 .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
                 .font(.satoshiBold(12))
             
@@ -32,7 +32,7 @@ struct SmallPortfolioWidget: View {
             
             Spacer(minLength: 12)
             
-            Text("24h Change")
+            Text(AppCopy.string("24h Change"))
                 .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
                 .font(.satoshiBold(12))
             

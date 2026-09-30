@@ -32,7 +32,7 @@ struct RectangularNewsWidget: View {
                             .frame(width: 10, height: 10)
                             .foregroundColor(Color.onSurfaceDimmer(for: scheme))
                         
-                        Text(entry?.source_name ?? "Crypto news")
+                        Text(entry?.source_name ?? AppCopy.string("Crypto news"))
                             .font(.satoshiBold(10))
                             .minimumScaleFactor(0.8)
                             .foregroundColor(Color.onSurfaceDimmer(for: scheme))

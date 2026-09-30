@@ -65,7 +65,7 @@ struct CircularCryptoWidget: View {
         ZStack {
             AccessoryWidgetBackground()
             
-            Text("Tap\nWhile In\nEdit")
+            Text(AppCopy.string("Tap\nWhile In\nEdit"))
                 .font(.system(size: 11, weight: .semibold))
                 .multilineTextAlignment(.center)
                 .lineLimit(3)

@@ -21,6 +21,8 @@ enum AppCopy {
     static func string(_ key: String) -> String {
         #if IS_APP
         Localization.string(key)
+        #elseif IS_WIDGET
+        WidgetCatalog.string(key)
         #else
         key
         #endif
@@ -29,11 +31,47 @@ enum AppCopy {
     static func format(_ key: String, _ arguments: CVarArg...) -> String {
         #if IS_APP
         String(format: Localization.string(key), locale: Localization.locale, arguments: arguments)
+        #elseif IS_WIDGET
+        String(format: WidgetCatalog.string(key), locale: WidgetCatalog.locale, arguments: arguments)
         #else
         String(format: key, arguments: arguments)
         #endif
     }
 }
+
+#if IS_WIDGET
+private enum WidgetCatalog {
+    static var locale: Locale {
+        let stored: String? = SettingsManager.shared.get(key: AppSettingKey.selectedLanguage)
+        switch stored {
+        case "zh":
+            return Locale(identifier: "zh-Hans")
+        case "zh-tw":
+            return Locale(identifier: "zh-Hant")
+        case "no":
+            return Locale(identifier: "nb")
+        case .some(let value) where value != "system" && !value.isEmpty:
+            return Locale(identifier: value)
+        default:
+            return .current
+        }
+    }
+
+    static func string(_ key: String) -> String {
+        var resource = LocalizedStringResource(stringLiteral: key)
+        resource.locale = locale
+        resource.bundle = .atURL(containingAppBundle.bundleURL)
+        return String(localized: resource)
+    }
+
+    private static var containingAppBundle: Bundle {
+        let url = Bundle.main.bundleURL
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+        return Bundle(url: url) ?? .main
+    }
+}
+#endif
 
 extension StringProtocol  {
     var digits: [Int] { compactMap(\.wholeNumberValue) }

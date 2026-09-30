@@ -54,14 +54,8 @@ struct NewsCard: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("""
-                \(newsType.rawValue) \(index) of \(totalCount).
-                \(news?.title ?? ""). By \(news?.source_name ?? "000000"). 
-                Published \(news?.date?.convertStringToDate(dateFormat: .EdMMMyyyyHHmmssZ)?.timeAgoDisplay ?? "000000"). Sentiment, \(news?.sentiment ?? "") 
-                \(news?.tickers?.isEmpty ?? true ? "" : ". Tickers, ")
-                \(news?.tickers?[safely: 0] ?? ""). \(news?.tickers?[safely: 1] ?? ""). \(news?.tickers?[safely: 2] ?? "")
-            """)
-            .accessibilityHint("Double tap to read more")
+            .accessibilityLabel(accessibilityDescription)
+            .accessibilityHint(Localization.string("Double tap to read more"))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .contain)
@@ -76,6 +70,43 @@ struct NewsCard: View {
         )
     }
     
+    private var contentKindTitle: String {
+        switch newsType {
+        case .article:
+            return Localization.string("Article")
+        case .video:
+            return Localization.string("Video")
+        case .podcast:
+            return Localization.string("Podcast")
+        }
+    }
+
+    private var accessibilityDescription: String {
+        let position = Localization.format("%1$@ %2$d of %3$d", contentKindTitle, index, totalCount)
+        let title = news?.title ?? ""
+        let source = Localization.format("By %@", news?.source_name ?? "000000")
+        let published = Localization.format(
+            "Published %@",
+            news?.date?.convertStringToDate(dateFormat: .EdMMMyyyyHHmmssZ)?.timeAgoDisplay ?? "000000"
+        )
+        let sentiment = Localization.format("Sentiment, %@", localizedSentiment(news?.sentiment ?? ""))
+        var description = "\(position). \(title). \(source). \(published). \(sentiment)"
+        let tickers = [0, 1, 2].compactMap { news?.tickers?[safely: $0] }.filter { !$0.isEmpty }
+        if !tickers.isEmpty {
+            description += ". " + Localization.format("Tickers, %@", tickers.joined(separator: ", "))
+        }
+        return description
+    }
+
+    private func localizedSentiment(_ value: String) -> String {
+        switch value {
+        case "Positive", "Negative", "Neutral":
+            return Localization.string(value)
+        default:
+            return value
+        }
+    }
+
     private var newsImageView: some View {
         ShimmeringImage(
             imageUrl: news?.image_url ?? "",

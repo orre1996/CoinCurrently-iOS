@@ -35,13 +35,13 @@ struct PortfolioWidgetEmptyView: View {
             AccessoryWidgetBackground()
                 .cornerRadius(8)
             
-            Text("Add\nTransaction")
+            Text(AppCopy.string("Add Transaction"))
                 .font(.satoshiBold(14))
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
                 .minimumScaleFactor(0.7)
         } else {
-            let label = Text(family == .systemSmall ? "Add\nTransaction" : "Add Transaction")
+            let label = Text(AppCopy.string("Add Transaction"))
                 .font(.satoshiBold(18))
                 .multilineTextAlignment(.center)
                 .lineLimit(2)

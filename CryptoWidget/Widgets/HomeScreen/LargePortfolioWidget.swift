@@ -46,7 +46,7 @@ struct LargePortfolioWidget: View {
     
     private var header: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Portfolio Value")
+            Text(AppCopy.string("Portfolio Value"))
                 .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
                 .font(.satoshiBold(12))
             
@@ -85,7 +85,7 @@ struct LargePortfolioWidget: View {
         accessibleTimeframe: String
     ) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(title)
+            Text(AppCopy.string(title))
                 .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
                 .font(.satoshiBold(12))
             
@@ -100,11 +100,11 @@ struct LargePortfolioWidget: View {
     
     private var listHeader: some View {
         HStack(spacing: 0) {
-            Text("Coin")
+            Text(AppCopy.string("Coin"))
             
             Spacer(minLength: 16)
             
-            Text("Profit/Loss")
+            Text(AppCopy.string("Profit/Loss"))
         }
         .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
         .font(.satoshiBold(12))

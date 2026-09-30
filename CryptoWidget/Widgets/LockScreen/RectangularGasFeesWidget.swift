@@ -20,21 +20,21 @@ struct RectangularGasFeesWidget: View {
                 
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: 4) {
-                        Text("Slow:")
+                        Text(AppCopy.string("Slow:"))
                         
                         Text("\(Double(gasFees?.gasFeeData?.first?.safeGasPrice ?? "0")?.formatted(.number.precision(.fractionLength(2))) ?? "0") Gwei")
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     
                     HStack(spacing: 4) {
-                        Text("Standard:")
+                        Text(AppCopy.string("Standard:"))
                         
                         Text("\(Double(gasFees?.gasFeeData?.first?.proposeGasPrice ?? "0")?.formatted(.number.precision(.fractionLength(2))) ?? "0") Gwei")
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     
                     HStack(spacing: 4) {
-                        Text("Fast:")
+                        Text(AppCopy.string("Fast:"))
                         
                         Text("\(Double(gasFees?.gasFeeData?.first?.fastGasPrice ?? "0")?.formatted(.number.precision(.fractionLength(2))) ?? "0") Gwei")
                     }

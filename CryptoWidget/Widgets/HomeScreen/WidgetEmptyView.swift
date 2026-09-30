@@ -13,7 +13,9 @@ struct WidgetEmptyView: View {
     var plural: Bool = true
     
     var body: some View {
-        Text("Long press and \"Edit Widget\" to\nselect \(plural ? "coins" : "a coin") to display here.")
+        Text(plural
+            ? AppCopy.string("Long press and \"Edit Widget\" to\nselect coins to display here.")
+            : AppCopy.string("Long press and \"Edit Widget\" to\nselect a coin to display here."))
         .font(.satoshiRegular(16))
         .foregroundStyle(Color.onSurface(for: scheme))
         .multilineTextAlignment(.center)

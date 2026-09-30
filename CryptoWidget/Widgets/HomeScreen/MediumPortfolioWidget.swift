@@ -50,7 +50,7 @@ struct MediumPortfolioWidget: View {
     
     private var portfolioValue: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Portfolio Value")
+            Text(AppCopy.string("Portfolio Value"))
                 .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
                 .font(.satoshiBold(12))
             
@@ -66,7 +66,7 @@ struct MediumPortfolioWidget: View {
     
     private var portfolioDailyChange: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("24h Change")
+            Text(AppCopy.string("24h Change"))
                 .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
                 .font(.satoshiBold(12))
             
@@ -79,7 +79,7 @@ struct MediumPortfolioWidget: View {
     
     private var dailyWinner: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Daily Winner")
+            Text(AppCopy.string("Daily Winner"))
                 .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
                 .font(.satoshiBold(12))
             
@@ -104,7 +104,7 @@ struct MediumPortfolioWidget: View {
     
     private var dailyLoser: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Daily Loser")
+            Text(AppCopy.string("Daily Loser"))
                 .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
                 .font(.satoshiBold(12))
             

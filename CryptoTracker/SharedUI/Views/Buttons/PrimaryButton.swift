@@ -40,7 +40,7 @@ struct PrimaryButton: View {
                     ActivityIndicator(size: 24, color: .onPrimary)
                         .opacity(isLoading ? 1 : 0)
                         .accessibilityHidden(!isLoading)
-                        .accessibilityLabel("Loading")
+                        .accessibilityLabel(Localization.string("Loading"))
                 )
         }
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)

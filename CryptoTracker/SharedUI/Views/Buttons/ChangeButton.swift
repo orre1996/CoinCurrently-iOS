@@ -33,7 +33,10 @@ struct ChangeButton: View {
                     .frame(width: 20 * min(scale, 1.5), height: 20 * min(scale, 1.5))
             }
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("Change direction, currently selected: \(direction.rawValue)")
+            .accessibilityLabel(Localization.format(
+                "Change direction, currently selected: %@",
+                Localization.string(direction == .up ? "Up" : "Down")
+            ))
         }
     }
 }

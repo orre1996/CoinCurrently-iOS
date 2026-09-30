@@ -38,5 +38,5 @@ func getIndexStringLockScreen(indexValue: Int) -> String {
     else if (indexValue <= 60)  { stringValue = "Neutral" }
     else { stringValue = "Greed" }
     
-    return stringValue
+    return AppCopy.string(stringValue)
 }

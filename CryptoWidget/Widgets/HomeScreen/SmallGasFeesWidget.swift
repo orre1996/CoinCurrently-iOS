@@ -16,7 +16,7 @@ struct SmallGasFeesWidget: View {
         GeometryReader { reader in
             VStack(alignment: .leading, spacing: 4) {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Slow")
+                    Text(AppCopy.string("Slow"))
                         .font(.regularWidget14)
                         .foregroundStyle(Color.trendDown(for: scheme))
                     
@@ -27,7 +27,7 @@ struct SmallGasFeesWidget: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Standard")
+                    Text(AppCopy.string("Standard"))
                         .font(.regularWidget14)
                         .foregroundStyle(Color.neutral(for: scheme))
                     
@@ -38,7 +38,7 @@ struct SmallGasFeesWidget: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Fast")
+                    Text(AppCopy.string("Fast"))
                         .font(.regularWidget14)
                         .foregroundStyle(Color.trendUp(for: scheme))
                     

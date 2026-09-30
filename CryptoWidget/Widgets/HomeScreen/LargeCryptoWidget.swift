@@ -109,13 +109,13 @@ struct LargeCryptoWidget: View {
                                     
                                     Spacer()
                                     
-                                    Text("Open")
+                                    Text(AppCopy.string("Open"))
                                         .frame(height: 20)
                                     
-                                    Text("High")
+                                    Text(AppCopy.string("High"))
                                         .frame(height: 20)
                                     
-                                    Text("Low")
+                                    Text(AppCopy.string("Low"))
                                         .frame(height: 20)
                                     
                                     Spacer()
@@ -160,13 +160,13 @@ struct LargeCryptoWidget: View {
                                     
                                     Spacer()
                                     
-                                    Text("Volume")
+                                    Text(AppCopy.string("Volume"))
                                         .frame(height: 20)
                                     
-                                    Text("Mkt Cap")
+                                    Text(AppCopy.string("Mkt Cap"))
                                         .frame(height: 20)
                                     
-                                    Text("Change")
+                                    Text(AppCopy.string("Change"))
                                         .frame(height: 20)
                                     
                                     Spacer()

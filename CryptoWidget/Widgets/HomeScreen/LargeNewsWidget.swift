@@ -79,7 +79,7 @@ struct LargeNewsWidget: View {
                                     .truncationMode(.tail)
                                     .lineSpacing(1.2)
 
-                                Text(entry.newsModel.first?.source_name ?? "Crypto news")
+                                Text(entry.newsModel.first?.source_name ?? AppCopy.string("Crypto news"))
                                     .foregroundColor(Color.onSurface(for: scheme))
                                     .font(Font.system(size: 12, weight: .light))
                                     .lineLimit(1)
@@ -114,7 +114,7 @@ struct LargeNewsWidget: View {
                                 
                                 Spacer(minLength: 4)
 
-                                Text(entry.newsModel[safely: 1]?.source_name ?? "Crypto news")
+                                Text(entry.newsModel[safely: 1]?.source_name ?? AppCopy.string("Crypto news"))
                                     .foregroundColor(Color.onSurfaceDim(for: scheme))
                                     .font(Font.system(size: 12, weight: .light))
                                     .lineLimit(1)
@@ -204,7 +204,7 @@ struct LargeNewsWidget: View {
                                 
                                 Spacer(minLength: 4)
                                 
-                                Text(entry.newsModel[safely: 2]?.source_name ?? "Crypto news")
+                                Text(entry.newsModel[safely: 2]?.source_name ?? AppCopy.string("Crypto news"))
                                     .foregroundColor(Color.onSurfaceDim(for: scheme))
                                     .font(Font.system(size: 12, weight: .light))
                                     .lineLimit(1)

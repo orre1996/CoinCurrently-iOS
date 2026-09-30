@@ -135,7 +135,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
         Task { @MainActor in
             if cryptoID == String.trialReminder {
                 showSnackBar(
-                    message: "Your free trial is ending in 1 day.",
+                    message: Localization.string("Your free trial is ending in 1 day"),
                     type: .information
                 )
             } else {

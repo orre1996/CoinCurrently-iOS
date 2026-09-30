@@ -20,7 +20,7 @@ struct InlinePortfolioWidget: View {
                 .number.precision(.fractionLength(decimals))
             ).changeWithSymbol
             
-            Text("\(totalValue) P/L: \(formattedPercent)%")
+            Text(AppCopy.format("%1$@ P/L: %2$@%%", totalValue, formattedPercent))
                 .privacySensitive()
                 .widgetURL(url)
         }

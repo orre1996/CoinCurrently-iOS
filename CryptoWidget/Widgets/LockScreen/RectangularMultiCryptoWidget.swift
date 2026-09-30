@@ -69,7 +69,7 @@ struct RectangularMultiCryptoWidget: View {
             AccessoryWidgetBackground()
                 .cornerRadius(8)
             
-            Text("Tap widget when editing to select coins")
+            Text(AppCopy.string("Tap widget when editing to select coins"))
                 .font(.satoshiBold(12))
                 .multilineTextAlignment(.center)
                 .lineLimit(3)

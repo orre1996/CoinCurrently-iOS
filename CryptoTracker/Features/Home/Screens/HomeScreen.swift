@@ -19,7 +19,6 @@ struct HomeScreen: View {
     @State private var id = UUID()
     @State private var colorBlindnessFilterEnabled: Bool = SettingsManager.shared.get(key: AppSettingKey.colorBlindnessFilter) ?? false
     @State private var animateHomeFilterSelection = false
-    @State private var isHomeFilterPagerReady = false
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -71,43 +70,21 @@ struct HomeScreen: View {
                                 }
                             )
                             
-                            if viewModel.hasResolvedDefaultHomeFilter {
-                                Section(header: sectionHeader) {
-                                    ZStack(alignment: .top) {
-                                        homeCategoryView(
-                                            filter: viewModel.selectedFilter ?? .topCoins,
-                                            width: proxy.size.width
-                                        )
-                                        .opacity(isHomeFilterPagerReady ? 0 : 1)
-                                        .allowsHitTesting(!isHomeFilterPagerReady)
-                                        .accessibilityHidden(isHomeFilterPagerReady)
-                                        
-                                        ScrollView(.horizontal, showsIndicators: false) {
-                                            LazyHStack(alignment: .top, spacing: 0) {
-                                                ForEach(CarouselFilter.homeFilters, id: \.self) { filter in
-                                                    homeCategoryView(
-                                                        filter: filter,
-                                                        width: proxy.size.width
-                                                    )
-                                                }
-                                            }
-                                            .scrollTargetLayout()
-                                        }
-                                        .scrollTargetBehavior(.viewAligned)
-                                        .scrollPosition(id: $viewModel.selectedFilter)
-                                        .animation(animateHomeFilterSelection ? .default : nil, value: viewModel.selectedFilter)
-                                        .opacity(isHomeFilterPagerReady ? 1 : 0)
-                                        .allowsHitTesting(isHomeFilterPagerReady)
-                                        .onAppear {
-                                            DispatchQueue.main.async {
-                                                DispatchQueue.main.async {
-                                                    isHomeFilterPagerReady = true
-                                                    animateHomeFilterSelection = true
-                                                }
-                                            }
+                            Section(header: sectionHeader) {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    LazyHStack(alignment: .top, spacing: 0) {
+                                        ForEach(CarouselFilter.homeFilters, id: \.self) { filter in
+                                            homeCategoryView(
+                                                filter: filter,
+                                                width: proxy.size.width
+                                            )
                                         }
                                     }
+                                    .scrollTargetLayout()
                                 }
+                                .scrollTargetBehavior(.viewAligned)
+                                .scrollPosition(id: $viewModel.selectedFilter)
+                                .animation(animateHomeFilterSelection ? .default : nil, value: viewModel.selectedFilter)
                             }
                         }
                         .animation(.default, value: viewModel.promotionTitle)
@@ -128,11 +105,9 @@ struct HomeScreen: View {
                 }
                 .onChange(of: viewModel.selectedFilter) {
                     Task {
-                        if !viewModel.consumeSkipNextHomeFilterAnalytics() {
-                            AnalyticsManager.shared.log(
-                                HomeFilterSelected(fromScreen: .home, filter: viewModel.selectedFilter ?? .topCoins)
-                            )
-                        }
+                        AnalyticsManager.shared.log(
+                            HomeFilterSelected(fromScreen: .home, filter: viewModel.selectedFilter ?? .topCoins)
+                        )
                         await viewModel.downloadData()
                     }
                 }

@@ -65,8 +65,6 @@ class HomeViewModelImp: HomeViewModel {
     private let analyticsManager: AnalyticsManager
     
     var selectedFilter: CarouselFilter?
-    private var skipNextHomeFilterAnalytics = false
-    private(set) var hasResolvedDefaultHomeFilter = false
     var toplist: [Toplist]?
     var favoritesList = [Toplist]()
     var winnersList: [Toplist]?
@@ -124,70 +122,20 @@ class HomeViewModelImp: HomeViewModel {
     }
     
     func setStartData() async {
-        await toplistRepository.ensureFavoritesLoaded()
-        if let favorites = await toplistRepository.cachedFavorites?.data {
-            self.favoritesList = favorites.sorted(by: { $0.market_cap_rank ?? 9999 < $1.market_cap_rank ?? 9999 })
+        async let favorites: Void = loadFavorites()
+
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask { await self.publishCachedToplist() }
+            group.addTask { await self.publishCachedWinnersAndLosers() }
+            group.addTask { await self.publishCachedTrending() }
+            group.addTask { await self.publishCachedNewCoins() }
+            group.addTask { await self.publishCachedGlobalMarket() }
+            group.addTask { await self.publishCachedFearGreed() }
+            group.addTask { await self.publishCachedGasFees() }
+            group.addTask { await self.cryptoDetailRepository.ensureCacheLoaded() }
         }
-        applyDefaultHomeFilterIfNeeded()
 
-        await cryptoDetailRepository.ensureCacheLoaded()
-        await toplistRepository.ensureCacheLoaded()
-        await winnersLosersRepository.ensureCacheLoaded()
-        await globalMarketRepository.ensureCacheLoaded()
-        await trendingRepository.ensureCacheLoaded()
-        await newCoinsRepository.ensureCacheLoaded()
-        await fearGreedRepository.ensureCacheLoaded()
-        await gasFeesRepository.ensureCacheLoaded()
-        
-        // Toplist
-         if let toplist = await toplistRepository.cachedSmallToplist?.data, !toplist.isEmpty {
-             self.toplist = Array(toplist.prefix(homeListPreviewCount))
-         } else if let toplist = await toplistRepository.cachedToplist[SortOption.mktCapDesc.toplistApiValue]?.data, !toplist.isEmpty {
-             self.toplist = Array(toplist.prefix(homeListPreviewCount))
-         }
-         
-         // Favorites
-         if let favorites = await toplistRepository.cachedFavorites?.data {
-             self.favoritesList = favorites.sorted(by: { $0.market_cap_rank ?? 9999 < $1.market_cap_rank ?? 9999 })
-         }
-          let timeFrame = "7"
-         
-         // Winner coins
-         if let winners = await winnersLosersRepository.cachedWinnersCoins[timeFrame]?.data, !winners.isEmpty {
-             self.winnersList = Array(winners.sorted(by: { ($0.price_change_percentage_7d_in_currency ?? 0) > ($1.price_change_percentage_7d_in_currency ?? 0) }).prefix(homeListPreviewCount))
-         }
-         
-         // Loser coins
-         if let losers = await winnersLosersRepository.cachedLosersCoins[timeFrame]?.data, !losers.isEmpty {
-             self.losersList = Array(losers.sorted(by: { ($0.price_change_percentage_7d_in_currency ?? 0) > ($1.price_change_percentage_7d_in_currency ?? 0) }).prefix(homeListPreviewCount))
-         }
-         
-         // Global market
-         if let globalMarket = await globalMarketRepository.cachedGlobalMarket?.data {
-             self.globalMarket = globalMarket
-         }
-         
-         // Trending
-         if let trendingCoins = await trendingRepository.cachedTrendingCoins?.data, !trendingCoins.isEmpty {
-             let orderedTrendingCoins = await orderedTrendingCoins(trendingCoins)
-             self.trendingCoins = Array(orderedTrendingCoins.prefix(homeListPreviewCount))
-         }
-
-         // New coins
-         if let newCoins = await newCoinsRepository.cachedNewCoins?.data, !newCoins.isEmpty {
-             self.newCoins = Array(newCoins.prefix(homeListPreviewCount))
-         }
-         
-         // Fear and Greed
-         if let fearGreed = await fearGreedRepository.cachedFearGreed?.data {
-             self.fearGreed = fearGreed
-         }
-         
-         // Gas fees
-         if let data = await gasFeesRepository.cachedGasFees?.data {
-             self.gasFees = data
-         }
-        
+        await favorites
         
         self.didClosePromotions = await cachedStorageManager.load(type: LocalStorageKeys.didClosePromotions) ?? false
         self.didCloseWelcome = await cachedStorageManager.load(type: LocalStorageKeys.didCloseWelcome) ?? false
@@ -329,26 +277,75 @@ class HomeViewModelImp: HomeViewModel {
         }
     }
     
-    func consumeSkipNextHomeFilterAnalytics() -> Bool {
-        let skip = skipNextHomeFilterAnalytics
-        skipNextHomeFilterAnalytics = false
-        return skip
+    private func loadFavorites() async {
+        await toplistRepository.ensureFavoritesLoaded()
+        if let favorites = await toplistRepository.cachedFavorites?.data {
+            favoritesList = favorites.sorted(by: { $0.market_cap_rank ?? 9999 < $1.market_cap_rank ?? 9999 })
+        }
+        settingsManager.set(data: !favoritesList.isEmpty, key: AppSettingKey.hasHomeFavorites)
     }
 
-    private func applyDefaultHomeFilterIfNeeded() {
-        guard !hasResolvedDefaultHomeFilter else { return }
-        let hasFavorites = !favoritesList.isEmpty
-        settingsManager.set(data: hasFavorites, key: AppSettingKey.hasHomeFavorites)
-        let filter = CarouselFilter.defaultHomeFilter(hasFavorites: hasFavorites)
-        if filter != (selectedFilter ?? .topCoins) {
-            skipNextHomeFilterAnalytics = true
-            var transaction = SwiftUI.Transaction()
-            transaction.disablesAnimations = true
-            withTransaction(transaction) {
-                selectedFilter = filter
-            }
+    private func publishCachedToplist() async {
+        await toplistRepository.ensureCacheLoaded()
+
+        if let toplist = await toplistRepository.cachedSmallToplist?.data, !toplist.isEmpty {
+            self.toplist = Array(toplist.prefix(homeListPreviewCount))
+        } else if let toplist = await toplistRepository.cachedToplist[SortOption.mktCapDesc.toplistApiValue]?.data, !toplist.isEmpty {
+            self.toplist = Array(toplist.prefix(homeListPreviewCount))
         }
-        hasResolvedDefaultHomeFilter = true
+
+        if let favorites = await toplistRepository.cachedFavorites?.data {
+            favoritesList = favorites.sorted(by: { $0.market_cap_rank ?? 9999 < $1.market_cap_rank ?? 9999 })
+        }
+    }
+
+    private func publishCachedWinnersAndLosers() async {
+        await winnersLosersRepository.ensureCacheLoaded()
+        let timeFrame = "7"
+
+        if let winners = await winnersLosersRepository.cachedWinnersCoins[timeFrame]?.data, !winners.isEmpty {
+            winnersList = Array(winners.sorted(by: { ($0.price_change_percentage_7d_in_currency ?? 0) > ($1.price_change_percentage_7d_in_currency ?? 0) }).prefix(homeListPreviewCount))
+        }
+
+        if let losers = await winnersLosersRepository.cachedLosersCoins[timeFrame]?.data, !losers.isEmpty {
+            losersList = Array(losers.sorted(by: { ($0.price_change_percentage_7d_in_currency ?? 0) > ($1.price_change_percentage_7d_in_currency ?? 0) }).prefix(homeListPreviewCount))
+        }
+    }
+
+    private func publishCachedTrending() async {
+        await trendingRepository.ensureCacheLoaded()
+        if let trendingCoins = await trendingRepository.cachedTrendingCoins?.data, !trendingCoins.isEmpty {
+            let orderedTrendingCoins = await orderedTrendingCoins(trendingCoins)
+            self.trendingCoins = Array(orderedTrendingCoins.prefix(homeListPreviewCount))
+        }
+    }
+
+    private func publishCachedNewCoins() async {
+        await newCoinsRepository.ensureCacheLoaded()
+        if let newCoins = await newCoinsRepository.cachedNewCoins?.data, !newCoins.isEmpty {
+            self.newCoins = Array(newCoins.prefix(homeListPreviewCount))
+        }
+    }
+
+    private func publishCachedGlobalMarket() async {
+        await globalMarketRepository.ensureCacheLoaded()
+        if let globalMarket = await globalMarketRepository.cachedGlobalMarket?.data {
+            self.globalMarket = globalMarket
+        }
+    }
+
+    private func publishCachedFearGreed() async {
+        await fearGreedRepository.ensureCacheLoaded()
+        if let fearGreed = await fearGreedRepository.cachedFearGreed?.data {
+            self.fearGreed = fearGreed
+        }
+    }
+
+    private func publishCachedGasFees() async {
+        await gasFeesRepository.ensureCacheLoaded()
+        if let data = await gasFeesRepository.cachedGasFees?.data {
+            self.gasFees = data
+        }
     }
 
     func favouriteButtonPressed(toplistItem: Toplist?) async {

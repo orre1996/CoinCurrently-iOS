@@ -386,11 +386,15 @@ struct CompareStatisticsView: View {
     }
     
     private func accessiblePriceLabel(name: String?, value: Double?) -> String {
-        "\(name ?? ""): \(value?.formatCurrency(threshold: FormattingThreshold.none, accessible: true) ?? "")"
+        Localization.format(
+            "%1$@: %2$@",
+            name ?? "",
+            value?.formatCurrency(threshold: FormattingThreshold.none, accessible: true) ?? ""
+        )
     }
     
     private func accessibleVolumeLabel(name: String?, value: Double?) -> String {
-        "\(name ?? ""): \(value?.formatAccessibleCurrency() ?? "")"
+        Localization.format("%1$@: %2$@", name ?? "", value?.formatAccessibleCurrency() ?? "")
     }
     
     private func accessibleMarketCapLabel(name: String?, value: Double?, rank: Int?) -> String {
@@ -423,6 +427,10 @@ struct CompareStatisticsView: View {
     }
     
     private func accessibleSupplyLabel(name: String?, value: Double?) -> String {
-        "\(name ?? ""): \(value?.formatCurrency(currency: CurrencyModel.empty, accessible: true) ?? "")"
+        Localization.format(
+            "%1$@: %2$@",
+            name ?? "",
+            value?.formatCurrency(currency: CurrencyModel.empty, accessible: true) ?? ""
+        )
     }
 }

@@ -17,6 +17,7 @@ struct ImportWalletTransactionScreen: View {
     
     @State private var viewModel = ImportWalletTransactionViewModelImp()
     @State private var isSelectCoinShowing = false
+    @State private var appLanguage = AppLanguagePreference.stored
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -49,19 +50,23 @@ struct ImportWalletTransactionScreen: View {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 
-                Button("Close") {
+                Button(Localization.string("Close")) {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
-                .accessibilityLabel("Close keyboard")
+                .accessibilityLabel(Localization.string("Close keyboard"))
             }
         }
-        .navigationTitle("Import Wallet")
+        .navigationTitle(Localization.string("Import Wallet"))
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .sheet(isPresented: $isSelectCoinShowing) {
             let ethereumImage = viewModel.chainCoins?.first(where: { $0.id == "ethereum" })?.image
 
             SearchScreen(
                 screenCase: .fixedList(
-                    list: (viewModel.chainCoins ?? []) + [Toplist(id: "token", symbol: "token", name: "Ethereum Tokens", image: ethereumImage)]
+                    list: (viewModel.chainCoins ?? []) + [Toplist(id: "token", symbol: "token", name: Localization.string("Ethereum Tokens"), image: ethereumImage)]
                 ),
                 fromScreen: .newImportTransaction,
                 highlightId: viewModel.selectedChain.id,
@@ -96,7 +101,7 @@ struct ImportWalletTransactionScreen: View {
     
     private var nameField: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Wallet Name")
+            Text(Localization.string("Wallet Name"))
                 .font(.satoshiMedium(14))
                 .foregroundStyle(Color.onSurfaceDim)
                 .fixedSize(horizontal: false, vertical: true)
@@ -105,14 +110,14 @@ struct ImportWalletTransactionScreen: View {
             TextInputField(
                 input: $viewModel.walletName,
                 placeholder: "Enter name (Optional)",
-                accessibilityValue: viewModel.walletName.isEmpty ? "Enter wallet name, optional" : viewModel.walletName,
+                accessibilityValue: viewModel.walletName.isEmpty ? Localization.string("Enter wallet name, optional") : viewModel.walletName,
                 leadingIcon: nil,
                 outlineColor: [viewModel.walletName.count <= 40 ? Color.outlineVariant : Color.trendDown],
                 inputDidChange: { },
                 onCommit: { }
             )
             
-            Text("\(viewModel.walletName.count) / 40 characters")
+            Text(Localization.format("%@ / 40 characters", "\(viewModel.walletName.count)"))
                 .font(.satoshiMedium(14))
                 .foregroundColor(viewModel.walletName.count <= 40 ? .onSurfaceDimmer : .trendDown)
                 .fixedSize(horizontal: false, vertical: true)
@@ -122,7 +127,7 @@ struct ImportWalletTransactionScreen: View {
     
     private var inputField: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Wallet Address")
+            Text(Localization.string("Wallet Address"))
                 .font(.satoshiMedium(14))
                 .foregroundStyle(viewModel.showImportError ? Color.trendDown : Color.onSurfaceDim)
                 .fixedSize(horizontal: false, vertical: true)
@@ -131,7 +136,7 @@ struct ImportWalletTransactionScreen: View {
             TextInputField(
                 input: $viewModel.address,
                 placeholder: "Enter address",
-                accessibilityValue: viewModel.address.isEmpty ? "Enter wallet address" : viewModel.address,
+                accessibilityValue: viewModel.address.isEmpty ? Localization.string("Enter wallet address") : viewModel.address,
                 leadingIcon: nil,
                 outlineColor: viewModel.showImportError ? [Color.trendDown] : [Color.outlineVariant],
                 trailingView: {
@@ -151,7 +156,7 @@ struct ImportWalletTransactionScreen: View {
                 inputDidChange: { },
                 onCommit: { })
             
-            Text(viewModel.showImportError ? "Invalid address or chain" : "Select the chain that matches your wallet.")
+            Text(Localization.string(viewModel.showImportError ? "Invalid address or chain" : "Select the chain that matches your wallet."))
                 .font(.satoshiMedium(14))
                 .foregroundStyle(viewModel.showImportError ? Color.trendDown : Color.onSurfaceDimmer)
                 .fixedSize(horizontal: false, vertical: true)
@@ -163,7 +168,7 @@ struct ImportWalletTransactionScreen: View {
     private var actionButtons: some View {
         HStack(spacing: 8) {
             SecondaryButton(
-                text: "Close",
+                text: Localization.string("Close"),
                 fullWidth: true,
                 action: {
                     dismiss()
@@ -171,7 +176,7 @@ struct ImportWalletTransactionScreen: View {
             )
 
             PrimaryButton(
-                text: "Import",
+                text: Localization.string("Import"),
                 isEnabled: !viewModel.address.isEmpty && viewModel.walletName.count <= 40,
                 isLoading: viewModel.isImporting,
                 fullWidth: true,

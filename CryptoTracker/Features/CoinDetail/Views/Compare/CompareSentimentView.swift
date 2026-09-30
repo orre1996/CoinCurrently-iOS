@@ -140,6 +140,6 @@ struct CompareSentimentView: View {
     
     private func accessibleBullishLabel(name: String?, percent: Double?) -> String {
         let formattedPercent = (percent ?? 0).formatted(.number.precision(.fractionLength(0)))
-        return "\(name ?? ""): \(formattedPercent) percent bullish"
+        return Localization.format("%1$@: %2$@ percent bullish", name ?? "", formattedPercent)
     }
 }

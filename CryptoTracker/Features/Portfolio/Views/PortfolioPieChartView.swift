@@ -103,7 +103,7 @@ struct PortfolioPieChartView: View {
     private var centerLabel: some View {
         if let selected = slices.first(where: { $0.id == selectedSliceId }) {
             VStack(spacing: 0) {
-                Text(selected.symbol)
+                Text(selected.symbol == "OTHER" ? Localization.string("Other") : selected.symbol)
                     .font(.satoshiBold(18))
                     .foregroundStyle(Color.onSurfaceDim)
 
@@ -120,7 +120,7 @@ struct PortfolioPieChartView: View {
         FullDonutShape(innerRadiusRatio: innerRadiusRatio)
             .fill(Color.onSurfaceDimmer, style: FillStyle(eoFill: true))
             .frame(width: size.width, height: size.height)
-            .accessibilityLabel("Empty portfolio allocation chart")
+            .accessibilityLabel(Localization.string("Empty portfolio allocation chart"))
     }
 
     private func handleTap(at location: CGPoint, in size: CGSize) {
@@ -219,7 +219,8 @@ struct PortfolioPieChartView: View {
     private func accessibilityLabel(for slice: PortfolioPieSlice) -> String {
         let percentValue = slice.percentage * 100
         let roundedPercent = percentValue >= 99.995 ? 100 : percentValue.roundTo(places: 2)
-        return "\(slice.name), \(roundedPercent.numberAccessible(maxPlaces: 2)) percent of portfolio"
+        let name = slice.symbol == "OTHER" ? Localization.string("Other") : slice.name
+        return Localization.format("%1$@, %2$@ percent of portfolio", name, roundedPercent.numberAccessible(maxPlaces: 2))
     }
 }
 

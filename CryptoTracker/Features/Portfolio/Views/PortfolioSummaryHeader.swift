@@ -45,7 +45,7 @@ struct PortfolioSummaryHeader: View {
     @ViewBuilder
     private var totalValueView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Portfolio Value")
+            Text(Localization.string("Portfolio Value"))
                 .font(.satoshiBold(18))
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityHidden(true)
@@ -61,7 +61,7 @@ struct PortfolioSummaryHeader: View {
                 )
                 .font(.satoshiBold(36))
                 .foregroundStyle(Color.onSurface)
-                .accessibilityLabel("Portfolio value: \(viewModel.hideData ? String.stars : totalValue)")
+                .accessibilityLabel(Localization.format("Portfolio value: %@", viewModel.hideData ? String.stars : totalValue))
 
                 (viewModel.hideData ? Image.unhide : Image.hide)
                     .resizable()
@@ -76,7 +76,7 @@ struct PortfolioSummaryHeader: View {
                             AnalyticsManager.shared.log(PortfolioDataShow(fromScreen: .portfolio))
                         }
                     }
-                    .accessibilityLabel("\(viewModel.hideData ? "show" : "hide") portfolio data")
+                    .accessibilityLabel(Localization.string(viewModel.hideData ? "Show portfolio data" : "Hide portfolio data"))
 
                 Spacer(minLength: 0)
 
@@ -105,7 +105,7 @@ struct PortfolioSummaryHeader: View {
                     radius: 1000,
                     isInteractive: true
                 )
-                .accessibilityLabel("Switch to \(isPieChartShowing ? "line chart" : "pie chart")")
+                .accessibilityLabel(Localization.string(isPieChartShowing ? "Switch to line chart" : "Switch to pie chart"))
                 .accessibilityAddTraits(.isToggle)
         })
     }
@@ -113,7 +113,7 @@ struct PortfolioSummaryHeader: View {
     @ViewBuilder
     private var valueChangeView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Value Change (7d)")
+            Text(Localization.string("Value Change (7d)"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityHidden(true)
@@ -158,7 +158,7 @@ struct PortfolioSummaryHeader: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
             portfolioChangeAccessibilityLabel(
-                title: "7 days value change",
+                title: Localization.string("7 days value change"),
                 value: viewModel.changeValue,
                 percent: viewModel.changePercent
             )
@@ -168,7 +168,7 @@ struct PortfolioSummaryHeader: View {
     @ViewBuilder
     private var profitLossView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Profit/Loss")
+            Text(Localization.string("Profit/Loss"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityHidden(true)
@@ -214,7 +214,7 @@ struct PortfolioSummaryHeader: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
             portfolioChangeAccessibilityLabel(
-                title: "Profit/Loss",
+                title: Localization.string("Profit/Loss"),
                 value: viewModel.holdings.profitLossValue,
                 percent: viewModel.holdings.profitLossPercent
             )
@@ -231,17 +231,17 @@ struct PortfolioSummaryHeader: View {
         let safeChange = changePercent.isInfinite ? 0 : changePercent
         let decimals = safeChange.changePercentDecimalPoints
         let accessiblePercent = abs(safeChange).numberAccessible(maxPlaces: decimals)
-        let direction = safeChange.directionAccessible.lowercased()
-        let percentText = "\(direction) \(accessiblePercent) percent"
+        let direction = Localization.string(safeChange.directionAccessible)
+        let percentText = Localization.format("%1$@ %2$@ percent", direction, accessiblePercent)
 
         if viewModel.hideData {
-            return "\(title), \(percentText)"
+            return Localization.format("%1$@, %2$@", title, percentText)
         }
 
         let changeValue = isEmpty ? 0 : (value ?? 0)
-        let valueDirection = changeValue.directionAccessible.lowercased()
+        let valueDirection = Localization.string(changeValue.directionAccessible)
         let valueText = abs(changeValue).formatAccessibleCurrency()
 
-        return "\(title), \(valueDirection) \(valueText), \(percentText)"
+        return Localization.format("%1$@, %2$@ %3$@, %4$@", title, valueDirection, valueText, percentText)
     }
 }

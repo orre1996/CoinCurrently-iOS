@@ -22,7 +22,7 @@ struct SelectDateSheet: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Filter By Date")
+            DragHandle(title: Localization.string("Filter By Date"))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -34,10 +34,10 @@ struct SelectDateSheet: View {
                 VStack(spacing: 4) {
                     ForEach(DateOption.allCases, id: \.self) { option in
                         SingleSelectView(
-                            title: option.title,
+                            title: Localization.string(option.title),
                             accessibilityTitle: {
                                 if case .custom = option {
-                                    return "Custom. Select a custom date range"
+                                    return Localization.string("Custom. Select a custom date range")
                                 }
                                 return nil
                             }(),

@@ -134,7 +134,7 @@ struct DateRangePickerSheet: View {
 
             PrimaryButton(
                 text: Localization.string("Apply"),
-                accessibilityLabel: "Apply filters",
+                accessibilityLabel: Localization.string("Apply filters"),
                 fullWidth: true,
                 opaqueBackground: true,
                 action: {

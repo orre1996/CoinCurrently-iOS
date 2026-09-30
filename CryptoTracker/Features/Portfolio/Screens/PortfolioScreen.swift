@@ -48,6 +48,7 @@ struct PortfolioScreen: View {
     
     @State private var scrollToTop = false
     @State private var tabId = UUID()
+    @State private var appLanguage = AppLanguagePreference.stored
     
     private static let portfolioPageTabTitles = ["Assets", "Transactions", "Wallets"]
     
@@ -90,8 +91,8 @@ struct PortfolioScreen: View {
                 
                 if let transaction = event as? PortfolioTransaction {
                     navigationViewModel.showSnackbar(
-                        message: "\(coin.symbol?.uppercased() ?? "Coin") transaction added to your portfolio!",
-                        buttonTitle: "View Details",
+                        message: Localization.format("%@ transaction added to your portfolio!", coin.symbol?.uppercased() ?? Localization.string("Coin")),
+                        buttonTitle: Localization.string("View Details"),
                         snackBarType: .success,
                         buttonCallback: {
                             AnalyticsManager.shared.log(
@@ -102,8 +103,8 @@ struct PortfolioScreen: View {
                     )
                 } else if let swap = event as? PortfolioSwapTransaction {
                     navigationViewModel.showSnackbar(
-                        message: "\(coin.symbol?.uppercased() ?? "Coin") transaction added to your portfolio!",
-                        buttonTitle: "View Details",
+                        message: Localization.format("%@ transaction added to your portfolio!", coin.symbol?.uppercased() ?? Localization.string("Coin")),
+                        buttonTitle: Localization.string("View Details"),
                         snackBarType: .success,
                         buttonCallback: {
                             AnalyticsManager.shared.log(
@@ -118,8 +119,12 @@ struct PortfolioScreen: View {
                     }
                     
                     navigationViewModel.showSnackbar(
-                        message: "\(wallet.address.uppercased().prefix(5))...\(wallet.address.uppercased().suffix(5)) (\(coin.symbol?.uppercased() ?? "Coin")) imported to your portfolio!",
-                        buttonTitle: "View Details",
+                        message: Localization.format(
+                            "%1$@ (%2$@) imported to your portfolio!",
+                            "\(wallet.address.uppercased().prefix(5))...\(wallet.address.uppercased().suffix(5))",
+                            coin.symbol?.uppercased() ?? Localization.string("Coin")
+                        ),
+                        buttonTitle: Localization.string("View Details"),
                         snackBarType: .success,
                         buttonCallback: {
                             AnalyticsManager.shared.log(
@@ -349,6 +354,10 @@ struct PortfolioScreen: View {
             default:
                 EmptyView()
             }
+        }
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
         }
         .id(colorBlindnessFilterEnabled)
         .onReceive(NotificationCenter.default.publisher(for: .colorBlindnessFilterChanged)) { _ in

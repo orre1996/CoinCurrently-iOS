@@ -17,7 +17,7 @@ struct ImportAddressCellView: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            Text(walletImport?.address ?? "Unknown")
+            Text(walletImport?.address ?? Localization.string("Unknown"))
                 .foregroundStyle(Color.onSurface)
                 .font(.satoshiBold(16))
             

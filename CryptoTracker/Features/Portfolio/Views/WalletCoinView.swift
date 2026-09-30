@@ -36,21 +36,21 @@ struct WalletCoinView: View {
     private var accessibilityLabelText: String {
         var components: [String] = []
         
-        components.append("Asset \(index + 1) of \(totalCount)")
+        components.append(Localization.format("Asset %1$d of %2$d", index + 1, totalCount))
         
         let name = toplist?.name ?? token?.tokenSymbol ?? ""
         let amount = currentAmount ?? 0
         let holdingsValue = amount * (currentPrice ?? 0)
         
         if hideData {
-            components.append("\(name), holdings hidden")
+            components.append(Localization.format("%1$@, holdings hidden", name))
         } else {
             let amountLabel = accessibleCoinAmountLabel(
                 amount: amount,
                 coinName: toplist?.name ?? toplist?.symbol ?? token?.tokenSymbol ?? ""
             )
             let holdingsText = holdingsValue.formatAccessibleCurrency()
-            components.append("\(name), holdings \(amountLabel), \(holdingsText), ")
+            components.append(Localization.format("%1$@, holdings %2$@, %3$@", name, amountLabel, holdingsText))
         }
         
         components.append(priceChangeAccessibilityLabel)
@@ -74,9 +74,12 @@ struct WalletCoinView: View {
         let safeChange = change?.isInfinite ?? false ? 0 : (change ?? 0)
         let decimals = safeChange.changePercentDecimalPoints
         let accessiblePercent = abs(safeChange).numberAccessible(maxPlaces: decimals)
-        let direction = safeChange.directionAccessible.lowercased()
-        
-        return "7 days price change: \(direction) \(accessiblePercent) percent"
+        return Localization.format(
+            "%@ price change: %@ %@ percent",
+            Localization.string("7 days"),
+            Localization.string(safeChange.directionAccessible),
+            accessiblePercent
+        )
     }
     
     private var formattedAmount: String {
@@ -88,7 +91,7 @@ struct WalletCoinView: View {
             return String.stars
         }
         
-        return currentAmount?.formatCurrency(currency: CurrencyModel.empty) ?? "Missing Data"
+        return currentAmount?.formatCurrency(currency: CurrencyModel.empty) ?? Localization.string("Missing Data")
     }
     
     private var formattedValue: String {
@@ -97,7 +100,7 @@ struct WalletCoinView: View {
         }
         
         if currentPrice == nil {
-            return "Missing Data"
+            return Localization.string("Missing Data")
         }
         
         return ((currentAmount ?? 0) * (currentPrice ?? 0)).formatCurrency(threshold: FormattingThreshold.million)

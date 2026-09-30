@@ -20,6 +20,7 @@ struct WalletDetailsScreen: View {
     @State private var showRenameSheet = false
     @State private var showDeletePopup = false
     @State private var showWalletInfo = false
+    @State private var appLanguage = AppLanguagePreference.stored
     
     init(
         wallet: AddressImport,
@@ -94,6 +95,10 @@ struct WalletDetailsScreen: View {
             }
         }
         .navigationBarTitle(viewModel.wallet.walletName ?? "", displayMode: .inline)
+        .environment(\.locale, appLanguage.resolve().locale)
+        .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+            appLanguage = AppLanguagePreference.stored
+        }
         .toolbar {
             toolbarMenuButton
         }
@@ -150,7 +155,7 @@ struct WalletDetailsScreen: View {
                 HStack(spacing: 8) {
                     HStack(spacing: 8) {
                         Image.edit
-                        Text("Rename Wallet")
+                        Text(Localization.string("Rename Wallet"))
                     }
                 }
                 .foregroundStyle(Color.onSurface)
@@ -164,7 +169,7 @@ struct WalletDetailsScreen: View {
             }, label: {
                 HStack(spacing: 8) {
                     Image.delete
-                    Text("Remove Wallet")
+                    Text(Localization.string("Remove Wallet"))
                 }
             })
         } label: {
@@ -177,13 +182,13 @@ struct WalletDetailsScreen: View {
                     .foregroundStyle(Color.onSurface)
             })
         }
-        .accessibilityLabel("More options")
+        .accessibilityLabel(Localization.string("More options"))
     }
     
     private var walletTotals: some View {
         HStack(spacing: 4) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Wallet Value")
+                Text(Localization.string("Wallet Value"))
                     .font(.satoshiBold(18))
                     .foregroundStyle(Color.onSurfaceDim)
                     .accessibilityHidden(true)
@@ -196,7 +201,7 @@ struct WalletDetailsScreen: View {
                     Text(viewModel.hideData ? String.stars : totalValue)
                     .foregroundStyle(Color.onSurface)
                     .font(.satoshiBold(36))
-                    .accessibilityLabel("Wallet value: \(viewModel.hideData ? String.stars : totalValue)")
+                    .accessibilityLabel(Localization.format("Wallet value: %@", viewModel.hideData ? String.stars : totalValue))
                     
                     (viewModel.hideData ? Image.unhide : Image.hide)
                         .resizable()
@@ -211,7 +216,7 @@ struct WalletDetailsScreen: View {
                                 AnalyticsManager.shared.log(PortfolioDataShow(fromScreen: .walletDetails))
                             }
                         }
-                        .accessibilityLabel("\(viewModel.hideData ? "show" : "hide") wallet data")
+                        .accessibilityLabel(Localization.string(viewModel.hideData ? "Show wallet data" : "Hide wallet data"))
                 }
             }
             
@@ -229,7 +234,7 @@ struct WalletDetailsScreen: View {
                     .foregroundStyle(Color.onSurfaceDimmer)
                     .padding(8)
             })
-            .accessibilityLabel("Wallet details")
+            .accessibilityLabel(Localization.string("Wallet details"))
         }
     }
     
@@ -244,7 +249,7 @@ struct WalletDetailsScreen: View {
     @ViewBuilder
     private var valueChangeView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Value Change (7d)")
+            Text(Localization.string("Value Change (7d)"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityHidden(true)
@@ -285,7 +290,7 @@ struct WalletDetailsScreen: View {
     @ViewBuilder
     private var lastSyncedView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Last Synced")
+            Text(Localization.string("Last Synced"))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
                 .accessibilityHidden(true)
@@ -302,7 +307,7 @@ struct WalletDetailsScreen: View {
     
     private var valueChangeAccessibilityLabel: String {
         walletChangeAccessibilityLabel(
-            title: "7 days value change",
+            title: Localization.string("7 days value change"),
             value: viewModel.changeValue,
             percent: viewModel.changePercent
         )
@@ -311,7 +316,7 @@ struct WalletDetailsScreen: View {
     private var lastSyncedAccessibilityLabel: String {
         let synced = viewModel.syncedDate ?? Date()
         let accessibleDate = synced.formatted(.dateTime.weekday(.wide).month(.wide).day().year().hour().minute())
-        return "Last Synced: \(accessibleDate)"
+        return Localization.format("Last Synced: %@", accessibleDate)
     }
     
     private func walletChangeAccessibilityLabel(
@@ -322,27 +327,35 @@ struct WalletDetailsScreen: View {
         let safeChange = (percent ?? 0).isInfinite ? 0 : (percent ?? 0)
         let decimals = safeChange.changePercentDecimalPoints
         let accessiblePercent = abs(safeChange).numberAccessible(maxPlaces: decimals)
-        let direction = safeChange.directionAccessible.lowercased()
-        let percentText = "\(direction) \(accessiblePercent) percent"
+        let percentText = Localization.format(
+            "%1$@ %2$@ percent",
+            Localization.string(safeChange.directionAccessible),
+            accessiblePercent
+        )
         
         if viewModel.hideData {
-            return "\(title), \(percentText)"
+            return Localization.format("%1$@, %2$@", title, percentText)
         }
         
         let changeValue = value ?? 0
-        let valueDirection = changeValue.directionAccessible.lowercased()
         let valueText = abs(changeValue).formatAccessibleCurrency()
-        return "\(title), \(valueDirection) \(valueText), \(percentText)"
+        return Localization.format(
+            "%1$@, %2$@ %3$@, %4$@",
+            title,
+            Localization.string(changeValue.directionAccessible),
+            valueText,
+            percentText
+        )
     }
 
     private var walletInfoView: some View {
         HStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Network")
+                Text(Localization.string("Network"))
                     .font(.satoshiBold(12))
                     .foregroundStyle(Color.onSurfaceDim)
                 
-                Text("\(viewModel.coin.symbol?.uppercased() ?? "") Mainnet")
+                Text(Localization.format("%@ Mainnet", viewModel.coin.symbol?.uppercased() ?? ""))
                     .font(.satoshiBold(16))
                     .foregroundStyle(Color.onSurface)
             }
@@ -352,7 +365,7 @@ struct WalletDetailsScreen: View {
             
             HStack(spacing: 4) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Wallet Address")
+                    Text(Localization.string("Wallet Address"))
                         .font(.satoshiBold(12))
                         .foregroundStyle(Color.onSurfaceDim)
                     
@@ -363,7 +376,7 @@ struct WalletDetailsScreen: View {
                 
                 Button(action: {
                     UIPasteboard.general.string = viewModel.wallet.address
-                    showSnackBar(message: "Address copied to clipboard.", type: .success)
+                    showSnackBar(message: Localization.string("Address copied to clipboard."), type: .success)
                 }, label: {
                     (Image.copy)
                         .resizable()
@@ -371,6 +384,7 @@ struct WalletDetailsScreen: View {
                         .foregroundStyle(Color.onSurfaceDimmer)
                         .padding(12)
                 })
+                .accessibilityLabel(Localization.string("Copy wallet address"))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }

@@ -20,13 +20,13 @@ struct WalletHeaderView: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            Text(isHorizontal ? "Coin" : "Coin / Holdings")
+            Text(Localization.string(isHorizontal ? "Coin" : "Coin / Holdings"))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .lineLimit(isHorizontal ? 1 : nil)
                 .multilineTextAlignment(.leading)
             
             if isHorizontal {
-                Text("Holdings")
+                Text(Localization.string("Holdings"))
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .padding(.trailing, 8)
             }
@@ -36,7 +36,7 @@ struct WalletHeaderView: View {
                 extraSize: 16 * min(scale, 1.5) + 4,
                 alignment: .trailing
             ) {
-                Text("7d %")
+                Text(Localization.string("7d %"))
                     .font(.satoshiMedium(14))
             }
             .lineLimit(1)

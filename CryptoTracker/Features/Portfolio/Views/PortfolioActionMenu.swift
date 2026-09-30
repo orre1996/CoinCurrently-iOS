@@ -41,7 +41,7 @@ struct PortfolioActionMenu: View {
             VStack(alignment: .trailing, spacing: 8) {
                 if isActionMenuExpanded {
                     PrimaryButton(
-                        text: "Add Transaction",
+                        text: Localization.string("Add Transaction"),
                         action: {
                             Task {
                                 let hasPro = await viewModel.hasBoughtPro()
@@ -69,7 +69,7 @@ struct PortfolioActionMenu: View {
                     }
 
                     PrimaryButton(
-                        text: "Import Wallet (Pro)",
+                        text: Localization.string("Import Wallet (Pro)"),
                         action: {
                             isActionMenuExpanded = false
 
@@ -92,11 +92,11 @@ struct PortfolioActionMenu: View {
                     )
                     .padding(.trailing, 16)
                     .transition(.move(edge: .trailing))
-                    .accessibilityLabel("Import wallet, pro feature")
+                    .accessibilityLabel(Localization.string("Import wallet, pro feature"))
                     .accessibilityFocused($actionMenuFocus, equals: .importWallet)
 
                     PrimaryButton(
-                        text: "Export Portfolio",
+                        text: Localization.string("Export Portfolio"),
                         action: {
                             isActionMenuExpanded = false
 
@@ -111,14 +111,14 @@ struct PortfolioActionMenu: View {
                     .padding(.trailing, 16)
                     .transition(.move(edge: .trailing))
                     .disabled((viewModel.portfolio?.allTransactionsCount ?? 0) == 0)
-                    .accessibilityLabel("Export portfolio")
+                    .accessibilityLabel(Localization.string("Export portfolio"))
                     .accessibilityFocused($actionMenuFocus, equals: .exportPortfolio)
 
                     #if DEBUG
                     PrimaryButton(
                         text: viewModel.benchmarkCoin == nil
-                            ? "Benchmark"
-                            : "Benchmark (\(viewModel.benchmarkCoin?.symbol?.uppercased() ?? ""))",
+                            ? Localization.string("Benchmark")
+                            : Localization.format("Benchmark (%@)", viewModel.benchmarkCoin?.symbol?.uppercased() ?? ""),
                         action: {
                             isActionMenuExpanded = false
 
@@ -132,14 +132,14 @@ struct PortfolioActionMenu: View {
                     .transition(.move(edge: .trailing))
                     .accessibilityLabel(
                         viewModel.benchmarkCoin == nil
-                            ? "Benchmark portfolio"
-                            : "Change benchmark, currently \(viewModel.benchmarkCoin?.name ?? "")"
+                            ? Localization.string("Benchmark portfolio")
+                            : Localization.format("Change benchmark, currently %@", viewModel.benchmarkCoin?.name ?? "")
                     )
                     .accessibilityFocused($actionMenuFocus, equals: .benchmark)
 
                     if viewModel.benchmarkCoin != nil {
                         PrimaryButton(
-                            text: "Remove Benchmark",
+                            text: Localization.string("Remove Benchmark"),
                             action: {
                                 isActionMenuExpanded = false
                                 viewModel.clearBenchmark()
@@ -147,7 +147,7 @@ struct PortfolioActionMenu: View {
                         )
                         .padding(.trailing, 16)
                         .transition(.move(edge: .trailing))
-                        .accessibilityLabel("Remove benchmark")
+                        .accessibilityLabel(Localization.string("Remove benchmark"))
                         .accessibilityFocused($actionMenuFocus, equals: .removeBenchmark)
                     }
                     #endif
@@ -180,15 +180,15 @@ struct PortfolioActionMenu: View {
                             )
                         )
                 })
-                .accessibilityLabel(isActionMenuExpanded ? "Close add menu" : "Add portfolio item")
+                .accessibilityLabel(Localization.string(isActionMenuExpanded ? "Close add menu" : "Add portfolio item"))
                 .accessibilityHint(
                     isActionMenuExpanded
                         ? ""
                         : {
                             #if DEBUG
-                            "Shows add transaction, import wallet, export portfolio, and benchmark options"
+                            Localization.string("Shows add transaction, import wallet, export portfolio, and benchmark options")
                             #else
-                            "Shows add transaction, import wallet, and export portfolio options"
+                            Localization.string("Shows add transaction, import wallet, and export portfolio options")
                             #endif
                         }()
                 )

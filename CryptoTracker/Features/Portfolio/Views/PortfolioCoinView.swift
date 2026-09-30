@@ -41,21 +41,21 @@ struct PortfolioCoinView: View {
     private var accessibilityLabelText: String {
         var components: [String] = []
         
-        components.append("Asset \(index + 1) of \(totalCount)")
+        components.append(Localization.format("Asset %1$d of %2$d", index + 1, totalCount))
         
         let name = pie?.data?.name ?? ""
         let amount = currentAmount ?? 0
         let holdingsValue = amount * currentPrice
         
         if hideData {
-            components.append("\(name), holdings hidden")
+            components.append(Localization.format("%1$@, holdings hidden", name))
         } else {
             let amountLabel = accessibleCoinAmountLabel(
                 amount: amount,
                 coinName: pie?.data?.name ?? pie?.data?.symbol ?? ""
             )
             let holdingsText = holdingsValue.formatAccessibleCurrency()
-            components.append("\(name), holdings \(amountLabel), \(holdingsText)")
+            components.append(Localization.format("%1$@, holdings %2$@, %3$@", name, amountLabel, holdingsText))
         }
         
         components.append(profitLossAccessibilityLabel)
@@ -76,17 +76,24 @@ struct PortfolioCoinView: View {
         let safeChange = (profitPercent ?? 0).isInfinite ? 0 : (profitPercent ?? 0)
         let decimals = safeChange.changePercentDecimalPoints
         let accessiblePercent = abs(safeChange).numberAccessible(maxPlaces: decimals)
-        let direction = safeChange.directionAccessible.lowercased()
-        let percentText = "\(direction) \(accessiblePercent) percent"
+        let percentText = Localization.format(
+            "%1$@ %2$@ percent",
+            Localization.string(safeChange.directionAccessible),
+            accessiblePercent
+        )
         
         if hideData {
-            return "Profit loss, \(percentText)"
+            return Localization.format("Profit/Loss, %@", percentText)
         }
         
         let changeValue = profitValue ?? 0
-        let valueDirection = changeValue.directionAccessible.lowercased()
         let valueText = abs(changeValue).formatAccessibleCurrency()
-        return "Profit loss, \(valueDirection) \(valueText), \(percentText)"
+        return Localization.format(
+            "Profit/Loss, %1$@ %2$@, %3$@",
+            Localization.string(changeValue.directionAccessible),
+            valueText,
+            percentText
+        )
     }
     
     private func accessibleCoinAmountLabel(amount: Double, coinName: String) -> String {
@@ -205,7 +212,7 @@ struct PortfolioCoinView: View {
     @ViewBuilder
     private var profitLossView: some View {
         MinimumTextSize(
-            text: "Profit/Loss",
+            text: Localization.string("Profit/Loss"),
             alignment: .trailing
         ) {
             VStack(alignment: .trailing, spacing: 4) {

@@ -46,7 +46,7 @@ struct CompareHoverTexts: View {
                                     .frame(minWidth: 3, maxWidth: 3, maxHeight: .infinity)
                             }
 
-                            Text(mainIndex < 0 ? "N/A" : mainPrice)
+                            Text(mainIndex < 0 ? Localization.string("N/A") : mainPrice)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .readSize {
                                     hoverPriceWidthSize = $0.width
@@ -63,7 +63,7 @@ struct CompareHoverTexts: View {
                     
                     if showCompareGraph {
                         HStack(spacing: 8) {
-                            Text(compareIndex < 0 ? "N/A" : comparePrice)
+                            Text(compareIndex < 0 ? Localization.string("N/A") : comparePrice)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .readSize {
                                     hoverComparePriceWidthSize = $0.width

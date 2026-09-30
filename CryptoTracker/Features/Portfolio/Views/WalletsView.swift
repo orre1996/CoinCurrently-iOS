@@ -17,8 +17,8 @@ struct WalletsView: View {
         LazyVStack(alignment: .leading, spacing: 16) {
             if let portfolio = portfolio.map({ $0.allWallets }), portfolio.isEmpty {
                 EmptyContent(
-                    title: "No wallets yet",
-                    subTitle: "Tap the + button to import a wallet into your portfolio."
+                    title: Localization.string("No wallets yet"),
+                    subTitle: Localization.string("Tap the + button to import a wallet into your portfolio.")
                 )
                 .frame(maxWidth: .infinity)
                 .padding(

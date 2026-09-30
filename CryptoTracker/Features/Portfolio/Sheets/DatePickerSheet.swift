@@ -38,7 +38,7 @@ struct DatePickerSheet: View {
                 
                 VStack(spacing: 16) {
                     VStack(spacing: 0) {
-                        Text(dateComponents == .hourAndMinute ? "Pick a time" : "Pick a date")
+                        Text(Localization.string(dateComponents == .hourAndMinute ? "Pick a time" : "Pick a date"))
                             .fixedSize(horizontal: false, vertical: true)
                             .font(.poppinsSemibold(16))
                             .padding(16)
@@ -73,17 +73,17 @@ struct DatePickerSheet: View {
                         isHorizontal: !category.isAccessibilityCategory || verticalSizeClass == .compact,
                         spacing: 16
                     ) {
-                        PrimaryButton(text: "Cancel", opaqueBackground: true) {
+                        PrimaryButton(text: Localization.string("Cancel"), opaqueBackground: true) {
                             dismissView(date: nil)
                         }
-                        .accessibilityLabel("Cancel, close window")
+                        .accessibilityLabel(Localization.string("Cancel, close window"))
                         .background(Color.surfaceContainerLow)
                         .cornerRadius(8)
                         
-                        PrimaryButton(text: "Save", opaqueBackground: true) {
+                        PrimaryButton(text: Localization.string("Save"), opaqueBackground: true) {
                             dismissView(date: date)
                         }
-                        .accessibilityLabel("Save, close window")
+                        .accessibilityLabel(Localization.string("Save, close window"))
                         .background(Color.surfaceContainerLow)
                         .cornerRadius(8)
                     }

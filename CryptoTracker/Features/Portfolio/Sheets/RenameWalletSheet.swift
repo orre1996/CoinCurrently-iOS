@@ -24,7 +24,7 @@ struct RenameWalletSheet: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Rename Wallet")
+            DragHandle(title: Localization.string("Rename Wallet"))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -36,7 +36,7 @@ struct RenameWalletSheet: View {
                     TextInputField(
                         input: $walletName,
                         placeholder: "Enter name (Optional)",
-                        accessibilityValue: walletName.isEmpty ? "Enter wallet name, optional" : walletName,
+                        accessibilityValue: walletName.isEmpty ? Localization.string("Enter wallet name, optional") : walletName,
                         inputDidChange: { },
                         onCommit: { }
                     )
@@ -80,7 +80,7 @@ struct RenameWalletSheet: View {
 
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 8) {
             SecondaryButton(
-                text: "Close",
+                text: Localization.string("Close"),
                 fullWidth: true,
                 opaqueBackground: true,
                 action: {
@@ -89,7 +89,7 @@ struct RenameWalletSheet: View {
             )
 
             PrimaryButton(
-                text: "Save",
+                text: Localization.string("Save"),
                 isEnabled: !walletName.isEmpty && initialName != walletName,
                 fullWidth: true,
                 opaqueBackground: true,

@@ -30,7 +30,7 @@ struct SelectExportFormatSheet: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Export Portfolio")
+            DragHandle(title: Localization.string("Export Portfolio"))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -51,56 +51,56 @@ struct SelectExportFormatSheet: View {
     
     private var bodyView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            sectionHeader("General")
+            sectionHeader(Localization.string("General"))
             
             exportOption(
                 title: "CSV",
-                subtitle: "Spreadsheet-friendly format.",
+                subtitle: Localization.string("Spreadsheet-friendly format."),
                 image: .list,
                 format: .csv
             )
             
             exportOption(
                 title: "JSON",
-                subtitle: "Structured data format.",
+                subtitle: Localization.string("Structured data format."),
                 image: Image(systemName: "curlybraces"),
                 format: .json
             )
             
             exportOption(
-                title: "Plain Text",
-                subtitle: "Human-readable format.",
+                title: Localization.string("Plain Text"),
+                subtitle: Localization.string("Human-readable format."),
                 image: Image(systemName: "doc.text"),
                 format: .plainText
             )
             
-            sectionHeader("Tax Software (Pro)")
+            sectionHeader(Localization.string("Tax Software (Pro)"))
                 .padding(.top, 12)
             
             exportOption(
                 title: "Koinly",
-                subtitle: "Koinly CSV template.",
+                subtitle: Localization.string("Koinly CSV template."),
                 image: Image(systemName: "doc.plaintext"),
                 format: .koinly
             )
             
             exportOption(
                 title: "CoinTracker",
-                subtitle: "CoinTracker CSV template.",
+                subtitle: Localization.string("CoinTracker CSV template."),
                 image: Image(systemName: "doc.plaintext"),
                 format: .coinTracker
             )
             
             exportOption(
                 title: "TokenTax",
-                subtitle: "TokenTax manual CSV format.",
+                subtitle: Localization.string("TokenTax manual CSV format."),
                 image: Image(systemName: "doc.plaintext"),
                 format: .tokenTax
             )
             
             exportOption(
                 title: "ZenLedger",
-                subtitle: "ZenLedger custom CSV template.",
+                subtitle: Localization.string("ZenLedger custom CSV template."),
                 image: Image(systemName: "doc.plaintext"),
                 format: .zenLedger
             )

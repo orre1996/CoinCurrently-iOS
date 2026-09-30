@@ -646,7 +646,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
                 ?? chartPrices[safely: i]?.formatCurrency(accessible: true)
                 ?? ""
             
-            return "The price was \(price) on"
+            return Localization.format("The price was %@ on", price)
         }
     }
 

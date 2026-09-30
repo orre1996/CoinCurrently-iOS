@@ -43,7 +43,7 @@ struct PortfolioDeleteTransaction: View {
     }
     
     private var headerView: some View {
-        Text("Are you sure you want to delete this transaction?")
+        Text(Localization.string("Are you sure you want to delete this transaction?"))
             .foregroundColor(.onSurface)
             .font(.poppinsRegular(14))
             .multilineTextAlignment(.center)
@@ -58,15 +58,15 @@ struct PortfolioDeleteTransaction: View {
         let isHorizontal = !category.isAccessibilityCategory || verticalSizeClass == .compact
 
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 16) {
-            PrimaryButton(text: "No", action: {
+            PrimaryButton(text: Localization.string("No"), action: {
                 close(false)
             })
-            .accessibilityLabel("No, close window")
+            .accessibilityLabel(Localization.string("No, close window"))
             
-            PrimaryButton(text: "Yes", action: {
+            PrimaryButton(text: Localization.string("Yes"), action: {
                 close(true)
             })
-            .accessibilityLabel("Yes, close window")
+            .accessibilityLabel(Localization.string("Yes, close window"))
         }
         .padding(.top, 16)
     }

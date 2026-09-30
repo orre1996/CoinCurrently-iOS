@@ -37,7 +37,7 @@ struct PortfolioCantDelete: View {
     }
     
     private var headerView: some View {
-        Text("You can't delete a transaction that would result in a negative amount.")
+        Text(Localization.string("You can't delete a transaction that would result in a negative amount."))
             .foregroundColor(.onSurface)
             .font(.poppinsRegular(14))
             .multilineTextAlignment(.center)
@@ -46,7 +46,7 @@ struct PortfolioCantDelete: View {
     }
     
     private var actionButton: some View {
-        PrimaryButton(text: "OK", action: {
+        PrimaryButton(text: Localization.string("OK"), action: {
             close()
         })
         .padding(.top, 16)

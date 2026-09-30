@@ -56,15 +56,15 @@ struct ChartAccessibilityOverlay: View {
             let comparePriceText = formattedPrice(at: dataIndex, from: comparePrices)
             let mainLabel = labeledPrice(name: mainSeriesName, price: priceText)
             let compareLabel = labeledPrice(name: compareSeriesName, price: comparePriceText)
-            return "\(date), \(mainLabel), \(compareLabel)"
+            return Localization.format("%1$@, %2$@, %3$@", date, mainLabel, compareLabel)
         }
         
-        return "\(date), \(priceText)"
+        return Localization.format("%1$@, %2$@", date, priceText)
     }
     
     private func labeledPrice(name: String?, price: String) -> String {
         guard let name, !name.isEmpty else { return price }
-        return "\(name): \(price)"
+        return Localization.format("%1$@: %2$@", name, price)
     }
     
     private func formattedDate(at dataIndex: Int) -> String {
@@ -96,8 +96,11 @@ struct ChartAccessibilityOverlay: View {
         let safeChange = change.isInfinite ? 0 : change
         let decimals = safeChange.changePercentDecimalPoints
         let accessibleChange = abs(safeChange).numberAccessible(maxPlaces: decimals)
-        let direction = safeChange.directionAccessible.lowercased()
-        return "\(direction) \(accessibleChange) percent"
+        return Localization.format(
+            "%1$@ %2$@ percent",
+            Localization.string(safeChange.directionAccessible),
+            accessibleChange
+        )
     }
     
     private func formatAccessiblePrice(_ price: Double) -> String {

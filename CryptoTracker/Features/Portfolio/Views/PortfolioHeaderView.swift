@@ -20,22 +20,22 @@ struct PortfolioHeaderView: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            Text(isHorizontal ? "Coin" : "Coin / Holdings")
+            Text(Localization.string(isHorizontal ? "Coin" : "Coin / Holdings"))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .lineLimit(isHorizontal ? 1 : nil)
                 .multilineTextAlignment(.leading)
             
             if isHorizontal {
-                Text("Holdings")
+                Text(Localization.string("Holdings"))
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .padding(.trailing, 8)
             }
             
             MinimumTextSize(
-                text: "Profit/Loss",
+                text: Localization.string("Profit/Loss"),
                 alignment: .trailing
             ) {
-                Text("Profit/Loss")
+                Text(Localization.string("Profit/Loss"))
                     .font(.satoshiMedium(14))
                     .frame(alignment: .trailing)
             }

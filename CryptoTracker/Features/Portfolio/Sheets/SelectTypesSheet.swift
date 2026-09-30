@@ -24,7 +24,7 @@ struct SelectTypesSheet: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Filter By Type")
+            DragHandle(title: Localization.string("Filter By Type"))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -53,8 +53,8 @@ struct SelectTypesSheet: View {
     private var bodyView: some View {
         VStack(alignment: .leading, spacing: 4) {
             TransactionTypeView(
-                title: "Import Wallet",
-                subtitle: "Imported a crypto wallet.",
+                title: Localization.string("Import Wallet"),
+                subtitle: Localization.string("Imported a crypto wallet."),
                 image: .walletImport,
                 isMultiSelectEnabled: true,
                 isSelected: transactionTypes.contains(.importAddress),
@@ -64,8 +64,8 @@ struct SelectTypesSheet: View {
             )
             
             TransactionTypeView(
-                title: "Buy",
-                subtitle: "Bought coins with cash.",
+                title: Localization.string("Buy"),
+                subtitle: Localization.string("Bought coins with cash."),
                 image: .plus,
                 isMultiSelectEnabled: true,
                 isSelected: transactionTypes.contains(.buy),
@@ -75,8 +75,8 @@ struct SelectTypesSheet: View {
             )
             
             TransactionTypeView(
-                title: "Sell",
-                subtitle: "Sold coins with cash.",
+                title: Localization.string("Sell"),
+                subtitle: Localization.string("Sold coins with cash."),
                 image: .minus,
                 isMultiSelectEnabled: true,
                 isSelected: transactionTypes.contains(.sell),
@@ -86,8 +86,8 @@ struct SelectTypesSheet: View {
             )
             
             TransactionTypeView(
-                title: "Swap",
-                subtitle: "Swapped one coin for another.",
+                title: Localization.string("Swap"),
+                subtitle: Localization.string("Swapped one coin for another."),
                 image: .trade,
                 isMultiSelectEnabled: true,
                 isSelected: transactionTypes.contains(.swap),
@@ -97,8 +97,8 @@ struct SelectTypesSheet: View {
             )
             
             TransactionTypeView(
-                title: "Deposit",
-                subtitle: "Deposited coins into your wallet.",
+                title: Localization.string("Deposit"),
+                subtitle: Localization.string("Deposited coins into your wallet."),
                 image: .deposit,
                 isMultiSelectEnabled: true,
                 isSelected: transactionTypes.contains(.transferIn),
@@ -108,8 +108,8 @@ struct SelectTypesSheet: View {
             )
             
             TransactionTypeView(
-                title: "Withdraw",
-                subtitle: "Withdrawn coins out of your wallet.",
+                title: Localization.string("Withdraw"),
+                subtitle: Localization.string("Withdrawn coins out of your wallet."),
                 image: .withdraw,
                 isMultiSelectEnabled: true,
                 isSelected: transactionTypes.contains(.transferOut),
@@ -138,8 +138,8 @@ struct SelectTypesSheet: View {
 
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 12) {
             SecondaryButton(
-                text: "Clear",
-                accessibilityLabel: "Clear filters",
+                text: Localization.string("Clear"),
+                accessibilityLabel: Localization.string("Clear filters"),
                 fullWidth: true,
                 opaqueBackground: true,
                 action: {
@@ -153,8 +153,8 @@ struct SelectTypesSheet: View {
             )
             
             PrimaryButton(
-                text: "Apply",
-                accessibilityLabel: "Apply filters",
+                text: Localization.string("Apply"),
+                accessibilityLabel: Localization.string("Apply filters"),
                 fullWidth: true,
                 opaqueBackground: true,
                 action: {

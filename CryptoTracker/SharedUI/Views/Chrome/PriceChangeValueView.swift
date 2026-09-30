@@ -64,9 +64,22 @@ struct PriceChangeValueView: View {
     }
     
     private func accessibilityLabelText(direction: String, accessibleChange: String) -> String {
+#if IS_APP
+        let localizedDirection = direction.isEmpty ? "" : Localization.string(direction)
+        if accessibleTimeframe.isEmpty {
+            return Localization.format("Price change: %@ %@ percent", localizedDirection, accessibleChange)
+        }
+        return Localization.format(
+            "%@ price change: %@ %@ percent",
+            Localization.string(accessibleTimeframe),
+            localizedDirection,
+            accessibleChange
+        )
+#else
         if accessibleTimeframe.isEmpty {
             return "Price change: \(direction) \(accessibleChange) percent"
         }
         return "\(accessibleTimeframe) price change: \(direction) \(accessibleChange) percent"
+#endif
     }
 }

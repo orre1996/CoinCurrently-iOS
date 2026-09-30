@@ -32,7 +32,7 @@ struct DateFilterSheet: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Filter By Date")
+            DragHandle(title: Localization.string("Filter By Date"))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -76,10 +76,10 @@ struct DateFilterSheet: View {
     @ViewBuilder
     private var startDateField: some View {
         let formattedStartDate = startDate?.formatted(date: .abbreviated, time: .omitted) ?? ""
-        let accessibleStartDate = startDate?.formatted(.dateTime.weekday(.wide).month(.wide).day().year()) ?? "Enter start date"
+        let accessibleStartDate = startDate?.formatted(.dateTime.weekday(.wide).month(.wide).day().year()) ?? Localization.string("Enter start date")
         
         VStack(alignment: .leading, spacing: 8) {
-            Text("Start Date")
+            Text(Localization.string("Start Date"))
                 .font(.satoshiMedium(14))
                 .foregroundStyle(Color.onSurfaceDim)
                 .fixedSize(horizontal: false, vertical: true)
@@ -88,7 +88,7 @@ struct DateFilterSheet: View {
             TextInputField(
                 input: .constant(formattedStartDate),
                 placeholder: "Start Date",
-                accessibilityValue: formattedStartDate.isEmpty ? "Enter start date" : formattedStartDate,
+                accessibilityValue: formattedStartDate.isEmpty ? Localization.string("Enter start date") : formattedStartDate,
                 leadingIcon: .date,
                 inputDidChange: { },
                 onCommit: { }
@@ -98,7 +98,7 @@ struct DateFilterSheet: View {
         }
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Start Date: \(accessibleStartDate)")
+        .accessibilityLabel(Localization.format("Start Date: %@", accessibleStartDate))
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
             AnalyticsManager.shared.log(
@@ -112,10 +112,10 @@ struct DateFilterSheet: View {
     @ViewBuilder
     private var endDateField: some View {
         let formattedEndDate = endDate?.formatted(date: .abbreviated, time: .omitted) ?? ""
-        let accessibleEndDate = endDate?.formatted(.dateTime.weekday(.wide).month(.wide).day().year()) ?? "Enter end date"
+        let accessibleEndDate = endDate?.formatted(.dateTime.weekday(.wide).month(.wide).day().year()) ?? Localization.string("Enter end date")
         
         VStack(alignment: .leading, spacing: 8) {
-            Text("End Date")
+            Text(Localization.string("End Date"))
                 .font(.satoshiMedium(14))
                 .foregroundStyle(Color.onSurfaceDim)
                 .fixedSize(horizontal: false, vertical: true)
@@ -124,7 +124,7 @@ struct DateFilterSheet: View {
             TextInputField(
                 input: .constant(formattedEndDate),
                 placeholder: "End Date",
-                accessibilityValue: formattedEndDate.isEmpty ? "Enter end date" : formattedEndDate,
+                accessibilityValue: formattedEndDate.isEmpty ? Localization.string("Enter end date") : formattedEndDate,
                 leadingIcon: .date,
                 inputDidChange: { },
                 onCommit: { }
@@ -134,7 +134,7 @@ struct DateFilterSheet: View {
         }
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("End Date: \(accessibleEndDate)")
+        .accessibilityLabel(Localization.format("End Date: %@", accessibleEndDate))
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
             AnalyticsManager.shared.log(
@@ -151,8 +151,8 @@ struct DateFilterSheet: View {
 
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 8) {
             SecondaryButton(
-                text: "Clear",
-                accessibilityLabel: "Clear filters",
+                text: Localization.string("Clear"),
+                accessibilityLabel: Localization.string("Clear filters"),
                 fullWidth: true,
                 opaqueBackground: true,
                 action: {
@@ -166,7 +166,7 @@ struct DateFilterSheet: View {
             )
 
             PrimaryButton(
-                text: "Apply",
+                text: Localization.string("Apply"),
                 isEnabled: startDate != nil && endDate != nil,
                 fullWidth: true,
                 opaqueBackground: true,

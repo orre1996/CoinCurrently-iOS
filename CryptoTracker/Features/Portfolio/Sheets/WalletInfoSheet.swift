@@ -55,7 +55,7 @@ struct WalletInfoSheet: View {
         .if(valueAccessible != nil) { view in
             view
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(accessibleTitle): \(valueAccessible ?? "")")
+                .accessibilityLabel(Localization.format("%1$@: %2$@", accessibleTitle, valueAccessible ?? ""))
         }
         .if(valueAccessible == nil) { view in
             view.accessibilityElement(children: .combine)
@@ -65,7 +65,7 @@ struct WalletInfoSheet: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             VStack(spacing: 0) {
-                DragHandle(title: "Wallet Details")
+                DragHandle(title: Localization.string("Wallet Details"))
                     .readSize {
                         headerHeight = $0.height
                     }
@@ -114,7 +114,7 @@ struct WalletInfoSheet: View {
 
             SnackbarView(
                 showSnackBar: $showSnackbar,
-                message: .constant("Wallet address copied!"),
+                message: .constant(Localization.string("Wallet address copied!")),
                 buttonTitle: .constant(""),
                 type: .success,
                 isTabbarHidden: true,
@@ -147,7 +147,7 @@ struct WalletInfoSheet: View {
     
     private var importedDateView: some View {
         statView(
-            title: "Date Imported",
+            title: Localization.string("Date Imported"),
             value: wallet.date.formatted(date: .abbreviated, time: .omitted),
             valueAccessible: wallet.date.formatted(.dateTime.weekday(.wide).month(.wide).day().year())
         )
@@ -157,7 +157,7 @@ struct WalletInfoSheet: View {
         let synced = syncedDate ?? Date()
         
         return statView(
-            title: "Last Synced",
+            title: Localization.string("Last Synced"),
             value: synced.formatted(date: .abbreviated, time: .shortened),
             valueAccessible: synced.formatted(.dateTime.weekday(.wide).month(.wide).day().year().hour().minute())
         )
@@ -165,16 +165,16 @@ struct WalletInfoSheet: View {
     
     private var networkView: some View {
         statView(
-            title: "Network",
-            value: "\(coin.symbol?.uppercased() ?? "") Mainnet",
-            valueAccessible: "\(coinName) Mainnet"
+            title: Localization.string("Network"),
+            value: Localization.format("%@ Mainnet", coin.symbol?.uppercased() ?? ""),
+            valueAccessible: Localization.format("%@ Mainnet", coinName)
         )
     }
     
     private var addressView: some View {
         HStack(spacing: 4) {
             statView(
-                title: "Wallet Address",
+                title: Localization.string("Wallet Address"),
                 value: "\(wallet.address.uppercased().prefix(5))...\(wallet.address.uppercased().suffix(5))",
                 valueAccessible: wallet.accessibilityAddressDescription
             )
@@ -192,7 +192,7 @@ struct WalletInfoSheet: View {
                     .foregroundStyle(Color.onSurfaceDimmer)
                     .padding(12)
             })
-            .accessibilityLabel("Copy wallet address")
+            .accessibilityLabel(Localization.string("Copy wallet address"))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

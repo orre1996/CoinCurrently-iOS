@@ -17,8 +17,8 @@ struct MyAssetsView: View {
         VStack(spacing: 0) {
             if let portfolio, portfolio.isEmpty {
                 EmptyContent(
-                    title: "No assets yet",
-                    subTitle: "Tap the + button to begin building your portfolio."
+                    title: Localization.string("No assets yet"),
+                    subTitle: Localization.string("Tap the + button to begin building your portfolio.")
                 )
                 .frame(maxWidth: .infinity)
                 .padding(

@@ -23,20 +23,20 @@ struct PortfolioImportView: View {
     private var accessibilityLabelText: String {
         var components: [String] = []
         
-        components.append("Wallet \(index + 1) of \(totalCount)")
+        components.append(Localization.format("Wallet %1$d of %2$d", index + 1, totalCount))
         
-        let walletName = walletImport?.walletName ?? "Imported"
+        let walletName = walletImport?.walletName ?? Localization.string("Imported")
         components.append(walletName)
         
         let coinName = coin?.name ?? coin?.symbol ?? ""
         if !coinName.isEmpty, let walletImport {
-            components.append("\(coinName) Mainnet, \(walletImport.accessibilityAddressDescription)")
+            components.append(Localization.format("%1$@ Mainnet, %2$@", coinName, walletImport.accessibilityAddressDescription))
         }
         
         if hideData {
-            components.append("Value hidden")
+            components.append(Localization.string("Value hidden"))
         } else if let value = walletImport?.totalValue(mainId: coin?.id, prices: prices) {
-            components.append("Value \(value.formatAccessibleCurrency(currency: currency))")
+            components.append(Localization.format("Value %@", value.formatAccessibleCurrency(currency: currency)))
         }
         
         return components.joined(separator: ". ")
@@ -53,14 +53,18 @@ struct PortfolioImportView: View {
                 
                 VStack(alignment: .leading, spacing: 4) {
                     ShimmeringText(
-                        text: "\(walletImport?.walletName ?? "Imported")",
+                        text: walletImport?.walletName ?? Localization.string("Imported"),
                         isDownloading: coin == nil
                     )
                     .foregroundStyle(Color.onSurface)
                     .font(.satoshiBold(16))
                     
                     ShimmeringText(
-                        text: "\(coin?.symbol?.uppercased() ?? "") Mainnet · \(walletImport?.address.uppercased().prefix(4) ?? "")...\(walletImport?.address.uppercased().suffix(4) ?? "")",
+                        text: Localization.format(
+                            "%1$@ Mainnet · %2$@",
+                            coin?.symbol?.uppercased() ?? "",
+                            "\(walletImport?.address.uppercased().prefix(4) ?? "")...\(walletImport?.address.uppercased().suffix(4) ?? "")"
+                        ),
                         isDownloading: coin == nil
                     )
                     .foregroundStyle(Color.onSurfaceDim)

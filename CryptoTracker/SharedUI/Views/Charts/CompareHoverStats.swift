@@ -34,7 +34,7 @@ struct CompareHoverStats: View {
                             .foregroundStyle(Color.onSurfaceDimmer)
                             .font(.satoshiBold(12))
                         
-                        Text(mainHoverPrice)
+                        Text(mainHoverPrice == "N/A" ? Localization.string("N/A") : mainHoverPrice)
                             .foregroundStyle(Color.onSurface)
                             .font(.satoshiBold(12))
                         
@@ -60,7 +60,7 @@ struct CompareHoverStats: View {
                             .foregroundStyle(Color.onSurfaceDimmer)
                             .font(.satoshiBold(12))
                         
-                        Text(compareHoverPrice)
+                        Text(compareHoverPrice == "N/A" ? Localization.string("N/A") : compareHoverPrice)
                             .foregroundStyle(Color.onSurface)
                             .font(.satoshiBold(12))
                         
@@ -113,7 +113,7 @@ struct CompareHoverStats: View {
                 .foregroundStyle(Color.onSurfaceDim)
                 .frame(width: 14, height: 14)
             
-            Text("N/A")
+            Text(Localization.string("N/A"))
                 .lineLimit(1)
                 .font(.satoshiBold(14))
                 .foregroundStyle(Color.onSurfaceDim)

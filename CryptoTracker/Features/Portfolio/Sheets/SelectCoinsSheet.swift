@@ -25,7 +25,7 @@ struct SelectCoinsSheet: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            DragHandle(title: "Filter By Coins")
+            DragHandle(title: Localization.string("Filter By Coins"))
                 .readSize {
                     headerHeight = $0.height
                 }
@@ -129,8 +129,8 @@ struct SelectCoinsSheet: View {
 
         AdaptiveStack(isHorizontal: isHorizontal, spacing: 12) {
             SecondaryButton(
-                text: "Clear",
-                accessibilityLabel: "Clear filters",
+                text: Localization.string("Clear"),
+                accessibilityLabel: Localization.string("Clear filters"),
                 fullWidth: true,
                 opaqueBackground: true,
                 action: {
@@ -144,8 +144,8 @@ struct SelectCoinsSheet: View {
             )
             
             PrimaryButton(
-                text: "Apply",
-                accessibilityLabel: "Apply filters",
+                text: Localization.string("Apply"),
+                accessibilityLabel: Localization.string("Apply filters"),
                 fullWidth: true,
                 opaqueBackground: true,
                 action: {

@@ -25,8 +25,8 @@ struct TransactionsView: View {
         VStack(alignment: .leading, spacing: 0) {
             if let portfolio, portfolio.isEmpty {
                 EmptyContent(
-                    title: "No assets yet",
-                    subTitle: "Tap the + button to begin building your portfolio."
+                    title: Localization.string("No assets yet"),
+                    subTitle: Localization.string("Tap the + button to begin building your portfolio.")
                 )
                 .frame(maxWidth: .infinity)
                 .padding(
@@ -61,7 +61,7 @@ struct TransactionsView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
                     FilterButtonView(
-                        title: typeFilters.isEmpty ? "Type" : "Type (\(typeFilters.count))",
+                        title: typeFilters.isEmpty ? Localization.string("Type") : Localization.format("Type (%d)", typeFilters.count),
                         accessibilityLabel: typeFilterAccessibilityLabel,
                         isActive: !typeFilters.isEmpty,
                         action: {
@@ -70,7 +70,7 @@ struct TransactionsView: View {
                     )
                     
                     FilterButtonView(
-                        title: dateFilter.rangeTitle,
+                        title: dateFilterDisplayTitle,
                         accessibilityLabel: dateFilterAccessibilityLabel,
                         isActive: dateFilter != .all,
                         action: {
@@ -79,7 +79,7 @@ struct TransactionsView: View {
                     )
                     
                     FilterButtonView(
-                        title: coinFilters.isEmpty ? "Coin" : "Coin (\(coinFilters.count))",
+                        title: coinFilters.isEmpty ? Localization.string("Coin") : Localization.format("Coin (%d)", coinFilters.count),
                         accessibilityLabel: coinFilterAccessibilityLabel,
                         isActive: !coinFilters.isEmpty,
                         action: {
@@ -101,7 +101,7 @@ struct TransactionsView: View {
                 Button(action: {
                     clearFilters()
                 }, label: {
-                    Text("Clear filters")
+                    Text(Localization.string("Clear filters"))
                         .underline()
                         .font(.satoshiMedium(16))
                         .foregroundStyle(Color.onSurfaceDim)
@@ -114,7 +114,7 @@ struct TransactionsView: View {
                             )
                         )
                 })
-                .accessibilityLabel("Clear filters")
+                .accessibilityLabel(Localization.string("Clear filters"))
                 .padding(.horizontal, 16)
             }
         }
@@ -123,18 +123,29 @@ struct TransactionsView: View {
     
     private var typeFilterAccessibilityLabel: String {
         filterAccessibilityLabel(
-            name: "Type filter",
+            name: Localization.string("Type filter"),
             selectedValues: typeFilters.isEmpty
                 ? nil
-                : typeFilters.map(\.rawValue).joined(separator: ", ")
+                : typeFilters.map { Localization.string($0.rawValue) }.joined(separator: ", ")
         )
     }
     
     private var dateFilterAccessibilityLabel: String {
         filterAccessibilityLabel(
-            name: "Date filter",
+            name: Localization.string("Date filter"),
             selectedValues: dateFilter == .all ? nil : dateFilterAccessibilityValue
         )
+    }
+
+    private var dateFilterDisplayTitle: String {
+        switch dateFilter {
+        case .custom:
+            return dateFilter.rangeTitle
+        case .all:
+            return Localization.string("Date")
+        default:
+            return Localization.string(dateFilter.title)
+        }
     }
     
     private var dateFilterAccessibilityValue: String {
@@ -144,18 +155,18 @@ struct TransactionsView: View {
             let end = formattedAccessibilityDate(endDate)
             
             if start.isEmpty || end.isEmpty {
-                return "Custom"
+                return Localization.string("Custom")
             }
             
-            return "\(start) to \(end)"
+            return Localization.format("%1$@ to %2$@", start, end)
         default:
-            return dateFilter.title
+            return Localization.string(dateFilter.title)
         }
     }
     
     private var coinFilterAccessibilityLabel: String {
         filterAccessibilityLabel(
-            name: "Coin filter",
+            name: Localization.string("Coin filter"),
             selectedValues: coinFilters.isEmpty
                 ? nil
                 : coinFilters.map { $0.name ?? $0.symbol ?? "" }.joined(separator: ", ")
@@ -167,7 +178,7 @@ struct TransactionsView: View {
             return name
         }
         
-        return "\(name), currently selected: \(selectedValues)"
+        return Localization.format("%1$@, currently selected: %2$@", name, selectedValues)
     }
     
     private func formattedAccessibilityDate(_ date: Date?) -> String {

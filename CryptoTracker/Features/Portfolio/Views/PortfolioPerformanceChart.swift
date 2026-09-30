@@ -162,7 +162,7 @@ struct PortfolioPerformanceChart: View {
                 HStack(spacing: 8) {
                     CompareRectangleView(color: viewModel.graphColor)
 
-                    Text("Portfolio")
+                    Text(Localization.string("Portfolio"))
                         .foregroundStyle(Color.onSurfaceDimmer)
                         .font(.satoshiBold(16))
                         .padding(.trailing, 24)

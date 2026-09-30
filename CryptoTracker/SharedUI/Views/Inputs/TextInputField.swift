@@ -59,13 +59,13 @@ struct TextInputField<Content: View>: View {
             TextField(
                 "",
                 text: $input,
-                prompt: Text(Localization.string(placeholder)).foregroundStyle(Color.onSurfaceDimmer),
+                prompt: Text(AppCopy.string(placeholder)).foregroundStyle(Color.onSurfaceDimmer),
             )
             .if(fillWidth) { view in
                 view.frame(maxWidth: .infinity, alignment: .leading)
             }
-            .accessibilityValue(Localization.format("%@, %@", accessibilityValue, Localization.string(isSearchField ? "search field" : "text field")))
-            .accessibilityHint(Localization.string("Double tap to edit"))
+            .accessibilityValue(AppCopy.format("%@, %@", accessibilityValue, AppCopy.string(isSearchField ? "search field" : "text field")))
+            .accessibilityHint(AppCopy.string("Double tap to edit"))
             .accessibilityAddTraits(.isSearchField)
             .submitLabel(.search)
             .onSubmit {

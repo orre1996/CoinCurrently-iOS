@@ -8,67 +8,35 @@
 import Foundation
 
 protocol NewsRepository: Actor {
-    var selectedNewsType: NewsType { get }
-    var cachedNews: [NewsType: CachedData<NewsModel>] { get }
-    
-    func ensureCacheLoaded() async
-    func getNews(type: NewsType, count: Int) async -> [NewsItem]?
-    func updateNewsType(_ type: NewsType) async
+    func getNews(coinId: String?) async -> [NewsItem]?
 }
 
 final actor NewsRepositoryImp: NewsRepository {
     static let shared = NewsRepositoryImp()
 
     private let networkManager: NetworkManager
-    private let settingsManager: SettingsManager
-    private var hasLoadedFromStorage = false
 
-    private(set) var selectedNewsType: NewsType
-    private(set) var cachedNews: [NewsType: CachedData<NewsModel>]
-    
-    init(
-        networkManager: NetworkManager = NetworkManagerImp.shared,
-        settingsManager: SettingsManager = SettingsManager.shared
-    ) {
+    init(networkManager: NetworkManager = NetworkManagerImp.shared) {
         self.networkManager = networkManager
-        self.settingsManager = settingsManager
-        self.cachedNews = [:]
-        self.selectedNewsType = settingsManager.get(key: NewsSettingKey.lastNewsCategory) ?? .general
     }
 
-    func ensureCacheLoaded() async {
-        guard !hasLoadedFromStorage else { return }
-        hasLoadedFromStorage = true
-        for type in [NewsType.general, .video, .neutral, .positive, .negative, .nft, .podcasts, .technicalAnalysis, .exchanges] {
-            if let news: NewsModel = await networkManager.getCached(endpoint: .news(type: type, count: count(for: type))) {
-                cachedNews[type] = CachedData(data: news, date: Date())
-            }
-        }
-    }
+    func getNews(coinId: String?) async -> [NewsItem]? {
+        let items: [NewsItem]? = await networkManager.get(
+            endpoint: .news(coinId: coinId, language: CoinGeckoNewsLanguage.code)
+        )
+        guard let items else { return nil }
 
-    func getNews(type: NewsType, count: Int) async -> [NewsItem]? {
-        await ensureCacheLoaded()
-        let news: NewsModel? = await networkManager.get(endpoint: .news(type: type, count: count))
-        
-        if let news {
-            cachedNews[type] = CachedData(data: news, date: Date())
+        let coins: [CoinsListModel]? = await networkManager.get(endpoint: .allCoins)
+        var namesById: [String: String] = [:]
+        for coin in coins ?? [] {
+            guard let id = coin.id, let name = coin.name, !name.isEmpty, namesById[id] == nil else { continue }
+            namesById[id] = name
         }
 
-        return news?.data
-    }
-    
-    func updateNewsType(_ type: NewsType) async {
-        selectedNewsType = type
-        settingsManager.set(data: selectedNewsType, key: NewsSettingKey.lastNewsCategory)
-    }
-
-    private func count(for type: NewsType) -> Int {
-        switch type {
-        case .general, .neutral, .positive, .negative:
-            return 100
-        default:
-            return 25
+        return items.map { item in
+            var copy = item
+            copy.relatedCoinNames = (item.related_coin_ids ?? []).compactMap { namesById[$0] }
+            return copy
         }
     }
-
 }

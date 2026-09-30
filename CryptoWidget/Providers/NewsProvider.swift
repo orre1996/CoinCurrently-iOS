@@ -21,9 +21,8 @@ struct NewsProvider: AppIntentTimelineProvider {
     }
     
     func snapshot(for configuration: Intent, in context: Context) async -> NewsEntry {
-        let newsType = await configuration.resolvedNewsType()
         return await withCheckedContinuation { continuation in
-            viewModel.getNews(type: newsType, category: configuration.category, itemCount: 3) { result in
+            viewModel.getNews(itemCount: 3) { result in
                 switch result {
                 case .success(let entry):
                     continuation.resume(returning: entry.copyWithPlaceholder())
@@ -35,9 +34,8 @@ struct NewsProvider: AppIntentTimelineProvider {
     }
 
     func timeline(for configuration: Intent, in context: Context) async -> Timeline<NewsEntry> {
-        let newsType = await configuration.resolvedNewsType()
         return await withCheckedContinuation { continuation in
-            viewModel.getNews(type: newsType, category: configuration.category, itemCount: 3) { result in
+            viewModel.getNews(itemCount: 3) { result in
                 switch result {
                 case .success(let entry):
                     let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(WidgetRefreshInterval.loaded)))

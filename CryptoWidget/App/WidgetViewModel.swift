@@ -21,7 +21,7 @@ enum WidgetError: Error {
 protocol WidgetViewModel {
     func getCoinsWithSparkline(ids: [String], completion: @escaping (Result<CryptoEntry, Error>) -> Void)
     func getPortfolio(completion: @escaping (Result<PortfolioEntry, Error>) -> Void)
-    func getNews(type: NewsType, category: NewsWidgetCategory, itemCount: Int, completion: @escaping (Result<NewsEntry, Error>) -> Void)
+    func getNews(itemCount: Int, completion: @escaping (Result<NewsEntry, Error>) -> Void)
     func getFearGreed(completion: @escaping (Result<FearGreedEntry, Error>) -> Void)
     func getGasFees(completion: @escaping (Result<GasFeeEntry, Error>) -> Void)
 }
@@ -142,20 +142,18 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
 
     // MARK: - News
     
-    func getNews(type: NewsType, category: NewsWidgetCategory = .general, itemCount: Int = 3, completion: @escaping (Result<NewsEntry, Error>) -> Void) {
+    func getNews(itemCount: Int = 3, completion: @escaping (Result<NewsEntry, Error>) -> Void) {
         let box = CompletionBox(handler: completion)
         let newsRepo = newsRepository
         Task { @MainActor in
-            let fetchCount = NewsWidgetCategoryResolver.fetchCount(for: type, itemCount: itemCount)
-
-            guard var news = await newsRepo.getNews(type: type, count: fetchCount) else {
+            guard let news = await newsRepo.getNews(coinId: nil) else {
                 box.call(.failure(WidgetError.fail))
                 return
             }
 
-            news = Array(NewsWidgetCategoryResolver.filteredNews(news, for: type).prefix(itemCount))
+            let items = Array(news.prefix(itemCount))
 
-            guard !news.isEmpty else {
+            guard !items.isEmpty else {
                 box.call(.failure(WidgetError.fail))
                 return
             }
@@ -163,8 +161,7 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
             box.call(
                 .success(
                     NewsEntry(
-                        newsModel: news,
-                        selectedCategory: category,
+                        newsModel: items,
                         isPlaceholder: false
                     )
                 )

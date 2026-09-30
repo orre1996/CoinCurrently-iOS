@@ -347,7 +347,7 @@ struct PaywallScreen: View {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(alignment: .center, spacing: 12) {
                     ShimmeringText(
-                        text: button?.title.map { Localization.string($0) } ?? "00000000",
+                        text: button.map { Localization.string($0.title) } ?? "00000000",
                         isDownloading: button?.title == nil
                     )
                     .font(.satoshiBold(18))

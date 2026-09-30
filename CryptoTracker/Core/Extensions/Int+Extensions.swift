@@ -78,7 +78,6 @@ extension Int {
         case 0: return "Overview"
         case 1: return "About"
         case 2: return "Markets"
-        case 3: return "News"
         default: return "Unknown"
         }
     }
@@ -88,7 +87,6 @@ extension Int {
         switch self {
         case 0: return "Markets"
         case 1: return "About"
-        case 2: return "News"
         default: return "Unknown"
         }
     }

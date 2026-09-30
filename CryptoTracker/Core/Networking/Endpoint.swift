@@ -32,7 +32,7 @@ enum Endpoint: Sendable {
     case coin(id: String, sparkline: Bool = false, useFreeEndpoint: Bool = false)
     case coinPriceVolume(id: String, days: String, useFreeEndpoint: Bool = false, interval: String?, currency: CurrencyModel)
     case multipleCoins(ids: [String], withSparkline: Bool = false, currency: CurrencyModel)
-    case news(type: NewsType, count: Int)
+    case news(coinId: String?, language: String)
     case newCoins
     case nftToplist(platform: NFTPlatform, sortOption: SortOption)
     case nftPlatforms
@@ -144,8 +144,8 @@ enum Endpoint: Sendable {
         case .multipleCoins:
             return "\(cryptoBaseURL)/api/v3/coins/markets"
             
-        case .news(let type, _):
-            return type.basePath
+        case .news:
+            return "\(cryptoBaseURL)/api/v3/news"
             
         case .newCoins:
             return "\(serverBaseUrl)/crypto/api/v3/coins/list/new"
@@ -318,9 +318,15 @@ enum Endpoint: Sendable {
                 URLQueryItem(name: "price_change_percentage", value: "1h,24h,7d,30d")
             ]
             
-        case .news(let type, let count):
-            var items = type.queryItems
-            items.append(URLQueryItem(name: "items", value: "\(count)"))
+        case .news(let coinId, let language):
+            var items = [
+                URLQueryItem(name: "language", value: language),
+                URLQueryItem(name: "type", value: "all"),
+                URLQueryItem(name: "per_page", value: "20")
+            ]
+            if let coinId, !coinId.isEmpty {
+                items.append(URLQueryItem(name: "coin_id", value: coinId))
+            }
             return items
             
         case .nftToplist(let platform, let sortOption):
@@ -408,7 +414,7 @@ enum Endpoint: Sendable {
     func shouldAddBearerToken() -> Bool {
         switch self {
         case .deleteAlert, .getAlerts, .createPriceAlert, .subBigMover, .ubsubBigMover,
-                .updateUser, .walletImport, .referralCode, .redeemCode, .subCoin, .user:
+                .updateUser, .walletImport, .referralCode, .redeemCode, .subCoin, .user, .news:
             return true
         default:
             return false

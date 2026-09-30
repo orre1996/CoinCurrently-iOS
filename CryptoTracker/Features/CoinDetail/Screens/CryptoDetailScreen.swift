@@ -302,7 +302,7 @@ struct CryptoDetailScreen: View {
                                         showError: newsViewModel.showNewsError,
                                         errorMessage: newsErrorString,
                                         refresh: {
-                                            await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol)
+                                            await newsViewModel.getNews(coinId: viewModel.cryptoInfo?.id)
                                         }
                                     )
                                 }
@@ -358,6 +358,9 @@ struct CryptoDetailScreen: View {
         .environment(\.locale, appLanguage.resolve().locale)
         .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
             appLanguage = AppLanguagePreference.stored
+            if currentPage == 4 {
+                Task { await newsViewModel.getNews(coinId: viewModel.cryptoInfo?.id) }
+            }
         }
         .navigationPopGestureDisabled(viewModel.isDragging)
         .toolbarBackground(.visible, for: .navigationBar)
@@ -449,7 +452,6 @@ struct CryptoDetailScreen: View {
             await viewModel.setStartData()
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await alertsViewModel.load(coinId: viewModel.cryptoInfo?.id) }
-                group.addTask { await newsViewModel.loadCached(symbol: viewModel.cryptoInfo?.symbol) }
                 group.addTask {
                     await viewModel.refresh(
                         showReload: viewModel.mainReloading
@@ -494,7 +496,7 @@ struct CryptoDetailScreen: View {
                 
                 if currentPage == 4 {
                     group.addTask {
-                        await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol)
+                        await newsViewModel.getNews(coinId: viewModel.cryptoInfo?.id)
                     }
                 }
             }
@@ -507,7 +509,7 @@ struct CryptoDetailScreen: View {
             if currentPage == 2 {
                 await portfolioViewModel.load(coinId: viewModel.cryptoInfo?.id)
             } else if currentPage == 4 {
-                await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol)
+                await newsViewModel.getNews(coinId: viewModel.cryptoInfo?.id)
             }
         }
         .onDisappear {
@@ -546,7 +548,6 @@ struct CryptoDetailScreen: View {
                             await viewModel.newMainCoin(id: id)
                             await withTaskGroup(of: Void.self) { group in
                                 group.addTask { await alertsViewModel.load(coinId: id) }
-                                group.addTask { await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol) }
                                 group.addTask { await portfolioViewModel.load(coinId: id) }
                             }
                         }

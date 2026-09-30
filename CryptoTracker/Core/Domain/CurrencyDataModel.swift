@@ -84,6 +84,92 @@ struct Market: Codable, Equatable, Hashable {
 
 struct Description: Codable, Equatable, Hashable {
     var en: String
+    var zh: String? = nil
+    var zhTw: String? = nil
+    var de: String? = nil
+    var fr: String? = nil
+    var es: String? = nil
+    var ja: String? = nil
+    var id: String? = nil
+    var ru: String? = nil
+    var ko: String? = nil
+    var ar: String? = nil
+    var th: String? = nil
+    var vi: String? = nil
+    var it: String? = nil
+    var pl: String? = nil
+    var tr: String? = nil
+    var hu: String? = nil
+    var nl: String? = nil
+    var ro: String? = nil
+    var sv: String? = nil
+    var cs: String? = nil
+    var da: String? = nil
+    var el: String? = nil
+    var hi: String? = nil
+    var no: String? = nil
+    var sk: String? = nil
+    var uk: String? = nil
+    var he: String? = nil
+    var fi: String? = nil
+    var bg: String? = nil
+    var hr: String? = nil
+    var lt: String? = nil
+    var sl: String? = nil
+    var pt: String? = nil
+
+    enum CodingKeys: String, CodingKey {
+        case en, zh, de, fr, es, ja, id, ru, ko, ar, th, vi, it, pl, tr, hu, nl, ro, sv, cs, da, el, hi, no, sk, uk, he, fi, bg, hr, lt, sl, pt
+        case zhTw = "zh-tw"
+    }
+
+    func text(for languageCode: String) -> String {
+        let localized = value(for: languageCode)
+        if let localized, !localized.isEmpty {
+            return localized
+        }
+        return en
+    }
+
+    private func value(for languageCode: String) -> String? {
+        switch languageCode {
+        case "en": return en
+        case "zh": return zh
+        case "zh-tw": return zhTw
+        case "de": return de
+        case "fr": return fr
+        case "es": return es
+        case "ja": return ja
+        case "id": return id
+        case "ru": return ru
+        case "ko": return ko
+        case "ar": return ar
+        case "th": return th
+        case "vi": return vi
+        case "it": return it
+        case "pl": return pl
+        case "tr": return tr
+        case "hu": return hu
+        case "nl": return nl
+        case "ro": return ro
+        case "sv": return sv
+        case "cs": return cs
+        case "da": return da
+        case "el": return el
+        case "hi": return hi
+        case "no": return no
+        case "sk": return sk
+        case "uk": return uk
+        case "he": return he
+        case "fi": return fi
+        case "bg": return bg
+        case "hr": return hr
+        case "lt": return lt
+        case "sl": return sl
+        case "pt": return pt
+        default: return nil
+        }
+    }
 }
 
 struct Links: Codable, Equatable, Hashable {

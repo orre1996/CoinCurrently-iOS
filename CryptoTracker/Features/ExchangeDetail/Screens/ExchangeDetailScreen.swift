@@ -167,17 +167,6 @@ struct ExchangeDetailScreen: View {
                                         exchange: viewModel.exchangeInfo,
                                         newsUrl: binding
                                     )
-                                } else if currentPage == 2 {
-                                    DetailNews(
-                                        title: viewModel.exchangeInfo.name,
-                                        fromScreen: .exchangeDetail,
-                                        news: viewModel.news,
-                                        showError: viewModel.showNewsError,
-                                        errorMessage: newsErrorString,
-                                        refresh: {
-                                            await viewModel.refresh()
-                                        }
-                                    )
                                 }
                             }
                             .accessibilitySortPriority(-2)
@@ -211,7 +200,7 @@ struct ExchangeDetailScreen: View {
                                     )
                                     scrollToTop.toggle()
                                 },
-                                isVisible: showScrollToTopButton && (currentPage == 0 || currentPage == 2)
+                                isVisible: showScrollToTopButton && currentPage == 0
                             )
                         }
                     }
@@ -250,20 +239,13 @@ struct ExchangeDetailScreen: View {
             }
         }
         .refreshable {
-            await viewModel.refresh(
-                getNews: currentPage == 1
-            )
+            await viewModel.refresh()
         }
         .onChange(of: currentPage) { _, page in
             AnalyticsManager.shared.log(
                 TabChanged(fromScreen: .exchangeDetail, selectedTabName: page.exchangeDetailPageTabName)
             )
 
-            if page == 1 {
-                Task {
-                    await viewModel.getNews()
-                }
-            }
         }
         .sheet(isPresented: $isSortShowing) {
             ToplistSortBySheet(
@@ -347,7 +329,7 @@ struct ExchangeDetailScreen: View {
     
     @ViewBuilder
     private var pageSelector: some View {
-        let categories = ["Markets", "About", "News"]
+        let categories = ["Markets", "About"]
         
         VStack(spacing: 0) {
             PageSelectorView(currentPage: $currentPage, titles: categories, pageSelected: { page in

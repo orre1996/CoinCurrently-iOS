@@ -11,8 +11,6 @@ struct NewsCard: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @Environment(\.sizeCategory) private var category
     
-    @ScaledMetric private var scale: CGFloat = 1
-    
     private var isHorizontal: Bool {
         !category.isAccessibilityCategory || verticalSizeClass == .compact
     }
@@ -87,24 +85,14 @@ struct NewsCard: View {
         let source = Localization.format("By %@", news?.source_name ?? "000000")
         let published = Localization.format(
             "Published %@",
-            news?.date?.convertStringToDate(dateFormat: .EdMMMyyyyHHmmssZ)?.timeAgoDisplay ?? "000000"
+            news?.publishedDate?.timeAgoDisplay ?? "000000"
         )
-        let sentiment = Localization.format("Sentiment, %@", localizedSentiment(news?.sentiment ?? ""))
-        var description = "\(position). \(title). \(source). \(published). \(sentiment)"
-        let tickers = [0, 1, 2].compactMap { news?.tickers?[safely: $0] }.filter { !$0.isEmpty }
-        if !tickers.isEmpty {
-            description += ". " + Localization.format("Tickers, %@", tickers.joined(separator: ", "))
+        var description = "\(position). \(title). \(source). \(published)"
+        let coins = Array((news?.relatedCoinNames ?? []).prefix(3))
+        if !coins.isEmpty {
+            description += ". " + Localization.format("Tickers, %@", coins.joined(separator: ", "))
         }
         return description
-    }
-
-    private func localizedSentiment(_ value: String) -> String {
-        switch value {
-        case "Positive", "Negative", "Neutral":
-            return Localization.string(value)
-        default:
-            return value
-        }
     }
 
     private var newsImageView: some View {
@@ -132,8 +120,8 @@ struct NewsCard: View {
     
     private var metadataView: some View {
         ShimmeringText(
-            text: "\(news?.source_name ?? "000000") · \(news?.date?.convertStringToDate(dateFormat: .EdMMMyyyyHHmmssZ)?.timeAgoDisplay ?? "000000")",
-            isDownloading: news?.source_name == nil || news?.date == nil
+            text: "\(news?.source_name ?? "000000") · \(news?.publishedDate?.timeAgoDisplay ?? "000000")",
+            isDownloading: news?.source_name == nil || news?.posted_at == nil
         )
         .foregroundStyle(Color.onSurfaceDimmer)
         .font(.satoshiBold(12))
@@ -143,47 +131,27 @@ struct NewsCard: View {
     }
     
     private var tagsView: some View {
-        HStack(spacing: 4) {
-            sentimentIcon
-            
-            if news == nil || news?.tickers?.isEmpty == false {
+        let names = news?.relatedCoinNames ?? []
+
+        return Group {
+            if news == nil || !names.isEmpty {
                 ShimmeringText(
-                    text: news?.tickers?.prefix(3).map({ $0 }).joined(separator: " · ") ?? "000",
+                    text: names.prefix(3).joined(separator: " · ").isEmpty ? "000" : names.prefix(3).joined(separator: " · "),
                     isDownloading: news == nil
                 )
                 .foregroundStyle(Color.onSurface)
                 .font(.satoshiBold(12))
+                .padding(
+                    EdgeInsets(
+                        top: 4,
+                        leading: 8,
+                        bottom: 4,
+                        trailing: 8
+                    )
+                )
+                .background(Color.surfaceContainerHigh)
+                .cornerRadius(8)
             }
-        }
-        .padding(
-            EdgeInsets(
-                top: 4,
-                leading: 4,
-                bottom: 4,
-                trailing: news == nil || news?.tickers?.isEmpty == false ? 8 : 4
-            )
-        )
-        .background(Color.surfaceContainerHigh)
-        .cornerRadius(8)
-    }
-    
-    private var sentimentIcon: some View {
-        ZStack {
-            MinimumTextSize(text: "X") {
-                if news?.sentiment != nil || news == nil {
-                    (news?.getSentimentSign ?? Image.trendStill)
-                        .foregroundStyle(news == nil ? Color.shimmeringBackground.opacity(0.15) : news?.getSentimentColor ?? .onSurfaceDim)
-                        .frame(width: 16 * min(scale, 1.5), height: 16 * min(scale, 1.5))
-                }
-                
-                if news == nil {
-                    (news?.getSentimentSign ?? Image.trendStill)
-                        .foregroundStyle(news == nil ? Color.onSurface.opacity(0.5) : Color.onSurfaceDim)
-                        .frame(width: 16 * min(scale, 1.5), height: 16 * min(scale, 1.5))
-                        .shimmer()
-                }
-            }
-            .font(.satoshiBold(12))
         }
     }
 }

@@ -105448,6 +105448,209 @@
         }
       }
     },
+    "first 4 in address %1$@, last 4 in address %2$@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أول 4 في العنوان %1$@، آخر 4 في العنوان %2$@"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "първите 4 в адреса %1$@, последните 4 в адреса %2$@"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "první 4 v adrese %1$@, poslední 4 v adrese %2$@"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de første 4 i adressen %1$@, de sidste 4 i adressen %2$@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "die ersten 4 der Adresse %1$@, die letzten 4 der Adresse %2$@"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "τα πρώτα 4 της διεύθυνσης %1$@, τα τελευταία 4 της διεύθυνσης %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "primeros 4 de la dirección %1$@, últimos 4 de la dirección %2$@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "osoitteen 4 ensimmäistä %1$@, osoitteen 4 viimeistä %2$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4 premiers de l’adresse %1$@, 4 derniers de l’adresse %2$@"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4 התווים הראשונים בכתובת %1$@, 4 התווים האחרונים בכתובת %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पते के पहले 4 %1$@, पते के अंतिम 4 %2$@"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "prva 4 u adresi %1$@, zadnja 4 u adresi %2$@"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "a cím első 4 karaktere %1$@, a cím utolsó 4 karaktere %2$@"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4 karakter pertama alamat %1$@, 4 karakter terakhir alamat %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "primi 4 dell’indirizzo %1$@, ultimi 4 dell’indirizzo %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アドレスの先頭4文字 %1$@、末尾4文字 %2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "주소의 앞 4자리 %1$@, 뒤 4자리 %2$@"
+          }
+        },
+        "lt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pirmieji 4 adreso simboliai %1$@, paskutiniai 4 adreso simboliai %2$@"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de første 4 i adressen %1$@, de siste 4 i adressen %2$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "eerste 4 van het adres %1$@, laatste 4 van het adres %2$@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pierwsze 4 adresu %1$@, ostatnie 4 adresu %2$@"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "primeiros 4 do endereço %1$@, últimos 4 do endereço %2$@"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "primele 4 din adresă %1$@, ultimele 4 din adresă %2$@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "первые 4 символа адреса %1$@, последние 4 символа адреса %2$@"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "prvé 4 v adrese %1$@, posledné 4 v adrese %2$@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "prvi 4 v naslovu %1$@, zadnji 4 v naslovu %2$@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de första 4 i adressen %1$@, de sista 4 i adressen %2$@"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4 ตัวแรกของที่อยู่ %1$@, 4 ตัวสุดท้ายของที่อยู่ %2$@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "adresin ilk 4 karakteri %1$@, son 4 karakteri %2$@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "перші 4 символи адреси %1$@, останні 4 символи адреси %2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4 ký tự đầu của địa chỉ %1$@, 4 ký tự cuối của địa chỉ %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地址前 4 位 %1$@，后 4 位 %2$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地址前 4 碼 %1$@，後 4 碼 %2$@"
+          }
+        }
+      }
+    },
     "Floor Price" : {
       "extractionState" : "manual",
       "localizations" : {

@@ -168,7 +168,7 @@ extension AddressImport {
         let formattedAddress = address.uppercased()
         let firstFour = String(formattedAddress.prefix(4))
         let lastFour = String(formattedAddress.suffix(4))
-        return "first 4 in address \(firstFour), last 4 in address \(lastFour)"
+        return AppCopy.format("first 4 in address %1$@, last 4 in address %2$@", firstFour, lastFour)
     }
 }
 

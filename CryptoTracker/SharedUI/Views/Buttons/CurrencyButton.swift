@@ -34,6 +34,6 @@ struct CurrencyButton: View {
             }
         })
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Change currency, currently selected: \(currency.currency)")
+        .accessibilityLabel(Localization.format("Change currency, currently selected: %@", currency.currency))
     }
 }

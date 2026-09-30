@@ -41,6 +41,6 @@ struct MenuButton: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Change option, currently selected: \(selectedOption)")
+        .accessibilityLabel(Localization.format("Change option, currently selected: %@", selectedOption))
     }
 }

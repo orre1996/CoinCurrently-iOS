@@ -41,11 +41,19 @@ struct HistoricalDataView: View {
         #endif
     }
     
+    private var horizontalPadding: CGFloat {
+        #if IS_WATCH
+        8
+        #else
+        16
+        #endif
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             headerView
             
-            VStack(spacing: 8) {
+            VStack(spacing: horizontalPadding) {
                 changeView
                 
                 Separator()
@@ -64,7 +72,7 @@ struct HistoricalDataView: View {
                 
                 genesisDateView
             }
-            .cardBackground(padding: 8)
+            .cardBackground(padding: horizontalPadding)
         }
     }
     

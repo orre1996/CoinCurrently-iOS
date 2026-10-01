@@ -54,7 +54,7 @@ struct CryptoDetailStatisticsView: View {
         VStack(alignment: .leading, spacing: 8) {
             headerView
             
-            VStack(spacing: 8) {
+            VStack(spacing: horizontalPadding) {
                 rangeView
                 
                 Separator()
@@ -73,7 +73,7 @@ struct CryptoDetailStatisticsView: View {
                     supplyViewNoMax
                 }
             }
-            .cardBackground(padding: 8)
+            .cardBackground(padding: horizontalPadding)
         }
     }
     

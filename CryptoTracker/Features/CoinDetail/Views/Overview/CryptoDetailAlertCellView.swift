@@ -72,7 +72,7 @@ struct CryptoDetailAlertCellView: View {
                         
                         +
                         
-                        Text(alert?.targetPrice.formatCurrency(threshold: FormattingThreshold.none, currency: currency) ?? "00000000")
+                        Text(" \(alert?.targetPrice.formatCurrency(threshold: FormattingThreshold.none, currency: currency) ?? "00000000")")
                             .foregroundStyle(Color.onSurface)
                             .font(.satoshiBold(16))
                     }

@@ -11,8 +11,10 @@ enum Localization {
     static var locale: Locale { AppLanguagePreference.stored.resolve().locale }
 
     static func string(_ key: String, locale: Locale? = nil) -> String {
-        var resource = LocalizedStringResource(stringLiteral: key)
-        resource.locale = locale ?? self.locale
+        let resource = LocalizedStringResource(
+            String.LocalizationValue(key),
+            locale: locale ?? self.locale
+        )
         return String(localized: resource)
     }
 

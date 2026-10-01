@@ -25,6 +25,14 @@ struct CommunitySentimentView: View {
         .satoshiBold(16)
         #endif
     }
+    
+    private var horizontalPadding: CGFloat {
+        #if IS_WATCH
+        8
+        #else
+        16
+        #endif
+    }
 
     var body: some View {
         VStack(spacing: 4) {
@@ -91,7 +99,7 @@ struct CommunitySentimentView: View {
 
             sentimentMeterTitles
         }
-        .cardBackground(padding: 8)
+        .cardBackground(padding: horizontalPadding)
         .accessibilityElement(children: .combine)
     }
     

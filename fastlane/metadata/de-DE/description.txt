@@ -1,0 +1,70 @@
+CoinCurrently ist der private, anonyme Weg, Krypto zu verfolgen. Keine Registrierung. Keine Konten. Keine Werbung. Keine persönlichen Daten. Nur ein schneller, schöner Krypto-Tracker für alle.
+
+PRIVAT VON GRUND AUF
+
+Deine Daten bleiben auf deinem Gerät. Wir erheben keine persönlichen Informationen, wir verkaufen nichts, und wir teilen deine Aktivität nicht mit Werbetreibenden. Es gibt keine Werbenetzwerke, keine Werbe-IDs und keine Tracker von Dritten, die beobachten, was du dir ansiehst.
+
+• Keine Registrierung — öffne die App und leg los
+• Kein Konto, keine E-Mail, keine Telefonnummer
+• Niemals Werbung
+• Keine Werbe-IDs, kein Tracking über Apps hinweg
+• Es werden keine persönlichen Daten erfasst
+• Wallets, Transaktionen und Einstellungen bleiben lokal auf deinem Gerät
+• Biometrische Sperre (Face ID / Touch ID), damit die App privat bleibt
+
+Die einzige Analyse, die wir nutzen, ist Aptabase — ein quelloffenes Werkzeug, bei dem Privatsphäre an erster Stelle steht. Es erfasst anonyme, zusammengefasste Ereignisse (etwa „App geöffnet“ oder „Chart angesehen“), damit wir Fehler beheben und die App verbessern können. Keine Nutzer-IDs, keine IP-Adressen, keine persönlichen Daten — niemals.
+
+BARRIEREFREIHEIT FÜR ALLE
+
+Krypto sollte für alle sein. CoinCurrently unterstützt Bedienungshilfen in der gesamten App.
+
+• VoiceOver — jeder Bildschirm ist beschriftet und vollständig navigierbar, von Home und Markt bis Portfolio, News und Einstellungen
+• Dynamic Type — der Text skaliert mit den Systemeinstellungen und ist leichter zu lesen
+• Modus für Farbenfehlsichtigkeit — stelle Preisänderungen in den Einstellungen von Grün/Rot auf Blau/Orange um
+• Klare Oberfläche mit hohem Kontrast im hellen und im dunklen Modus
+
+KURSE UND CHARTS IN ECHTZEIT
+
+Live-Daten und ausführliche Kursverläufe für über 10.000 Coins und Token. Verfolge Bitcoin (BTC), Ethereum (ETH) und jeden Altcoin, der dich interessiert — mit genauen Marktdaten, Volumenverlauf und Charts über mehrere Zeiträume.
+
+PORTFOLIO-TRACKER
+
+Verwalte deine Bestände mit einem sicheren Portfolio-Tracker, der vollständig auf deinem Gerät bleibt.
+
+• Wallet-Adressen direkt aus der Blockchain importieren und Guthaben automatisch verfolgen
+• Manuelle Transaktionen, Swaps und Überweisungen erfassen
+• Ausführliche Gewinn- und Verlustanalysen
+• Mehrere Wallets
+
+PREISALARME
+
+Lege eigene Preisalarme fest und verpasse keine Bewegung. Du wirst benachrichtigt, sobald dein Ziel erreicht ist — ganz ohne Konto.
+
+ETHEREUM-GAS-TRACKER
+
+Wähle den richtigen Zeitpunkt für deine Transaktionen mit einem Echtzeit-Tracker für ETH-Gas. Sieh die aktuellen Gasgebühren auf einen Blick und plane nach den Bedingungen im Netzwerk.
+
+WÄHRUNGSRECHNER
+
+Rechne sofort zwischen Fiat und Krypto oder zwischen zwei beliebigen Assets um — mit Live-Kursen.
+
+MARKTSTIMMUNG UND NEWS
+
+• Fear-and-Greed-Index, um die Stimmung am Markt einzuschätzen
+• Die neuesten Krypto-News direkt in der App
+• Preise über mehrere Börsen vergleichen
+
+WIDGETS FÜR DEN HOME-BILDSCHIRM
+
+Über 10 Widgets für Kurse, Portfoliowert und Marktbewegungen auf einen Blick — direkt vom Home-Bildschirm deines iPhone oder iPad.
+
+SCHÖN, SCHNELL, DEINS
+
+• Native Leistung auf iOS
+• Elegantes helles und dunkles Design
+• Klare, werbefreie Oberfläche
+• Offline nutzbar für alles, was bereits geladen ist
+
+Anonymer Krypto-Tracker. Kein Tracking, keine Registrierung, keine Werbung. Barrierefrei von Anfang an.
+
+Nutzungsbedingungen: www.coincurrently.app/terms

@@ -1,0 +1,70 @@
+CoinCurrently este modul privat și anonim de a urmări cripto. Fără înregistrare. Fără conturi. Fără reclame. Fără date personale. Doar un tracker cripto rapid și curat, făcut pentru toată lumea.
+
+PRIVAT DIN CONCEPȚIE
+
+Datele tale rămân pe dispozitiv. Nu colectăm informații personale, nu vindem nimic și nu împărtășim activitatea ta cu agențiile de publicitate. Nu există rețele publicitare, identificatori publicitari sau trackere terțe care să vadă ce consulți.
+
+• Fără înregistrare — deschide aplicația și începe
+• Fără cont, fără e-mail, fără număr de telefon
+• Niciodată reclame
+• Fără identificatori publicitari și fără urmărire între aplicații
+• Nu se colectează date personale
+• Portofelele, tranzacțiile și setările rămân local pe dispozitiv
+• Blocare biometrică (Face ID / Touch ID) ca aplicația să rămână privată
+
+Singura analiză pe care o folosim este Aptabase — un instrument open source care pune confidențialitatea pe primul loc. Înregistrează evenimente anonime și agregate (cum ar fi „aplicație deschisă” sau „grafic văzut”), ca să putem repara erori și îmbunătăți aplicația. Fără ID-uri de utilizator, fără adrese IP, fără date personale — niciodată.
+
+ACCESIBILITATE PENTRU TOȚI
+
+Cripto ar trebui să fie pentru toți. CoinCurrently are suport complet de accesibilitate în toată aplicația.
+
+• VoiceOver — fiecare ecran este etichetat și poate fi parcurs integral, de la Acasă și Piață la Portofoliu, Știri și Setări
+• Dynamic Type — textul urmează setările sistemului și este mai ușor de citit
+• Mod pentru daltonism — treci schimbările de preț de la verde/roșu la albastru/portocaliu în Setări
+• Interfață curată, cu contrast ridicat, în modul luminos și în cel întunecat
+
+PREȚURI ȘI GRAFICE ÎN TIMP REAL
+
+Date live și istoric detaliat al prețurilor pentru peste 10.000 de monede și tokenuri. Urmărește Bitcoin (BTC), Ethereum (ETH) și fiecare altcoin care contează pentru tine, cu date de piață precise, istoric de volum și grafice pe mai multe intervale.
+
+TRACKER DE PORTOFOLIU
+
+Gestionează deținerile tale cu un tracker de portofoliu sigur, care rămâne în întregime pe dispozitiv.
+
+• Importă adrese de portofel direct din blockchain ca să urmărești soldurile automat
+• Înregistrează tranzacții manuale, swap-uri și transferuri
+• Analiză detaliată de profit și pierdere
+• Mai multe portofele
+
+ALERTE DE PREȚ
+
+Setează alerte de preț proprii și nu rata nicio mișcare. Ești anunțat în momentul în care ținta este atinsă — fără cont.
+
+TRACKER DE GAS ETHEREUM
+
+Alege momentul cu un tracker de gas ETH în timp real. Vezi comisioanele de gas actuale dintr-o privire și planifică după starea rețelei.
+
+CONVERTOR VALUTAR
+
+Convertește instant între fiat și cripto, sau între oricare două active, cu cursuri live.
+
+SENTIMENTUL PIEȚEI ȘI ȘTIRI
+
+• Indicele Fear and Greed pentru a citi starea pieței
+• Cele mai noi știri cripto direct în aplicație
+• Compară prețurile pe mai multe exchange-uri
+
+WIDGETURI PENTRU ECRANUL PRINCIPAL
+
+Peste 10 widgeturi pentru prețuri, valoarea portofoliului și mișcările pieței — direct de pe ecranul principal al iPhone-ului sau iPad-ului.
+
+FRUMOS, RAPID, AL TĂU
+
+• Performanță nativă pe iOS
+• Moduri luminos și întunecat elegante
+• Interfață curată, fără reclame
+• Funcționează offline pentru tot ce este deja încărcat
+
+Tracker cripto anonim. Fără urmărire, înregistrare sau reclame. Accesibil din concepție.
+
+Termeni și condiții: www.coincurrently.app/terms

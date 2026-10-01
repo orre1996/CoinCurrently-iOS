@@ -1,0 +1,70 @@
+CoinCurrently är det privata, anonyma sättet att följa krypto. Ingen registrering. Inga konton. Ingen reklam. Inga personuppgifter. Bara en snabb, snygg krypto-tracker, byggd för alla.
+
+PRIVAT FRÅN GRUNDEN
+
+Dina data stannar på enheten. Vi samlar inte in personlig information, vi säljer ingenting och vi delar inte din aktivitet med annonsörer. Inga annonsnätverk, inga reklam-ID:n och inga tredjepartsspårare som ser vad du tittar på.
+
+• Ingen registrering — öppna appen och börja
+• Inget konto, ingen e-post, inget telefonnummer
+• Aldrig reklam
+• Inga reklam-ID:n, ingen spårning mellan appar
+• Inga personuppgifter samlas in
+• Plånböcker, transaktioner och inställningar lagras lokalt på enheten
+• Biometriskt lås (Face ID / Touch ID) så att appen förblir privat
+
+Den enda analys vi använder är Aptabase — ett verktyg med öppen källkod som sätter integritet först. Det registrerar anonyma, samlade händelser (som ”appen öppnades” eller ”diagram visades”) så att vi kan rätta buggar och förbättra appen. Inga användar-ID:n, inga IP-adresser, inga personuppgifter — aldrig.
+
+TILLGÄNGLIGHET FÖR ALLA
+
+Krypto borde vara för alla. CoinCurrently har fullt stöd för tillgänglighet i hela appen.
+
+• VoiceOver — varje skärm är märkt och går att navigera helt, från Hem och Marknad till Portfölj, Nyheter och Inställningar
+• Dynamic Type — texten följer systeminställningarna och är lättare att läsa
+• Läge för färgblindhet — byt prisändringar från grönt/rött till blått/orange i Inställningar
+• Rent gränssnitt med hög kontrast i både ljust och mörkt läge
+
+KURSER OCH DIAGRAM I REALTID
+
+Live-data och detaljerad prishistorik för över 10 000 mynt och token. Följ Bitcoin (BTC), Ethereum (ETH) och varje altcoin du bryr dig om, med exakta marknadsdata, volymhistorik och diagram över flera tidsperioder.
+
+PORTFÖLJTRACKER
+
+Hantera dina innehav med en säker portföljtracker som finns helt på enheten.
+
+• Importera plånboksadresser direkt från blockkedjan och följ saldon automatiskt
+• Logga manuella transaktioner, byten och överföringar
+• Detaljerad analys av vinst och förlust
+• Flera plånböcker
+
+PRISAVISERINGAR
+
+Ställ in egna prisaviseringar och missa ingen rörelse. Du får ett meddelande i samma stund som målet nås — inget konto krävs.
+
+ETHEREUM-GAS-TRACKER
+
+Tajma dina transaktioner med en realtidstracker för ETH-gas. Se aktuella gasavgifter direkt och planera efter nätverkets läge.
+
+VALUTAOMRÄKNARE
+
+Räkna om direkt mellan fiat och krypto, eller mellan två tillgångar, med livekurser.
+
+MARKNADSKÄNSLA OCH NYHETER
+
+• Fear and Greed Index för att läsa av marknadens stämning
+• De senaste kryptonyheterna direkt i appen
+• Jämför priser på flera börser
+
+WIDGETAR FÖR HEMSKÄRMEN
+
+Över 10 widgetar för kurser, portföljvärde och marknadsrörelser — direkt från hemskärmen på din iPhone eller iPad.
+
+VACKER, SNABB, DIN
+
+• Nativ prestanda på iOS
+• Elegant ljust och mörkt läge
+• Rent gränssnitt utan reklam
+• Fungerar offline för allt som redan har laddats
+
+Anonym krypto-tracker. Ingen spårning, registrering eller reklam. Tillgänglig från grunden.
+
+Användarvillkor: www.coincurrently.app/terms

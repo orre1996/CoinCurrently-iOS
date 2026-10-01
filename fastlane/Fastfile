@@ -1,0 +1,63 @@
+# Store title, subtitle, and description.
+# API key is loaded from the Steven repo (same App Store Connect account).
+# Bulgarian and Lithuanian are in the app, but App Store Connect has no locale for them.
+
+default_platform(:ios)
+
+BUNDLE_ID = "Cryptium.Cryptocurrently1"
+
+# Locales that exist both in the app and on the App Store.
+STORE_LOCALES = %w[
+  en-US
+  ar-SA
+  cs
+  da
+  de-DE
+  el
+  es-ES
+  fi
+  fr-FR
+  he
+  hi
+  hr
+  hu
+  id
+  it
+  ja
+  ko
+  nl-NL
+  no
+  pl
+  pt-BR
+  ro
+  ru
+  sk
+  sl-SI
+  sv
+  th
+  tr
+  uk
+  vi
+  zh-Hans
+  zh-Hant
+].freeze
+
+platform :ios do
+  before_all do
+    app_store_connect_api_key
+  end
+
+  desc "Upload title, subtitle, and description for every store locale"
+  lane :push_store_copy do
+    deliver(
+      app_identifier: BUNDLE_ID,
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      skip_app_version_update: true,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      metadata_path: "./fastlane/metadata",
+      languages: STORE_LOCALES
+    )
+  end
+end

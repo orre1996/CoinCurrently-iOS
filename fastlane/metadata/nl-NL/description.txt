@@ -1,0 +1,70 @@
+CoinCurrently is de private, anonieme manier om crypto te volgen. Geen aanmelding. Geen accounts. Geen advertenties. Geen persoonlijke gegevens. Alleen een snelle, mooie crypto-tracker, gemaakt voor iedereen.
+
+PRIVÉ VANUIT HET ONTWERP
+
+Je gegevens blijven op je apparaat. We verzamelen geen persoonlijke informatie, we verkopen niets en we delen je activiteit niet met adverteerders. Geen advertentienetwerken, geen advertentie-ID’s en geen trackers van derden die zien wat je bekijkt.
+
+• Geen aanmelding — open de app en begin
+• Geen account, geen e-mail, geen telefoonnummer
+• Nooit advertenties
+• Geen advertentie-ID’s, geen tracking tussen apps
+• Geen persoonlijke gegevens verzameld
+• Wallets, transacties en instellingen blijven lokaal op je apparaat
+• Biometrisch slot (Face ID / Touch ID) om de app privé te houden
+
+De enige analyse die we gebruiken is Aptabase — een open-source tool die privacy voorop zet. Het legt anonieme, samengevoegde gebeurtenissen vast (zoals “app geopend” of “grafiek bekeken”) zodat we bugs kunnen oplossen en de app kunnen verbeteren. Geen gebruikers-ID’s, geen IP-adressen, geen persoonlijke gegevens — nooit.
+
+TOEGANKELIJK VOOR IEDEREEN
+
+Crypto zou voor iedereen moeten zijn. CoinCurrently heeft volledige ondersteuning voor toegankelijkheid in de hele app.
+
+• VoiceOver — elk scherm is gelabeld en volledig te navigeren, van Home en Markt tot Portfolio, Nieuws en Instellingen
+• Dynamic Type — tekst schaalt mee met je systeeminstellingen en is makkelijker te lezen
+• Modus voor kleurenblindheid — zet prijsveranderingen in Instellingen van groen/rood naar blauw/oranje
+• Strakke interface met hoog contrast in lichte en donkere modus
+
+REALTIME KOERSEN EN GRAFIEKEN
+
+Live data en een gedetailleerde koersgeschiedenis voor meer dan 10.000 coins en tokens. Volg Bitcoin (BTC), Ethereum (ETH) en elke altcoin die je belangrijk vindt, met nauwkeurige marktgegevens, volumegeschiedenis en grafieken over meerdere periodes.
+
+PORTFOLIO-TRACKER
+
+Beheer je posities met een veilige portfolio-tracker die volledig op je apparaat blijft.
+
+• Importeer walletadressen rechtstreeks van de blockchain om saldi automatisch te volgen
+• Leg handmatige transacties, swaps en overboekingen vast
+• Gedetailleerde winst- en verliesanalyses
+• Meerdere wallets
+
+PRIJSALERTS
+
+Stel eigen prijsalerts in en mis geen beweging. Je krijgt een melding zodra je doel is bereikt — geen account nodig.
+
+ETHEREUM-GAS-TRACKER
+
+Kies het juiste moment voor je transacties met een realtime tracker voor ETH-gas. Zie de huidige gaskosten in één oogopslag en plan rond de staat van het netwerk.
+
+VALUTACONVERTER
+
+Reken direct om tussen fiat en crypto, of tussen twee assets, met live koersen.
+
+MARKTSENTIMENT EN NIEUWS
+
+• Fear and Greed Index om de stemming van de markt te peilen
+• Het laatste cryptonieuws direct in de app
+• Vergelijk prijzen op meerdere exchanges
+
+WIDGETS VOOR HET BEGINSCHERM
+
+Meer dan 10 widgets voor koersen, portfoliowaarde en marktbewegingen — rechtstreeks vanaf het beginscherm van je iPhone of iPad.
+
+MOOI, SNEL, VAN JOU
+
+• Native prestaties op iOS
+• Elegante lichte en donkere modus
+• Strakke interface zonder advertenties
+• Offline te gebruiken voor alles wat al geladen is
+
+Anonieme crypto-tracker. Geen tracking, aanmelding of advertenties. Toegankelijk vanuit het ontwerp.
+
+Servicevoorwaarden: www.coincurrently.app/terms

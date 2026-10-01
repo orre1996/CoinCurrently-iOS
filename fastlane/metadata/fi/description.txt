@@ -1,0 +1,70 @@
+CoinCurrently on yksityinen ja anonyymi tapa seurata kryptoa. Ei rekisteröitymistä. Ei tilejä. Ei mainoksia. Ei henkilötietoja. Vain nopea ja selkeä kryptoseuranta kaikille.
+
+YKSITYINEN SUUNNITTELUSTA LÄHTIEN
+
+Tietosi pysyvät laitteella. Emme kerää henkilötietoja, emme myy mitään emmekä jaa toimintaasi mainostajille. Ei mainosverkostoja, ei mainostunnisteita eikä kolmannen osapuolen seurantoja katsomassa, mitä tarkastelet.
+
+• Ei rekisteröitymistä — avaa sovellus ja aloita
+• Ei tiliä, ei sähköpostia, ei puhelinnumeroa
+• Ei mainoksia, koskaan
+• Ei mainostunnisteita eikä seurantaa sovellusten välillä
+• Henkilötietoja ei kerätä
+• Lompakot, tapahtumat ja asetukset säilyvät paikallisesti laitteella
+• Biometrinen lukitus (Face ID / Touch ID), jotta sovellus pysyy yksityisenä
+
+Ainoa analytiikka, jota käytämme, on Aptabase — avoimen lähdekoodin työkalu, joka asettaa yksityisyyden etusijalle. Se kirjaa nimettömiä, koostettuja tapahtumia (kuten ”sovellus avattiin” tai ”kaaviota katsottiin”), jotta voimme korjata virheitä ja parantaa sovellusta. Ei käyttäjätunnisteita, ei IP-osoitteita, ei henkilötietoja — ei koskaan.
+
+SAAVUTETTAVUUS KAIKILLE
+
+Krypton pitäisi olla kaikille. CoinCurrently tukee saavutettavuutta koko sovelluksessa.
+
+• VoiceOver — jokainen näyttö on nimetty ja kokonaan navigoitavissa, Kodista ja Markkinoista Salkkuun, Uutisiin ja Asetuksiin
+• Dynamic Type — teksti seuraa järjestelmän asetuksia ja on helpompi lukea
+• Värisokeille sopiva tila — vaihda hinnanmuutosten värit asetuksissa vihreästä/punaisesta siniseen/oranssiin
+• Selkeä, suurikontrastinen käyttöliittymä vaaleassa ja tummassa tilassa
+
+HINNAT JA KAAVIOT REAALIAJASSA
+
+Live-dataa ja tarkka hintahistoria yli 10 000 kolikolle ja tokenille. Seuraa Bitcoinia (BTC), Ethereumia (ETH) ja jokaista altcoinia, josta välität, tarkoilla markkinatiedoilla, volyymihistorialla ja kaavioilla useilla aikaväleillä.
+
+SALKKUSEURANTA
+
+Hallitse omistuksiasi turvallisella salkkuseurannalla, joka pysyy kokonaan laitteella.
+
+• Tuo lompakko-osoitteet suoraan lohkoketjusta ja seuraa saldoja automaattisesti
+• Kirjaa manuaaliset tapahtumat, swapit ja siirrot
+• Tarkka voitto- ja tappioanalyysi
+• Useita lompakoita
+
+HINTAHÄLYTYKSET
+
+Aseta omat hintahälytykset, niin et jää paitsi yhdestäkään liikkeestä. Saat ilmoituksen heti, kun tavoite täyttyy — tiliä ei tarvita.
+
+ETHEREUMIN GAS-SEURANTA
+
+Ajoita tapahtumat reaaliaikaisella ETH-gas-seurannalla. Näet nykyiset gas-maksut yhdellä silmäyksellä ja voit suunnitella verkon tilanteen mukaan.
+
+VALUUTTAMUUNNIN
+
+Muunna heti fiatin ja krypton välillä tai minkä tahansa kahden omaisuuserän välillä live-kursseilla.
+
+MARKKINATUNNELMA JA UUTISET
+
+• Fear and Greed -indeksi markkinatunnelman lukemiseen
+• Uusimmat kryptouutiset suoraan sovelluksessa
+• Vertaile hintoja useissa pörsseissä
+
+KOTINÄYTÖN WIDGETIT
+
+Yli 10 widgetiä hinnoille, salkun arvolle ja markkinaliikkeille — suoraan iPhonen tai iPadin kotinäytöltä.
+
+KAUNIS, NOPEA, SINUN
+
+• Natiivi suorituskyky iOS:llä
+• Tyylikäs vaalea ja tumma tila
+• Selkeä käyttöliittymä ilman mainoksia
+• Toimii offline-tilassa kaikelle jo ladatulle
+
+Anonyymi kryptoseuranta. Ei seurantaa, rekisteröitymistä tai mainoksia. Saavutettava suunnittelusta lähtien.
+
+Käyttöehdot: www.coincurrently.app/terms

@@ -1,0 +1,70 @@
+A CoinCurrently a kriptó privát, anonim követésének módja. Nincs regisztráció. Nincsenek fiókok. Nincsenek hirdetések. Nincsenek személyes adatok. Csak egy gyors, letisztult kriptokövető, mindenkinek.
+
+PRIVÁT A TERVEZÉSTŐL
+
+Az adataid az eszközödön maradnak. Nem gyűjtünk személyes adatokat, nem adunk el semmit, és nem osztjuk meg a tevékenységedet hirdetőkkel. Nincsenek hirdetési hálózatok, hirdetésazonosítók és harmadik féltől származó követők, amelyek nézik, mit tekintesz meg.
+
+• Nincs regisztráció — nyisd meg az appot, és kezdd el
+• Nincs fiók, nincs e-mail, nincs telefonszám
+• Soha nincsenek hirdetések
+• Nincsenek hirdetésazonosítók, nincs követés appok között
+• Személyes adatot nem gyűjtünk
+• A tárcák, a tranzakciók és a beállítások helyben maradnak az eszközön
+• Biometrikus zár (Face ID / Touch ID), hogy az app privát maradjon
+
+Az egyetlen analitika, amit használunk, az Aptabase — egy nyílt forráskódú eszköz, amely a magánszférát helyezi előtérbe. Névtelen, összesített eseményeket rögzít (például „app megnyitva” vagy „grafikon megtekintve”), hogy javíthassuk a hibákat és fejleszthessük az appot. Nincsenek felhasználói azonosítók, IP-címek, személyes adatok — soha.
+
+AKADÁLYMENTESSÉG MINDENKINEK
+
+A kriptónak mindenkinek szólnia kell. A CoinCurrently a teljes appban támogatja az akadálymentességet.
+
+• VoiceOver — minden képernyő fel van címkézve, és végigjárható, a Kezdőtől és a Piactól a Portfólióig, a Hírekig és a Beállításokig
+• Dynamic Type — a szöveg követi a rendszerbeállításokat, és könnyebben olvasható
+• Színvak mód — a Beállításokban váltsd az árváltozást zöld/pirosról kék/narancsra
+• Tiszta, nagy kontrasztú felület világos és sötét módban
+
+VALÓS IDEJŰ ÁRAK ÉS GRAFIKONOK
+
+Élő adatok és részletes ártörténet több mint 10 000 érméhez és tokenhez. Kövesd a Bitcoint (BTC), az Ethereumot (ETH) és minden altcoint, ami számít, pontos piaci adatokkal, forgalmi előzményekkel és több időtávú grafikonokkal.
+
+PORTFÓLIÓKÖVETŐ
+
+Kezeld a kriptóeszközeidet egy biztonságos portfóliókövetővel, amely teljes egészében az eszközödön marad.
+
+• Importálj tárcacímeket közvetlenül a blokkláncról, és kövesd az egyenlegeket automatikusan
+• Rögzíts kézi tranzakciókat, swapokat és átutalásokat
+• Részletes profit- és veszteségelemzés
+• Több tárca
+
+ÁRRIASZTÁSOK
+
+Állíts be saját árriasztásokat, és ne maradj le egyetlen árfolyammozgásról sem. Értesítést kapsz abban a pillanatban, amikor a cél teljesül — fiók nélkül.
+
+ETHEREUM GAS-KÖVETŐ
+
+Időzítsd a tranzakciókat valós idejű ETH gas-követővel. Egy pillantással lásd a jelenlegi gasdíjakat, és tervezz a hálózat állapota szerint.
+
+PÉNZVÁLTÓ
+
+Azonnal válts fiat és kriptó között, vagy bármely két eszköz között, élő árfolyamokkal.
+
+PIACI HANGULAT ÉS HÍREK
+
+• Fear and Greed Index a piaci hangulat felméréséhez
+• A legfrissebb kriptohírek közvetlenül az appban
+• Hasonlítsd össze az árakat több tőzsdén
+
+WIDGETEK A KEZDŐKÉPERNYŐRE
+
+Több mint 10 widget árakhoz, portfólióértékhez és piaci mozgásokhoz — az iPhone vagy iPad kezdőképernyőjéről.
+
+SZÉP, GYORS, A TIÉD
+
+• Natív teljesítmény iOS-en
+• Elegáns világos és sötét mód
+• Tiszta felület, hirdetések nélkül
+• Offline használható mindenhez, ami már be van töltve
+
+Anonim kriptokövető. Nincs követés, regisztráció vagy hirdetés. Akadálymentes a tervezéstől fogva.
+
+Szolgáltatási feltételek: www.coincurrently.app/terms

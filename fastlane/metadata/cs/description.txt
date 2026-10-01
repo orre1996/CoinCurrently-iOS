@@ -1,0 +1,70 @@
+CoinCurrently je soukromý a anonymní způsob, jak sledovat krypto. Bez registrace. Bez účtů. Bez reklam. Bez osobních údajů. Jen rychlý a pěkný krypto tracker pro všechny.
+
+SOUKROMÉ OD ZÁKLADU
+
+Vaše data zůstávají v zařízení. Neshromažďujeme osobní údaje, nic neprodáváme a vaši aktivitu nesdílíme s inzerenty. Žádné reklamní sítě, žádná reklamní ID a žádné trackery třetích stran, které sledují, na co se díváte.
+
+• Bez registrace — otevřete aplikaci a začněte
+• Bez účtu, bez e-mailu, bez telefonního čísla
+• Nikdy žádné reklamy
+• Bez reklamních ID a bez sledování napříč aplikacemi
+• Neshromažďují se žádné osobní údaje
+• Peněženky, transakce a nastavení zůstávají lokálně v zařízení
+• Biometrický zámek (Face ID / Touch ID), aby aplikace zůstala soukromá
+
+Jediná analytika, kterou používáme, je Aptabase — open-source nástroj, který dává soukromí na první místo. Zaznamenává anonymní, souhrnné události (třeba „aplikace otevřena“ nebo „graf zobrazen“), abychom mohli opravovat chyby a aplikaci zlepšovat. Žádná ID uživatelů, žádné IP adresy, žádné osobní údaje — nikdy.
+
+PŘÍSTUPNOST PRO VŠECHNY
+
+Krypto by mělo být pro všechny. CoinCurrently má plnou podporu přístupnosti v celé aplikaci.
+
+• VoiceOver — každá obrazovka je popsaná a dá se celá projít, od Domů a Trhu po Portfolio, Zprávy a Nastavení
+• Dynamic Type — text se přizpůsobí nastavení systému a lépe se čte
+• Režim pro barvoslepost — v Nastavení přepněte změny cen ze zelené/červené na modrou/oranžovou
+• Čisté rozhraní s vysokým kontrastem ve světlém i tmavém režimu
+
+CENY A GRAFY V REÁLNÉM ČASE
+
+Živá data a podrobná historie cen pro více než 10 000 mincí a tokenů. Sledujte Bitcoin (BTC), Ethereum (ETH) i každý altcoin, na kterém vám záleží, s přesnými tržními daty, historií objemu a grafy v několika časových rámcích.
+
+TRACKER PORTFOLIA
+
+Spravujte svá aktiva v bezpečném trackeru portfolia, který zůstává celý v zařízení.
+
+• Importujte adresy peněženek přímo z blockchainu a sledujte zůstatky automaticky
+• Zaznamenávejte ruční transakce, swapy a převody
+• Podrobná analýza zisku a ztráty
+• Více peněženek
+
+CENOVÁ UPOZORNĚNÍ
+
+Nastavte si vlastní cenová upozornění a nepropásněte žádný pohyb. Dostanete oznámení v okamžiku, kdy je cíl dosažen — bez účtu.
+
+TRACKER PLYNU ETHEREUM
+
+Načasujte transakce pomocí trackeru plynu ETH v reálném čase. Aktuální poplatky za plyn uvidíte na první pohled a můžete plánovat podle stavu sítě.
+
+PŘEVOD MĚN
+
+Okamžitě převádějte mezi fiatem a kryptem nebo mezi libovolnými dvěma aktivy, s živými kurzy.
+
+NÁLADA TRHU A ZPRÁVY
+
+• Index Fear and Greed pro odhad nálady trhu
+• Nejnovější krypto zprávy přímo v aplikaci
+• Porovnávejte ceny na více burzách
+
+WIDGETY NA PLOCHU
+
+Více než 10 widgetů na ceny, hodnotu portfolia a pohyby trhu — přímo z plochy iPhonu nebo iPadu.
+
+HEZKÉ, RYCHLÉ, VAŠE
+
+• Nativní výkon na iOS
+• Elegantní světlý a tmavý režim
+• Čisté rozhraní bez reklam
+• Funguje offline pro vše, co už je načtené
+
+Anonymní krypto tracker. Bez sledování, registrace a reklam. Přístupné od základu.
+
+Podmínky služby: www.coincurrently.app/terms

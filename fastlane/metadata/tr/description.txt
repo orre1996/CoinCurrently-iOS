@@ -1,0 +1,70 @@
+CoinCurrently, kriptoyu takip etmenin özel ve anonim yolu. Kayıt yok. Hesap yok. Reklam yok. Kişisel veri yok. Herkes için yapılmış hızlı ve sade bir kripto takipçisi.
+
+TASARIMINDAN İTİBAREN ÖZEL
+
+Verilerin cihazında kalır. Kişisel bilgi toplamayız, hiçbir şey satmayız ve etkinliğini reklamverenlerle paylaşmayız. Reklam ağları yok, reklam kimlikleri yok, neye baktığını izleyen üçüncü taraf takipçiler yok.
+
+• Kayıt yok — uygulamayı aç ve başla
+• Hesap yok, e-posta yok, telefon numarası yok
+• Asla reklam yok
+• Reklam kimliği yok, uygulamalar arası takip yok
+• Kişisel veri toplanmaz
+• Cüzdanlar, işlemler ve ayarlar cihazda yerel olarak durur
+• Uygulamayı özel tutmak için biyometrik kilit (Face ID / Touch ID)
+
+Kullandığımız tek analiz Aptabase — gizliliği öne alan açık kaynaklı bir araç. Hataları düzeltip uygulamayı geliştirebilmemiz için anonim, toplu olaylar kaydeder (“uygulama açıldı” veya “grafik görüntülendi” gibi). Kullanıcı kimliği yok, IP adresi yok, kişisel veri yok — asla.
+
+HERKES İÇİN ERİŞİLEBİLİRLİK
+
+Kripto herkes için olmalı. CoinCurrently, uygulamanın tamamında erişilebilirlik desteği sunar.
+
+• VoiceOver — her ekran etiketlidir ve baştan sona dolaşılabilir; Ana Sayfa ve Piyasa’dan Portföy, Haberler ve Ayarlar’a kadar
+• Dynamic Type — metin sistem ayarlarına göre ölçeklenir ve daha kolay okunur
+• Renk körlüğü modu — Ayarlar’da fiyat değişimini yeşil/kırmızıdan mavi/turuncuya çevir
+• Açık ve koyu modda yüksek kontrastlı, sade arayüz
+
+GERÇEK ZAMANLI FİYATLAR VE GRAFİKLER
+
+10.000’den fazla coin ve token için canlı veri ve ayrıntılı fiyat geçmişi. Bitcoin (BTC), Ethereum (ETH) ve önemsediğin her altcoini doğru piyasa verileri, hacim geçmişi ve birden fazla zaman diliminde grafiklerle izle.
+
+PORTFÖY TAKİBİ
+
+Varlıklarını, tümüyle cihazında kalan güvenli bir portföy takibiyle yönet.
+
+• Bakiyeleri otomatik izlemek için cüzdan adreslerini doğrudan blokzincirden içe aktar
+• Manuel işlemleri, swap’leri ve transferleri kaydet
+• Ayrıntılı kâr ve zarar analizi
+• Birden fazla cüzdan
+
+FİYAT UYARILARI
+
+Kendi fiyat uyarılarını kur ve hiçbir hareketi kaçırma. Hedefine ulaşıldığı anda bildirim alırsın — hesap gerekmez.
+
+ETHEREUM GAS TAKİBİ
+
+İşlemlerini gerçek zamanlı bir ETH gas takibiyle zamanla. Güncel gas ücretlerini bir bakışta gör ve ağın durumuna göre plan yap.
+
+DÖVİZ ÇEVİRİCİ
+
+Fiat ile kripto arasında ya da herhangi iki varlık arasında canlı kurlarla anında çevir.
+
+PİYASA DUYGUSU VE HABERLER
+
+• Piyasa havasını okumak için Fear and Greed endeksi
+• En yeni kripto haberleri doğrudan uygulamada
+• Fiyatları birden fazla borsada karşılaştır
+
+ANA EKRAN WIDGET’LARI
+
+Fiyatlar, portföy değeri ve piyasa hareketleri için 10’dan fazla widget — iPhone veya iPad ana ekranından.
+
+GÜZEL, HIZLI, SENİN
+
+• iOS’ta yerel performans
+• Zarif açık ve koyu mod
+• Reklamsız, sade arayüz
+• Yüklenmiş her şey için çevrimdışı kullanılabilir
+
+Anonim kripto takipçisi. Takip, kayıt veya reklam yok. Tasarımından itibaren erişilebilir.
+
+Hizmet koşulları: www.coincurrently.app/terms

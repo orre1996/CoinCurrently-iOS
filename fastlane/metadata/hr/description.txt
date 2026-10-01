@@ -1,0 +1,70 @@
+CoinCurrently je privatan i anoniman način praćenja kripta. Bez registracije. Bez računa. Bez oglasa. Bez osobnih podataka. Samo brz i uredan kripto tracker za sve.
+
+PRIVATNO OD POČETKA
+
+Tvoji podaci ostaju na uređaju. Ne prikupljamo osobne podatke, ništa ne prodajemo i ne dijelimo tvoju aktivnost s oglašivačima. Nema oglasnih mreža, nema oglasnih ID-eva i nema trackera trećih strana koji gledaju što pregledavaš.
+
+• Bez registracije — otvori aplikaciju i kreni
+• Bez računa, bez e-pošte, bez broja telefona
+• Nikad oglasa
+• Bez oglasnih ID-eva i bez praćenja između aplikacija
+• Osobni podaci se ne prikupljaju
+• Novčanici, transakcije i postavke ostaju lokalno na uređaju
+• Biometrijska brava (Face ID / Touch ID) da aplikacija ostane privatna
+
+Jedina analitika koju koristimo je Aptabase — alat otvorenog koda koji privatnost stavlja na prvo mjesto. Bilježi anonimne, zbirne događaje (poput „aplikacija otvorena“ ili „grafikon pregledan“) da bismo mogli popravljati greške i poboljšavati aplikaciju. Nema korisničkih ID-eva, nema IP adresa, nema osobnih podataka — nikad.
+
+PRISTUPAČNOST ZA SVE
+
+Kripto bi trebao biti za sve. CoinCurrently ima punu podršku za pristupačnost u cijeloj aplikaciji.
+
+• VoiceOver — svaki je zaslon označen i može se u cijelosti proći, od Početne i Tržišta do Portfelja, Vijesti i Postavki
+• Dynamic Type — tekst prati postavke sustava i lakše se čita
+• Način za sljepoću za boje — u Postavkama prebaci promjene cijena sa zelene/crvene na plavu/narančastu
+• Čisto sučelje visokog kontrasta u svijetlom i tamnom načinu
+
+CIJENE I GRAFIKONI U STVARNOM VREMENU
+
+Podaci uživo i detaljna povijest cijena za više od 10.000 kovanica i tokena. Prati Bitcoin (BTC), Ethereum (ETH) i svaki altcoin koji ti je važan, s točnim tržišnim podacima, poviješću volumena i grafikonima u više vremenskih okvira.
+
+TRACKER PORTFELJA
+
+Upravljaj imovinom sigurnim trackerom portfelja koji u cijelosti ostaje na uređaju.
+
+• Uvezi adrese novčanika izravno s blockchaina i automatski prati stanja
+• Bilježi ručne transakcije, swapove i prijenose
+• Detaljna analiza dobiti i gubitka
+• Više novčanika
+
+UPOZORENJA NA CIJENU
+
+Postavi vlastita upozorenja na cijenu i ne propusti pomak. Dobivaš obavijest u trenutku kad je cilj dosegnut — bez računa.
+
+TRACKER PLINA ZA ETHEREUM
+
+Tempiraj transakcije trackerom plina za ETH u stvarnom vremenu. Trenutačne naknade za plin vidiš na prvi pogled i planiraš prema stanju mreže.
+
+PRETVARAČ VALUTA
+
+Odmah pretvaraj između fiata i kripta ili između bilo koja dva sredstva, uz tečajeve uživo.
+
+RASPOLOŽENJE TRŽIŠTA I VIJESTI
+
+• Indeks Fear and Greed za procjenu raspoloženja tržišta
+• Najnovije kripto vijesti izravno u aplikaciji
+• Usporedi cijene na više burzi
+
+WIDGETI ZA POČETNI ZASLON
+
+Više od 10 widgeta za cijene, vrijednost portfelja i kretanja na tržištu — izravno s početnog zaslona iPhonea ili iPada.
+
+LIJEPO, BRZO, TVOJE
+
+• Nativne performanse na iOS-u
+• Elegantan svijetli i tamni način
+• Čisto sučelje bez oglasa
+• Radi izvan mreže za sve što je već učitano
+
+Anonimni kripto tracker. Bez praćenja, registracije ili oglasa. Pristupačan od početka.
+
+Uvjeti pružanja usluge: www.coincurrently.app/terms

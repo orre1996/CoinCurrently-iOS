@@ -1,0 +1,30 @@
+app_identifier("Cryptium.Cryptocurrently1")
+
+steven_dir = File.expand_path("~/Desktop/MoodApp/fastlane")
+steven_env = File.join(steven_dir, ".env")
+
+if File.file?(steven_env)
+  File.readlines(steven_env).each do |line|
+    line = line.strip
+    next if line.empty? || line.start_with?("#")
+
+    key, value = line.split("=", 2)
+    next if key.nil? || value.nil?
+
+    if key == "APP_STORE_CONNECT_API_KEY_KEY_FILEPATH" && !File.file?(value)
+      value = File.join(steven_dir, File.basename(value))
+    end
+    ENV[key] ||= value
+  end
+end
+
+if ENV["APP_STORE_CONNECT_API_KEY_KEY_FILEPATH"].to_s.empty? || !File.file?(ENV["APP_STORE_CONNECT_API_KEY_KEY_FILEPATH"].to_s)
+  matches = Dir[File.join(steven_dir, "AuthKey_*.p8")]
+  ENV["APP_STORE_CONNECT_API_KEY_KEY_FILEPATH"] = matches.first unless matches.empty?
+end
+
+api_key(
+  key_id: ENV.fetch("APP_STORE_CONNECT_API_KEY_KEY_ID"),
+  issuer_id: ENV.fetch("APP_STORE_CONNECT_API_KEY_ISSUER_ID"),
+  filepath: ENV.fetch("APP_STORE_CONNECT_API_KEY_KEY_FILEPATH")
+)

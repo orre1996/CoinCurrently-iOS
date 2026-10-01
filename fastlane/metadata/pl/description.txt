@@ -1,0 +1,70 @@
+CoinCurrently to prywatny, anonimowy sposób śledzenia krypto. Bez rejestracji. Bez kont. Bez reklam. Bez danych osobowych. Tylko szybki, dopracowany tracker krypto, stworzony dla każdego.
+
+PRYWATNOŚĆ OD PODSTAW
+
+Twoje dane zostają na urządzeniu. Nie zbieramy danych osobowych, niczego nie sprzedajemy i nie udostępniamy Twojej aktywności reklamodawcom. Nie ma sieci reklamowych, identyfikatorów reklamowych ani trackerów firm trzecich, które patrzą, co przeglądasz.
+
+• Bez rejestracji — otwórz aplikację i zacznij
+• Bez konta, bez e-maila, bez numeru telefonu
+• Nigdy żadnych reklam
+• Bez identyfikatorów reklamowych i bez śledzenia między aplikacjami
+• Nie zbieramy danych osobowych
+• Portfele, transakcje i ustawienia są przechowywane lokalnie na urządzeniu
+• Blokada biometryczna (Face ID / Touch ID), żeby aplikacja pozostała prywatna
+
+Jedyną analityką, z której korzystamy, jest Aptabase — narzędzie open source, które stawia prywatność na pierwszym miejscu. Zapisuje anonimowe, zbiorcze zdarzenia (na przykład „otwarto aplikację” albo „obejrzano wykres”), żebyśmy mogli naprawiać błędy i ulepszać aplikację. Bez identyfikatorów użytkownika, bez adresów IP, bez danych osobowych — nigdy.
+
+DOSTĘPNOŚĆ DLA KAŻDEGO
+
+Krypto powinno być dla każdego. CoinCurrently ma pełną obsługę dostępności w całej aplikacji.
+
+• VoiceOver — każdy ekran jest opisany i da się go w całości przejść, od Ekranu głównego i Rynku po Portfel, Wiadomości i Ustawienia
+• Dynamic Type — tekst skaluje się zgodnie z ustawieniami systemu i jest łatwiejszy do czytania
+• Tryb dla daltonistów — w Ustawieniach przełącz kolory zmian cen z zielonego/czerwonego na niebieski/pomarańczowy
+• Czysty interfejs o wysokim kontraście w trybie jasnym i ciemnym
+
+CENY I WYKRESY NA ŻYWO
+
+Dane na żywo i szczegółowa historia cen dla ponad 10 000 monet i tokenów. Śledź Bitcoin (BTC), Ethereum (ETH) i każdego altcoina, na którym Ci zależy, z dokładnymi danymi rynkowymi, historią wolumenu i wykresami w wielu przedziałach czasu.
+
+TRACKER PORTFELA
+
+Zarządzaj środkami w bezpiecznym trackerze portfela, który w całości zostaje na urządzeniu.
+
+• Importuj adresy portfeli prosto z blockchaina i śledź salda automatycznie
+• Zapisuj ręczne transakcje, swapy i przelewy
+• Szczegółowa analiza zysków i strat
+• Wiele portfeli
+
+ALERTY CENOWE
+
+Ustaw własne alerty cenowe i nie przegap ruchu. Dostaniesz powiadomienie w chwili, gdy cel zostanie osiągnięty — bez konta.
+
+TRACKER GASU ETHEREUM
+
+Wybierz moment dzięki trackerowi gasu ETH na żywo. Zobacz aktualne opłaty gas na pierwszy rzut oka i planuj według stanu sieci.
+
+PRZELICZNIK WALUT
+
+Przeliczaj od razu między fiat a krypto albo między dwoma dowolnymi aktywami, po kursach na żywo.
+
+NASTRÓJ RYNKU I WIADOMOŚCI
+
+• Indeks Fear and Greed, żeby ocenić nastrój rynku
+• Najnowsze wiadomości krypto w aplikacji
+• Porównuj ceny na wielu giełdach
+
+WIDGETY EKRANU GŁÓWNEGO
+
+Ponad 10 widgetów z cenami, wartością portfela i ruchami rynku — prosto z ekranu głównego iPhone’a lub iPada.
+
+PIĘKNY, SZYBKI, TWÓJ
+
+• Natywna wydajność na iOS
+• Elegancki tryb jasny i ciemny
+• Czysty interfejs bez reklam
+• Działa offline dla wszystkiego, co już zostało wczytane
+
+Anonimowy tracker krypto. Bez śledzenia, rejestracji i reklam. Dostępny z założenia.
+
+Warunki usługi: www.coincurrently.app/terms

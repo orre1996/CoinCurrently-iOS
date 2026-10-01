@@ -1,0 +1,70 @@
+CoinCurrently es la forma privada y anónima de seguir las criptomonedas. Sin registro. Sin cuentas. Sin anuncios. Sin datos personales. Solo un tracker de cripto rápido y cuidado, hecho para todo el mundo.
+
+PRIVADO POR DISEÑO
+
+Tus datos se quedan en tu dispositivo. No recopilamos información personal, no vendemos nada y no compartimos tu actividad con anunciantes. No hay redes publicitarias, ni identificadores de publicidad, ni rastreadores de terceros mirando lo que consultas.
+
+• Sin registro — abre la app y empieza
+• Sin cuenta, sin correo, sin número de teléfono
+• Sin anuncios, nunca
+• Sin identificadores de publicidad ni rastreo entre apps
+• No se recopilan datos personales
+• Carteras, operaciones y ajustes se guardan en local en tu dispositivo
+• Bloqueo biométrico (Face ID / Touch ID) para mantener la app en privado
+
+El único análisis que usamos es Aptabase — una herramienta de código abierto que pone la privacidad por delante. Registra eventos anónimos y agregados (como «app abierta» o «gráfico visto») para que podamos corregir errores y mejorar la app. Sin identificadores de usuario, sin direcciones IP, sin datos personales — nunca.
+
+ACCESIBILIDAD PARA TODO EL MUNDO
+
+Las criptomonedas deberían ser para todo el mundo. CoinCurrently tiene soporte de accesibilidad en toda la app.
+
+• VoiceOver — cada pantalla está etiquetada y se puede recorrer por completo, de Inicio y Mercado a Cartera, Noticias y Ajustes
+• Dynamic Type — el texto se adapta a los ajustes del sistema para leer con más facilidad
+• Modo para daltonismo — cambia las variaciones de precio de verde/rojo a azul/naranja en Ajustes
+• Interfaz limpia y de alto contraste en modo claro y oscuro
+
+PRECIOS Y GRÁFICOS EN TIEMPO REAL
+
+Datos en directo e historial de precios detallado de más de 10.000 monedas y tokens. Sigue Bitcoin (BTC), Ethereum (ETH) y cada altcoin que te importe, con datos de mercado precisos, historial de volumen y gráficos en varios periodos.
+
+TRACKER DE CARTERA
+
+Gestiona tus posiciones con un tracker de cartera seguro que vive por completo en tu dispositivo.
+
+• Importa direcciones de cartera desde la blockchain para seguir los saldos automáticamente
+• Registra operaciones manuales, swaps y transferencias
+• Análisis detallado de ganancias y pérdidas
+• Varias carteras
+
+ALERTAS DE PRECIO
+
+Crea alertas de precio y no te pierdas un movimiento. Recibes un aviso en el momento en que se alcanza tu objetivo — sin cuenta.
+
+TRACKER DE GAS DE ETHEREUM
+
+Elige el momento con un tracker de gas de ETH en tiempo real. Mira las comisiones de gas actuales de un vistazo y planifica según el estado de la red.
+
+CONVERSOR DE DIVISAS
+
+Convierte al instante entre dinero fiat y cripto, o entre dos activos, con precios en directo.
+
+SENTIMIENTO DEL MERCADO Y NOTICIAS
+
+• Índice Fear and Greed para medir el ánimo del mercado
+• Las últimas noticias cripto dentro de la app
+• Compara precios en varios exchanges
+
+WIDGETS DE LA PANTALLA DE INICIO
+
+Más de 10 widgets para ver precios, el valor de la cartera y los movimientos del mercado — desde la pantalla de inicio de tu iPhone o iPad.
+
+BONITO, RÁPIDO, TUYO
+
+• Rendimiento nativo en iOS
+• Elegantes modos claro y oscuro
+• Interfaz limpia, sin anuncios
+• Se puede usar sin conexión con todo lo que ya está cargado
+
+Tracker de cripto anónimo. Sin rastreo, sin registro y sin anuncios. Accesible por diseño.
+
+Condiciones del servicio: www.coincurrently.app/terms

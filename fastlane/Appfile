@@ -1,0 +1,7 @@
+app_identifier("Cryptium.Cryptocurrently1")
+
+# Team id stays in the Steven repo. Both apps share one App Store Connect account.
+steven_appfile = File.expand_path("~/Desktop/MoodApp/fastlane/Appfile")
+if File.file?(steven_appfile) && File.read(steven_appfile) =~ /team_id\("([^"]+)"\)/
+  team_id(Regexp.last_match(1))
+end

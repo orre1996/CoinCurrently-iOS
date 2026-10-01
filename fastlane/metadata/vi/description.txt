@@ -1,0 +1,70 @@
+CoinCurrently là cách riêng tư và ẩn danh để theo dõi crypto. Không đăng ký. Không tài khoản. Không quảng cáo. Không dữ liệu cá nhân. Chỉ một trình theo dõi crypto nhanh và gọn, dành cho mọi người.
+
+RIÊNG TƯ NGAY TỪ THIẾT KẾ
+
+Dữ liệu của bạn ở lại trên thiết bị. Chúng tôi không thu thập thông tin cá nhân, không bán bất cứ thứ gì, và không chia sẻ hoạt động của bạn với nhà quảng cáo. Không có mạng quảng cáo, không có mã quảng cáo, và không có trình theo dõi bên thứ ba dõi theo bạn đang xem gì.
+
+• Không đăng ký — mở app và bắt đầu
+• Không tài khoản, không email, không số điện thoại
+• Không bao giờ có quảng cáo
+• Không mã quảng cáo, không theo dõi xuyên app
+• Không thu thập dữ liệu cá nhân
+• Ví, giao dịch và cài đặt được lưu cục bộ trên thiết bị
+• Khóa sinh trắc học (Face ID / Touch ID) để app vẫn riêng tư
+
+Phần phân tích duy nhất chúng tôi dùng là Aptabase — công cụ mã nguồn mở đặt quyền riêng tư lên trước. Nó ghi lại các sự kiện ẩn danh, đã gộp (như “đã mở app” hoặc “đã xem biểu đồ”) để chúng tôi sửa lỗi và cải thiện app. Không ID người dùng, không địa chỉ IP, không dữ liệu cá nhân — không bao giờ.
+
+TIẾP CẬN ĐƯỢC CHO MỌI NGƯỜI
+
+Crypto nên dành cho mọi người. CoinCurrently hỗ trợ trợ năng trên toàn bộ app.
+
+• VoiceOver — mọi màn hình đều có nhãn và điều hướng được trọn vẹn, từ Trang chủ và Thị trường tới Danh mục, Tin tức và Cài đặt
+• Dynamic Type — chữ co giãn theo cài đặt hệ thống, dễ đọc hơn
+• Chế độ mù màu — trong Cài đặt, đổi biến động giá từ xanh lá/đỏ sang xanh dương/cam
+• Giao diện sạch, tương phản cao ở cả chế độ sáng và tối
+
+GIÁ VÀ BIỂU ĐỒ THEO THỜI GIAN THỰC
+
+Dữ liệu trực tiếp và lịch sử giá chi tiết cho hơn 10.000 coin và token. Theo dõi Bitcoin (BTC), Ethereum (ETH) và mọi altcoin bạn quan tâm, với dữ liệu thị trường chính xác, lịch sử khối lượng và biểu đồ nhiều khung thời gian.
+
+THEO DÕI DANH MỤC
+
+Quản lý tài sản bằng trình theo dõi danh mục an toàn, nằm trọn trên thiết bị.
+
+• Nhập địa chỉ ví thẳng từ blockchain để tự theo dõi số dư
+• Ghi giao dịch thủ công, swap và chuyển khoản
+• Phân tích lãi lỗ chi tiết
+• Nhiều ví
+
+CẢNH BÁO GIÁ
+
+Đặt cảnh báo giá của riêng bạn và không bỏ lỡ một nhịp nào. Bạn được báo đúng lúc chạm mục tiêu — không cần tài khoản.
+
+THEO DÕI GAS ETHEREUM
+
+Chọn thời điểm với trình theo dõi gas ETH theo thời gian thực. Xem phí gas hiện tại chỉ trong nháy mắt và lên kế hoạch theo tình trạng mạng.
+
+QUY ĐỔI TIỀN TỆ
+
+Quy đổi ngay giữa tiền pháp định và crypto, hoặc giữa hai tài sản bất kỳ, với tỷ giá trực tiếp.
+
+TÂM LÝ THỊ TRƯỜNG VÀ TIN TỨC
+
+• Chỉ số Fear and Greed để đọc tâm lý thị trường
+• Tin crypto mới nhất ngay trong app
+• So sánh giá trên nhiều sàn
+
+TIỆN ÍCH MÀN HÌNH CHÍNH
+
+Hơn 10 tiện ích cho giá, giá trị danh mục và biến động thị trường — ngay từ màn hình chính của iPhone hoặc iPad.
+
+ĐẸP, NHANH, CỦA BẠN
+
+• Hiệu năng native trên iOS
+• Chế độ sáng và tối gọn gàng
+• Giao diện sạch, không quảng cáo
+• Dùng ngoại tuyến được với mọi thứ đã tải
+
+Trình theo dõi crypto ẩn danh. Không theo dõi, không đăng ký, không quảng cáo. Tiếp cận được ngay từ thiết kế.
+
+Điều khoản dịch vụ: www.coincurrently.app/terms

@@ -1,0 +1,70 @@
+CoinCurrently adalah cara pribadi dan anonim untuk mengikuti kripto. Tanpa pendaftaran. Tanpa akun. Tanpa iklan. Tanpa data pribadi. Hanya pelacak kripto yang cepat dan rapi, dibuat untuk semua orang.
+
+PRIBADI SEJAK DIRANCANG
+
+Data Anda tetap di perangkat. Kami tidak mengumpulkan informasi pribadi, tidak menjual apa pun, dan tidak membagikan aktivitas Anda kepada pengiklan. Tidak ada jaringan iklan, ID iklan, atau pelacak pihak ketiga yang melihat apa yang Anda buka.
+
+• Tanpa pendaftaran — buka aplikasinya dan mulai
+• Tanpa akun, tanpa email, tanpa nomor telepon
+• Tidak pernah ada iklan
+• Tanpa ID iklan dan tanpa pelacakan lintas aplikasi
+• Data pribadi tidak dikumpulkan
+• Dompet, transaksi, dan pengaturan disimpan secara lokal di perangkat
+• Kunci biometrik (Face ID / Touch ID) agar aplikasi tetap pribadi
+
+Satu-satunya analitik yang kami pakai adalah Aptabase — alat sumber terbuka yang mengutamakan privasi. Alat ini mencatat peristiwa anonim yang diagregasi (seperti “aplikasi dibuka” atau “grafik dilihat”) supaya kami bisa memperbaiki bug dan meningkatkan aplikasi. Tanpa ID pengguna, tanpa alamat IP, tanpa data pribadi — tidak pernah.
+
+AKSESIBILITAS UNTUK SEMUA
+
+Kripto seharusnya untuk semua orang. CoinCurrently mendukung aksesibilitas di seluruh aplikasi.
+
+• VoiceOver — setiap layar diberi label dan bisa dijelajahi sepenuhnya, dari Beranda dan Pasar ke Portofolio, Berita, dan Pengaturan
+• Dynamic Type — teks mengikuti pengaturan sistem dan lebih mudah dibaca
+• Mode buta warna — ubah perubahan harga dari hijau/merah ke biru/oranye di Pengaturan
+• Antarmuka bersih dengan kontras tinggi dalam mode terang dan gelap
+
+HARGA DAN GRAFIK SECARA REAL-TIME
+
+Data langsung dan riwayat harga yang terperinci untuk lebih dari 10.000 koin dan token. Ikuti Bitcoin (BTC), Ethereum (ETH), dan setiap altcoin yang Anda pedulikan, dengan data pasar yang akurat, riwayat volume, dan grafik di banyak jangka waktu.
+
+PELACAK PORTOFOLIO
+
+Kelola kepemilikan Anda dengan pelacak portofolio yang aman dan sepenuhnya berada di perangkat.
+
+• Impor alamat dompet langsung dari blockchain untuk mengikuti saldo secara otomatis
+• Catat transaksi manual, swap, dan transfer
+• Analisis laba dan rugi yang terperinci
+• Beberapa dompet
+
+PERINGATAN HARGA
+
+Atur peringatan harga sendiri dan jangan lewatkan pergerakan. Anda diberi tahu saat target tercapai — tanpa akun.
+
+PELACAK GAS ETHEREUM
+
+Atur waktu transaksi dengan pelacak gas ETH secara real-time. Lihat biaya gas saat ini dalam sekali pandang dan rencanakan sesuai kondisi jaringan.
+
+PENGONVERSI MATA UANG
+
+Konversi seketika antara fiat dan kripto, atau antara dua aset apa pun, dengan kurs langsung.
+
+SENTIMEN PASAR DAN BERITA
+
+• Indeks Fear and Greed untuk membaca suasana pasar
+• Berita kripto terbaru langsung di dalam aplikasi
+• Bandingkan harga di beberapa bursa
+
+WIDGET LAYAR UTAMA
+
+Lebih dari 10 widget untuk harga, nilai portofolio, dan pergerakan pasar — langsung dari layar utama iPhone atau iPad.
+
+INDAH, CEPAT, MILIK ANDA
+
+• Performa native di iOS
+• Mode terang dan gelap yang rapi
+• Antarmuka bersih, tanpa iklan
+• Bisa dipakai offline untuk semua yang sudah dimuat
+
+Pelacak kripto anonim. Tanpa pelacakan, pendaftaran, atau iklan. Aksesibel sejak dirancang.
+
+Ketentuan layanan: www.coincurrently.app/terms

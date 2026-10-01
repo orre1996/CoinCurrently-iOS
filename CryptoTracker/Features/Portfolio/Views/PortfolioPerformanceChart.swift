@@ -131,11 +131,11 @@ struct PortfolioPerformanceChart: View {
             .padding(.horizontal, 16)
             .frame(height: max(1, chartHeight))
             .chartAccessibilityOverlay(
-                timeStamps: viewModel.portfolio?.isEmpty ?? true ? [] : viewModel.getTimeStamps(dropLastTwo: viewModel.benchmarkCoin != nil),
-                prices: viewModel.getPrices(dropLastTwo: viewModel.benchmarkCoin != nil),
+                timeStamps: viewModel.portfolio?.isEmpty ?? true ? [] : viewModel.getTimeStamps(dropLastTwo: viewModel.chartDropCount > 0),
+                prices: viewModel.getPrices(dropLastTwo: viewModel.chartDropCount > 0),
                 timeChart: .aWeek,
-                comparePrices: viewModel.benchmarkPrices.isEmpty ? nil : viewModel.getBenchmarkPrices(dropLastTwo: true),
-                mainSeriesName: viewModel.benchmarkCoin == nil ? nil : "Portfolio",
+                comparePrices: viewModel.benchmarkPrices.isEmpty ? nil : viewModel.getBenchmarkPrices(dropLastTwo: viewModel.chartDropCount > 0),
+                mainSeriesName: viewModel.benchmarkPrices.isEmpty ? nil : "Portfolio",
                 compareSeriesName: viewModel.benchmarkCoin?.name,
                 priceFormatter: { price in
                     viewModel.hideData ? String.stars : price.formatAccessibleCurrency()
@@ -145,7 +145,7 @@ struct PortfolioPerformanceChart: View {
 
             ChartTimeStamps(
                 currentTimeChart: .aWeek,
-                timeStamps: viewModel.getTimeStamps(dropLastTwo: viewModel.benchmarkCoin != nil),
+                timeStamps: viewModel.getTimeStamps(dropLastTwo: viewModel.chartDropCount > 0),
                 accessibilityTexts: viewModel.chartValues
             )
             .accessibilityHidden(true)
@@ -153,12 +153,12 @@ struct PortfolioPerformanceChart: View {
                 EdgeInsets(
                     top: -biggestChartValue.height / 2,
                     leading: 16,
-                    bottom: (viewModel.benchmarkCoin == nil ? 32 : 16) + biggestChartValue.height / 2,
+                    bottom: (viewModel.benchmarkPrices.isEmpty ? 32 : 16) + biggestChartValue.height / 2,
                     trailing: 16 + biggestChartValue.width
                 )
             )
 
-            if let benchmarkCoin = viewModel.benchmarkCoin {
+            if !viewModel.benchmarkPrices.isEmpty, let benchmarkCoin = viewModel.benchmarkCoin {
                 HStack(spacing: 8) {
                     CompareRectangleView(color: viewModel.graphColor)
 

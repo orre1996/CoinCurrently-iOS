@@ -80,6 +80,8 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
     private(set) var benchmarkCoin: Toplist?
     private(set) var benchmarkPrices = [Double]()
     private(set) var benchmarkTimeStamps = [Double]()
+    /// True when both lines share a percent scale. A $0 portfolio start cannot, so the dotted line is the coin sparkline on its own scale.
+    private var benchmarkSharesScale = false
     private var rawBenchmarkPrices = [Double]()
     
     private(set) var changePercent: Double?
@@ -333,8 +335,12 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
         self.rawPrices = computedPrices
     }
     
+    private var dropsPaddedBenchmarkPoints: Bool {
+        benchmarkSharesScale && benchmarkPrices.count > 2
+    }
+
     var chartDropCount: Int {
-        benchmarkCoin == nil ? 0 : 2
+        dropsPaddedBenchmarkPoints ? 2 : 0
     }
     
     func getPrices(dropLastTwo: Bool = false) -> [Double] {
@@ -378,9 +384,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
     
     func clearBenchmark() {
         benchmarkCoin = nil
-        benchmarkPrices = []
-        benchmarkTimeStamps = []
-        rawBenchmarkPrices = []
+        clearBenchmarkSeries()
         prices = rawPrices
         timeStamps = rawTimeStamps
         setChangePercent()
@@ -388,43 +392,43 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
         setGraphStats()
         setChartValues()
     }
-    
+
+    private func clearBenchmarkSeries() {
+        benchmarkPrices = []
+        benchmarkTimeStamps = []
+        rawBenchmarkPrices = []
+        benchmarkSharesScale = false
+    }
+
     private func setBenchmarkSeries() {
         guard
             let sparkline = benchmarkCoin?.sparkline_in_7d?.price,
             !sparkline.isEmpty,
-            !rawPrices.isEmpty,
-            let firstPortfolio = rawPrices.first(where: { $0 != -1 }),
-            firstPortfolio != 0
+            !rawPrices.isEmpty
         else {
-            benchmarkPrices = []
-            benchmarkTimeStamps = []
+            clearBenchmarkSeries()
             return
         }
-        
+
         var sparklinePrices = sparkline
         if let lastPrice = benchmarkCoin?.current_price, !sparklinePrices.isEmpty {
             sparklinePrices[sparklinePrices.count - 1] = lastPrice
         }
-        
-        guard
-            let firstBenchmark = sparklinePrices.first,
-            firstBenchmark != 0
-        else {
-            benchmarkPrices = []
-            benchmarkTimeStamps = []
-            return
-        }
-        
+
+        let firstBenchmark = sparklinePrices.first(where: { $0 != -1 }) ?? 0
+        let firstPortfolio = rawPrices.first(where: { $0 != -1 }) ?? 0
+        let sharesScale = firstPortfolio != 0 && firstBenchmark != 0
+
         let offset = rawTimeStamps.count - sparklinePrices.count
         var alignedPrices = [Double](repeating: -1, count: rawTimeStamps.count)
-        
+
         for (index, value) in sparklinePrices.enumerated() {
             let globalIndex = index + offset
             guard globalIndex >= 0, globalIndex < alignedPrices.count else { continue }
-            alignedPrices[globalIndex] = firstPortfolio * (value / firstBenchmark)
+            alignedPrices[globalIndex] = sharesScale ? firstPortfolio * (value / firstBenchmark) : value
         }
-        
+
+        benchmarkSharesScale = sharesScale
         benchmarkPrices = alignedPrices
         benchmarkTimeStamps = rawTimeStamps
         rawBenchmarkPrices = alignedPrices
@@ -437,15 +441,14 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
         benchmarkTimeStamps = rawTimeStamps
         
         guard benchmarkCoin != nil else {
-            benchmarkPrices = []
-            benchmarkTimeStamps = []
-            rawBenchmarkPrices = []
+            clearBenchmarkSeries()
             return
         }
         
         setBenchmarkSeries()
         
-        guard !prices.isEmpty, !benchmarkPrices.isEmpty else {
+        guard !prices.isEmpty, !benchmarkPrices.isEmpty, benchmarkSharesScale else {
+            benchmarkSharesScale = false
             return
         }
         
@@ -461,6 +464,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
             let compareMin = validCompare.min(),
             firstCompare != 0
         else {
+            benchmarkSharesScale = false
             return
         }
         
@@ -503,7 +507,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
     }
     
     private var portfolioHoverPrices: [Double] {
-        getPrices(dropLastTwo: benchmarkCoin != nil).enumerated().map { index, chartPrice in
+        getPrices(dropLastTwo: dropsPaddedBenchmarkPoints).enumerated().map { index, chartPrice in
             guard chartPrice != -1 else { return -1.0 }
             return portfolioRawValue(atChartIndex: index) ?? chartPrice
         }
@@ -596,7 +600,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
         }
         
         let validPrices: [Double] = {
-            if benchmarkCoin != nil {
+            if dropsPaddedBenchmarkPoints {
                 return rawPrices.filter { $0 != -1 } + rawBenchmarkPrices.filter { $0 != -1 }
             }
             return rawPrices.filter { $0 != -1 }
@@ -635,7 +639,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
 
     func setChartValues() {
         let steps: Double = 1 / 6
-        let chartPrices = getPrices(dropLastTwo: benchmarkCoin != nil)
+        let chartPrices = getPrices(dropLastTwo: dropsPaddedBenchmarkPoints)
         
         guard !chartPrices.isEmpty else {
             chartValues = []
@@ -676,19 +680,19 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
     
     var mainDragIndex: [Int] {
         hover.linearDragIndices(
-            priceCount: getPrices(dropLastTwo: benchmarkCoin != nil).count,
-            timestamps: getTimeStamps(dropLastTwo: benchmarkCoin != nil)
+            priceCount: getPrices(dropLastTwo: dropsPaddedBenchmarkPoints).count,
+            timestamps: getTimeStamps(dropLastTwo: dropsPaddedBenchmarkPoints)
         )
     }
     
     private var currentHoverIndex: Int {
-        hover.currentLinearIndex(priceCount: getPrices(dropLastTwo: benchmarkCoin != nil).count)
+        hover.currentLinearIndex(priceCount: getPrices(dropLastTwo: dropsPaddedBenchmarkPoints).count)
     }
     
     var dragPositions: [CGPoint] {
         hover.linearDragPositions(
-            priceCount: getPrices(dropLastTwo: benchmarkCoin != nil).count,
-            timestamps: getTimeStamps(dropLastTwo: benchmarkCoin != nil)
+            priceCount: getPrices(dropLastTwo: dropsPaddedBenchmarkPoints).count,
+            timestamps: getTimeStamps(dropLastTwo: dropsPaddedBenchmarkPoints)
         ) { index, size in
             point(at: index, rect: size)
         }
@@ -701,7 +705,7 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
         let x = rect.width * Double(index) / Double(denominator)
         let y = (1 - pointValue) * rect.height
         
-        let chartValues = getPrices(dropLastTwo: benchmarkCoin != nil)
+        let chartValues = getPrices(dropLastTwo: dropsPaddedBenchmarkPoints)
         let isEmpty = portfolio?.isEmpty ?? true || chartValues.allSatisfy { $0 == 0 || $0 == -1 }
         
         return CGPoint(
@@ -740,8 +744,8 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
         
         hover.updateLinear(
             touches: touches,
-            prices: benchmarkCoin == nil ? rawPrices : portfolioHoverPrices,
-            dates: getTimeStamps(dropLastTwo: benchmarkCoin != nil),
+            prices: dropsPaddedBenchmarkPoints ? portfolioHoverPrices : rawPrices,
+            dates: getTimeStamps(dropLastTwo: dropsPaddedBenchmarkPoints),
             timeChart: .aWeek
         )
     }

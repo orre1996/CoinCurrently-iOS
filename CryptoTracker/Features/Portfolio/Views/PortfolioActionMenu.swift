@@ -114,7 +114,6 @@ struct PortfolioActionMenu: View {
                     .accessibilityLabel(Localization.string("Export portfolio"))
                     .accessibilityFocused($actionMenuFocus, equals: .exportPortfolio)
 
-                    #if DEBUG
                     PrimaryButton(
                         text: viewModel.benchmarkCoin == nil
                             ? Localization.string("Benchmark")
@@ -150,7 +149,6 @@ struct PortfolioActionMenu: View {
                         .accessibilityLabel(Localization.string("Remove benchmark"))
                         .accessibilityFocused($actionMenuFocus, equals: .removeBenchmark)
                     }
-                    #endif
                 }
 
                 Button(action: {
@@ -184,13 +182,7 @@ struct PortfolioActionMenu: View {
                 .accessibilityHint(
                     isActionMenuExpanded
                         ? ""
-                        : {
-                            #if DEBUG
-                            Localization.string("Shows add transaction, import wallet, export portfolio, and benchmark options")
-                            #else
-                            Localization.string("Shows add transaction, import wallet, and export portfolio options")
-                            #endif
-                        }()
+                        : Localization.string("Shows add transaction, import wallet, export portfolio, and benchmark options")
                 )
                 .accessibilityFocused($actionMenuFocus, equals: .fab)
                 .shadow(color: .black.opacity(0.08), radius: 2, y: 1)

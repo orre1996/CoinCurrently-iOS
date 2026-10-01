@@ -72,11 +72,6 @@ struct PaywallScreen: View {
              proText: .image(.infinity),
              accessibilityLabel: "2 currencies can be favorite marked with the free version and unlimited with pro"),
         
-        Tier(title: "News categories",
-             freeText: .text("4"),
-             proText: .text("8"),
-             accessibilityLabel: "4 news categories are included in the free version and 8 with pro"),
-        
         Tier(title: "Price alerts",
              freeText: .text("2"),
              proText: .image(.infinity),

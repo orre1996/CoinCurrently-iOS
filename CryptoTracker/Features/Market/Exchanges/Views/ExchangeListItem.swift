@@ -135,10 +135,15 @@ struct ExchangeListItem: View {
     }
     
     private var trustColorView: some View {
-        ShimmeringText(
-            text: "\(data?.trust_score ?? 0)/10",
-            isDownloading: data == nil
-        )
+        MinimumTextSize(
+            text: Localization.string("Trust"),
+            alignment: .trailing
+        ) {
+            ShimmeringText(
+                text: "\(data?.trust_score ?? 0)/10",
+                isDownloading: data == nil
+            )
+        }
         .font(.satoshiBold(16))
         .foregroundStyle(data?.trust_score?.trustColor ?? Color.onSurfaceDim)
         .accessibilityHidden(true)

@@ -35,8 +35,22 @@ final actor NewsRepositoryImp: NewsRepository {
 
         return items.map { item in
             var copy = item
+            copy.source_name = item.source_name?.strippingParentheticalNotes()
+            copy.author = item.author?.strippingParentheticalNotes()
             copy.relatedCoinNames = (item.related_coin_ids ?? []).compactMap { namesById[$0] }
             return copy
         }
+    }
+}
+
+private extension String {
+    /// Drops parenthetical notes such as " (Sweden)" or " (svenska)" from a news source name.
+    func strippingParentheticalNotes() -> String {
+        let stripped = replacingOccurrences(
+            of: "\\s*\\([^)]*\\)",
+            with: "",
+            options: .regularExpression
+        ).trimmingCharacters(in: .whitespacesAndNewlines)
+        return stripped.isEmpty ? trimmingCharacters(in: .whitespacesAndNewlines) : stripped
     }
 }

@@ -28,7 +28,7 @@ struct ExchangesHeaderView: View {
             }
             
             MinimumTextSize(
-                text: "10/10",
+                text: Localization.string("Trust"),
                 alignment: .trailing
             ) {
                 Text(Localization.string("Trust"))

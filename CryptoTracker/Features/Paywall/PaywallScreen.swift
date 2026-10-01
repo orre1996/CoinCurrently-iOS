@@ -310,7 +310,7 @@ struct PaywallScreen: View {
             .font(.satoshiBold(16))
             
             MinimumTextSize(
-                text: Localization.string("PRO"),
+                text: Localization.string("FREE"),
                 extraSize: 16
             ) {
                 Text(Localization.string("PRO"))

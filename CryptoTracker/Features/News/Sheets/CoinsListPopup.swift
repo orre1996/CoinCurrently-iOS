@@ -39,7 +39,7 @@ struct CoinsListPopup: View {
 
             VStack(alignment: .center, spacing: 0) {
                 
-                Text("Select coin")
+                Text(Localization.string("Select Coin"))
                     .font(.poppinsSemibold(20))
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(16)

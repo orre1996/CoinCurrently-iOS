@@ -56,7 +56,7 @@ struct LoadingScreen: View {
                 Spacer()
                 
                 // Matches Launch Screen.storyboard, which cannot follow the in-app language.
-                Text("Privacy by Default")
+                Text(Localization.string("Privacy by Default"))
                     .foregroundStyle(Color.onSurface)
                     .font(.system(size: 18, weight: .bold))
                     .padding(.bottom, 40)

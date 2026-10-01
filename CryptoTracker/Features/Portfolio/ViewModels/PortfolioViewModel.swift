@@ -264,9 +264,9 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
         // This is a lightweight computation, safe to run on main thread
         let now = Date()
         let hourInterval: TimeInterval = 60 * 60
-        let elements = portfolio?.max(by: {
-            ($0.data?.sparkline_in_7d?.price.count ?? 0 > $1.data?.sparkline_in_7d?.price.count ?? 0)
-        })?.data?.sparkline_in_7d?.price.count ?? 169
+        let elements = portfolio?
+            .map { $0.data?.sparkline_in_7d?.price.count ?? 0 }
+            .max() ?? 169
 
         timeStamps = (0..<elements).map { i in
             let timestamp = now.addingTimeInterval(-Double(elements - 1 - i) * hourInterval)
@@ -299,7 +299,9 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
                 guard
                     let sparkline = pie.data?.sparkline_in_7d?.price,
                     let coinId = pie.data?.id
-                else { continue }
+                else {
+                    continue
+                }
                 
                 // O(1) lookup instead of O(n)
                 let lastPrice = pie.data?.holdingPrice(

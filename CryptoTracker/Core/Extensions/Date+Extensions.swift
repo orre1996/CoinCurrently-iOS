@@ -93,11 +93,7 @@ extension Date {
     }
 
     private static func localizedAgo(_ count: Int, _ key: String) -> String {
-        #if IS_APP
-        Localization.format(key, count)
-        #else
-        String(format: key, count)
-        #endif
+        AppCopy.format(key, count)
     }
     
     var alertTimeAgoDisplay: String {

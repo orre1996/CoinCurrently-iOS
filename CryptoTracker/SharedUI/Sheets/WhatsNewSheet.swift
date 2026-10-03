@@ -31,6 +31,13 @@ struct WhatsNewSheet: View {
     
     private let sections: [WhatsNewSection] = [
         WhatsNewSection(
+            title: "Languages",
+            icon: .languages,
+            bulletPoints: [
+                "The app can be translated to 36 languages"
+            ]
+        ),
+        WhatsNewSection(
             title: "Referrals",
             icon: .referral,
             bulletPoints: [

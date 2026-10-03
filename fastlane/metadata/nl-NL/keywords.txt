@@ -1,0 +1,1 @@
+crypto,bitcoin,portfolio,koers,ethereum,alerts,widget,heatmap,btc,eth,wallet

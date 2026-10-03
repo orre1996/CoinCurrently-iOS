@@ -155,7 +155,7 @@ struct CurrencyToplistScreen: View {
     
     private var emptyView: some View {
         VStack(spacing: 4) {
-            Text("No results found.")
+            Text("No results found")
                 .foregroundColor(.onSurface)
                 .font(.poppinsSemibold(16))
                 .fixedSize(horizontal: false, vertical: true)

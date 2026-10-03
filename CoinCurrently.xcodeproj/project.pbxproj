@@ -338,6 +338,8 @@
 		8EWGFT012F6000000095B118 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B108 /* Poppins-Regular.ttf */; };
 		8EWGFT012F6000000095B119 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B109 /* Poppins-SemiBold.ttf */; };
 		8EWGFT012F6000000095B11A /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EWGFT012F6000000095B10A /* Poppins-Light.ttf */; };
+		8ELOCW022F6000000095C002 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 8ELOCW012F6000000095C001 /* Localizable.xcstrings */; };
+		8ELOCW032F6000000095C003 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 8ELOCW012F6000000095C001 /* Localizable.xcstrings */; };
 		8FAB0AB62F54100000AAB002 /* CryptoTracker/Core/Analytics/AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FAB0AB42F54100000AAB001 /* CryptoTracker/Core/Analytics/AnalyticsManager.swift */; };
 		9F0C3A00288F3CDC007C4D68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F0C39FF288F3CDC007C4D68 /* Assets.xcassets */; };
 		9F10EC042A35297C007637C0 /* ViewRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F10EC032A35297C007637C0 /* ViewRect.swift */; };
@@ -653,6 +655,7 @@
 		8EF1A0012F8B000100AAC001 /* CryptoTracker/Features/GlobalMarket/Models/GlobalMarketChartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/Features/GlobalMarket/Models/GlobalMarketChartModel.swift; sourceTree = SOURCE_ROOT; };
 		8EWG00022F6000000095B001 /* WidgetConfigurationIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfigurationIntent.swift; sourceTree = "<group>"; };
 		8EWG00042F6000000095B002 /* NewsWidgetCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsWidgetCategory.swift; sourceTree = "<group>"; };
+		8ELOCW012F6000000095C001 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = CryptoTracker/Core/Localization/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
 		8EWG00062F6000000095B003 /* CoinEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinEntity.swift; sourceTree = "<group>"; };
 		8EWG00082F6000000095B004 /* WidgetEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetEmptyView.swift; sourceTree = "<group>"; };
 		8EWG000A2F6000000095B005 /* PortfolioWidgetEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioWidgetEmptyView.swift; sourceTree = "<group>"; };
@@ -1112,6 +1115,7 @@
 				9FEC19EF28C5F0D700C1D68E /* CryptoTracker/Features/Search/SearchViewModel.swift */,
 				9F42CB172C22112800F31052 /* CryptoTracker/App/NavigationViewModel.swift */,
 				CCBUYPROACTION000000001 /* CryptoTracker/Features/Paywall/BuyProAction.swift */,
+				8ELOCW012F6000000095C001 /* Localizable.xcstrings */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1525,6 +1529,7 @@
 				8EAE878F2828498F00946181 /* CryptoTracker/Fonts/Poppins-SemiBold.ttf in Resources */,
 				8EAE87962828498F00946181 /* CryptoTracker/Fonts/Poppins-Regular.ttf in Resources */,
 				8EAE87932828498F00946181 /* CryptoTracker/Fonts/Poppins-Medium.ttf in Resources */,
+				8ELOCW032F6000000095C003 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1553,6 +1558,7 @@
 				8EWGFT012F6000000095B118 /* Poppins-Regular.ttf in Resources */,
 				8EWGFT012F6000000095B119 /* Poppins-SemiBold.ttf in Resources */,
 				8EWGFT012F6000000095B11A /* Poppins-Light.ttf in Resources */,
+				8ELOCW022F6000000095C002 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2016,7 +2022,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.4.1;
+				MARKETING_VERSION = 3.5.0;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-deprecated-declarations",
@@ -2054,7 +2060,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.4.1;
+				MARKETING_VERSION = 3.5.0;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-deprecated-declarations",
@@ -2131,7 +2137,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -2192,7 +2198,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -2227,7 +2233,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.4.1;
+				MARKETING_VERSION = 3.5.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2268,7 +2274,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.4.1;
+				MARKETING_VERSION = 3.5.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2306,7 +2312,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.4.1;
+				MARKETING_VERSION = 3.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Cryptium.Cryptocurrently1.Cryptowidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2339,7 +2345,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.4.1;
+				MARKETING_VERSION = 3.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Cryptium.Cryptocurrently1.Cryptowidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

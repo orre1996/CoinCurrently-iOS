@@ -1,0 +1,1 @@
+krypto,bitcoin,portefølje,kurs,ethereum,varsler,widget,heatmap,btc,eth

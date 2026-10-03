@@ -23,7 +23,7 @@ struct HistoricDataChangeView: View {
         #if IS_APP
         Localization.string(timeframe)
         #else
-        timeframe
+        AppCopy.string(timeframe)
         #endif
     }
 

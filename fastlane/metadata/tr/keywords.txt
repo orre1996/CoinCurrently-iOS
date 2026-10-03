@@ -1,0 +1,1 @@
+kripto,bitcoin,portföy,fiyat,ethereum,uyarı,widget,ısıharitası,btc,eth

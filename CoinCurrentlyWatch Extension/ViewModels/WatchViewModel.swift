@@ -156,7 +156,7 @@ final class WatchViewModelImp: WatchViewModel {
             
         let closestHour = Calendar.current.date(byAdding: .hour, value: -value, to: Date().nearestHour) ?? Date()
         let dateFormatter : DateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.locale = .current
         dateFormatter.dateFormat = format
         let dateString = dateFormatter.string(from: closestHour)
         

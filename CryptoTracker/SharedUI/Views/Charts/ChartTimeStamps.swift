@@ -71,7 +71,7 @@ struct ChartTimeStamps: View {
         #if IS_APP
         dateFormatter.locale = Localization.locale
         #else
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.locale = .current
         #endif
         dateFormatter.dateFormat = currentTimeChart.dateFormat
         

@@ -30,7 +30,7 @@ struct ToplistFilterCarouselView: View {
                         let sourceTitle = isSelected ? selectedFilter.rawValue : filter.rawValue
                         
                         carouselChip(
-                            title: Localization.string(sourceTitle),
+                            title: displayTitle(for: sourceTitle),
                             isSelected: isSelected,
                             filterPressed: {
                                 newFilterSelected(filter)
@@ -150,6 +150,15 @@ struct ToplistFilterCarouselView: View {
         }
     }
     
+    private func displayTitle(for title: String) -> String {
+        let suffix = " (Pro)"
+        guard title.hasSuffix(suffix) else {
+            return Localization.string(title)
+        }
+        let base = String(title.dropLast(suffix.count))
+        return "\(Localization.string(base))\(suffix)"
+    }
+
     private func accessibilityTitle(for title: String) -> String {
         if title.contains("(Pro)") {
             let base = title.replacingOccurrences(of: " (Pro)", with: "")

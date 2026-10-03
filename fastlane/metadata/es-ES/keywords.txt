@@ -1,0 +1,1 @@
+cripto,bitcoin,cartera,precio,ethereum,alertas,widget,mapa,btc,eth,cotización

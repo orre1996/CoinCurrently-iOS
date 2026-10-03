@@ -78,7 +78,7 @@ struct CoinsListPopup: View {
                                     .modifier(CardBackground())
                                     .padding(.horizontal, 16)
                                     .accessibilityElement(children: .combine)
-                                    .accessibilityLabel("Currency \(index + 1) of \((filteredList.count - 1).description). \(coin.name ?? "")")
+                                    .accessibilityLabel(Localization.format("Currency %d of %d. %@.", index + 1, filteredList.count, coin.name ?? ""))
                                     
                                 } else {
                                     
@@ -86,13 +86,13 @@ struct CoinsListPopup: View {
                                         
                                         VStack(spacing: 0) {
                                             
-                                            Text("We couldn't find the currency you were looking for.")
+                                            Text(Localization.string("We couldn't find the currency you were looking for."))
                                                 .foregroundColor(.onSurface)
                                                 .font(.poppinsSemibold(16))
                                                 .fixedSize(horizontal: false, vertical: true)
                                                 .padding(.bottom, 8)
                                             
-                                            Text("Try searching for something else.")
+                                            Text(Localization.string("Try searching for something else."))
                                                 .foregroundColor(.onSurface)
                                                 .font(.poppinsRegular(14))
                                                 .fixedSize(horizontal: false, vertical: true)
@@ -115,12 +115,12 @@ struct CoinsListPopup: View {
                 
                 Separator()
                 
-                PrimaryButton(text: "Close") {
+                PrimaryButton(text: Localization.string("Close")) {
                     close(nil)
                     endTextEditing()
                 }
                 .padding(.vertical, 16)
-                .accessibilityLabel("Close window")
+                .accessibilityLabel(Localization.string("Close window"))
             }
             .frame(minWidth: 0, maxWidth: verticalSizeClass == .compact ? 500 : 340, minHeight: 0, maxHeight: 524, alignment: .center)
             .background(Color.surface)
@@ -148,7 +148,7 @@ struct CoinsListPopup: View {
                 .accessibilityHidden(true)
             
             CustomTextField(placeholder:
-                                Text("Search")
+                                Text(Localization.string("Search"))
                 .foregroundColor(Color.onSurfaceDim)
                 .font(.poppinsRegular(16)), isEditing: isEditing, text: $input, commit: {
                     isEditing = false
@@ -167,8 +167,8 @@ struct CoinsListPopup: View {
                 isEditing = true
             }
             .accessibilityElement(children: .ignore)
-            .accessibilityHint("Double tap to edit")
-            .accessibilityValue("\(input.isEmpty ? "\("Search")" : "\(input)"). Textfield")
+            .accessibilityHint(Localization.string("Double tap to edit"))
+            .accessibilityValue(Localization.format("%@. Textfield", input.isEmpty ? Localization.string("Search") : input))
             
             if isEditing {
                 Button(action: {
@@ -179,7 +179,7 @@ struct CoinsListPopup: View {
                         .frame(width: 20 * min(scale, 1.5), height: 20 * min(scale, 1.5))
                         .foregroundColor(Color.onSurface)
                 }
-                .accessibilityLabel("Clear text field")
+                .accessibilityLabel(Localization.string("Clear text field"))
             }
             
         }

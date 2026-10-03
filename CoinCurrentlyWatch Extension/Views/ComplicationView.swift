@@ -96,7 +96,7 @@ struct ComplicationView: View {
     
     private func getTimeInChart(at index: Int) -> String {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.locale = .current
         formatter.dateFormat = "MMM dd"
 
         // 4 labels across 7 days → every ~2 days

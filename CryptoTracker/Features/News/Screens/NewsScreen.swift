@@ -112,6 +112,9 @@ struct NewsScreen: View {
             .onReceive(NotificationCenter.default.publisher(for: .reloadViews, object: nil)) { notification in
                 viewID = UUID()
             }
+            .onReceive(NotificationCenter.default.publisher(for: .appLanguageDidChange)) { _ in
+                viewID = UUID()
+            }
             .onChange(of: currentPage) {
                 AnalyticsManager.shared.log(
                     NewsTabSelected(fromScreen: .news, tab: (currentPage ?? 0).newsTab)

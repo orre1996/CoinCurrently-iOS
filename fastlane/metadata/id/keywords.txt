@@ -1,0 +1,1 @@
+kripto,bitcoin,portofolio,harga,ethereum,peringatan,widget,heatmap,btc,eth

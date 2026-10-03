@@ -1,0 +1,1 @@
+cripto,bitcoin,portafoglio,prezzo,ethereum,avvisi,widget,heatmap,btc,eth

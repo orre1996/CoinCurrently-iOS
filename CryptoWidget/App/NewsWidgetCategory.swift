@@ -72,6 +72,12 @@ enum NewsWidgetCategoryResolver {
 
     static func filteredNews(_ news: [NewsItem], for type: NewsType) -> [NewsItem] {
         switch type {
+        case .positive:
+            return news.filter { $0.sentiment == "Positive" }
+        case .negative:
+            return news.filter { $0.sentiment == "Negative" }
+        case .neutral:
+            return news.filter { $0.sentiment == "Neutral" }
         default:
             return news
         }

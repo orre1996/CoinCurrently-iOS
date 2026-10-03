@@ -43,9 +43,26 @@ enum WidgetCoinStorage {
 
 struct CryptoWidgetConfigurationIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource { "News Widget" }
-    static var description: IntentDescription { IntentDescription("Keep track of the latest crypto news.") }
+    static var description: IntentDescription { IntentDescription("Choose a news category to display.") }
 
-    init() {}
+    @Parameter(title: "Category", default: NewsWidgetCategory.general)
+    var category: NewsWidgetCategory
+
+    static var parameterSummary: some ParameterSummary {
+        Summary("Show \(\.$category) news")
+    }
+
+    init() {
+        category = .general
+    }
+
+    init(category: NewsWidgetCategory = .general) {
+        self.category = category
+    }
+
+    func resolvedNewsType() async -> NewsType {
+        await NewsWidgetCategoryResolver.resolvedNewsType(for: category)
+    }
 }
 
 struct GasFeeWidgetConfigurationIntent: WidgetConfigurationIntent {

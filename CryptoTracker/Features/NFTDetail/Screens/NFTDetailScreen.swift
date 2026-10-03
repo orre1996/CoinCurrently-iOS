@@ -201,6 +201,17 @@ struct NFTDetailScreen: View {
                                         errorMessage: newsErrorString,
                                         isSortShowing: $isSortShowing
                                     )
+                                } else if currentPage == 3 {
+                                    DetailNews(
+                                        title: viewModel.nftDetailInfo.name,
+                                        fromScreen: .nftDetail,
+                                        news: viewModel.news,
+                                        showError: viewModel.showNewsError,
+                                        errorMessage: newsErrorString,
+                                        refresh: {
+                                            await viewModel.refresh()
+                                        }
+                                    )
                                 }
                             }
                             .accessibilitySortPriority(-2)
@@ -234,7 +245,7 @@ struct NFTDetailScreen: View {
                                     )
                                     scrollToTop.toggle()
                                 },
-                                isVisible: showScrollToTopButton && currentPage == 2
+                                isVisible: showScrollToTopButton && currentPage == 3
                             )
                         }
                     }
@@ -278,12 +289,15 @@ struct NFTDetailScreen: View {
         }
         .refreshable {
             await viewModel.refresh(
+                getNews: currentPage == 3,
                 getTickers: currentPage == 2
             )
         }
         .task(id: currentPage) {
             if currentPage == 2 {
                await viewModel.getTickers()
+           } else if currentPage == 3 {
+                await viewModel.getNews()
             }
         }
         .onChange(of: currentPage) { _, page in
@@ -408,7 +422,7 @@ struct NFTDetailScreen: View {
     
     @ViewBuilder
     private var pageSelector: some View {
-        let categories = ["Overview", "About", "Markets"]
+        let categories = ["Overview", "About", "Markets", "News"]
         
         VStack(spacing: 0) {
             PageSelectorView(currentPage: $currentPage, titles: categories, pageSelected: { page in

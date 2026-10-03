@@ -19,12 +19,26 @@ final class CryptoDetailNewsViewModel {
         self.newsRepository = newsRepository
     }
 
-    func getNews(coinId: String?) async {
-        guard let coinId, !coinId.isEmpty else { return }
+    func loadCached(symbol: String?) async {
+        guard let symbol = symbol?.uppercased() else {
+            news = []
+            return
+        }
+
+        if let newsData = await newsRepository.cachedNews[.coin(symbol: symbol)]?.data.data {
+            news = newsData
+        } else {
+            news = []
+        }
+    }
+
+    func getNews(symbol: String?) async {
+        guard let id = symbol?.uppercased() else { return }
 
         showNewsError = false
+        await loadCached(symbol: id)
 
-        if let news = await newsRepository.getNews(coinId: coinId), !news.isEmpty {
+        if let news = await newsRepository.getNews(type: .coin(symbol: id), count: 25), !news.isEmpty {
             self.news = news
         } else if self.news.isEmpty {
             showNewsError = true

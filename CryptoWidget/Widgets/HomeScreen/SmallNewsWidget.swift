@@ -53,40 +53,53 @@ struct SmallNewsWidget: View {
     }
     
     private var tagsView: some View {
-        let names = newsItem?.relatedCoinNames ?? []
-
-        return Group {
-            if newsItem == nil || !names.isEmpty {
+        HStack(spacing: 4) {
+            sentimentIcon
+            
+            if newsItem == nil || newsItem?.tickers?.isEmpty == false {
                 ShimmeringText(
-                    text: names.prefix(2).joined(separator: " · ").isEmpty ? "000" : names.prefix(2).joined(separator: " · "),
+                    text: newsItem?.tickers?.prefix(2).map({ $0 }).joined(separator: " · ") ?? "000",
                     isDownloading: newsItem == nil
                 )
                 .foregroundStyle(Color.onSurface(for: scheme))
                 .font(.satoshiBold(12))
-                .padding(
-                    EdgeInsets(
-                        top: 4,
-                        leading: 8,
-                        bottom: 4,
-                        trailing: 8
-                    )
-                )
-                .background(Color.surfaceContainerHigh(for: scheme))
-                .cornerRadius(8)
-                .fixedSize(horizontal: true, vertical: false)
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
+        .padding(
+            EdgeInsets(
+                top: 4,
+                leading: 4,
+                bottom: 4,
+                trailing: newsItem == nil || newsItem?.tickers?.isEmpty == false ? 8 : 4
+            )
+        )
+        .background(Color.surfaceContainerHigh(for: scheme))
+        .cornerRadius(8)
+        .fixedSize(horizontal: true, vertical: false)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    private var sentimentIcon: some View {
+        MinimumTextSize(text: "X") {
+            if newsItem?.sentiment != nil || newsItem == nil {
+                (newsItem?.getSentimentSign ?? Image.trendStill)
+                    .foregroundStyle(newsItem?.getSentimentColor(for: scheme) ?? .onSurfaceDim(for: scheme))
+                    .frame(width: 16, height: 16)
+            }
+        }
+        .font(.satoshiBold(12))
     }
     
     private var metadataView: some View {
         let source = newsItem?.source_name ?? "000000"
-        let timeAgo = newsItem?.publishedDate?.timeAgoDisplay ?? "000000"
+        let timeAgo = newsItem?.date?
+            .convertStringToDate(dateFormat: .EdMMMyyyyHHmmssZ)?
+            .timeAgoDisplay ?? "000000"
         let text = "\(nonBreaking(source)) · \(nonBreaking(timeAgo))"
 
         return ShimmeringText(
             text: text,
-            isDownloading: newsItem?.source_name == nil || newsItem?.posted_at == nil
+            isDownloading: newsItem?.source_name == nil || newsItem?.date == nil
         )
         .foregroundStyle(Color.onSurfaceDimmer(for: scheme))
         .font(.satoshiBold(12))

@@ -6,15 +6,16 @@ struct NewsRepositoryTests {
 
     @Test("getNews returns items on network success")
     func getNewsReturnsData() async {
-        let mock = MockRepoNetworkManager(getResult: [NewsItem(title: "Bitcoin rises")])
+        let mockNews = NewsModel(data: [NewsItem()])
+        let mock = MockRepoNetworkManager(getResult: mockNews)
 
         let repo = NewsRepositoryImp(
             networkManager: mock
         )
 
-        let result = await repo.getNews(coinId: nil)
+        let result = await repo.getNews(type: NewsType.general, count: 10)
+        #expect(result != nil)
         #expect(result?.count == 1)
-        #expect(result?.first?.title == "Bitcoin rises")
     }
 
     @Test("getNews returns nil when network fails")
@@ -25,7 +26,18 @@ struct NewsRepositoryTests {
             networkManager: mock
         )
 
-        let result = await repo.getNews(coinId: "bitcoin")
+        let result = await repo.getNews(type: NewsType.general, count: 10)
         #expect(result == nil)
+    }
+
+    @Test("updateNewsType changes selected type")
+    func updateNewsType() async {
+        let mock = MockRepoNetworkManager()
+        let repo = NewsRepositoryImp(
+            networkManager: mock
+        )
+
+        await repo.updateNewsType(NewsType.neutral)
+        #expect(await repo.selectedNewsType == NewsType.neutral)
     }
 }

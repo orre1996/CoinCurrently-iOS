@@ -83,23 +83,18 @@ struct CryptoDetailSummaryView: View {
         
         if changeMetricLabel == "volume" || changeMetricLabel == "holdings" || changeMetricLabel == "price" {
             let valueText = currentPrice?.formatCurrency(threshold: accessibilityFormattingThreshold, currency: currency, accessible: true) ?? ""
-            let direction = AppCopy.string(roundedChange >= 0 ? "Up" : "Down")
-            let period = AppCopy.string(accessibilityChangePeriod)
-            let valueLabel = AppCopy.string(valueAccessibilityLabel)
-            #if IS_APP
-            let regionLocale = Localization.locale
-            #else
-            let regionLocale = Locale.current
-            #endif
+            let direction = Localization.string(roundedChange >= 0 ? "Up" : "Down")
+            let period = Localization.string(accessibilityChangePeriod)
+            let valueLabel = Localization.string(valueAccessibilityLabel)
             
             if changeMetricLabel == "holdings",
                let countryCode,
-               let countryName = regionLocale.localizedString(forRegionCode: countryCode),
+               let countryName = Localization.locale.localizedString(forRegionCode: countryCode),
                !countryName.isEmpty {
-                return AppCopy.format(
+                return Localization.format(
                     "%1$@. %2$@. %3$@: %4$@. %5$@ %6$@ percent %7$@",
                     name,
-                    AppCopy.format("Country: %@", countryName),
+                    Localization.format("Country: %@", countryName),
                     valueLabel,
                     valueText,
                     direction,
@@ -108,7 +103,7 @@ struct CryptoDetailSummaryView: View {
                 )
             }
             
-            return AppCopy.format(
+            return Localization.format(
                 "%1$@, %2$@: %3$@. %4$@ %5$@ percent %6$@",
                 name,
                 valueLabel,
@@ -268,7 +263,7 @@ struct CryptoDetailSummaryView: View {
             changeValueLabel
             changePercentLabel
             
-            Text(AppCopy.string(selectedTimeframe.timeAgoText))
+            Text(Localization.string(selectedTimeframe.timeAgoText))
                 .font(.satoshiBold(12))
                 .foregroundStyle(Color.onSurfaceDim)
         }

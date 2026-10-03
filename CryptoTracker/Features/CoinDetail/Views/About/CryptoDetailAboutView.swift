@@ -16,8 +16,7 @@ struct CryptoDetailAboutView: View {
     private var sections: [DetailAboutSection] {
         var result: [DetailAboutSection] = []
         
-        let descriptionText = description?.text(for: AppLanguagePreference.stored.resolve().rawValue)
-        if let description = descriptionText, !description.isEmpty {
+        if let description = description?.en, !description.isEmpty {
             result.append(DetailAboutSection(
                 title: "Description",
                 contents: [description],

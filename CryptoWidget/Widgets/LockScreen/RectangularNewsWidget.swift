@@ -20,7 +20,7 @@ struct RectangularNewsWidget: View {
                     .cornerRadius(8)
                 
                 VStack(spacing: 0) {
-                    Text(entry?.title ?? "CoinCurrently")
+                    Text(entry?.text ?? "CoinCurrently")
                         .font(.satoshiBold(12))
                         .lineLimit(3)
                         .minimumScaleFactor(0.8)

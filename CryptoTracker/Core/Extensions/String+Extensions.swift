@@ -58,11 +58,9 @@ private enum WidgetCatalog {
     }
 
     static func string(_ key: String) -> String {
-        let resource = LocalizedStringResource(
-            String.LocalizationValue(key),
-            locale: locale,
-            bundle: .atURL(containingAppBundle.bundleURL)
-        )
+        var resource = LocalizedStringResource(stringLiteral: key)
+        resource.locale = locale
+        resource.bundle = .atURL(containingAppBundle.bundleURL)
         return String(localized: resource)
     }
 

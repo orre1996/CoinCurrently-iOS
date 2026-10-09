@@ -369,7 +369,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
         mainReloading = true
         candleChartEnabled.toggle()
         SettingsManager.shared.setCandleChart(enabled: candleChartEnabled)
-        AchievementManager.shared.increment(.candleChartToggles)
         
         if candleChartEnabled {
             await getCandleChart(id: cryptoInfo?.id, days: currentDays)

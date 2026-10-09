@@ -202,7 +202,6 @@ struct TreasuryDetailScreen: View {
         }
         .navigationPopGestureDisabled(viewModel.isDragging)
         .task {
-            AchievementManager.shared.increment(.treasuryVisits)
             await viewModel.setStartData()
             await viewModel.refresh()
         }

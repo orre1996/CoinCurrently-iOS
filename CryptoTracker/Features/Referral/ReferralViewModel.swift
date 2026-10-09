@@ -82,10 +82,6 @@ final class ReferralViewModel {
         redeemSucceeded = result == .success
         redeemErrorMessage = result.errorMessage
 
-        if result == .selfRedeem {
-            AchievementManager.shared.increment(.selfRedeems)
-        }
-
         if redeemSucceeded {
             redeemCodeInput = ""
         }

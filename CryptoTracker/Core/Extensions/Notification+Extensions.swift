@@ -9,7 +9,6 @@ import Foundation
 
 extension Notification.Name {
     static let Snackbar = Notification.Name("Snackbar")
-    static let achievementUnlocked = Notification.Name("AchievementUnlocked")
     static let buyPro = Notification.Name("buyPro")
     static let canScroll = Notification.Name("canScroll")
     static let checkForBannedUser = Notification.Name("checkForBannedUser")

@@ -119,9 +119,6 @@ struct SettingsScreen: View {
                 scrollToTopActive.toggle()
             }
         }
-        .task {
-            AchievementManager.shared.preloadProgress()
-        }
         .syncSubscriptionStatus(
             $currentSubscription,
             expirationDate: $subscriptionExpirationDate,
@@ -453,20 +450,6 @@ struct SettingsScreen: View {
                     )
                     navigationViewModel.navPath.append(NavigationScreens.PriceAlerts)
                 }
-                
-#if DEBUG
-                Separator()
-                
-                SettingsNavigationView(
-                    title: "Achievements",
-                    accessibilityText: "Navigate to Achievements"
-                ) {
-                    AnalyticsManager.shared.log(
-                        Navigate(fromScreen: .settings, toScreen: .achievements)
-                    )
-                    navigationViewModel.navPath.append(NavigationScreens.Achievements)
-                }
-#endif
             }
             .cardBackground()
         }
@@ -492,20 +475,9 @@ struct SettingsScreen: View {
                         }
                         
                         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                        let wasEnabled = isAuthenticationEnabled
                         isAuthenticationEnabled.toggle()
                         SettingsManager.shared.set(data: isAuthenticationEnabled, key: AppSettingKey.authenticationEnabled)
 
-                        if !wasEnabled && isAuthenticationEnabled {
-                            Task {
-                                await AchievementManager.shared.checkMetricUnlock(
-                                    for: .authenticationEnabled,
-                                    previousValue: 0,
-                                    newValue: 1
-                                )
-                            }
-                        }
-                        
                         if isAuthenticationEnabled {
                             AnalyticsManager.shared.log(
                                 EnabledFaceID(fromScreen: .settings)

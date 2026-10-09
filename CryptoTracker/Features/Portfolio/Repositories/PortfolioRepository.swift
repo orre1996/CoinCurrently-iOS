@@ -672,27 +672,15 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
     }
     
     private func updatePriceCache(with prices: [Cryptocurrency]) async {
-#if IS_APP
-        let previousMaxGain = await AchievementManager.shared.currentMaxPortfolioGainPercent()
-#endif
         let updated = CachedData(data: prices, date: .now)
         cachedPortfolioPrices = updated
         await coreDataManager.set(updated, forKey: .portfolioPrices)
-
-#if IS_APP
-        Task { @MainActor in
-            await AchievementManager.shared.checkMoonShotUnlock(previousMaxGain: previousMaxGain)
-        }
-#endif
     }
     
     private func upsertPrice(
         for id: String,
         currencies: [String: Double]
     ) async {
-#if IS_APP
-        let previousMaxGain = await AchievementManager.shared.currentMaxPortfolioGainPercent()
-#endif
         guard var prices = cachedPortfolioPrices else { return }
         if let index = prices.data.firstIndex(where: { $0.id == id }) {
             var existing = prices.data[index].prices
@@ -705,12 +693,6 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
         }
         cachedPortfolioPrices = prices
         await coreDataManager.set(prices, forKey: .portfolioPrices)
-
-#if IS_APP
-        Task { @MainActor in
-            await AchievementManager.shared.checkMoonShotUnlock(previousMaxGain: previousMaxGain)
-        }
-#endif
     }
     
     private func appendPie(_ pie: Pie) async {

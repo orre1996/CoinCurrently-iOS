@@ -71,9 +71,6 @@ final class ImportWalletTransactionViewModelImp: ImportWalletTransactionViewMode
             return false
         }
 
-        await portfolioRepository.ensureCacheLoaded()
-        let previousTransactionCount = await portfolioRepository.cachedPortfolioPies?.data.allTransactionsCount ?? 0
-        
         let (portfolio, currencies) = await portfolioRepository.importWallet(
             walletName: walletName.isEmpty ? nil : walletName,
             coinData: coinData,
@@ -99,8 +96,7 @@ final class ImportWalletTransactionViewModelImp: ImportWalletTransactionViewMode
                 name: .newTransaction,
                 object: nil,
                 userInfo: [
-                    "transaction": address,
-                    "previousTransactionCount": previousTransactionCount
+                    "transaction": address
                 ]
             )
         )

@@ -66,25 +66,11 @@ final class SearchViewModelImp: SearchViewModel, ObservableObject {
         screenCase: SearchCase
     ) {
         let key = screenCase.rawValue
-        let previousUniqueCount = Double(
-            Set(searchHistory.values.flatMap { $0.compactMap(\.id) }).count
-        )
         var history = searchHistory[key] ?? []
         history.removeAll(where: { $0.id == newCoin.id })
         history.insert(newCoin, at: 0)
         history = Array(history.prefix(7))
         searchHistory[key] = history
         SettingsManager.shared.set(data: searchHistory, key: AppSettingKey.searchHistory)
-
-        let newUniqueCount = Double(
-            Set(searchHistory.values.flatMap { $0.compactMap(\.id) }).count
-        )
-        Task { @MainActor in
-            await AchievementManager.shared.checkMetricUnlock(
-                for: .uniqueSearches,
-                previousValue: previousUniqueCount,
-                newValue: newUniqueCount
-            )
-        }
     }
 }

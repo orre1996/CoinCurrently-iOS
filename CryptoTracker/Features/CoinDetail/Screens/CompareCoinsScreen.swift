@@ -293,7 +293,6 @@ struct CompareCoinsScreen: View {
             await viewModel.refresh()
         }
         .task {
-            AchievementManager.shared.increment(.compareSessions)
             await viewModel.setStartData()
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await viewModel.refresh() }

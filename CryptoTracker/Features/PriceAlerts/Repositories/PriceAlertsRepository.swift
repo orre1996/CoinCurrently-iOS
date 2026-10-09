@@ -262,19 +262,10 @@ final actor PriceAlertsRepositoryImp: PriceAlertsRepository {
         
         if status == 200 {
             await ensureCacheLoaded()
-            let previousCount = Double(cachedPriceAlerts?.data.count ?? 0)
             var oldAlerts = cachedPriceAlerts?.data ?? []
             oldAlerts.append(alert)
             cachedPriceAlerts = CachedData(data: oldAlerts, date: cachedPriceAlerts?.date ?? Date())
             await storageManager.save(type: LocalStorageKeys.priceAlerts, data: oldAlerts)
-
-            Task { @MainActor in
-                await AchievementManager.shared.checkMetricUnlock(
-                    for: .priceAlertsCount,
-                    previousValue: previousCount,
-                    newValue: Double(oldAlerts.count)
-                )
-            }
 
             return cachedPriceAlerts?.data
         } else {

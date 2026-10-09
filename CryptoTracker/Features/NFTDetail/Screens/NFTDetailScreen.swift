@@ -273,7 +273,6 @@ struct NFTDetailScreen: View {
             toolbarMenuButton
         }
         .task {
-            AchievementManager.shared.increment(.nftDetailsViewed)
             await viewModel.setStartData()
             await viewModel.refresh()
         }

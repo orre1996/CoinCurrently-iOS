@@ -66,14 +66,6 @@ final class NavigationViewModel {
     var standardSnackbarIsVisible = false
     var standardSnackbarHeight: CGFloat = 0
 
-    // Achievement snackbar
-    var achievementSnackbarTrigger = 0
-    var achievementTitle = ""
-    var achievementLevelName = ""
-    var achievementSnackbarIsVisible = false
-    var achievementSnackbarHeight: CGFloat = 0
-
-    
     private let networkManager: NetworkManager
     
     init(networkManager: NetworkManager = NetworkManagerImp.shared) {
@@ -260,15 +252,6 @@ final class NavigationViewModel {
             try? await Task.sleep(for: .seconds(0.15))
             self.canShowSnackbar = true
         }
-    }
-
-    func showAchievementSnackbar(
-        achievementTitle: String,
-        levelName: String
-    ) {
-        self.achievementTitle = achievementTitle
-        self.achievementLevelName = levelName
-        achievementSnackbarTrigger += 1
     }
 #endif
 }

@@ -74,8 +74,6 @@ struct PortfolioScreen: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .newTransaction, object: nil)) { notification in
             Task {
-                let previousTransactionCount = notification.userInfo?["previousTransactionCount"] as? Int
-
                 await viewModel.refreshPortfolioData()
                 await viewModel.getCoinColors()
 
@@ -141,13 +139,6 @@ struct PortfolioScreen: View {
                                 )
                             )
                         }
-                    )
-                }
-
-                if let previousTransactionCount, previousTransactionCount >= 0 {
-                    try? await Task.sleep(for: .milliseconds(150))
-                    await AchievementManager.shared.checkPortfolioTransactionUnlock(
-                        previousCount: previousTransactionCount
                     )
                 }
             }
@@ -528,11 +519,6 @@ struct PortfolioScreen: View {
     }
     
     private func runExport(format: PortfolioExportFormat) {
-        let onComplete: (Bool) -> Void = { completed in
-            guard completed else { return }
-            AchievementManager.shared.increment(.portfolioExports)
-        }
-        
-        viewModel.export(format, onComplete: onComplete)
+        viewModel.export(format)
     }
 }

@@ -53,8 +53,5 @@ struct CategoryDetailScreen: View {
             appLanguage = AppLanguagePreference.stored
         }
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
-        .onAppear {
-            AchievementManager.shared.increment(.sectorDetailsViewed)
-        }
     }
 }

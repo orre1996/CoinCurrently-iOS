@@ -35,7 +35,6 @@ struct VideoNewsView: View {
                         AdaptiveButton(buttonAction: {
                             guard let url = currentNews?.news_url, !url.isEmpty else { return }
                             
-                            AchievementManager.shared.increment(.newsArticlesOpened)
                             navigationViewModel.newsUrl = url
                         }, content: {
                             NewsCard(

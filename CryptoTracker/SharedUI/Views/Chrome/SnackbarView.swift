@@ -19,8 +19,6 @@ struct SnackbarView: View {
     var type: SnackbarTypes = .success
     var isTabbarHidden: Bool
     var isOverlayShowing: Bool
-    var achievementSnackbarIsVisible: Bool = false
-    var achievementSnackbarHeight: CGFloat = 0
     @Binding var isPresented: Bool
     @Binding var reportedHeight: CGFloat
     var overlayPressed: () -> Void
@@ -56,21 +54,14 @@ struct SnackbarView: View {
         return false
     }
     
-    private var stackedOffset: CGFloat {
-        guard achievementSnackbarIsVisible, achievementSnackbarHeight > 0 else { return 0 }
-        return achievementSnackbarHeight + 12
-    }
-    
     var body: some View {
         snackBarView
             .offset(
                 y: offset
                 + (isTabbarHidden ? UITabBarController().height + (ios26Offset ? 0 : 16) : 0)
                 + (ios26Offset ? 32 : 0)
-                - stackedOffset
             )
             .animation(.default, value: isTabbarHidden)
-            .animation(.easeInOut(duration: SnackbarConstants.animationDuration), value: stackedOffset)
             .padding(16)
             .gesture(dragGesture)
             .onTapGesture(perform: dismissSnackBar)

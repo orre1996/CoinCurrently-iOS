@@ -137,7 +137,6 @@ struct GasFeesScreen: View {
             .ignoresSafeArea(edges: .bottom)
         }
         .task {
-            AchievementManager.shared.increment(.gasFeesVisits)
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await viewModel.setStartData() }
                 group.addTask { await viewModel.getGasFees() }

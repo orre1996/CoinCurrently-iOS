@@ -108,17 +108,6 @@ struct CoinCurrentlyApp: View {
             }
             .environment(viewModel)
 
-            AchievementSnackbarView(
-                snackbarTrigger: viewModel.achievementSnackbarTrigger,
-                achievementTitle: $viewModel.achievementTitle,
-                levelName: $viewModel.achievementLevelName,
-                isTabbarHidden: viewModel.navPath.count > 1,
-                standardSnackbarIsVisible: viewModel.standardSnackbarIsVisible,
-                isPresented: $viewModel.achievementSnackbarIsVisible,
-                reportedHeight: $viewModel.achievementSnackbarHeight
-            )
-            .zIndex(1)
-
             SnackbarView(
                 showSnackBar: $viewModel.showSnackBar,
                 message: $viewModel.message,
@@ -126,10 +115,6 @@ struct CoinCurrentlyApp: View {
                 type: viewModel.snackBarType,
                 isTabbarHidden: viewModel.navPath.count > 1,
                 isOverlayShowing: viewModel.isTabBarOverlayShowing,
-                achievementSnackbarIsVisible: viewModel.achievementSnackbarIsVisible,
-                achievementSnackbarHeight: viewModel.achievementSnackbarIsVisible
-                    ? max(viewModel.achievementSnackbarHeight, 72)
-                    : 0,
                 isPresented: $viewModel.standardSnackbarIsVisible,
                 reportedHeight: $viewModel.standardSnackbarHeight,
                 overlayPressed: {
@@ -165,11 +150,7 @@ struct CoinCurrentlyApp: View {
         }
         .injectSafeAreaInsetsEnvironment()
         .preferredColorScheme(appColorScheme.preferredScheme)
-        .onAppear {
-            AchievementNavigationManager.register(viewModel)
-        }
         .task {
-            AchievementNavigationManager.register(viewModel)
             SiriNavigationManager.register(viewModel)
             
             await ToplistRepositoryImp.shared.migrateFavorites()
@@ -354,8 +335,6 @@ struct CoinCurrentlyApp: View {
             let nextActionPopupDate = Calendar.current.date(byAdding: .day, value: 4, to: Date()) ?? Date()
             SettingsManager.shared.setActionRatingDate(date: nextActionPopupDate)
         }
-
-        AchievementManager.shared.preloadProgress()
     }
     
     private func rateNowPressed(delay: Double = 5) {

@@ -240,9 +240,6 @@ final actor ToplistRepositoryImp: ToplistRepository {
             return []
         }
 
-        let previousCount = Double(cachedFavorites.data.count)
-        let isAdding = !cachedFavorites.data.contains(where: { $0.id == toplist.id })
-        
         if let index = cachedFavorites.data.firstIndex(where: { $0.id == toplist.id }) {
             cachedFavorites.data.remove(at: index)
         } else {
@@ -254,18 +251,6 @@ final actor ToplistRepositoryImp: ToplistRepository {
         await coreDataManager.set(cachedFavorites, forKey: .favorites)
         SettingsManager.shared.set(data: !cachedFavorites.data.isEmpty, key: AppSettingKey.hasHomeFavorites)
 
-#if IS_APP
-        if isAdding {
-            Task { @MainActor in
-                await AchievementManager.shared.checkMetricUnlock(
-                    for: .favoritesCount,
-                    previousValue: previousCount,
-                    newValue: previousCount + 1
-                )
-            }
-        }
-#endif
-        
         asyncMain {
             NotificationCenter.default.post(Notification(name: .showRatingView, object: nil, userInfo: [:]))
         }

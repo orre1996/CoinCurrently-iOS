@@ -35,7 +35,6 @@ struct PodcastNewsView: View {
                         AdaptiveButton(buttonAction: {
                             guard let url = news?.news_url, !url.isEmpty else { return }
                             
-                            AchievementManager.shared.increment(.newsArticlesOpened)
                             navigationViewModel.newsUrl = url
                         }) {
                             NewsCard(

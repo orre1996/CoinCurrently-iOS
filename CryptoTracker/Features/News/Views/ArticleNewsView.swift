@@ -70,7 +70,6 @@ struct ArticleNewsView: View {
                                 AnalyticsManager.shared.log(
                                     NewsOpened(fromScreen: .news)
                                 )
-                                AchievementManager.shared.increment(.newsArticlesOpened)
 
                                 navigationViewModel.newsUrl = url
                             }, content: {

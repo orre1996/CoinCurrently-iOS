@@ -152,9 +152,6 @@ final class AddTransactionViewModelImp: AddTransactionViewModel {
         
         let isNewTransaction = transaction == nil
 
-        await portfolioRepository.ensureCacheLoaded()
-        let previousTransactionCount = await portfolioRepository.cachedPortfolioPies?.data.allTransactionsCount ?? 0
-        
         let newTransaction = PortfolioTransaction(
             date: date,
             amount: amount,
@@ -192,8 +189,7 @@ final class AddTransactionViewModelImp: AddTransactionViewModel {
                 name: .newTransaction,
                 object: nil,
                 userInfo: [
-                    "transaction": newTransaction.id.uuidString,
-                    "previousTransactionCount": isNewTransaction ? previousTransactionCount : -1
+                    "transaction": newTransaction.id.uuidString
                 ]
             )
         )

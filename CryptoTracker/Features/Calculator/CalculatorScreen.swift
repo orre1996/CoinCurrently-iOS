@@ -120,7 +120,6 @@ struct CalculatorScreen: View {
                     input = "0"
                 } else if !input.isEmpty {
                     viewModel.input = input
-                    AchievementManager.shared.increment(.converterUses)
                 }
             }
         )

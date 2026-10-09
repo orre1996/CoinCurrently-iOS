@@ -58,16 +58,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
         
         NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: nil) { (_) in
             UNUserNotificationCenter.current().setBadgeCount(0, withCompletionHandler: nil)
-            AchievementStreakTracker.recordAppOpen()
-            Task { @MainActor in
-                await AchievementManager.shared.checkForNewUnlocks()
-            }
             NotificationCenter.default.post(name: Notification.Name.backFromBackground, object: nil, userInfo: [:])
-        }
-        
-        AchievementStreakTracker.recordAppOpen()
-        Task { @MainActor in
-            await AchievementManager.shared.checkForNewUnlocks()
         }
         
         UNUserNotificationCenter.current().setBadgeCount(0, withCompletionHandler: nil)

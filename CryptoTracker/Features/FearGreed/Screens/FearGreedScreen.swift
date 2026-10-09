@@ -144,7 +144,6 @@ struct FearGreedScreen: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .task {
-            AchievementManager.shared.increment(.fearGreedVisits)
             await viewModel.setStartData()
             await viewModel.getFearGreed()
         }

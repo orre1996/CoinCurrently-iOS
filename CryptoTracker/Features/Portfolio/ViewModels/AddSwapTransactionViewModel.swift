@@ -130,9 +130,6 @@ final class AddSwapTransactionViewModelImp: AddSwapTransactionViewModel {
         
         let isNewTransaction = transaction == nil
 
-        await portfolioRepository.ensureCacheLoaded()
-        let previousTransactionCount = await portfolioRepository.cachedPortfolioPies?.data.allTransactionsCount ?? 0
-        
         let newTransaction = PortfolioSwapTransaction(
             selectedCurrency: selectedCurrency.code,
             fromCurrencyId: currencyDetail?.id ?? "",
@@ -174,8 +171,7 @@ final class AddSwapTransactionViewModelImp: AddSwapTransactionViewModel {
                 name: .newTransaction,
                 object: nil,
                 userInfo: [
-                    "transaction": newTransaction.id.uuidString,
-                    "previousTransactionCount": isNewTransaction ? previousTransactionCount : -1
+                    "transaction": newTransaction.id.uuidString
                 ]
             )
         )

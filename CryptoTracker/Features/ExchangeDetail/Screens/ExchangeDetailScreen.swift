@@ -235,7 +235,6 @@ struct ExchangeDetailScreen: View {
         .toolbarBackground(Color.surface, for: .navigationBar)
         .navigationPopGestureDisabled(viewModel.isDragging)
         .task {
-            AchievementManager.shared.increment(.exchangeDetailsViewed)
             await viewModel.setStartData()
             await viewModel.refresh()
         }

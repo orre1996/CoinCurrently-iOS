@@ -88,25 +88,12 @@ final actor ReferralRepositoryImp: ReferralRepository {
 
     func getUser(ignoreCache: Bool = false) async -> UserResponse? {
         await ensureCacheLoaded()
-        let previousCount = Double(cachedUser?.data.referralCount ?? 0)
         let response: UserResponse? = await networkManager.get(endpoint: .user(ignoreCache: ignoreCache))
 
         if let response {
             cachedUser = CachedData(data: response, date: Date())
         }
 
-#if IS_APP
-        if let response {
-            Task { @MainActor in
-                await AchievementManager.shared.checkMetricUnlock(
-                    for: .referralsCompleted,
-                    previousValue: previousCount,
-                    newValue: Double(response.referralCount)
-                )
-            }
-        }
-#endif
-        
         return response ?? cachedUser?.data
     }
 }

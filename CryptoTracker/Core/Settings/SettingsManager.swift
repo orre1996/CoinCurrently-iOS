@@ -62,12 +62,6 @@ enum AppSettingKey: String, SettingKeyable {
     case isPortfolioPieChartShowing
     case treasuriesEntityFilter
     case treasuriesCoinId
-    case achievementLastOpenDate
-    case achievementCurrentStreak
-    case achievementLongestStreak
-    case achievementCounters
-    case achievementUnlockSnapshot
-    case achievementUnlockSnapshotInitialized
     case hasHomeFavorites
 
     var data: Data? {
@@ -200,8 +194,5 @@ class SettingsManager {
         set(data: false, key: AppSettingKey.hidePortfolioValues)
         set(data: false, key: AppSettingKey.lockRotation)
         set(data: false, key: AppSettingKey.colorBlindnessFilter)
-        set(data: AchievementCounters(), key: AppSettingKey.achievementCounters)
-        set(data: 0, key: AppSettingKey.achievementCurrentStreak)
-        set(data: 0, key: AppSettingKey.achievementLongestStreak)
     }
 }

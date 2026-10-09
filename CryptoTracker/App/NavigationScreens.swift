@@ -83,7 +83,6 @@ enum NavigationScreens: Codable, Equatable, Hashable {
     case CurrencySelector
     case Converter
     case PriceAlerts
-    case Achievements
     
     // General
     case BuyPro
@@ -136,8 +135,6 @@ enum NavigationScreens: Codable, Equatable, Hashable {
             "Converter"
         case .PriceAlerts:
             "PriceAlerts"
-        case .Achievements:
-            "Achievements"
         case .BuyPro:
             "Settings"
             
@@ -181,7 +178,6 @@ enum ScreenLabel: String {
     case currencySelector = "CurrencySelector"
     case converter = "Converter"
     case priceAlerts = "PriceAlerts"
-    case achievements = "Achievements"
     case settings = "Settings"
     case home = "Home"
     case portfolio = "Portfolio"

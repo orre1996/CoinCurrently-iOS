@@ -121,9 +121,6 @@ extension NavigationScreens {
         case .PriceAlerts:
             PriceAlertsScreen()
             
-        case .Achievements:
-            AchievementsScreen()
-            
         case .BuyPro, .Settings:
             // Used in watch app
             EmptyView()

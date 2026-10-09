@@ -369,8 +369,6 @@ struct CryptoDetailScreen: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .newTransaction, object: nil)) { notification in
             Task {
-                let previousTransactionCount = notification.userInfo?["previousTransactionCount"] as? Int
-
                 guard
                     let transaction = notification.userInfo?["transaction"] as? String else {
                     return
@@ -435,17 +433,9 @@ struct CryptoDetailScreen: View {
                         }
                     )
                 }
-
-                if let previousTransactionCount, previousTransactionCount >= 0 {
-                    try? await Task.sleep(for: .milliseconds(150))
-                    await AchievementManager.shared.checkPortfolioTransactionUnlock(
-                        previousCount: previousTransactionCount
-                    )
-                }
             }
         }
         .task {
-            AchievementManager.shared.increment(.cryptoDetailsViewed)
             await viewModel.setStartData()
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await alertsViewModel.load(coinId: viewModel.cryptoInfo?.id) }

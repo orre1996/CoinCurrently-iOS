@@ -13,17 +13,6 @@ enum AppColorScheme: String, CaseIterable {
     case dark = "Dark Mode"
     case system = "System"
 
-    func resolvedColorScheme(for scheme: ColorScheme) -> ColorScheme {
-        switch self {
-        case .light:
-            return .light
-        case .dark:
-            return .dark
-        case .system:
-            return scheme
-        }
-    }
-    
     var preferredScheme: ColorScheme? {
         switch self {
         case .system:
@@ -87,7 +76,6 @@ extension Color {
     static let onSurface = theme(lightHex: "#1C1B1B", darkHex: "#FCF8F8", assetName: "onSurface")
     static let outline = theme(lightHex: "#929090", darkHex: "#797776", assetName: "outline")
     static let outlineVariant = theme(lightHex: "#C9C6C5", darkHex: "#313030", assetName: "outlineVariant")
-    static let inverseOnContainer = theme(lightHex: "#E5E2E1", darkHex: "#1C1B1B", assetName: "inverseOnContainer")
     static let inverseSurface = theme(lightHex: "#1C1B1B", darkHex: "#E5E2E1", assetName: "inverseSurface")
     // Standard palette (green = up, red = down)
     private static let standardTrendUp = theme(lightHex: "#007F52", darkHex: "#42E099", assetName: "trendUp")

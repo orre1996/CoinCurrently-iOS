@@ -31,14 +31,6 @@ extension UIFont {
 }
 
 extension Font {
-    static func satoshiItalic(_ size: CGFloat) -> Font {
-        return Font.custom("Satoshi-Italic", size: size)
-    }
-    
-    static func satoshiLight(_ size: CGFloat) -> Font {
-        return Font.custom("Satoshi-Light", size: size)
-    }
-    
     static func satoshiRegular(_ size: CGFloat) -> Font {
         return Font.custom("Satoshi-Regular", size: size)
     }
@@ -51,23 +43,8 @@ extension Font {
         return Font.custom("Satoshi-Bold", size: size)
     }
     
-    static func satoshiBlack(_ size: CGFloat) -> Font {
-        return Font.custom("Satoshi-Black", size: size)
-    }
-    
-    
-    
-    
-    static func poppinsLight(_ size: CGFloat) -> Font {
-        return Font.custom("Poppins-Light", size: size)
-    }
-    
     static func poppinsRegular(_ size: CGFloat) -> Font {
         return Font.custom("Poppins-Regular", size: size)
-    }
-
-    static func poppinsMedium(_ size: CGFloat) -> Font {
-        return Font.custom("Poppins-Medium", size: size)
     }
     
     static func poppinsSemibold(_ size: CGFloat) -> Font {

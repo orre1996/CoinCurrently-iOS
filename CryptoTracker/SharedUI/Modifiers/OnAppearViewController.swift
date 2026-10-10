@@ -16,14 +16,6 @@ protocol ViewDidAppearDelegate: AnyObject {
     func viewDidAppear()
 }
 
-protocol ViewWillDisappearDelegate: AnyObject {
-    func viewWillDisappear()
-}
-
-protocol ViewDidDisappearDelegate: AnyObject {
-    func viewDidDisappear()
-}
-
 struct UIKitWillAppear: UIViewControllerRepresentable {
     let action: () -> Void
     
@@ -80,62 +72,6 @@ struct UIKitDidAppear: UIViewControllerRepresentable {
     }
 }
 
-struct UIKitWillDisappear: UIViewControllerRepresentable {
-    let action: () -> Void
-    
-    func makeUIViewController(context: Context) -> UIWillDisappearViewController {
-        let viewController = UIWillDisappearViewController()
-        viewController.delegate = context.coordinator
-        return viewController
-    }
-    
-    func updateUIViewController(_ controller: UIWillDisappearViewController, context: Context) {}
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(action: self.action)
-    }
-    
-    class Coordinator: ViewWillDisappearDelegate {
-        var action: () -> Void
-        
-        init(action: @escaping () -> Void) {
-            self.action = action
-        }
-        
-        func viewWillDisappear() {
-            self.action()
-        }
-    }
-}
-
-struct UIKitDidDisappear: UIViewControllerRepresentable {
-    let action: () -> Void
-    
-    func makeUIViewController(context: Context) -> UIDidDisappearViewController {
-        let viewController = UIDidDisappearViewController()
-        viewController.delegate = context.coordinator
-        return viewController
-    }
-    
-    func updateUIViewController(_ controller: UIDidDisappearViewController, context: Context) {}
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(action: self.action)
-    }
-    
-    class Coordinator: ViewDidDisappearDelegate {
-        var action: () -> Void
-        
-        init(action: @escaping () -> Void) {
-            self.action = action
-        }
-        
-        func viewDidDisappear() {
-            self.action()
-        }
-    }
-}
-
 class UIWillAppearViewController: UIViewController {
     weak var delegate: ViewWillAppearDelegate?
 
@@ -154,24 +90,6 @@ class UIDidAppearViewController: UIViewController {
     }
 }
 
-class UIWillDisappearViewController: UIViewController {
-    weak var delegate: ViewWillDisappearDelegate?
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        delegate?.viewWillDisappear()
-    }
-}
-
-class UIDidDisappearViewController: UIViewController {
-    weak var delegate: ViewDidDisappearDelegate?
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        delegate?.viewDidDisappear()
-    }
-}
-
 extension View {
     func onUIKitWillAppear(_ perform: @escaping () -> Void) -> some View {
         self.background(UIKitWillAppear(action: perform))
@@ -179,13 +97,5 @@ extension View {
 
     func onUIKitDidAppear(_ perform: @escaping () -> Void) -> some View {
         self.background(UIKitDidAppear(action: perform))
-    }
-
-    func onUIKitWillDisappear(_ perform: @escaping () -> Void) -> some View {
-        self.background(UIKitWillDisappear(action: perform))
-    }
-
-    func onUIKitDidDisappear(_ perform: @escaping () -> Void) -> some View {
-        self.background(UIKitDidDisappear(action: perform))
     }
 }

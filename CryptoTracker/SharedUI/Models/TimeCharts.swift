@@ -22,19 +22,6 @@ enum TimeCharts: Int, Comparable, Codable {
     case sixMonths = 7
     case twoYears = 8
     
-    static func getPreferredTimeframe() -> TimeCharts {
-        switch SettingsManager.shared.get(key: GlobalSettingKey.selectedTimeframe) ?? PreferredTimeframe.weekly {
-        case .daily:
-            return .aDay
-            
-        case .weekly:
-            return .aWeek
-            
-        case .monthly:
-            return .aMonth
-        }
-    }
-    
     var timeframe: String {
         switch self {
         case .anHour:

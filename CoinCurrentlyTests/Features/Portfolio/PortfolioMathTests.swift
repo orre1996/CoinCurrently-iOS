@@ -96,7 +96,7 @@ struct PortfolioExportBuilderTests {
     }
 
     @Test("Koinly CSV keeps the tax header")
-    func koinlyCSV() {
+    func koinlyCSV() throws {
         let csv = try #require(PortfolioExportBuilder.content(for: .koinly, from: [samplePie]))
         #expect(csv.hasPrefix("Date,Sent Amount,Sent Currency,Received Amount,Received Currency,Fee Amount,Fee Currency,Description"))
         #expect(csv.contains("BTC"))

@@ -16,25 +16,12 @@ func +? <T>(lhs: [T]?, rhs: [T]?) -> [T]? {
 }
 
 extension Array {
-    func takeElements(elementCount: Int) -> Array {
-        if (elementCount > count) {
-            return Array(self[0..<count])
-        }
-        return Array(self[0..<elementCount])
-    }
-
     subscript(safely index: Int) -> Element? {
         if index < count && index >= 0 {
             return self[index]
         }
         
         return nil
-    }
-
-    func chunked(into size: Int) -> [[Element]] {
-        return stride(from: 0, to: count, by: size).map {
-            Array(self[$0 ..< Swift.min($0 + size, count)])
-        }
     }
 }
 
@@ -134,12 +121,5 @@ extension Array where Element == [Double] {
     func lowest() -> Double {
         let lowest = self.min(by: {$0.last ?? 0.0 < $1.last ?? 0.0})
         return Double(lowest?.last ?? 0.0)
-    }
-}
-
-extension Array where Element: Codable {
-    func asJSONString() -> String? {
-        guard let data = try? JSONEncoder().encode(self) else { return nil }
-        return String(data: data, encoding: .utf8)
     }
 }

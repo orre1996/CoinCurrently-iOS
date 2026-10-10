@@ -209,6 +209,8 @@ struct NetworkManagerTests {
             MockURLProtocol.reset()
             defer { MockURLProtocol.reset() }
 
+            await CoreDataManager.shared.set([String: CachedData<Data>](), forKey: .networkCache)
+
             MockURLProtocol.mockData = "invalid json".data(using: .utf8)
             MockURLProtocol.mockResponse = HTTPURLResponse(
                 url: URL(string: "https://example.com")!,
@@ -305,6 +307,8 @@ struct NetworkManagerTests {
         func getReturnsNilOnHTTPError() async {
             MockURLProtocol.reset()
             defer { MockURLProtocol.reset() }
+
+            await CoreDataManager.shared.set([String: CachedData<Data>](), forKey: .networkCache)
 
             let jsonData = """
             {"id": "bitcoin", "value": 1}

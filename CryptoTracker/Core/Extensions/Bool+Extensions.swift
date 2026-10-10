@@ -58,42 +58,6 @@ extension UIDevice {
         return (keyWindow?.safeAreaInsets.bottom) ?? 0
         
     }
-    
-    func getSafeAreaLeading() -> CGFloat {
-        
-        let keyWindow = UIApplication.shared.connectedScenes
-        
-            .filter({$0.activationState == .foregroundActive})
-        
-            .map({$0 as? UIWindowScene})
-        
-            .compactMap({$0})
-        
-            .first?.windows
-        
-            .filter({$0.isKeyWindow}).first
-        
-        return (keyWindow?.safeAreaInsets.left) ?? 0
-        
-    }
-
-    func getSafeAreaTrailing() -> CGFloat {
-        
-        let keyWindow = UIApplication.shared.connectedScenes
-        
-            .filter({$0.activationState == .foregroundActive})
-        
-            .map({$0 as? UIWindowScene})
-        
-            .compactMap({$0})
-        
-            .first?.windows
-        
-            .filter({ $0.isKeyWindow }).first
-        
-        return (keyWindow?.safeAreaInsets.right) ?? 0
-        
-    }
 }
 
 extension Bool {

@@ -7,38 +7,6 @@
 
 import SwiftUI
 
-struct FearGreedArrow: Shape {
-    func path(in rect: CGRect) -> Path {
-        return Path { path in
-            path.move(to: CGPoint(x: 0, y: 0.4 * rect.height))
-            
-            path.addLine(to: CGPoint(x: 0.5 * rect.width, y: 0.1 * rect.height))
-            
-            path.addLine(to: CGPoint(x: 0.5 * rect.width, y: 0.9 * rect.height))
-            
-            path.addLine(to: CGPoint(x: 0, y: 0.6 * rect.height))
-            
-            path.closeSubpath()
-        }
-    }
-}
-
-struct RoundedTriangle: Shape {
-    func path(in rect: CGRect) -> Path {
-        return Path { path in
-            path.move(to: CGPoint(x: 0.5 * rect.width, y: 0))
-            
-            path.addLine(to: CGPoint(x: rect.width, y: rect.height))
-            
-            path.addLine(to: CGPoint(x: 0, y: rect.height))
-            
-            path.closeSubpath()
-            
-        }
-        .strokedPath(StrokeStyle(lineWidth: 12, lineJoin: .round))
-    }
-}
-
 #if IS_APP
 func getIndexColor(indexValue: String) -> Color {
     let intValue = Int(indexValue) ?? 0

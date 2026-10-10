@@ -114,11 +114,10 @@ actor MockFirebaseManager: FirebaseManager {
         return try? JSONDecoder().decode(T.self, from: configValue)
     }
     func getUserToken() async -> String? { tokenResult }
-    func login() async -> (needsToUpdate: Bool, isBanned: Bool) { (false, false) }
-    func sendFeedback(rating: Int, feedback: String) async -> Bool { false }
-    func isUserBanned() async -> Bool { false }
+    func login() async -> Bool { false }
+    func syncRevenueCatCustomerInfo() async {}
     func compareVersions(_ v1: String, _ v2: String) -> ComparisonResult { .orderedSame }
-    func compareAppVersion(with version: String?) -> ComparisonResult { .orderedSame }
+    func compareAppVersion(with version: String?) async -> ComparisonResult { .orderedSame }
     func removeUser() async {}
 }
 

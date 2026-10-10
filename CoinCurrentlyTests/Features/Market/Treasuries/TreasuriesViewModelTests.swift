@@ -1,6 +1,8 @@
+import Foundation
 import Testing
 @testable import CoinCurrently
 
+@MainActor
 @Suite("TreasuriesViewModel Tests")
 struct TreasuriesViewModelTests {
 
@@ -30,7 +32,10 @@ struct TreasuriesViewModelTests {
         ])
         let viewModel = TreasuriesViewModelImp(
             publicTreasuryRepository: mockRepo,
-            toplistRepository: MockTreasuryToplistRepository()
+            toplistRepository: MockTreasuryToplistRepository(),
+        
+            cryptoDetailRepository: sampleBitcoinRepository(),
+            storageManager: emptyStorageManager()
         )
 
         await viewModel.setStartData()
@@ -86,7 +91,10 @@ struct TreasuriesViewModelTests {
         ])
         let viewModel = TreasuriesViewModelImp(
             publicTreasuryRepository: mockRepo,
-            toplistRepository: MockTreasuryToplistRepository()
+            toplistRepository: MockTreasuryToplistRepository(),
+        
+            cryptoDetailRepository: sampleBitcoinRepository(),
+            storageManager: emptyStorageManager()
         )
 
         await viewModel.getTreasuries()
@@ -145,7 +153,10 @@ struct TreasuriesViewModelTests {
         ])
         let viewModel = TreasuriesViewModelImp(
             publicTreasuryRepository: mockRepo,
-            toplistRepository: MockTreasuryToplistRepository()
+            toplistRepository: MockTreasuryToplistRepository(),
+        
+            cryptoDetailRepository: sampleBitcoinRepository(),
+            storageManager: emptyStorageManager()
         )
 
         await viewModel.getTreasuries()
@@ -200,7 +211,10 @@ struct TreasuriesViewModelTests {
         ])
         let viewModel = TreasuriesViewModelImp(
             publicTreasuryRepository: mockRepo,
-            toplistRepository: MockTreasuryToplistRepository()
+            toplistRepository: MockTreasuryToplistRepository(),
+        
+            cryptoDetailRepository: sampleBitcoinRepository(),
+            storageManager: emptyStorageManager()
         )
 
         await viewModel.getTreasuries()
@@ -240,17 +254,23 @@ struct TreasuriesViewModelTests {
             governments: nil
         )
 
-        let mockRepo = MockPublicTreasuryRepository(fetchResults: [
-            .companies: companiesTreasury
-        ])
+        let mockRepo = MockPublicTreasuryRepository(
+            fetchResults: [
+                .companies: companiesTreasury
+            ],
+            delaysFetch: true
+        )
         let viewModel = TreasuriesViewModelImp(
             publicTreasuryRepository: mockRepo,
             toplistRepository: MockTreasuryToplistRepository(
                 smallToplist: [
-                    Toplist(id: "bitcoin", name: "Bitcoin", symbol: "btc"),
-                    Toplist(id: "ethereum", name: "Ethereum", symbol: "eth")
+                    Toplist(id: "bitcoin", symbol: "btc", name: "Bitcoin"),
+                    Toplist(id: "ethereum", symbol: "eth", name: "Ethereum")
                 ]
-            )
+            ),
+        
+            cryptoDetailRepository: sampleBitcoinRepository(),
+            storageManager: emptyStorageManager()
         )
 
         await viewModel.loadAvailableCoins()
@@ -258,7 +278,7 @@ struct TreasuriesViewModelTests {
         #expect(viewModel.holders.count == 1)
 
         let fetchTask = Task {
-            await viewModel.setSelectedCoin(Toplist(id: "ethereum", name: "Ethereum", symbol: "eth"))
+            await viewModel.setSelectedCoin(Toplist(id: "ethereum", symbol: "eth", name: "Ethereum"))
         }
 
         try? await Task.sleep(nanoseconds: 10_000_000)
@@ -283,7 +303,10 @@ struct TreasuriesViewModelTests {
         ])
         let viewModel = TreasuriesViewModelImp(
             publicTreasuryRepository: mockRepo,
-            toplistRepository: MockTreasuryToplistRepository()
+            toplistRepository: MockTreasuryToplistRepository(),
+        
+            cryptoDetailRepository: sampleBitcoinRepository(),
+            storageManager: emptyStorageManager()
         )
 
         await viewModel.getTreasuries()
@@ -298,11 +321,14 @@ struct TreasuriesViewModelTests {
             publicTreasuryRepository: MockPublicTreasuryRepository(),
             toplistRepository: MockTreasuryToplistRepository(
                 smallToplist: [
-                    Toplist(id: "bitcoin", name: "Bitcoin", symbol: "btc"),
-                    Toplist(id: "ethereum", name: "Ethereum", symbol: "eth"),
-                    Toplist(id: "dogecoin", name: "Dogecoin", symbol: "doge")
+                    Toplist(id: "bitcoin", symbol: "btc", name: "Bitcoin"),
+                    Toplist(id: "ethereum", symbol: "eth", name: "Ethereum"),
+                    Toplist(id: "dogecoin", symbol: "doge", name: "Dogecoin")
                 ]
-            )
+            ),
+        
+            cryptoDetailRepository: sampleBitcoinRepository(),
+            storageManager: emptyStorageManager()
         )
 
         await viewModel.loadAvailableCoins()
@@ -320,9 +346,11 @@ private actor MockPublicTreasuryRepository: PublicTreasuryRepository {
 
     init(
         cachedTreasuries: [TreasuryEntity: PublicTreasuryModel] = [:],
-        fetchResults: [TreasuryEntity: PublicTreasuryModel] = [:]
+        fetchResults: [TreasuryEntity: PublicTreasuryModel] = [:],
+        delaysFetch: Bool = false
     ) {
         self.fetchResults = fetchResults
+        self.delaysFetch = delaysFetch
 
         cachedTreasuries.forEach { entity, treasury in
             cachedPublicTreasury["\(entity.rawValue)-bitcoin"] = CachedData(data: treasury, date: Date())
@@ -346,13 +374,18 @@ private actor MockPublicTreasuryRepository: PublicTreasuryRepository {
         holder.id
     }
 
+    var delaysFetch = false
+
     func getPublicTreasury(
         entity: TreasuryEntity,
         coinId: String,
         page: Int,
         perPage: Int
     ) async -> PublicTreasuryModel? {
-        fetchResults[entity]
+        if delaysFetch {
+            try? await Task.sleep(for: .milliseconds(150))
+        }
+        return fetchResults[entity]
     }
 }
 

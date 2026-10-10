@@ -159,14 +159,6 @@ extension Date {
         return (Date().timeIntervalSince(self) > 60 * Double(Date.cacheTime(hasBoughtPro: hasBoughtPro)))
     }
     
-    func moreThanSixtyMinutesAgo() -> Bool {
-        return (Date().timeIntervalSince(self) > 60 * 60)
-    }
-    
-    func moreThanTwoDays() -> Bool {
-        return (Date().timeIntervalSince(self) > 60 * 60 * 24 * 2)
-    }
-    
     func moreThanAMonth() -> Bool {
         return (Date().timeIntervalSince(self) > 60 * 60 * 24 * 30)
     }
@@ -177,11 +169,6 @@ extension Date {
     
     static var fiftyYearsAgo: Date {
         return Date(timeIntervalSinceNow: -60 * 60 * 24 * 365 * 50)
-    }
-    
-    func zeroMinutesAndSeconds(using calendar: Calendar = .current) -> Date {
-        let components = calendar.dateComponents([.year, .month, .day, .hour], from: self)
-        return calendar.date(from: components) ?? self
     }
     
     func localizedDescription(

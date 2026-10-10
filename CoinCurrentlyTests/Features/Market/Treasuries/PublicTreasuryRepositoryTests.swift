@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import CoinCurrently
 
@@ -49,7 +50,8 @@ struct PublicTreasuryRepositoryTests {
         #expect(result?.holders.count == 1)
         #expect(result?.holders.first?.name == "Strategy")
         #expect(result?.holders.first?.id == "strategy")
-        #expect(mock.entitiesListCallCount(for: .companies) == 1)
+        let companyListCalls = await mock.entitiesListCallCount(for: .companies)
+        #expect(companyListCalls == 2)
     }
 
     @Test("entityId resolves id from entities list")
@@ -114,7 +116,8 @@ struct PublicTreasuryRepositoryTests {
         let resolved = await repo.holderWithEntityId(holder, entity: .companies)
 
         #expect(resolved.id == "strategy")
-        #expect(mock.entitiesListCallCount(for: .companies) == 1)
+        let companyListCalls = await mock.entitiesListCallCount(for: .companies)
+        #expect(companyListCalls == 1)
     }
 
     @Test("getPublicTreasury returns nil when network fails")
@@ -201,7 +204,7 @@ private actor MockTreasuryNetworkManager: NetworkManager {
         entitiesListCalls[entity, default: 0]
     }
 
-    func setCurrentScreen(_ screen: String) async {}
+    func setCurrentScreen(_ screen: String) {}
 
     func getCached<T: Decodable>(endpoint: Endpoint) async -> T? {
         nil

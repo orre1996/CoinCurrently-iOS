@@ -152,30 +152,6 @@ final actor CryptoDetailRepositoryImp: CryptoDetailRepository {
         return cryptoDetails
     }
     
-    func getCompareCurrencyDetails(
-        mainId: String?,
-        compareId: String?
-    ) async -> (CurrencyDataModel?, CurrencyDataModel?) {
-        await ensureCacheLoaded()
-        guard let mainId, let compareId else {
-            return (nil, nil)
-        }
-        
-        async let mainDetail: CurrencyDataModel? = networkManager.get(endpoint: .coin(id: mainId, useFreeEndpoint: true))
-        async let compareDetail: CurrencyDataModel? = networkManager.get(endpoint: .coin(id: compareId, useFreeEndpoint: true))
-        
-        let (main, compare) = await (mainDetail, compareDetail)
-        
-        if let main {
-            cachedCryptoDetail[mainId] = CachedData(data: main, date: Date())
-        }
-        if let compare {
-            cachedCryptoDetail[compareId] = CachedData(data: compare, date: Date())
-        }
-        
-        return (main, compare)
-    }
-
     func getCurrencyPrices(
         id: String?,
         chart: TimeCharts

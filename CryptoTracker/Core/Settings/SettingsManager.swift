@@ -117,10 +117,6 @@ class SettingsManager {
         set(data: enabled, key: AppSettingKey.colorBlindnessFilter)
     }
 
-    func getHasOnboardedSettings() -> Date? {
-        get(key: AppSettingKey.hasOnboardedSettings)
-    }
-
     func setHasOnboardedSettings(date: Date) {
         set(data: date, key: AppSettingKey.hasOnboardedSettings)
     }

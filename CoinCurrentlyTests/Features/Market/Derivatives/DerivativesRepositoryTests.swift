@@ -13,7 +13,7 @@ struct DerivativesRepositoryTests {
             networkManager: mock
         )
 
-        let result = await repo.getDerivatives()
+        let result = await repo.getDerivatives(sortOption: .openInterestDesc)
         #expect(result != nil)
         #expect(result?.count == 1)
     }
@@ -26,7 +26,7 @@ struct DerivativesRepositoryTests {
             networkManager: mock
         )
 
-        let result = await repo.getDerivatives()
+        let result = await repo.getDerivatives(sortOption: .openInterestDesc)
         #expect(result == nil)
     }
 }

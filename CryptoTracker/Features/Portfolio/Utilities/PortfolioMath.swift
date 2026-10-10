@@ -104,14 +104,6 @@ extension Array where Element == PortfolioTransaction {
         - sumAmounts(of: .transferOut, withTransfers: withTransfers, after: after, before: before)
     }
 
-    func afterDate(_ date: Date) -> [PortfolioTransaction] {
-        filtered(after: date)
-    }
-
-    func beforeDate(_ date: Date) -> [PortfolioTransaction] {
-        filtered(before: date)
-    }
-
     private func priceMultiplier(
         prices: [String: Double]?,
         showCurrency: String,
@@ -125,19 +117,6 @@ extension Array where Element == PortfolioTransaction {
     private func safeValue(_ value: Double) -> Double? {
         guard !value.isNaN && !value.isInfinite else { return nil }
         return value
-    }
-
-    func getTotalFees(
-        prices: [String: Double]?,
-        showCurrency: String
-    ) -> Double? {
-        let fees = compactMap { tx -> Double? in
-            guard let _ = tx.pricePerCoin else { return nil }
-            let multiplier = priceMultiplier(prices: prices, showCurrency: showCurrency, transactionCurrency: tx.currency)
-            return tx.fee * multiplier
-        }.reduce(0, +)
-
-        return safeValue(fees) ?? 0
     }
 
     func getTotalCost(

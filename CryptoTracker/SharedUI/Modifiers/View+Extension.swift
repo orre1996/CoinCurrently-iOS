@@ -65,22 +65,6 @@ extension View {
         }
     }
     
-    @ViewBuilder func whenAboveIOS27<Content: View>(@ViewBuilder content: (Self) -> Content) -> some View {
-        if #available(iOS 27, *) {
-            content(self)
-        } else {
-            self
-        }
-    }
-
-    @ViewBuilder func whenAboveIOS26<Content: View>(@ViewBuilder content: (Self) -> Content) -> some View {
-        if #available(iOS 26, *) {
-            content(self)
-        } else {
-            self
-        }
-    }
-
     @ViewBuilder func whenBelowIOS26<Content: View>(@ViewBuilder content: (Self) -> Content) -> some View {
         if #available(iOS 26, *) {
             self
@@ -89,47 +73,12 @@ extension View {
         }
     }
 
-    @inlinable
-    public func reverseMask<Mask: View>(
-      alignment: Alignment = .center,
-      @ViewBuilder _ mask: () -> Mask
-    ) -> some View {
-      self.mask {
-          ZStack(alignment: alignment) {
-          Rectangle() // destination
-          mask()      // source
-            .blendMode(.destinationOut)
-        }
-      }
-    }
-
     func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
         onGeometryChange(for: CGSize.self) { proxy in
             proxy.size
         } action: {
             onChange($0)
         }
-    }
-    
-    func readPosition(onChange: @escaping (CGRect) -> Void) -> some View {
-        onGeometryChange(for: CGRect.self) { proxy in
-            proxy.frame(in: .global)
-        } action: {
-            onChange($0)
-        }
-    }
-
-    @ViewBuilder
-    func optionalGlassButtonStyle() -> some View {
-        #if os(iOS)
-        if #available(iOS 26, *) {
-            self.buttonStyle(.glass)
-        } else {
-            self.buttonStyle(.plain)
-        }
-        #else
-        self.buttonStyle(.plain)
-        #endif
     }
 
     @ViewBuilder
@@ -182,24 +131,6 @@ extension View {
     func endTextEditing() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
                                         to: nil, from: nil, for: nil)
-    }
-    
-    func onAppCameToForeground(perform action: @escaping () -> Void) -> some View {
-        self.onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            action()
-        }
-    }
-    
-    func onAppWillGoToBackground(perform action: @escaping () -> Void) -> some View {
-        self.onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
-            action()
-        }
-    }
-    
-    func hasScrollEnabled(_ value: Bool) -> some View {
-        self.onAppear {
-            UITableView.appearance().isScrollEnabled = value
-        }
     }
     
     func onAppDidBecomeActive(perform action: @escaping () -> Void) -> some View {

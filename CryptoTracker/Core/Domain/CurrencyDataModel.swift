@@ -52,19 +52,6 @@ struct MarketData: Codable, Equatable, Hashable {
     var atl: [String: Double]?
     var atl_change_percentage: [String: Double]?
     var atl_date: [String: String]?
-    
-    func getPreferredChange() -> Double {
-        switch SettingsManager.shared.get(key: GlobalSettingKey.selectedTimeframe) ?? PreferredTimeframe.weekly {
-            case .daily:
-                return price_change_percentage_24h ?? 0.0
-
-            case .weekly:
-                return price_change_percentage_7d ?? 0.0
-
-            case .monthly:
-                return price_change_percentage_30d ?? 0.0
-        }
-    }
 }
 
 struct Ticker: Codable, Equatable, Hashable {

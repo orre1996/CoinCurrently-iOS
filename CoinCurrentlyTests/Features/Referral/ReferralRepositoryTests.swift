@@ -133,7 +133,7 @@ struct ReferralRepositoryTests {
         ))
         let mock = MockRepoNetworkManager(getRawResult: (data, response))
 
-        let repo = ReferralRepositoryImp(networkManager: mock)
+        let repo = ReferralRepositoryImp(networkManager: mock, storageManager: emptyStorageManager())
         let result = await repo.getReferralCode()
 
         let callCount = await mock.getRawCallCount
@@ -146,7 +146,7 @@ struct ReferralRepositoryTests {
     func getReferralCodeReturnsNil() async {
         let mock = MockRepoNetworkManager(getRawResult: nil)
 
-        let repo = ReferralRepositoryImp(networkManager: mock)
+        let repo = ReferralRepositoryImp(networkManager: mock, storageManager: emptyStorageManager())
         let result = await repo.getReferralCode()
 
         #expect(result == nil)
@@ -164,7 +164,7 @@ struct ReferralRepositoryTests {
         ))
         let mock = MockRepoNetworkManager(getRawResult: (data, response))
 
-        let repo = ReferralRepositoryImp(networkManager: mock)
+        let repo = ReferralRepositoryImp(networkManager: mock, storageManager: emptyStorageManager())
         let result = await repo.getReferralCode()
 
         #expect(result == nil)
@@ -174,7 +174,7 @@ struct ReferralRepositoryTests {
     func redeemCodeReturnsSuccess() async {
         let mock = MockRepoNetworkManager(postResult: (EmptyResponse(), 200))
 
-        let repo = ReferralRepositoryImp(networkManager: mock)
+        let repo = ReferralRepositoryImp(networkManager: mock, storageManager: emptyStorageManager())
         let result = await repo.redeemCode(refCode: "ABC1234567")
 
         let callCount = await mock.postCallCount
@@ -186,7 +186,7 @@ struct ReferralRepositoryTests {
     func redeemCodeReturnsInvalidCode() async {
         let mock = MockRepoNetworkManager(postResult: (nil, 404))
 
-        let repo = ReferralRepositoryImp(networkManager: mock)
+        let repo = ReferralRepositoryImp(networkManager: mock, storageManager: emptyStorageManager())
         let result = await repo.redeemCode(refCode: "ABC1234567")
 
         #expect(result == .invalidCode)
@@ -197,7 +197,7 @@ struct ReferralRepositoryTests {
     func redeemCodeReturnsAlreadyReferred() async {
         let mock = MockRepoNetworkManager(postResult: (nil, 400))
 
-        let repo = ReferralRepositoryImp(networkManager: mock)
+        let repo = ReferralRepositoryImp(networkManager: mock, storageManager: emptyStorageManager())
         let result = await repo.redeemCode(refCode: "ABC1234567")
 
         #expect(result == .alreadyReferred)
@@ -208,7 +208,7 @@ struct ReferralRepositoryTests {
     func redeemCodeReturnsSelfRedeem() async {
         let mock = MockRepoNetworkManager(postResult: (nil, 418))
 
-        let repo = ReferralRepositoryImp(networkManager: mock)
+        let repo = ReferralRepositoryImp(networkManager: mock, storageManager: emptyStorageManager())
         let result = await repo.redeemCode(refCode: "ABC1234567")
 
         #expect(result == .selfRedeem)
@@ -219,7 +219,7 @@ struct ReferralRepositoryTests {
     func redeemCodeReturnsFailure() async {
         let mock = MockRepoNetworkManager(postResult: (nil, 500))
 
-        let repo = ReferralRepositoryImp(networkManager: mock)
+        let repo = ReferralRepositoryImp(networkManager: mock, storageManager: emptyStorageManager())
         let result = await repo.redeemCode(refCode: "ABC1234567")
 
         #expect(result == .failure)

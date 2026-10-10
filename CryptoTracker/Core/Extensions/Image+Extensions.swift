@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WidgetKit
 
 extension Image {
     // MARK: - Social media
@@ -116,29 +115,12 @@ extension Image {
     
     static let sector = Image("sector")
     
-    static let checkmark = Image(systemName: "checkmark")
     static let lock = Image(systemName: "lock")
     static let clearButton = Image(systemName: "multiply.circle.fill")
     
-    static let lightning = Image("lightning")
     static let home = Image("home")
     static let portfolio = Image("portfolio")
     static let market = Image("market")
     static let news = Image("news")
     static let settings = Image("settings")
 }
-
-#if IS_WIDGET
-extension Image {
-    static func getAppIcon(for scheme: ColorScheme) -> Image {
-        switch scheme {
-        case .light:
-            return Image("AppIconLight")
-        case .dark:
-            return Image("AppIconDark")
-        @unknown default:
-            return Image("AppIconDark")
-        }
-    }
-}
-#endif

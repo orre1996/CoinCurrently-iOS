@@ -49,7 +49,7 @@ struct PriceAlertsRepositoryTests {
             firebaseManager: MockFirebaseManager()
         )
 
-        let result = await repo.getAlertPrices()
+        let result = await repo.getAlertPrices(ids: ["bitcoin"])
         #expect(result == nil)
     }
 

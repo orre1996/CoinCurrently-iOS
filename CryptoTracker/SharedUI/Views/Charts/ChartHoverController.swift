@@ -61,12 +61,6 @@ class ChartHoverController {
         #endif
     }
     
-    func resetValues() {
-        offset = []
-        hoverPrices = []
-        hoverTimes = []
-    }
-    
     func getHoverPrice(readerSize: CGSize, offset: [CGPoint], prices: [Double], dates: [Double], timeChart: TimeCharts?, compareDates: [Double]? = nil, comparePrices: [Double]? = nil, inFearGreedView: Bool = false, isDragging: Bool) {
         // Pre-compute loop-invariant values
         let mainMinTime = dates.lazy.filter { $0 != -1 }.min() ?? .infinity
@@ -134,81 +128,6 @@ class ChartHoverController {
         default:
             return "MMM dd '\(localizedAt)' \(timeSuffix)"
         }
-    }
-    
-    func getTimeOnHover(index: Int, dates: [Double], timeChart: TimeCharts?, dontShowTime: Bool = false) -> String {
-        let date = Date(timeIntervalSince1970: (dates[safely: index] ?? 0.0) / 1000)
-        applyDisplayLocale()
-        dateFormatter.dateFormat = getHoverDateFormat(timeChart: timeChart, dontShowTime: dontShowTime)
-        return dateFormatter.string(from: date)
-    }
-    
-    func getTemporaryTimeOnHover(index: Int, dates: [Double]) -> String {
-        let date = Date(timeIntervalSince1970: (dates[safely: index] ?? 0.0) / 1000)
-        applyDisplayLocale()
-        dateFormatter.dateFormat = "dd MMM '\(localizedAt)' \(Date.uses24HourClock ? "HH:mm" : "hh:mm a")"
-        return dateFormatter.string(from: date)
-    }
-    
-    func getHoverPriceExchange(readerSize: CGSize, offset: [CGPoint], prices: [Double], dates: [Double], timeChart: TimeCharts?, isDragging: Bool) {
-        guard readerSize != .zero else { return }
-
-        let offsetCount = offset.count
-        
-        var localPricesArray = [Double]()
-        var localTimes = [String]()
-        var tempPositions = [Int]()
-        
-        localPricesArray.reserveCapacity(offsetCount)
-        localTimes.reserveCapacity(offsetCount)
-        tempPositions.reserveCapacity(offsetCount)
-        
-        // First pass: compute positions and prices
-        for point in offset {
-            let position = chartLinearSeriesIndex(x: point.x, width: readerSize.width, pointCount: prices.count)
-            tempPositions.append(position)
-            localPricesArray.append(prices[safely: position] ?? 0.0)
-        }
-        
-        // Second pass: format times (one dateFormat set)
-        applyDisplayLocale()
-        dateFormatter.dateFormat = getExchangeDateFormat(timeChart: timeChart)
-        for position in tempPositions {
-            let date = Date(timeIntervalSince1970: (dates[safely: position] ?? 0.0) / 1000)
-            localTimes.append(dateFormatter.string(from: date))
-        }
-    
-        if latestPositions != tempPositions && isDragging {
-            hapticFeedback()
-        }
-
-        latestPositions = tempPositions
-        hoverPrices = localPricesArray
-        hoverTimes = localTimes
-    }
-    
-    func getExchangeDateFormat(timeChart: TimeCharts?) -> String {
-        let timeSuffix = Date.uses24HourClock ? "HH:mm" : "hh:mm a"
-        
-        switch timeChart {
-        case .aDay, .aWeek:
-            return "MMM dd '\(localizedAt)' \(timeSuffix)"
-        case .aMonth, .aYear:
-            return "MMM dd, YYYY"
-        case .max:
-            return "MMM YYYY"
-        default:
-            return "dd MMM '\(localizedAt)' \(timeSuffix)"
-        }
-    }
-    
-    func getTimeOnHoverExchange(readerSize: CGSize, offset: CGPoint, prices: [Double], dates: [Double], timeChart: TimeCharts?) -> String {
-        let position = chartLinearSeriesIndex(x: offset.x, width: readerSize.width, pointCount: prices.count)
-        
-        let date = Date(timeIntervalSince1970: (dates[safely: position] ?? 0.0) / 1000)
-        applyDisplayLocale()
-        dateFormatter.dateFormat = getExchangeDateFormat(timeChart: timeChart)
-        return dateFormatter.string(from: date)
     }
     
     func getHoverPriceCandles(readerSize: CGSize, offset: CGPoint, prices: [Candle]?, timeChart: TimeCharts?, isDragging: Bool, volumes: [Double]) {

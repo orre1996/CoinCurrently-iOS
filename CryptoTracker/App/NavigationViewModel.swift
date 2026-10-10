@@ -97,14 +97,6 @@ final class NavigationViewModel {
         }
     }
     
-    func feedbackUrlOpened() {
-        AnalyticsManager.shared.log(DeeplinkNavigate(toScreen: .feedback))
-        Task { @MainActor in
-            self.resetAllData()
-            self.navPath = [.MainFlow, .Feedback]
-        }
-    }
-    
     func referralUrlOpened(code: String) {
         AnalyticsManager.shared.log(DeeplinkNavigate(toScreen: .referral))
         Task { @MainActor in

@@ -1,11 +1,25 @@
-# CoinCurrently
+<p align="center">
+  <img src="docs/banner.jpg" alt="CoinCurrently — Privacy by Default" width="100%">
+</p>
 
-iOS, Apple Watch, and widget app for following crypto markets, news, and a personal portfolio.
+<p align="center">
+  A private crypto tracker for iOS, Apple Watch, and Android.<br>
+  Follow markets, news, and a personal portfolio without an account, ads, or sign-up.
+</p>
 
-- [Website](https://coincurrently.app)
-- [App Store](https://apps.apple.com/app/coincurrently/id1543974454)
-- [Privacy Policy](https://coincurrently.app/privacy)
-- [Android](https://github.com/orre1996/CoinCurrentlyAndroid)
+<p align="center">
+  <a href="https://apps.apple.com/app/coincurrently/id1543974454"><img src="docs/app-store-badge.svg" alt="Download on the App Store" height="40"></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://play.google.com/store/apps/details?id=com.cryptium.coincurrently"><img src="docs/google-play-badge.png" alt="Get it on Google Play" height="40"></a>
+  <br>
+  <a href="https://github.com/orre1996/CoinCurrentlyAndroid">Android repo</a>
+  &nbsp;·&nbsp;
+  <a href="https://coincurrently.app">coincurrently.app</a>
+</p>
+
+<p align="center">
+  <img src="docs/preview.png" alt="CoinCurrently on iPhone: markets, a coin chart, and portfolio" width="820">
+</p>
 
 The iOS app lives in `CryptoTracker`. Watch and widget extensions reuse the same domain types and repositories where they need shared data.
 

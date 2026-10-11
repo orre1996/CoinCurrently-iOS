@@ -154,7 +154,6 @@ final actor FirebaseManagerImp: FirebaseManager {
     
     private func handleFCMToken() async {
         if let token = Messaging.messaging().fcmToken {
-            print("test ", token)
             self.fcmToken = token
         }
     }

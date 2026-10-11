@@ -359,11 +359,6 @@ actor NetworkManagerImp: NetworkManager {
                 return (nil, NetworkManagerError.notFound.rawValue)
             }
             
-            if case .redeemCode = endpoint {
-                let body = String(data: data, encoding: .utf8) ?? "<non-utf8 \(data.count) bytes>"
-                print("🟢 REFERRAL \(endpoint) (\(statusCode)): \(body.isEmpty ? "<empty body>" : body)")
-            }
-            
             guard !data.isEmpty else {
                 return (nil, statusCode)
             }

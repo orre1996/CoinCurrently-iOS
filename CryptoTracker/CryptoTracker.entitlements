@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>aps-environment</key>
-	<string>development</string>
+	<string>production</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:coincurrently.app</string>
@@ -18,10 +18,6 @@
 	<array>
 		<string>CloudKit</string>
 	</array>
-	<key>com.apple.developer.networking.HotspotConfiguration</key>
-	<true/>
-	<key>com.apple.developer.networking.wifi-info</key>
-	<true/>
 	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
 	<string>$(TeamIdentifierPrefix)$(CFBundleIdentifier)</string>
 	<key>com.apple.security.app-sandbox</key>

@@ -487,7 +487,7 @@ struct PaywallScreen: View {
             } else {
                 Text(
                     underlinedLinks(
-                        Localization.string("All plans include a 7-day trial, with limited offers excluded. You’ll get a push notification reminder a day before the trial ends. Please enable notifications in the app [settings](https://www.google.se) to get reminders. Cancel anytime.")
+                        Localization.string("All plans include a 7-day trial, with limited offers excluded. You’ll get a push notification reminder a day before the trial ends. Please enable notifications in the app [settings](app-settings:) to get reminders. Cancel anytime.")
                     )
                 )
             }

@@ -29,15 +29,6 @@ class AppIconShortcutsManager {
         UIApplication.shared.shortcutItems = items
     }
     
-    @MainActor
-    func performActionFor(_ shortcutItem: UIApplicationShortcutItem, completionHandler: ((Bool) -> Void)?) {
-        if let url = URL(string: "https://www.google.se") {
-            UIApplication.shared.open(url)
-        }
-
-        completionHandler?(true)
-    }
-    
     private func addItem(_ shortcut: ShortCut, _ title: String, subtitle: String, _ icon: UIApplicationShortcutIcon, userInfo: [String: NSSecureCoding] = [:]) {
         items.append(UIApplicationShortcutItem(
             type: shortcut.rawValue,

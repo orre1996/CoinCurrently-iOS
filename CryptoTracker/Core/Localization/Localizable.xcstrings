@@ -35435,205 +35435,205 @@
         }
       }
     },
-    "All plans include a 7-day trial, with limited offers excluded. You’ll get a push notification reminder a day before the trial ends. Please enable notifications in the app [settings](https://www.google.se) to get reminders. Cancel anytime." : {
+    "All plans include a 7-day trial, with limited offers excluded. You’ll get a push notification reminder a day before the trial ends. Please enable notifications in the app [settings](app-settings:) to get reminders. Cancel anytime." : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "كل الخطط تشمل تجربة لمدة 7 أيام، باستثناء العروض المحدودة. ستصلك رسالة تذكير قبل يوم من انتهاء التجربة. يُرجى تفعيل الإشعارات في [الإعدادات](https://www.google.se) لتلقي التذكيرات. يمكنك الإلغاء في أي وقت."
+            "value" : "كل الخطط تشمل تجربة لمدة 7 أيام، باستثناء العروض المحدودة. ستصلك رسالة تذكير قبل يوم من انتهاء التجربة. يُرجى تفعيل الإشعارات في [الإعدادات](app-settings:) لتلقي التذكيرات. يمكنك الإلغاء في أي وقت."
           }
         },
         "bg" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Всички планове включват 7-дневен пробен период, без ограничените оферти. Ще получите напомняне един ден преди края. Включете известията в [настройките](https://www.google.se), за да ги получавате. Отказ по всяко време."
+            "value" : "Всички планове включват 7-дневен пробен период, без ограничените оферти. Ще получите напомняне един ден преди края. Включете известията в [настройките](app-settings:), за да ги получавате. Отказ по всяко време."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Všechny plány mají 7denní zkušební dobu, kromě omezených nabídek. Den před koncem dostanete připomínku. Zapněte oznámení v [nastavení](https://www.google.se). Zrušení kdykoli."
+            "value" : "Všechny plány mají 7denní zkušební dobu, kromě omezených nabídek. Den před koncem dostanete připomínku. Zapněte oznámení v [nastavení](app-settings:). Zrušení kdykoli."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle planer har 7 dages prøveperiode, undtagen begrænsede tilbud. Du får en påmindelse dagen før. Slå notifikationer til i [indstillinger](https://www.google.se). Annuller når som helst."
+            "value" : "Alle planer har 7 dages prøveperiode, undtagen begrænsede tilbud. Du får en påmindelse dagen før. Slå notifikationer til i [indstillinger](app-settings:). Annuller når som helst."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle Tarife enthalten 7 Tage Test, außer limitierte Angebote. Einen Tag vor Ende kommt eine Erinnerung. Aktiviere Mitteilungen in den [Einstellungen](https://www.google.se). Jederzeit kündbar."
+            "value" : "Alle Tarife enthalten 7 Tage Test, außer limitierte Angebote. Einen Tag vor Ende kommt eine Erinnerung. Aktiviere Mitteilungen in den [Einstellungen](app-settings:). Jederzeit kündbar."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Όλα τα πλάνα έχουν δοκιμή 7 ημερών, εκτός από περιορισμένες προσφορές. Θα λάβετε υπενθύμιση μία ημέρα πριν τη λήξη. Ενεργοποιήστε τις ειδοποιήσεις στις [ρυθμίσεις](https://www.google.se). Ακύρωση ανά πάσα στιγμή."
+            "value" : "Όλα τα πλάνα έχουν δοκιμή 7 ημερών, εκτός από περιορισμένες προσφορές. Θα λάβετε υπενθύμιση μία ημέρα πριν τη λήξη. Ενεργοποιήστε τις ειδοποιήσεις στις [ρυθμίσεις](app-settings:). Ακύρωση ανά πάσα στιγμή."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todos los planes incluyen 7 días de prueba, salvo las ofertas limitadas. Recibirás un aviso un día antes. Activa las notificaciones en [ajustes](https://www.google.se). Cancela cuando quieras."
+            "value" : "Todos los planes incluyen 7 días de prueba, salvo las ofertas limitadas. Recibirás un aviso un día antes. Activa las notificaciones en [ajustes](app-settings:). Cancela cuando quieras."
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kaikki tilaukset sisältävät 7 päivän kokeilun, rajoitettuja tarjouksia lukuun ottamatta. Saat muistutuksen päivää ennen loppua. Ota ilmoitukset käyttöön [asetuksissa](https://www.google.se). Peruuta milloin tahansa."
+            "value" : "Kaikki tilaukset sisältävät 7 päivän kokeilun, rajoitettuja tarjouksia lukuun ottamatta. Saat muistutuksen päivää ennen loppua. Ota ilmoitukset käyttöön [asetuksissa](app-settings:). Peruuta milloin tahansa."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Toutes les offres incluent 7 jours d’essai, hors offres limitées. Vous recevrez un rappel la veille. Activez les notifications dans les [réglages](https://www.google.se). Annulation à tout moment."
+            "value" : "Toutes les offres incluent 7 jours d’essai, hors offres limitées. Vous recevrez un rappel la veille. Activez les notifications dans les [réglages](app-settings:). Annulation à tout moment."
           }
         },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "כל המסלולים כוללים ניסיון של 7 ימים, מלבד מבצעים מוגבלים. תקבלו תזכורת יום לפני הסיום. הפעילו התראות ב[הגדרות](https://www.google.se). אפשר לבטל בכל עת."
+            "value" : "כל המסלולים כוללים ניסיון של 7 ימים, מלבד מבצעים מוגבלים. תקבלו תזכורת יום לפני הסיום. הפעילו התראות ב[הגדרות](app-settings:). אפשר לבטל בכל עת."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "सीमित ऑफ़र को छोड़कर हर प्लान में 7 दिन का ट्रायल है। ट्रायल खत्म होने से एक दिन पहले सूचना मिलेगी। याद दिलाने के लिए [सेटिंग](https://www.google.se) में सूचनाएँ चालू करें। कभी भी रद्द करें।"
+            "value" : "सीमित ऑफ़र को छोड़कर हर प्लान में 7 दिन का ट्रायल है। ट्रायल खत्म होने से एक दिन पहले सूचना मिलेगी। याद दिलाने के लिए [सेटिंग](app-settings:) में सूचनाएँ चालू करें। कभी भी रद्द करें।"
           }
         },
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Svi planovi uključuju probu od 7 dana, osim ograničenih ponuda. Dan prije kraja dobit ćete podsjetnik. Uključite obavijesti u [postavkama](https://www.google.se). Otkažite bilo kada."
+            "value" : "Svi planovi uključuju probu od 7 dana, osim ograničenih ponuda. Dan prije kraja dobit ćete podsjetnik. Uključite obavijesti u [postavkama](app-settings:). Otkažite bilo kada."
           }
         },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Minden csomag 7 napos próbát tartalmaz, a korlátozott ajánlatok kivételével. A vége előtt egy nappal emlékeztetőt kap. Kapcsolja be az értesítéseket a [beállításokban](https://www.google.se). Bármikor lemondható."
+            "value" : "Minden csomag 7 napos próbát tartalmaz, a korlátozott ajánlatok kivételével. A vége előtt egy nappal emlékeztetőt kap. Kapcsolja be az értesítéseket a [beállításokban](app-settings:). Bármikor lemondható."
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Semua paket mencakup uji coba 7 hari, kecuali penawaran terbatas. Anda mendapat pengingat sehari sebelum berakhir. Aktifkan notifikasi di [pengaturan](https://www.google.se). Batalkan kapan saja."
+            "value" : "Semua paket mencakup uji coba 7 hari, kecuali penawaran terbatas. Anda mendapat pengingat sehari sebelum berakhir. Aktifkan notifikasi di [pengaturan](app-settings:). Batalkan kapan saja."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tutti i piani includono 7 giorni di prova, escluse le offerte limitate. Riceverai un promemoria il giorno prima. Attiva le notifiche nelle [impostazioni](https://www.google.se). Annulla quando vuoi."
+            "value" : "Tutti i piani includono 7 giorni di prova, escluse le offerte limitate. Riceverai un promemoria il giorno prima. Attiva le notifiche nelle [impostazioni](app-settings:). Annulla quando vuoi."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "期間限定オファーを除き、すべてのプランに 7 日間のトライアルがあります。終了の前日に通知します。リマインダーを受け取るには[設定](https://www.google.se)で通知をオンにしてください。いつでも解約できます。"
+            "value" : "期間限定オファーを除き、すべてのプランに 7 日間のトライアルがあります。終了の前日に通知します。リマインダーを受け取るには[設定](app-settings:)で通知をオンにしてください。いつでも解約できます。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "한정 혜택을 제외한 모든 요금제에 7일 체험이 포함됩니다. 종료 하루 전에 알림을 받습니다. 알림을 받으려면 [설정](https://www.google.se)에서 알림을 켜세요. 언제든 취소할 수 있습니다."
+            "value" : "한정 혜택을 제외한 모든 요금제에 7일 체험이 포함됩니다. 종료 하루 전에 알림을 받습니다. 알림을 받으려면 [설정](app-settings:)에서 알림을 켜세요. 언제든 취소할 수 있습니다."
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Visi planai turi 7 dienų bandomąjį laikotarpį, išskyrus ribotus pasiūlymus. Dieną prieš pabaigą gausite priminimą. Įjunkite pranešimus [nustatymuose](https://www.google.se). Atšaukite bet kada."
+            "value" : "Visi planai turi 7 dienų bandomąjį laikotarpį, išskyrus ribotus pasiūlymus. Dieną prieš pabaigą gausite priminimą. Įjunkite pranešimus [nustatymuose](app-settings:). Atšaukite bet kada."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle abonnement har 7 dagers prøveperiode, unntatt begrensede tilbud. Du får et varsel dagen før. Slå på varsler i [innstillinger](https://www.google.se). Avbryt når som helst."
+            "value" : "Alle abonnement har 7 dagers prøveperiode, unntatt begrensede tilbud. Du får et varsel dagen før. Slå på varsler i [innstillinger](app-settings:). Avbryt når som helst."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle abonnementen hebben 7 dagen proef, behalve beperkte aanbiedingen. Je krijgt een herinnering een dag van tevoren. Zet meldingen aan in [instellingen](https://www.google.se). Altijd opzegbaar."
+            "value" : "Alle abonnementen hebben 7 dagen proef, behalve beperkte aanbiedingen. Je krijgt een herinnering een dag van tevoren. Zet meldingen aan in [instellingen](app-settings:). Altijd opzegbaar."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wszystkie plany mają 7 dni próby, z wyjątkiem ofert limitowanych. Dzień przed końcem dostaniesz przypomnienie. Włącz powiadomienia w [ustawieniach](https://www.google.se). Anuluj w dowolnym momencie."
+            "value" : "Wszystkie plany mają 7 dni próby, z wyjątkiem ofert limitowanych. Dzień przed końcem dostaniesz przypomnienie. Włącz powiadomienia w [ustawieniach](app-settings:). Anuluj w dowolnym momencie."
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todos os planos incluem 7 dias de teste, exceto ofertas limitadas. Você recebe um lembrete um dia antes. Ative as notificações em [ajustes](https://www.google.se). Cancele quando quiser."
+            "value" : "Todos os planos incluem 7 dias de teste, exceto ofertas limitadas. Você recebe um lembrete um dia antes. Ative as notificações em [ajustes](app-settings:). Cancele quando quiser."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Toate planurile includ o probă de 7 zile, cu excepția ofertelor limitate. Primești un reminder cu o zi înainte. Activează notificările în [setări](https://www.google.se). Poți anula oricând."
+            "value" : "Toate planurile includ o probă de 7 zile, cu excepția ofertelor limitate. Primești un reminder cu o zi înainte. Activează notificările în [setări](app-settings:). Poți anula oricând."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Все планы включают 7 дней пробного периода, кроме ограниченных предложений. За день до конца придёт напоминание. Включите уведомления в [настройках](https://www.google.se). Отмена в любое время."
+            "value" : "Все планы включают 7 дней пробного периода, кроме ограниченных предложений. За день до конца придёт напоминание. Включите уведомления в [настройках](app-settings:). Отмена в любое время."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Všetky plány majú 7-dňovú skúšobnú dobu, okrem obmedzených ponúk. Deň pred koncom dostanete pripomienku. Zapnite upozornenia v [nastaveniach](https://www.google.se). Zrušenie kedykoľvek."
+            "value" : "Všetky plány majú 7-dňovú skúšobnú dobu, okrem obmedzených ponúk. Deň pred koncom dostanete pripomienku. Zapnite upozornenia v [nastaveniach](app-settings:). Zrušenie kedykoľvek."
           }
         },
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vsi paketi vključujejo 7-dnevni preizkus, razen omejenih ponudb. Dan pred koncem dobite opomnik. Vklopite obvestila v [nastavitvah](https://www.google.se). Prekličite kadar koli."
+            "value" : "Vsi paketi vključujejo 7-dnevni preizkus, razen omejenih ponudb. Dan pred koncem dobite opomnik. Vklopite obvestila v [nastavitvah](app-settings:). Prekličite kadar koli."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alla plan har 7 dagars provperiod, utom begränsade erbjudanden. Du får en påminnelse dagen innan. Aktivera aviseringar i [inställningar](https://www.google.se). Avsluta när som helst."
+            "value" : "Alla plan har 7 dagars provperiod, utom begränsade erbjudanden. Du får en påminnelse dagen innan. Aktivera aviseringar i [inställningar](app-settings:). Avsluta när som helst."
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ทุกแพ็กเกจมีทดลองใช้ 7 วัน ยกเว้นข้อเสนอจำกัด คุณจะได้รับการเตือนก่อนหมดหนึ่งวัน เปิดการแจ้งเตือนใน[การตั้งค่า](https://www.google.se) ยกเลิกได้ทุกเมื่อ"
+            "value" : "ทุกแพ็กเกจมีทดลองใช้ 7 วัน ยกเว้นข้อเสนอจำกัด คุณจะได้รับการเตือนก่อนหมดหนึ่งวัน เปิดการแจ้งเตือนใน[การตั้งค่า](app-settings:) ยกเลิกได้ทุกเมื่อ"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sınırlı teklifler hariç tüm planlarda 7 günlük deneme vardır. Bitmeden bir gün önce hatırlatma alırsınız. Hatırlatmalar için [ayarlar](https://www.google.se) bölümünde bildirimleri açın. İstediğiniz zaman iptal edin."
+            "value" : "Sınırlı teklifler hariç tüm planlarda 7 günlük deneme vardır. Bitmeden bir gün önce hatırlatma alırsınız. Hatırlatmalar için [ayarlar](app-settings:) bölümünde bildirimleri açın. İstediğiniz zaman iptal edin."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Усі плани мають 7 днів пробного періоду, крім обмежених пропозицій. За день до кінця надійде нагадування. Увімкніть сповіщення в [параметрах](https://www.google.se). Скасуйте будь-коли."
+            "value" : "Усі плани мають 7 днів пробного періоду, крім обмежених пропозицій. За день до кінця надійде нагадування. Увімкніть сповіщення в [параметрах](app-settings:). Скасуйте будь-коли."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mọi gói có 7 ngày dùng thử, trừ ưu đãi giới hạn. Bạn nhận nhắc trước một ngày. Hãy bật thông báo trong [cài đặt](https://www.google.se). Hủy bất cứ lúc nào."
+            "value" : "Mọi gói có 7 ngày dùng thử, trừ ưu đãi giới hạn. Bạn nhận nhắc trước một ngày. Hãy bật thông báo trong [cài đặt](app-settings:). Hủy bất cứ lúc nào."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "除限时优惠外，所有方案都含 7 天试用。试用结束前一天会收到提醒。请在应用[设置](https://www.google.se)中开启通知。可随时取消。"
+            "value" : "除限时优惠外，所有方案都含 7 天试用。试用结束前一天会收到提醒。请在应用[设置](app-settings:)中开启通知。可随时取消。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "除限時優惠外，所有方案都含 7 天試用。試用結束前一天會收到提醒。請在 App [設定](https://www.google.se)中開啟通知。可隨時取消。"
+            "value" : "除限時優惠外，所有方案都含 7 天試用。試用結束前一天會收到提醒。請在 App [設定](app-settings:)中開啟通知。可隨時取消。"
           }
         }
       }

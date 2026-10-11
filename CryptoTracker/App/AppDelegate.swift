@@ -118,8 +118,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
     // Called when a notification is delivered to a foreground app.
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo
-        print(userInfo)
-        
         let cryptoID = userInfo["cryptoID"] as? String ?? ""
         let alertId = userInfo["cryptoID"] as? String
         
@@ -150,8 +148,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
     //Ta hand om payload här från push
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        print(userInfo)
-        
+
         Task { @MainActor in
             handlePushNotification(userInfo: userInfo, fromUserTap: true)
         }
@@ -186,8 +183,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
     }
     
     nonisolated func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        print("Firebase registration token: \(String(describing: fcmToken))")
-        
         guard let fcmToken, !fcmToken.isEmpty else { return }
         
         Task {

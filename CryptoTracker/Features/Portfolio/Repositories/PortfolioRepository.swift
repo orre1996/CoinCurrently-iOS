@@ -119,33 +119,6 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
         }
     }
     
-    func setStartData() async {
-        // await addNewCoin(coin: Toplist(id: "bitcoin"), event: AddressImport(address: "123jsad", balance: "1", tokenInfos: nil), allCurrencies: [:])
-        
-        /*await addNewCoin(coin: Toplist(id: "ethereum"),
-                         event: AddressImport(walletName: "My Coinbase Wallet",
-                                              address: "example-wallet-address", balance: "",
-                                              tokenInfos: [
-        TokenInfo(accountHash: "example-wallet-address", balance: "0.621", tokenHash: "example-wallet-address", tokenSymbol: "hemi", coinId: "hemi"),
-        TokenInfo(accountHash: "0x0000000000000000000000000000000000000000", balance: "13.5213", tokenHash: "0x0000000000000000000000000000000000000000", tokenSymbol: "the", coinId: "thena")], blockChain: .token), allCurrencies: [:])*/
-        
-        // await addNewCoin(coin: Toplist(id: "ethereum"), event: PortfolioSwapTransaction(fromCurrency: "BTC", fromAmount: 0.5, toCurrency: "ETH", toAmount: 13, fee: 2, note: "hello"), allCurrencies: [:])
-        
-        /*await addNewTransaction(
-            id: "ethereum",
-            event: PortfolioSwapTransaction(
-                fromCurrency: "BTC",
-                fromAmount: 0.5,
-                fromUnitPrice: 1300,
-                toCurrency: "ETH",
-                toAmount: 13,
-                toUnitPrice: 100,
-                fee: 2,
-                note: "hello"
-            )
-        )*/
-    }
-    
     func migratePortfolio() async {
         await ensureCacheLoaded()
         let saved: [PortfolioModel] = await coreDataManager.get(forKey: .portfolio) ?? []

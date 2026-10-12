@@ -13,6 +13,7 @@ jobs:
   tests:
     name: CoinCurrentlyTests
     runs-on: macos-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 

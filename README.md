@@ -194,14 +194,27 @@ Subscriptions go through RevenueCat and StoreKit. Free users get markets, news, 
 
 ## Local setup
 
-1. Open `CoinCurrently.xcodeproj` and run the **CoinCurrently** scheme. Set your own Development Team in Signing so Xcode can install the app. Leave `DEVELOPMENT_TEAM` empty in committed project files. Do not commit a team ID or real keys.
-2. Copy `Config/Secrets.example.plist` to `Config/Secrets.plist`. The app crashes at launch if this file is missing from the bundle or if any key is empty. Placeholder values are enough to launch. The file is gitignored. Keys:
-   - `API_BASE_URL` — your backend. Markets, news, and the first-party routes above need it. A placeholder lets the app launch; those screens fail until it points at a backend.
+1. Open `CoinCurrently.xcodeproj` and run the **Cryptocurrently** scheme. The target is CoinCurrently. The first build downloads Swift packages from GitHub, so it needs a network connection. YouTubePlayerKit is already in the repo. The scheme uses `CryptoTracker/Product.storekit` for local purchases.
+2. Set your own Development Team on the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets. Running the iOS app signs the widget and watch targets too. Leave `DEVELOPMENT_TEAM` empty in committed project files. Do not commit a team ID, bundle ID change, or real keys.
+
+   The committed bundle IDs are `Cryptium.Cryptocurrently1`, `Cryptium.Cryptocurrently1.Cryptowidget`, and `Cryptium.Cryptocurrently1.watchkitapp`. Another Apple team has to change all three together and keep the widget and watch IDs as suffixes of the app ID.
+
+   Automatic signing also needs these identifiers on that team. Change them together with the bundle IDs when the team does not own them:
+
+   - App Group `group.com.Cryptium.CoinCurrently` on the app, widget, and watch
+   - iCloud container `iCloud.com.Cryptium.CoinCurrently` and CloudKit on the app and widget
+   - Push notifications (`aps-environment` is `production`)
+   - Associated Domains `applinks:coincurrently.app`
+   - App Attest
+
+   A free personal team cannot enable push, associated domains, or iCloud.
+3. Copy `Config/Secrets.example.plist` to `Config/Secrets.plist`. The app crashes at launch if this file is missing from the bundle or if any key is empty. Placeholder values are enough to launch. The file is gitignored. Keys:
+   - `API_BASE_URL` — your backend, with no trailing slash. Markets, news, and the first-party routes above need it. A placeholder lets the app launch. Coin detail, OHLC, market charts, and the fear and greed index can still load. Toplists, news, search, and alerts stay empty until it points at a backend.
    - `BACKEND_API_KEY` — sent as `x-coin-currently-key`. A placeholder is enough for the public CoinGecko and fear-and-greed calls.
-   - `REVENUECAT_PRODUCTION_API_KEY` and `REVENUECAT_TEST_API_KEY` — placeholders are enough unless you are testing purchases. Debug builds use the test key.
+   - `REVENUECAT_PRODUCTION_API_KEY` and `REVENUECAT_TEST_API_KEY` — placeholders are enough unless you are testing purchases through RevenueCat. Debug builds use the test key. Local StoreKit purchases use `Product.storekit`.
    - `APTABASE_APP_KEY` — a placeholder is enough unless you want analytics.
-3. `Secrets.plist` is already referenced by the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets. Widgets and Watch read the same file. If Xcode does not copy it into the bundle, add it to those targets' Copy Bundle Resources.
-4. Copy `Config/GoogleService-Info.example.plist` to `GoogleService-Info.plist` in `CryptoTracker` and `CryptoWidget`. The iOS app configures Firebase at launch, so the file has to be in that bundle or the app will not start. The example placeholders are enough to launch. Replace them with a real Firebase project only for anonymous sign-in and price-alert push. Those files are gitignored. The watch app does not use Firebase.
+4. `Secrets.plist` is already referenced by the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets. Widgets and Watch read the same file. If Xcode does not copy it into the bundle, add it to those targets' Copy Bundle Resources.
+5. Copy a real `GoogleService-Info.plist` into `CryptoTracker` and `CryptoWidget`. The iOS app configures Firebase at launch, so the file has to be in that bundle or the app will not start. `GOOGLE_APP_ID` has to look like `1:<digits>:ios:<hex>`. The placeholders in `Config/GoogleService-Info.example.plist` do not match that, so copying the example file alone will not get past startup. Any real plist from a Firebase iOS app is enough to launch. Use a project of your own for anonymous sign-in and price-alert push. Those files are gitignored. The watch app does not use Firebase.
 
 ## Tests
 

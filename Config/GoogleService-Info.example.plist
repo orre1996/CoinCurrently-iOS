@@ -4,9 +4,11 @@
   Copy this file to GoogleService-Info.plist in:
     - CryptoTracker/GoogleService-Info.plist
     - CryptoWidget/GoogleService-Info.plist
-  The iOS app configures Firebase at launch, so the file has to be in that bundle.
-  Example placeholders are enough to launch. A real Firebase project is only
-  needed for anonymous sign-in and price-alert push. The watch app does not use Firebase.
+  The iOS app configures Firebase at launch, so a real GoogleService-Info.plist
+  has to be in that bundle. GOOGLE_APP_ID must look like 1:<digits>:ios:<hex>.
+  These placeholders are not enough to launch. Any plist from a Firebase iOS app
+  is enough to start. A project of your own is only needed for anonymous sign-in
+  and price-alert push. The watch app does not use Firebase.
   GoogleService-Info.plist files are gitignored.
 -->
 <plist version="1.0">

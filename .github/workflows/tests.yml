@@ -13,7 +13,7 @@ jobs:
   tests:
     name: CoinCurrentlyTests
     runs-on: macos-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
 
@@ -26,28 +26,61 @@ jobs:
           python3 - <<'PY'
           import json, re, subprocess, sys
           data = json.loads(subprocess.check_output(["xcrun", "simctl", "list", "devices", "available", "-j"]))
-          candidates = []
-          for runtime, devices in data.get("devices", {}).items():
-              match = re.search(r"iOS-(\d+)-(\d+)", runtime)
+
+          def runtime_version(runtime, prefix):
+              match = re.search(rf"{prefix}-(\d+)-(\d+)", runtime)
               if not match:
-                  continue
-              version = tuple(int(part) for part in match.groups())
+                  return None
+              return tuple(int(part) for part in match.groups())
+
+          phones = []
+          watches = []
+          for runtime, devices in data.get("devices", {}).items():
+              ios = runtime_version(runtime, "iOS")
+              watch_os = runtime_version(runtime, "watchOS")
               for device in devices:
-                  if device.get("isAvailable") and device.get("name", "").startswith("iPhone"):
-                      candidates.append((version, device["name"], device["udid"]))
-          if not candidates:
+                  if not device.get("isAvailable"):
+                      continue
+                  name = device.get("name", "")
+                  udid = device.get("udid")
+                  if ios and name.startswith("iPhone"):
+                      phones.append((ios, name, udid))
+                  elif watch_os and "Watch" in name:
+                      watches.append((watch_os, name, udid))
+          if not phones:
               sys.exit("No available iPhone simulator")
-          candidates.sort()
-          version, name, udid = candidates[-1]
+          numbered = [phone for phone in phones if re.match(r"iPhone \d", phone[1])]
+          pool = numbered or phones
+          pool.sort()
+          version, name, udid = pool[-1]
           print(f"Using simulator {name} (iOS {version[0]}.{version[1]})", file=sys.stderr)
           with open("simulator-id.txt", "w", encoding="utf-8") as handle:
               handle.write(udid)
+          if watches:
+              watches.sort()
+              watch_version, watch_name, watch_udid = watches[-1]
+              print(
+                  f"Using watch {watch_name} (watchOS {watch_version[0]}.{watch_version[1]})",
+                  file=sys.stderr,
+              )
+              with open("watch-id.txt", "w", encoding="utf-8") as handle:
+                  handle.write(watch_udid)
           PY
           UDID="$(cat simulator-id.txt)"
+          xcrun simctl shutdown all || true
+          if [[ -f watch-id.txt ]]; then
+            # The host app embeds a watch app. An unpaired phone simulator can stall the install.
+            xcrun simctl pair "$(cat watch-id.txt)" "$UDID" || true
+            xcrun simctl boot "$(cat watch-id.txt)" || true
+          fi
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
           xcodebuild test \
             -project CoinCurrently.xcodeproj \
             -scheme CoinCurrentlyTests \
-            -destination "id=$UDID" \
+            -destination "platform=iOS Simulator,id=$UDID" \
+            -parallel-testing-enabled NO \
+            -maximum-concurrent-test-simulator-destinations 1 \
             -resultBundlePath TestResults.xcresult \
             -skipPackagePluginValidation \
             -skipMacroValidation \

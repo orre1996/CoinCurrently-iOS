@@ -14,7 +14,7 @@
   <br>
   <a href="https://github.com/orre1996/CoinCurrentlyAndroid">Android repo</a>
   &nbsp;·&nbsp;
-  <a href="https://coincurrently.app">coincurrently.app</a>
+  <a href="https://coincurrently.app">Website</a>
 </p>
 
 <p align="center">

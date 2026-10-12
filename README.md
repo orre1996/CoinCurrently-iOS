@@ -144,9 +144,11 @@ Market data, news, and the fear and greed index each come from a different API. 
 
 ### CoinGecko
 
-Crypto market data is based on [CoinGecko's API](https://www.coingecko.com/en/api). Free endpoints use the public base URL `https://api.coingecko.com/api/v3`. Without Pro, coin detail, OHLC, and market charts call that URL directly (`/coins/{id}`, `/coins/{id}/ohlc`, and `/coins/{id}/market_chart`). Other market routes go through `{API_BASE_URL}/crypto`, which proxies CoinGecko.
+Crypto market data is based on [CoinGecko's API](https://www.coingecko.com/en/api). Without Pro, coin detail, OHLC, and market charts call the public API directly at `https://api.coingecko.com/api/v3` (`/coins/{id}`, `/coins/{id}/ohlc`, and `/coins/{id}/market_chart`). Those three calls do not use `API_BASE_URL`.
 
-Most endpoints work on the free or Basic plans. These require the [Analyst plan](https://www.coingecko.com/en/api/pricing) (or higher):
+Every other market route is `{API_BASE_URL}/crypto/api/v3/...`. `API_BASE_URL` is your own backend. CoinGecko's public host does not serve the `/crypto` prefix, so `https://api.coingecko.com` cannot be used as `API_BASE_URL`.
+
+Most of the proxied endpoints work on the free or Basic plans. These require the [Analyst plan](https://www.coingecko.com/en/api/pricing) (or higher):
 
 - `/coins/list/new` — recently listed coins
 - `/coins/top_gainers_losers` — top gainers and losers
@@ -158,15 +160,17 @@ Most endpoints work on the free or Basic plans. These require the [Analyst plan]
 
 ### News
 
-News (articles, videos, and podcasts) is based on [cryptonews-api.com](https://cryptonews-api.com).
+News (articles, videos, and podcasts) is based on [cryptonews-api.com](https://cryptonews-api.com). The app requests it as `{API_BASE_URL}/news`. The news key stays on the backend.
 
 ### Fear and Greed
 
-The fear and greed index is based on [alternative.me](https://alternative.me/crypto/fear-and-greed-index/).
+The fear and greed index is requested directly from [alternative.me](https://alternative.me/crypto/fear-and-greed-index/). It does not use `API_BASE_URL`.
 
 ### CoinCurrently backend
 
-`API_BASE_URL` is the app's own API. It proxies CoinGecko and news so third-party keys stay off the client, and it hosts first-party routes for price alerts, big-mover notifications, wallet import, gas fees, referrals, redeem codes, user, and feedback. Those routes send a bearer token. The backend itself is not in this repo.
+The backend is not in this repo. It proxies CoinGecko and news so third-party keys stay off the client, and it hosts first-party routes for price alerts, big-mover notifications, wallet import, gas fees, referrals, redeem codes, user, and feedback. Those first-party routes send a bearer token.
+
+Without that backend, the app can still show coin detail, OHLC, market charts (for users without Pro), and the fear and greed index. Toplists, search, trending, exchanges, categories, derivatives, news, NFTs, gainers and losers, gas fees, and alerts need `API_BASE_URL`.
 
 ## Pro
 
@@ -190,11 +194,14 @@ Subscriptions go through RevenueCat and StoreKit. Free users get markets, news, 
 
 ## Local setup
 
-1. Open `CoinCurrently.xcodeproj` in Xcode.
-2. Copy `Config/Secrets.example.plist` to `Config/Secrets.plist` and fill in local values. That file is gitignored. Keys are `API_BASE_URL`, `BACKEND_API_KEY`, `REVENUECAT_PRODUCTION_API_KEY`, `REVENUECAT_TEST_API_KEY`, and `APTABASE_APP_KEY`.
-3. Add `Config/Secrets.plist` to the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets if Xcode does not already include it. Widgets and Watch read the same secrets.
-4. Copy `Config/GoogleService-Info.example.plist` to `GoogleService-Info.plist` in `CryptoTracker` and `CryptoWidget`, then replace the placeholders from the Firebase console. Those files are gitignored. The watch app does not use Firebase.
-5. Leave `DEVELOPMENT_TEAM` empty in the project unless you are signing locally. Do not commit a team ID or real keys.
+1. Open `CoinCurrently.xcodeproj` and run the **CoinCurrently** scheme. Set your own Development Team in Signing so Xcode can install the app. Leave `DEVELOPMENT_TEAM` empty in committed project files. Do not commit a team ID or real keys.
+2. Copy `Config/Secrets.example.plist` to `Config/Secrets.plist`. The app crashes at launch if this file is missing from the bundle or if any key is empty. Placeholder values are enough to launch. The file is gitignored. Keys:
+   - `API_BASE_URL` — your backend. Markets, news, and the first-party routes above need it. A placeholder lets the app launch; those screens fail until it points at a backend.
+   - `BACKEND_API_KEY` — sent as `x-coin-currently-key`. A placeholder is enough for the public CoinGecko and fear-and-greed calls.
+   - `REVENUECAT_PRODUCTION_API_KEY` and `REVENUECAT_TEST_API_KEY` — placeholders are enough unless you are testing purchases. Debug builds use the test key.
+   - `APTABASE_APP_KEY` — a placeholder is enough unless you want analytics.
+3. `Secrets.plist` is already referenced by the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets. Widgets and Watch read the same file. If Xcode does not copy it into the bundle, add it to those targets' Copy Bundle Resources.
+4. Copy `Config/GoogleService-Info.example.plist` to `GoogleService-Info.plist` in `CryptoTracker` and `CryptoWidget`. The iOS app configures Firebase at launch, so the file has to be in that bundle or the app will not start. The example placeholders are enough to launch. Replace them with a real Firebase project only for anonymous sign-in and price-alert push. Those files are gitignored. The watch app does not use Firebase.
 
 ## Tests
 

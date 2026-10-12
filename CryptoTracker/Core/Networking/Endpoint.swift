@@ -7,8 +7,9 @@
 
 import Foundation
 
-// The crypto endpoints are based on the CoinGecko API. Set API_BASE_URL in Config/Secrets.plist
-// to your own backend, or CoinGecko's base URL; e.g. https://api.coingecko.com
+// Market routes are "{API_BASE_URL}/crypto/api/v3/...". API_BASE_URL is your backend.
+// Coin detail, OHLC, and market charts for users without Pro call
+// https://api.coingecko.com/api/v3 directly.
 var serverBaseUrl: String { AppSecrets.apiBaseURL }
 
 enum Endpoint: Sendable {
@@ -40,7 +41,6 @@ enum Endpoint: Sendable {
     case nftPriceVolume(id: String, days: String)
     case nftTickers(id: String)
     case winnersLosers(priceChange: PriceChange, currency: CurrencyModel)
-    case bitcoinHalving
     case gasFees(includeHistory: Bool)
     case getAlerts
     case createPriceAlert
@@ -170,9 +170,6 @@ enum Endpoint: Sendable {
             
         case .gasFees:
             return "\(serverBaseUrl)/gas"
-            
-        case .bitcoinHalving:
-            return "https://bitcoinexplorer.org/api/blockchain/next-halving"
             
         case .getAlerts:
             return "\(serverBaseUrl)/get-alerts"
@@ -376,7 +373,7 @@ enum Endpoint: Sendable {
             return items
 
         case .global, .allCoins, .allExchanges, .trending, .image, .exchange, .newCoins,
-             .nftDetail, .nftTickers, .bitcoinHalving, .getAlerts, .createPriceAlert,
+             .nftDetail, .nftTickers, .getAlerts, .createPriceAlert,
              .deleteAlert, .updateUser, .triggerPriceAlert, .triggerBigMover,
              .subBigMover, .ubsubBigMover, .walletImport, .feedback, .referralCode,
              .redeemCode, .subCoin, .treasuryDetail, .user:

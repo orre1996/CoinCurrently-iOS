@@ -18,6 +18,10 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/orre1996/CoinCurrently-iOS/actions/workflows/tests.yml"><img src="https://github.com/orre1996/CoinCurrently-iOS/actions/workflows/tests.yml/badge.svg?branch=main&event=push" alt="tests status"></a>
+</p>
+
+<p align="center">
   <img src="docs/preview.png" alt="CoinCurrently on iPhone: markets, a coin chart, and portfolio" width="820">
 </p>
 
@@ -44,7 +48,7 @@ The app uses a few third-party SDKs. None of them require a name, email, or phon
 
 - **[Aptabase](https://aptabase.com)** is a privacy-focused analytics service. The app sends named product events (for example which screen opened). It is not an advertising SDK and does not build a marketing profile.
 - **[RevenueCat](https://www.revenuecat.com)** manages App Store subscriptions. Pro status comes from the store receipt through RevenueCat, not from Firebase.
-- **[Firebase](https://firebase.google.com)** signs in anonymously — a random ID on the device, not an email. Price alerts need that so Firebase Cloud Messaging can issue an FCM token. The backend uses the token to send a push when a price hits; without it, the phone cannot receive alert notifications.
+- **[Firebase](https://firebase.google.com)** starts only when `GoogleService-Info.plist` is included. It signs in anonymously — a random ID on the device, not an email. Price alerts need that so Firebase Cloud Messaging can issue an FCM token. The backend uses the token to send a push when a price hits; without it, the phone cannot receive alert notifications.
 
 See the [Privacy Policy](https://coincurrently.app/privacy).
 
@@ -214,11 +218,13 @@ Subscriptions go through RevenueCat and StoreKit. Free users get markets, news, 
    - `REVENUECAT_PRODUCTION_API_KEY` and `REVENUECAT_TEST_API_KEY` — placeholders are enough unless you are testing purchases through RevenueCat. Debug builds use the test key. Local StoreKit purchases use `Product.storekit`.
    - `APTABASE_APP_KEY` — a placeholder is enough unless you want analytics.
 4. `Secrets.plist` is already referenced by the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets. Widgets and Watch read the same file. If Xcode does not copy it into the bundle, add it to those targets' Copy Bundle Resources.
-5. Copy a real `GoogleService-Info.plist` into `CryptoTracker` and `CryptoWidget`. The iOS app configures Firebase at launch, so the file has to be in that bundle or the app will not start. `GOOGLE_APP_ID` has to look like `1:<digits>:ios:<hex>`. The placeholders in `Config/GoogleService-Info.example.plist` do not match that, so copying the example file alone will not get past startup. Any real plist from a Firebase iOS app is enough to launch. Use a project of your own for anonymous sign-in and price-alert push. Those files are gitignored. The watch app does not use Firebase.
+5. Firebase, anonymous sign-in, and price-alert push stay off until a real `GoogleService-Info.plist` is in the bundle. The app launches without that file. `GOOGLE_APP_ID` has to look like `1:<digits>:ios:<hex>`. The placeholders in `Config/GoogleService-Info.example.plist` do not match that, so copying the example file does not turn Firebase on. Put a real plist at `CryptoTracker/GoogleService-Info.plist` for the app and `CryptoWidget/GoogleService-Info.plist` for widgets. Those files are gitignored. The watch app does not use Firebase.
 
 ## Tests
 
 `CoinCurrentlyTests` uses Swift Testing. Suites mostly cover repositories and inject a mock `NetworkManager`. Run the **CoinCurrentlyTests** scheme in Xcode.
+
+GitHub runs that scheme on every push to `main` and every pull request. The [tests badge](https://github.com/orre1996/CoinCurrently-iOS/actions/workflows/tests.yml) shows the latest push to `main`: **passing** after a successful run, **failing** after a failed one. On a commit or pull request, the same result is the check mark next to the commit. Open the run and the **Run tests** step for the log. A failed run also uploads `TestResults.xcresult`.
 
 ## Contributing
 

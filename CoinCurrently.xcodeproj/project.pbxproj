@@ -196,7 +196,6 @@
 		8E897BE92F53FDEB00D44F80 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = FB007CORE0000000000000001 /* FirebaseCore */; };
 		8E897BEA2F53FDEB00D44F80 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = FB002RCONF00000000000001 /* FirebaseRemoteConfig */; };
 		8E897BEB2F53FDEB00D44F80 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FB001AUTH000000000000001 /* FirebaseAuth */; };
-		8E9AE7B72D3CA6FD0066CC09 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E9AE7B62D3CA6FD0066CC09 /* GoogleService-Info.plist */; };
 		8E9AE7BB2D3CA95F0066CC09 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8E9AE7BA2D3CA95F0066CC09 /* YouTubePlayerKit */; };
 		8E9AE7BE2D3CAA710066CC09 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8E9AE7BD2D3CAA710066CC09 /* YouTubePlayerKit */; };
 		8E9C5A89282D3F280092A9B3 /* CryptoTracker/SharedUI/Models/ExchangeMarketItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9C5A87282D3F280092A9B3 /* CryptoTracker/SharedUI/Models/ExchangeMarketItem.swift */; };
@@ -1343,6 +1342,7 @@
 				10347B172543489100BCC77E /* Sources */,
 				10347B182543489100BCC77E /* Frameworks */,
 				10347B192543489100BCC77E /* Resources */,
+				FBCOPYPLIST000000000001 /* Copy GoogleService-Info.plist if present */,
 			);
 			buildRules = (
 			);
@@ -1477,7 +1477,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8E9AE7B72D3CA6FD0066CC09 /* GoogleService-Info.plist in Resources */,
 				CC0A001A2F600000000000A /* Secrets.plist in Resources */,
 				9F0C3A00288F3CDC007C4D68 /* Assets.xcassets in Resources */,
 				8EWGFT012F6000000095B111 /* Satoshi-Black.otf in Resources */,
@@ -1515,7 +1514,6 @@
 				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
 				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
 				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
-				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
 				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
 			);
 			outputFileListPaths = (
@@ -1525,7 +1523,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${BUILD_DIR%Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\ntouch \"${DERIVED_FILE_DIR}/crashlytics-run-complete\"\n";
+			shellScript = "PLIST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleService-Info.plist\"\nif [ ! -f \"$PLIST\" ]; then\n  touch \"${DERIVED_FILE_DIR}/crashlytics-run-complete\"\n  exit 0\nfi\n\"${BUILD_DIR%Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\ntouch \"${DERIVED_FILE_DIR}/crashlytics-run-complete\"\n";
+		};
+		FBCOPYPLIST000000000001 /* Copy GoogleService-Info.plist if present */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy GoogleService-Info.plist if present";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "PLIST=\"${SRCROOT}/CryptoWidget/GoogleService-Info.plist\"\nDEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleService-Info.plist\"\nif [ -f \"$PLIST\" ]; then\n  cp \"$PLIST\" \"$DEST\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -69,6 +69,8 @@ final actor PriceAlertsRepositoryImp: PriceAlertsRepository {
     
     func ensureFCMToken() async -> Bool {
 #if IS_APP
+        guard FirebaseConfigurator.configureIfNeeded() else { return false }
+
         if let token = await currentFCMToken() {
             await updateUser(fcmToken: token)
             return true
@@ -315,6 +317,8 @@ final actor PriceAlertsRepositoryImp: PriceAlertsRepository {
         if let token = await currentFCMToken() {
             return token
         }
+
+        guard FirebaseConfigurator.configureIfNeeded() else { return "" }
         
         if let token = try? await Messaging.messaging().token(), !token.isEmpty {
             return token
@@ -324,6 +328,8 @@ final actor PriceAlertsRepositoryImp: PriceAlertsRepository {
     }
 
     private func currentFCMToken() async -> String? {
+        guard FirebaseConfigurator.configureIfNeeded() else { return nil }
+
         if let token = Messaging.messaging().fcmToken, !token.isEmpty {
             return token
         }

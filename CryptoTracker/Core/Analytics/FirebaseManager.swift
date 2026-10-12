@@ -27,8 +27,32 @@ final actor FirebaseManagerImp: FirebaseManager {
 
 #else
 
+import FirebaseCore
 @preconcurrency import FirebaseRemoteConfig
 @preconcurrency import FirebaseAuth
+
+enum FirebaseConfigurator {
+    /// Starts Firebase only when the bundle contains a real GoogleService-Info.plist.
+    /// Placeholder app IDs are ignored so the example file cannot crash launch.
+    @discardableResult
+    static func configureIfNeeded() -> Bool {
+        if FirebaseApp.app() != nil {
+            return true
+        }
+
+        guard
+            let url = Bundle.main.url(forResource: "GoogleService-Info", withExtension: "plist"),
+            let plist = NSDictionary(contentsOf: url),
+            let appID = plist["GOOGLE_APP_ID"] as? String,
+            appID.range(of: #"^\d+:\d+:ios:[0-9a-fA-F]+$"#, options: .regularExpression) != nil
+        else {
+            return false
+        }
+
+        FirebaseApp.configure()
+        return true
+    }
+}
 
 #if IS_APP
 @preconcurrency import FirebaseFirestore
@@ -85,6 +109,8 @@ final actor FirebaseManagerImp: FirebaseManager {
     private var db: Firestore?
     
     func login() async -> Bool {
+        guard FirebaseConfigurator.configureIfNeeded() else { return false }
+
         configureFirestore()
         
         do {
@@ -179,13 +205,13 @@ final actor FirebaseManagerImp: FirebaseManager {
         _ = await CachedStorageManagerImp.shared.purge()
         WidgetCenter.shared.reloadAllTimelines()
  
-        if let db, let querySnapshot = try? await db.collection(uid).getDocuments() {
+        if FirebaseConfigurator.configureIfNeeded(), let db, let querySnapshot = try? await db.collection(uid).getDocuments() {
             for document in querySnapshot.documents {
                 try? await document.reference.delete()
             }
         }
         
-        if let user = Auth.auth().currentUser {
+        if FirebaseConfigurator.configureIfNeeded(), let user = Auth.auth().currentUser {
             try? await user.delete()
         }
     }
@@ -193,6 +219,8 @@ final actor FirebaseManagerImp: FirebaseManager {
 #else
     
     func login() async {
+        guard FirebaseConfigurator.configureIfNeeded() else { return }
+
         do {
             let user = try await signInAnonymously()
             
@@ -215,6 +243,8 @@ final actor FirebaseManagerImp: FirebaseManager {
     
     
     private func getRemoteConfigs() async {
+        guard FirebaseConfigurator.configureIfNeeded() else { return }
+
         do {
             remoteConfig = RemoteConfig.remoteConfig()
             
@@ -255,6 +285,8 @@ final actor FirebaseManagerImp: FirebaseManager {
     }
     
     func getUserToken() async -> String? {
+        guard FirebaseConfigurator.configureIfNeeded() else { return nil }
+
         do {
             if let user {
                 return try await user.getIDToken()

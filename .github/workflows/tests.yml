@@ -1,0 +1,63 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: CoinCurrentlyTests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add placeholder secrets
+        run: cp Config/Secrets.example.plist Config/Secrets.plist
+
+      - name: Run tests
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, re, subprocess, sys
+          data = json.loads(subprocess.check_output(["xcrun", "simctl", "list", "devices", "available", "-j"]))
+          candidates = []
+          for runtime, devices in data.get("devices", {}).items():
+              match = re.search(r"iOS-(\d+)-(\d+)", runtime)
+              if not match:
+                  continue
+              version = tuple(int(part) for part in match.groups())
+              for device in devices:
+                  if device.get("isAvailable") and device.get("name", "").startswith("iPhone"):
+                      candidates.append((version, device["name"], device["udid"]))
+          if not candidates:
+              sys.exit("No available iPhone simulator")
+          candidates.sort()
+          version, name, udid = candidates[-1]
+          print(f"Using simulator {name} (iOS {version[0]}.{version[1]})", file=sys.stderr)
+          with open("simulator-id.txt", "w", encoding="utf-8") as handle:
+              handle.write(udid)
+          PY
+          UDID="$(cat simulator-id.txt)"
+          xcodebuild test \
+            -project CoinCurrently.xcodeproj \
+            -scheme CoinCurrentlyTests \
+            -destination "id=$UDID" \
+            -resultBundlePath TestResults.xcresult \
+            -skipPackagePluginValidation \
+            -skipMacroValidation \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            DEVELOPMENT_TEAM=""
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults.xcresult
+          if-no-files-found: ignore

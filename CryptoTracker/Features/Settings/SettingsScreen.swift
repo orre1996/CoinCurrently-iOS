@@ -196,7 +196,8 @@ struct SettingsScreen: View {
                     
                     UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { permission in
                         if permission.authorizationStatus == .authorized {
-                            guard let fcmToken = Messaging.messaging().fcmToken, !fcmToken.isEmpty else {
+                            guard FirebaseConfigurator.configureIfNeeded(),
+                                  let fcmToken = Messaging.messaging().fcmToken, !fcmToken.isEmpty else {
                                 return
                             }
                             

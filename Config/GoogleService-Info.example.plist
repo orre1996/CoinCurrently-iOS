@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--
-  Copy this file to GoogleService-Info.plist in:
+  Optional. The app launches without GoogleService-Info.plist. Firebase,
+  anonymous sign-in, and price-alert push stay off until a real file is present.
+  GOOGLE_APP_ID must look like 1:<digits>:ios:<hex>. These placeholders do not
+  turn Firebase on. Copy a real plist to:
     - CryptoTracker/GoogleService-Info.plist
     - CryptoWidget/GoogleService-Info.plist
-  The iOS app configures Firebase at launch, so a real GoogleService-Info.plist
-  has to be in that bundle. GOOGLE_APP_ID must look like 1:<digits>:ios:<hex>.
-  These placeholders are not enough to launch. Any plist from a Firebase iOS app
-  is enough to start. A project of your own is only needed for anonymous sign-in
-  and price-alert push. The watch app does not use Firebase.
+  The watch app does not use Firebase.
   GoogleService-Info.plist files are gitignored.
 -->
 <plist version="1.0">

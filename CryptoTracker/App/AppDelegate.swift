@@ -40,7 +40,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
         
         application.accessibilityLanguage = "en"
         
-        FirebaseApp.configure()
+        let firebaseReady = FirebaseConfigurator.configureIfNeeded()
         AptabaseConfigurator.configureIfNeeded()
         
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -49,7 +49,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
             }
         }
 
-        Messaging.messaging().delegate = self
+        if firebaseReady {
+            Messaging.messaging().delegate = self
+        }
         UNUserNotificationCenter.current().delegate = self
         
         if let userInfo = launchOptions?[.remoteNotification] as? [AnyHashable: Any] {
@@ -82,6 +84,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
     }
     
     func setupPush() async -> Bool {
+        guard FirebaseConfigurator.configureIfNeeded() else { return false }
+
         UNUserNotificationCenter.current().delegate = self
         
         let center = UNUserNotificationCenter.current()
@@ -104,13 +108,17 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
         handlePushNotification(userInfo: userInfo, fromUserTap: false)
-        Messaging.messaging().appDidReceiveMessage(userInfo)
+        if FirebaseConfigurator.configureIfNeeded() {
+            Messaging.messaging().appDidReceiveMessage(userInfo)
+        }
     }
     
     @MainActor
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) async
     -> UIBackgroundFetchResult {
-        Messaging.messaging().appDidReceiveMessage(userInfo)
+        if FirebaseConfigurator.configureIfNeeded() {
+            Messaging.messaging().appDidReceiveMessage(userInfo)
+        }
         handlePushNotification(userInfo: userInfo, fromUserTap: false)
         return UIBackgroundFetchResult.newData
     }
@@ -198,6 +206,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        guard FirebaseConfigurator.configureIfNeeded() else { return }
         Messaging.messaging().apnsToken = deviceToken
         // Messaging.messaging().setAPNSToken(deviceToken, type: .prod)
     }

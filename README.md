@@ -144,7 +144,9 @@ Market data, news, and the fear and greed index each come from a different API. 
 
 ### CoinGecko
 
-Crypto market data is based on [CoinGecko's API](https://www.coingecko.com/en/api). Most endpoints work on the free or Basic plans. These require the [Analyst plan](https://www.coingecko.com/en/api/pricing) (or higher):
+Crypto market data is based on [CoinGecko's API](https://www.coingecko.com/en/api). Free endpoints use the public base URL `https://api.coingecko.com/api/v3`. Without Pro, coin detail, OHLC, and market charts call that URL directly (`/coins/{id}`, `/coins/{id}/ohlc`, and `/coins/{id}/market_chart`). Other market routes go through `{API_BASE_URL}/crypto`, which proxies CoinGecko.
+
+Most endpoints work on the free or Basic plans. These require the [Analyst plan](https://www.coingecko.com/en/api/pricing) (or higher):
 
 - `/coins/list/new` — recently listed coins
 - `/coins/top_gainers_losers` — top gainers and losers

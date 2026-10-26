@@ -12,7 +12,7 @@ import SwiftUI
 
 struct FearGreedProvider: AppIntentTimelineProvider {
     typealias Entry = FearGreedEntry
-    typealias Intent = CryptoWidgetConfigurationIntent
+    typealias Intent = FearGreedWidgetConfigurationIntent
     
     private let viewModel = WidgetViewModelImp()
     
@@ -85,7 +85,7 @@ struct FearGreedWidget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(
             kind: kind,
-            intent: CryptoWidgetConfigurationIntent.self,
+            intent: FearGreedWidgetConfigurationIntent.self,
             provider: FearGreedProvider(),
             content: { entry in
                 FearGreedEntryView(entry: entry)

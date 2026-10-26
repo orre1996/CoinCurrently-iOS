@@ -30,18 +30,6 @@ struct HomeViewModelTests {
         #expect(viewModel.globalMarket != nil)
     }
 
-    @Test("premiumViewClosed clears the promotion copy")
-    func premiumViewClosedClearsPromotion() async {
-        let viewModel = makeViewModel()
-        viewModel.promotionTitle = "Welcome"
-        viewModel.promotionMessage = "Hello"
-
-        viewModel.premiumViewClosed(title: "Something else")
-
-        #expect(viewModel.promotionTitle == nil)
-        #expect(viewModel.promotionMessage == nil)
-    }
-
     private func makeViewModel(market: MockVMGlobalMarketRepository = MockVMGlobalMarketRepository()) -> HomeViewModelImp {
         HomeViewModelImp(
             toplistRepository: MockVMToplistRepository(),
@@ -52,8 +40,6 @@ struct HomeViewModelTests {
             newCoinsRepository: MockVMNewCoinsRepository(),
             fearGreedRepository: MockVMFearGreedRepository(),
             gasFeesRepository: MockVMGasFeesRepository(),
-            firebaseManger: MockFirebaseManager(),
-            storeKitManager: MockRepoStoreKitManager(),
             cachedStorageManager: emptyStorageManager(),
             settingsManager: SettingsManager.shared,
             analyticsManager: AnalyticsManager.shared

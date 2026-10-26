@@ -10,7 +10,6 @@ import SwiftUI
 import Firebase
 @preconcurrency import FirebaseMessaging
 import FirebaseCore
-import StoreKit
 @preconcurrency import UserNotifications
 
 class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {

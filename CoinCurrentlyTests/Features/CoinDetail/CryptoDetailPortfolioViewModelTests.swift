@@ -26,7 +26,6 @@ struct CryptoDetailPortfolioViewModelTests {
         await portfolio.setPortfolio(CachedPortfolioPies(data: [pie], otherCoins: [], date: Date()))
         let viewModel = CryptoDetailPortfolioViewModel(
             portfolioRepository: portfolio,
-            storeKitManager: MockRepoStoreKitManager(currentSubscription: "pro"),
             settingsManager: SettingsManager.shared
         )
 
@@ -34,14 +33,12 @@ struct CryptoDetailPortfolioViewModelTests {
 
         #expect(viewModel.pie?.data?.id == "bitcoin")
         #expect(viewModel.groupedTransactions?.isEmpty == false)
-        #expect(await viewModel.hasBoughtPro())
     }
 
     @Test("reset clears the loaded coin")
     func resetClearsCoin() async {
         let viewModel = CryptoDetailPortfolioViewModel(
             portfolioRepository: MockVMPortfolioRepository(),
-            storeKitManager: MockRepoStoreKitManager(),
             settingsManager: SettingsManager.shared
         )
 
@@ -59,7 +56,6 @@ struct CryptoDetailPortfolioViewModelTests {
 
         let viewModel = CryptoDetailPortfolioViewModel(
             portfolioRepository: MockVMPortfolioRepository(),
-            storeKitManager: MockRepoStoreKitManager(),
             settingsManager: SettingsManager.shared
         )
         let starting = viewModel.hidePortfolioData

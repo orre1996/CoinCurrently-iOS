@@ -8,8 +8,6 @@
 import Foundation
 
 enum LocalStorageKeys: Keyable {
-    case proStatus
-    case proExpirationDate
     case lastVersion
     case widgets
     case alertPrices
@@ -17,21 +15,11 @@ enum LocalStorageKeys: Keyable {
     case portfolioPies
     case portfolioPrices
     case walletRefreshDate
-    case homeShowFreeTrial
-    case homeNextFreeTrialDate
     case favorites
-    case didClosePromotions
-    case didCloseWelcome
-    case homeWelcomeOfferDate
     case otherCoins
-    case referralCode
 
     func key() -> String {
         switch self {
-        case .proStatus:
-            return "proStatus-1"
-        case .proExpirationDate:
-            return "proExpirationDate"
         case .lastVersion:
             return "lastVersion"
         case .widgets:
@@ -46,22 +34,10 @@ enum LocalStorageKeys: Keyable {
             return "portfolioPrices-1"
         case .walletRefreshDate:
             return "walletRefreshDate"
-        case .homeShowFreeTrial:
-            return "homeShowFreeTrial"
-        case .homeNextFreeTrialDate:
-            return "homeNextFreeTrialDate"
         case .favorites:
             return "favorites"
-        case .didClosePromotions:
-            return "didClosePromotions"
-        case .didCloseWelcome:
-            return "didCloseWelcome"
-        case .homeWelcomeOfferDate:
-            return "homeWelcomeOfferDate"
         case .otherCoins:
             return "otherCoins"
-        case .referralCode:
-            return "referralCode"
         }
     }
 }

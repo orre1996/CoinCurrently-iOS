@@ -2,13 +2,10 @@
 //  UserResponse.swift
 //  CoinCurrently
 //
-//  Created by Oscar Berggren on 8/9/26.
-//
 
 import Foundation
 
 struct UserResponse: Codable {
-    let referralCount: Int
     let user: RemoteUser
 }
 

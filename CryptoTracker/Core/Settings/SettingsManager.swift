@@ -55,7 +55,7 @@ enum AppSettingKey: String, SettingKeyable {
     case ratingPopupDate
     case actionRatingPopupDate
     case hasRatingPopupDate
-    case currentWhatsNewVersion = "3.2"
+    case currentWhatsNewVersion = "3.5"
     case storedWhatsNewVersion
     case colorBlindnessFilter
     case selectedLanguage
@@ -69,16 +69,8 @@ enum AppSettingKey: String, SettingKeyable {
     }
 }
 
-enum NewsSettingKey: String, SettingKeyable {
-    case lastNewsCategory = "lastNewsCategory-1"
-
-    var data: Data? {
-        return UserDefaults(suiteName: .groupIdentifier)?.data(forKey: self.rawValue)
-    }
-}
-
 class SettingsManager {
-    // nonisolated(unsafe) - used as default param in NewsRepositoryImp and elsewhere
+    // nonisolated(unsafe) - used as a default parameter from nonisolated contexts
     nonisolated(unsafe) static let shared = SettingsManager()
 
     func get<T: Decodable>(key: SettingKeyable) -> T? {
@@ -105,8 +97,8 @@ class SettingsManager {
         set(data: enabled, key: AppSettingKey.candleChartSelected)
     }
 
-    func isWebSocketEnabled(hasPro: Bool) -> Bool {
-        get(key: AppSettingKey.webSocketEnabled) ?? hasPro
+    func isWebSocketEnabled() -> Bool {
+        get(key: AppSettingKey.webSocketEnabled) ?? true
     }
 
     func isColorBlindnessFilterEnabled() -> Bool {
@@ -123,15 +115,22 @@ class SettingsManager {
 
     func getLatestTab() -> Int {
         let startTab: StartTab = get(key: AppSettingKey.startTab) ?? .home
+        let tab: Int
         switch startTab {
         case .lastUsed:
-            return get(key: AppSettingKey.latestTab) ?? 0
-        case .home: return 0
-        case .portfolio: return 1
-        case .market: return 2
-        case .news: return 3
-        case .more: return 4
+            tab = get(key: AppSettingKey.latestTab) ?? 0
+        case .home:
+            tab = 0
+        case .portfolio:
+            tab = 1
+        case .market:
+            tab = 2
+        case .more:
+            tab = 3
         }
+        // News used to occupy tab 3, so Settings was stored as 4.
+        if tab >= 4 { return 3 }
+        return max(tab, 0)
     }
 
     func getRatingPopupDate() -> Date? {

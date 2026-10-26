@@ -54,7 +54,6 @@ protocol CryptoDetailViewModel: ChartHoverHosting {
     func setStartData() async
     func point(at index: Int, rect: CGSize) -> CGPoint
     func getGlobalMarketData() async
-    func hasBoughtPro() async -> Bool
     
     func refresh(showReload: Bool, newDays: String?, newTimeChart: TimeCharts?, forceId: String?) async
     func toggleChart() async
@@ -80,7 +79,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
     private let toplistRepository: ToplistRepository
     private let globalMarketRepository: GlobalMarketRepository
     private let storageManager: CachedStorageManager
-    private let storeKitManager: StoreKitManager
     private let analyticsManager: AnalyticsManager
     private let settingsManager: SettingsManager
     
@@ -116,10 +114,8 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
     var selectedSortOption: SortOption = .volumeDesc
     var exchangeMarketItems: [ExchangeMarketItem]? = nil
     
-    private(set) var hasProSubscription = false
-    
     var isWebSocketEnabled: Bool {
-        settingsManager.isWebSocketEnabled(hasPro: hasProSubscription)
+        settingsManager.isWebSocketEnabled()
     }
     
     init(
@@ -128,7 +124,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
         toplistRepository: ToplistRepository = ToplistRepositoryImp.shared,
         globalMarketRepository: GlobalMarketRepository = GlobalMarketRepositoryImp.shared,
         storageManager: CachedStorageManager = CachedStorageManagerImp.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
         analyticsManager: AnalyticsManager = AnalyticsManager.shared,
         settingsManager: SettingsManager = SettingsManager.shared
     ) {
@@ -136,7 +131,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
         self.toplistRepository = toplistRepository
         self.globalMarketRepository = globalMarketRepository
         self.storageManager = storageManager
-        self.storeKitManager = storeKitManager
         self.analyticsManager = analyticsManager
         self.settingsManager = settingsManager
         
@@ -146,8 +140,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
     func setStartData() async {
         await cryptoDetailRepository.ensureCacheLoaded()
         await toplistRepository.ensureCacheLoaded()
-        
-        hasProSubscription = await storeKitManager.currentSubscription != nil
 
         let coinId = cryptoInfo?.id ?? ""
         if !coinId.isEmpty {
@@ -326,8 +318,6 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
     ) async {
         mainReloading = showReload
         
-        hasProSubscription = await storeKitManager.currentSubscription != nil
-        
         let days = newDays ?? self.currentDays
         let chart = newTimeChart ?? self.selectedTimeFrame
         let mainId = forceId ?? self.cryptoInfo?.id
@@ -443,24 +433,8 @@ final class CryptoDetailViewModelImp: CryptoDetailViewModel, ChartHoverHosting {
         await startWebSocket(for: id)
     }
     
-    func hasBoughtPro() async -> Bool {
-        await storeKitManager.currentSubscription != nil
-    }
-    
     func handleFavoriteButtonPressed() async {
         guard let toplistItem = cryptoInfo?.toToplist() else { return }
-        
-        let hasActiveSubscription = await storeKitManager.currentSubscription != nil
-        
-        // temp
-        let favorites: CachedData<[Toplist]>? = await CoreDataManager.shared.get(forKey: .favorites)
-        if !hasActiveSubscription && !inFavoritesList && (favorites?.data.count ?? 0) >= 2 {
-            analyticsManager.log(
-                BuyProOpened(fromScreen: .cryptoDetail, action: .Favorite)
-            )
-            showBuyPro()
-            return
-        }
         
         if inFavoritesList {
             analyticsManager.log(FavoriteRemoved(coinName: toplistItem.name ?? "", fromScreen: .cryptoDetail))

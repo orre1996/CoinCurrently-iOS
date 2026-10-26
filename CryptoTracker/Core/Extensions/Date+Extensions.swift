@@ -155,8 +155,8 @@ extension Date {
         return  60 * 60 * 24
     }
     
-    func defaultCacheTimer(hasBoughtPro: Bool) -> Bool {
-        return (Date().timeIntervalSince(self) > 60 * Double(Date.cacheTime(hasBoughtPro: hasBoughtPro)))
+    func defaultCacheTimer() -> Bool {
+        return (Date().timeIntervalSince(self) > 60 * Double(Date.cacheTime()))
     }
     
     func moreThanAMonth() -> Bool {
@@ -204,11 +204,11 @@ extension Date {
         Calendar.current.date(byAdding: .day, value: days, to: Date()) ?? Date()
     }
     
-    static func cacheTime(hasBoughtPro: Bool) -> Int {
+    static func cacheTime() -> Int {
 #if IS_WIDGET
         return 0
 #else
-        return hasBoughtPro ? 3 : 15
+        return 3
 #endif
     }
     

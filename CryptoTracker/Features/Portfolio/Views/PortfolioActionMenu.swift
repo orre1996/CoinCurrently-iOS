@@ -43,21 +43,10 @@ struct PortfolioActionMenu: View {
                     PrimaryButton(
                         text: Localization.string("Add Transaction"),
                         action: {
-                            Task {
-                                let hasPro = await viewModel.hasBoughtPro()
-                                if (viewModel.portfolio?.allTransactionsCount ?? 0) >= 3 && !hasPro {
-                                    AnalyticsManager.shared.log(
-                                        BuyProOpened(fromScreen: .portfolio, action: .AddTransaction)
-                                    )
-                                    showBuyPro()
-                                } else {
-                                    AnalyticsManager.shared.log(
-                                        SheetOpened(fromScreen: .portfolio, sheet: .portfolioAddTransactionType)
-                                    )
-                                    isTransactionTypeSheetShowing = true
-                                }
-                            }
-
+                            AnalyticsManager.shared.log(
+                                SheetOpened(fromScreen: .portfolio, sheet: .portfolioAddTransactionType)
+                            )
+                            isTransactionTypeSheetShowing = true
                             isActionMenuExpanded = false
                         }
                     )
@@ -69,30 +58,20 @@ struct PortfolioActionMenu: View {
                     }
 
                     PrimaryButton(
-                        text: Localization.string("Import Wallet (Pro)"),
+                        text: Localization.string("Import Wallet"),
                         action: {
                             isActionMenuExpanded = false
-
-                            Task {
-                                if await viewModel.hasBoughtPro() {
-                                    AnalyticsManager.shared.log(
-                                        Navigate(fromScreen: .portfolio, toScreen: .newImportTransaction)
-                                    )
-                                    navigationViewModel.navPath.append(
-                                        NavigationScreens.ImportWalletTransaction
-                                    )
-                                } else {
-                                    AnalyticsManager.shared.log(
-                                        BuyProOpened(fromScreen: .portfolio, action: .ImportWallet)
-                                    )
-                                    navigationViewModel.showBuyPro = true
-                                }
-                            }
+                            AnalyticsManager.shared.log(
+                                Navigate(fromScreen: .portfolio, toScreen: .newImportTransaction)
+                            )
+                            navigationViewModel.navPath.append(
+                                NavigationScreens.ImportWalletTransaction
+                            )
                         }
                     )
                     .padding(.trailing, 16)
                     .transition(.move(edge: .trailing))
-                    .accessibilityLabel(Localization.string("Import wallet, pro feature"))
+                    .accessibilityLabel(Localization.string("Import wallet"))
                     .accessibilityFocused($actionMenuFocus, equals: .importWallet)
 
                     PrimaryButton(

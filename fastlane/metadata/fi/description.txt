@@ -18,7 +18,7 @@ SAAVUTETTAVUUS KAIKILLE
 
 Krypton pitäisi olla kaikille. CoinCurrently tukee saavutettavuutta koko sovelluksessa.
 
-• VoiceOver — jokainen näyttö on nimetty ja kokonaan navigoitavissa, Kodista ja Markkinoista Salkkuun, Uutisiin ja Asetuksiin
+• VoiceOver — jokainen näyttö on nimetty ja kokonaan navigoitavissa, Kodista ja Markkinoista Salkkuun ja Asetuksiin
 • Dynamic Type — teksti seuraa järjestelmän asetuksia ja on helpompi lukea
 • Värisokeille sopiva tila — vaihda hinnanmuutosten värit asetuksissa vihreästä/punaisesta siniseen/oranssiin
 • Selkeä, suurikontrastinen käyttöliittymä vaaleassa ja tummassa tilassa
@@ -48,10 +48,9 @@ VALUUTTAMUUNNIN
 
 Muunna heti fiatin ja krypton välillä tai minkä tahansa kahden omaisuuserän välillä live-kursseilla.
 
-MARKKINATUNNELMA JA UUTISET
+MARKKINATUNNELMA
 
 • Fear and Greed -indeksi markkinatunnelman lukemiseen
-• Uusimmat kryptouutiset suoraan sovelluksessa
 • Vertaile hintoja useissa pörsseissä
 
 KOTINÄYTÖN WIDGETIT

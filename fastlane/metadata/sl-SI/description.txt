@@ -18,7 +18,7 @@ DOSTOPNOST ZA VSE
 
 Kripto bi moral biti za vse. CoinCurrently ima polno podporo za dostopnost v celotni aplikaciji.
 
-• VoiceOver — vsak zaslon je označen in ga je mogoče v celoti prehoditi, od Doma in Trga do Portfelja, Novic in Nastavitev
+• VoiceOver — vsak zaslon je označen in ga je mogoče v celoti prehoditi, od Doma in Trga do Portfelja in Nastavitev
 • Dynamic Type — besedilo sledi sistemskim nastavitvam in ga je lažje brati
 • Način za barvno slepoto — v Nastavitvah preklopi spremembe cen iz zelene/rdeče v modro/oranžno
 • Čist vmesnik z visokim kontrastom v svetlem in temnem načinu
@@ -48,10 +48,9 @@ PRETVORNIK VALUT
 
 Takoj pretvarjaj med fiatom in kriptom ali med katerima koli dvema sredstvoma, z živimi tečaji.
 
-RAZPOLOŽENJE TRGA IN NOVICE
+RAZPOLOŽENJE TRGA
 
 • Indeks Fear and Greed za oceno razpoloženja na trgu
-• Najnovejše kripto novice neposredno v aplikaciji
 • Primerjaj cene na več borzah
 
 PRIPOMOČKI ZA ZAČETNI ZASLON

@@ -11,7 +11,6 @@ struct PriceAlertsRepositoryTests {
         let repo = PriceAlertsRepositoryImp(
             networkManager: mock,
             storageManager: emptyStorageManager(),
-            storeKitManager: MockRepoStoreKitManager(),
             firebaseManager: MockFirebaseManager()
         )
 
@@ -28,7 +27,6 @@ struct PriceAlertsRepositoryTests {
         let repo = PriceAlertsRepositoryImp(
             networkManager: mock,
             storageManager: emptyStorageManager(),
-            storeKitManager: MockRepoStoreKitManager(),
             firebaseManager: MockFirebaseManager()
         )
 
@@ -45,7 +43,6 @@ struct PriceAlertsRepositoryTests {
         let repo = PriceAlertsRepositoryImp(
             networkManager: mock,
             storageManager: emptyStorageManager(),
-            storeKitManager: MockRepoStoreKitManager(),
             firebaseManager: MockFirebaseManager()
         )
 
@@ -60,7 +57,6 @@ struct PriceAlertsRepositoryTests {
         let repo = PriceAlertsRepositoryImp(
             networkManager: mock,
             storageManager: emptyStorageManager(),
-            storeKitManager: MockRepoStoreKitManager(),
             firebaseManager: MockFirebaseManager()
         )
 

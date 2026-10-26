@@ -18,7 +18,7 @@ TIẾP CẬN ĐƯỢC CHO MỌI NGƯỜI
 
 Crypto nên dành cho mọi người. CoinCurrently hỗ trợ trợ năng trên toàn bộ app.
 
-• VoiceOver — mọi màn hình đều có nhãn và điều hướng được trọn vẹn, từ Trang chủ và Thị trường tới Danh mục, Tin tức và Cài đặt
+• VoiceOver — mọi màn hình đều có nhãn và điều hướng được trọn vẹn, từ Trang chủ và Thị trường tới Danh mục và Cài đặt
 • Dynamic Type — chữ co giãn theo cài đặt hệ thống, dễ đọc hơn
 • Chế độ mù màu — trong Cài đặt, đổi biến động giá từ xanh lá/đỏ sang xanh dương/cam
 • Giao diện sạch, tương phản cao ở cả chế độ sáng và tối
@@ -48,10 +48,9 @@ QUY ĐỔI TIỀN TỆ
 
 Quy đổi ngay giữa tiền pháp định và crypto, hoặc giữa hai tài sản bất kỳ, với tỷ giá trực tiếp.
 
-TÂM LÝ THỊ TRƯỜNG VÀ TIN TỨC
+TÂM LÝ THỊ TRƯỜNG
 
 • Chỉ số Fear and Greed để đọc tâm lý thị trường
-• Tin crypto mới nhất ngay trong app
 • So sánh giá trên nhiều sàn
 
 TIỆN ÍCH MÀN HÌNH CHÍNH

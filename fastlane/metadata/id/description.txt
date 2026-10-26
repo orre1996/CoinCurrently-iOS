@@ -18,7 +18,7 @@ AKSESIBILITAS UNTUK SEMUA
 
 Kripto seharusnya untuk semua orang. CoinCurrently mendukung aksesibilitas di seluruh aplikasi.
 
-• VoiceOver — setiap layar diberi label dan bisa dijelajahi sepenuhnya, dari Beranda dan Pasar ke Portofolio, Berita, dan Pengaturan
+• VoiceOver — setiap layar diberi label dan bisa dijelajahi sepenuhnya, dari Beranda dan Pasar ke Portofolio dan Pengaturan
 • Dynamic Type — teks mengikuti pengaturan sistem dan lebih mudah dibaca
 • Mode buta warna — ubah perubahan harga dari hijau/merah ke biru/oranye di Pengaturan
 • Antarmuka bersih dengan kontras tinggi dalam mode terang dan gelap
@@ -48,10 +48,9 @@ PENGONVERSI MATA UANG
 
 Konversi seketika antara fiat dan kripto, atau antara dua aset apa pun, dengan kurs langsung.
 
-SENTIMEN PASAR DAN BERITA
+SENTIMEN PASAR
 
 • Indeks Fear and Greed untuk membaca suasana pasar
-• Berita kripto terbaru langsung di dalam aplikasi
 • Bandingkan harga di beberapa bursa
 
 WIDGET LAYAR UTAMA

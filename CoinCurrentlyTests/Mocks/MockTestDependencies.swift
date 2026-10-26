@@ -6,8 +6,6 @@
 //
 
 import Testing
-import StoreKit
-import RevenueCat
 import FirebaseRemoteConfig
 import FirebaseAuth
 @testable import CoinCurrently
@@ -68,34 +66,6 @@ actor MockRepoNetworkManager: NetworkManager {
     }
 }
 
-// MARK: - Mock StoreKit Manager
-
-actor MockRepoStoreKitManager: StoreKitManager {
-    var currentSubscription: String?
-    var subscriptionExpirationDate: Date?
-    var storeProducts: [Product]? { nil }
-    var updateListenerTask: Task<Void, Error>? { nil }
-
-    init(currentSubscription: String? = nil, subscriptionExpirationDate: Date? = nil) {
-        self.currentSubscription = currentSubscription
-        self.subscriptionExpirationDate = subscriptionExpirationDate
-    }
-
-    func setStartData(downloadSubscriptions: Bool) async {}
-    func fetchStoreProducts() async {}
-    func requestProducts() async -> [Product]? { nil }
-    func streamProducts() -> AsyncStream<[Product]> { AsyncStream { _ in } }
-    func isEligableForTrial(using products: [Product]?) async -> Bool { false }
-    func purchase(_ product: Product) async -> TransactionState { .failed }
-    func listenForTransaction() -> Task<Void, Error> { Task {} }
-    func updatePurchasedStatus() async {}
-    func restorePurchase() async -> RestorePurchaseResult { .nothingToRestore }
-    func getSubscriptionStatus(product: Product?) async -> Bool { false }
-    func stream() -> AsyncStream<Bool> { AsyncStream { _ in } }
-    func getUser() async {}
-    func applyCustomerInfo(_ customerInfo: CustomerInfo?) async {}
-}
-
 // MARK: - Mock Firebase Manager
 
 actor MockFirebaseManager: FirebaseManager {
@@ -115,7 +85,6 @@ actor MockFirebaseManager: FirebaseManager {
     }
     func getUserToken() async -> String? { tokenResult }
     func login() async -> Bool { false }
-    func syncRevenueCatCustomerInfo() async {}
     func compareVersions(_ v1: String, _ v2: String) -> ComparisonResult { .orderedSame }
     func compareAppVersion(with version: String?) async -> ComparisonResult { .orderedSame }
     func removeUser() async {}

@@ -31,33 +31,20 @@ struct WhatsNewSheet: View {
     
     private let sections: [WhatsNewSection] = [
         WhatsNewSection(
-            title: "Languages",
-            icon: .languages,
+            title: "Free",
+            icon: Image(systemName: "gift"),
             bulletPoints: [
-                "The app can be translated to 36 languages"
+                "The paywall has been removed",
+                "CoinCurrently is completely free, and every feature is included",
+                "There is no subscription to buy, renew, or restore"
             ]
         ),
         WhatsNewSection(
-            title: "Referrals",
-            icon: .referral,
+            title: "Open source",
+            icon: .repository,
             bulletPoints: [
-                "Invite your friends & family and get rewarded"
-            ]
-        ),
-        WhatsNewSection(
-            title: "Widgets",
-            icon: .widget,
-            bulletPoints: [
-                "Widgets have a new, fresh look",
-                "Everything about widgets has moved to the Home Screen, where they are now modified"
-            ]
-        ),
-        WhatsNewSection(
-            title: "Heatmap",
-            icon: .heatmap,
-            bulletPoints: [
-                "See the market as a color-coded heatmap",
-                "Browse favorites, your portfolio, or the toplist"
+                "The project is now open source, so you can read the code and see what the app does with your data",
+                "Want to contribute? The iOS and Android repositories are linked under Source code in Settings"
             ]
         )
     ]

@@ -18,7 +18,7 @@ PRISTUPAČNOST ZA SVE
 
 Kripto bi trebao biti za sve. CoinCurrently ima punu podršku za pristupačnost u cijeloj aplikaciji.
 
-• VoiceOver — svaki je zaslon označen i može se u cijelosti proći, od Početne i Tržišta do Portfelja, Vijesti i Postavki
+• VoiceOver — svaki je zaslon označen i može se u cijelosti proći, od Početne i Tržišta do Portfelja i Postavki
 • Dynamic Type — tekst prati postavke sustava i lakše se čita
 • Način za sljepoću za boje — u Postavkama prebaci promjene cijena sa zelene/crvene na plavu/narančastu
 • Čisto sučelje visokog kontrasta u svijetlom i tamnom načinu
@@ -48,10 +48,9 @@ PRETVARAČ VALUTA
 
 Odmah pretvaraj između fiata i kripta ili između bilo koja dva sredstva, uz tečajeve uživo.
 
-RASPOLOŽENJE TRŽIŠTA I VIJESTI
+RASPOLOŽENJE TRŽIŠTA
 
 • Indeks Fear and Greed za procjenu raspoloženja tržišta
-• Najnovije kripto vijesti izravno u aplikaciji
 • Usporedi cijene na više burzi
 
 WIDGETI ZA POČETNI ZASLON

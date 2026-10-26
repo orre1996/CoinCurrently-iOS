@@ -33,11 +33,7 @@ struct MainTabView: View {
                 MarketScreen()
             }
             
-            Tab(tabTitle("News"), image: .newsTab, value: 3) {
-                NewsScreen()
-            }
-            
-            Tab(tabTitle("Settings"), image: .settingsTab, value: 4) {
+            Tab(tabTitle("Settings"), image: .settingsTab, value: 3) {
                 SettingsScreen()
             }
         }

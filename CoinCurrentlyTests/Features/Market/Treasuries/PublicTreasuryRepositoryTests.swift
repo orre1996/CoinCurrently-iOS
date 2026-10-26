@@ -139,13 +139,13 @@ struct PublicTreasuryEndpointTests {
 
     @Test("companies bitcoin treasury path")
     func companiesBitcoinPath() async {
-        let path = await Endpoint.publicTreasury(entity: .companies, coinId: TreasuryCoinId.bitcoin.rawValue).pathComponent(hasBoughtPro: true)
+        let path = await Endpoint.publicTreasury(entity: .companies, coinId: TreasuryCoinId.bitcoin.rawValue).pathComponent()
         #expect(path == "\(serverBaseUrl)/crypto/api/v3/companies/public_treasury/bitcoin")
     }
 
     @Test("governments bitcoin treasury path")
     func governmentsBitcoinPath() async {
-        let path = await Endpoint.publicTreasury(entity: .governments, coinId: TreasuryCoinId.bitcoin.rawValue).pathComponent(hasBoughtPro: true)
+        let path = await Endpoint.publicTreasury(entity: .governments, coinId: TreasuryCoinId.bitcoin.rawValue).pathComponent()
         #expect(path == "\(serverBaseUrl)/crypto/api/v3/governments/public_treasury/bitcoin")
     }
 
@@ -158,7 +158,7 @@ struct PublicTreasuryEndpointTests {
 
     @Test("entities list path")
     func entitiesListPath() async {
-        let path = await Endpoint.entitiesList(entity: .companies).pathComponent(hasBoughtPro: true)
+        let path = await Endpoint.entitiesList(entity: .companies).pathComponent()
         #expect(path == "\(serverBaseUrl)/crypto/api/v3/entities/list")
     }
 

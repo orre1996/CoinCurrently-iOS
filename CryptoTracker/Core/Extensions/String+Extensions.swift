@@ -82,8 +82,6 @@ extension String: @retroactive Identifiable {
     static let portfolioTabFilled = "portfolio_filled"
     static let marketTab = "market"
     static let marketTabFilled = "market_filled"
-    static let newsTab = "news"
-    static let newsTabFilled = "news_filled"
     static let settingsTab = "settings"
     static let settingsTabFilled = "settings_filled"
     

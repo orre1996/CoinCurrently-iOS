@@ -44,18 +44,6 @@ struct OpenMarketIntent: AppIntent {
     }
 }
 
-struct OpenNewsIntent: AppIntent {
-    static var title: LocalizedStringResource { "Open News" }
-    static var description: IntentDescription { IntentDescription("Opens crypto news.") }
-    static var openAppWhenRun: Bool { true }
-    
-    @MainActor
-    func perform() async throws -> some IntentResult {
-        SiriNavigationManager.navigate(to: "news")
-        return .result()
-    }
-}
-
 struct OpenSettingsIntent: AppIntent {
     static var title: LocalizedStringResource { "Open Settings" }
     static var description: IntentDescription { IntentDescription("Opens app settings.") }
@@ -158,16 +146,6 @@ struct CoinCurrentlyShortcuts: AppShortcutsProvider {
             ],
             shortTitle: "Market",
             systemImageName: "chart.line.uptrend.xyaxis"
-        )
-        
-        AppShortcut(
-            intent: OpenNewsIntent(),
-            phrases: [
-                "Open news in \(.applicationName)",
-                "Show crypto news in \(.applicationName)"
-            ],
-            shortTitle: "News",
-            systemImageName: "newspaper"
         )
         
         AppShortcut(

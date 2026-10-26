@@ -10,7 +10,7 @@ import SwiftUI
 struct NFTDetailAboutView: View {
     let nftDetail: NFTDetail?
     
-    @Binding var newsUrl: String?
+    @Binding var webUrl: String?
     
     private var sections: [DetailAboutSection] {
         guard let nftDetail else { return [] }
@@ -62,7 +62,7 @@ struct NFTDetailAboutView: View {
             isLoading: isLoading,
             emptyStateMessage: "When information about this NFT collection appears, it'll show up here.",
             fromScreen: .nftDetail,
-            newsUrl: $newsUrl
+            webUrl: $webUrl
         )
     }
 }

@@ -4,7 +4,7 @@
 
 <p align="center">
   A private crypto tracker for iOS, Apple Watch, and Android.<br>
-  Follow markets, news, and a personal portfolio without an account, ads, or sign-up.
+  Follow markets and a personal portfolio without an account, ads, or sign-up.
 </p>
 
 <p align="center">
@@ -32,7 +32,6 @@ The iOS app lives in `CryptoTracker`. Watch and widget extensions reuse the same
 - Markets — coins, NFTs, exchanges, derivatives, and categories
 - Personal portfolio
 - Price alerts
-- News (articles, videos, and podcasts)
 - Home Screen and Lock Screen widgets
 - Apple Watch
 
@@ -47,7 +46,6 @@ CoinCurrently does not ask for an email or password. Portfolio holdings, transac
 The app uses a few third-party SDKs. None of them require a name, email, or phone number, so there is still no personal account.
 
 - **[Aptabase](https://aptabase.com)** is a privacy-focused analytics service. The app sends named product events (for example which screen opened). It is not an advertising SDK and does not build a marketing profile.
-- **[RevenueCat](https://www.revenuecat.com)** manages App Store subscriptions. Pro status comes from the store receipt through RevenueCat, not from Firebase.
 - **[Firebase](https://firebase.google.com)** starts only when `GoogleService-Info.plist` is included. It signs in anonymously — a random ID on the device, not an email. Price alerts need that so Firebase Cloud Messaging can issue an FCM token. The backend uses the token to send a push when a price hits; without it, the phone cannot receive alert notifications.
 
 See the [Privacy Policy](https://coincurrently.app/privacy).
@@ -56,7 +54,7 @@ See the [Privacy Policy](https://coincurrently.app/privacy).
 
 The app uses **MVVM + repositories**.
 
-- A **repository** is the source of truth for a slice of data (news, toplist, portfolio, and so on). It fetches from the network, caches, and persists. Screens do not talk to the API directly.
+- A **repository** is the source of truth for a slice of data (toplist, portfolio, and so on). It fetches from the network, caches, and persists. Screens do not talk to the API directly.
 - A **view model** reads from one or more repositories, then shapes that data for a specific screen: filtering, sorting, hover state, loading flags, and user actions.
 - A **view** (SwiftUI screen) renders the view model and sends user events back. It should not own cache or networking.
 
@@ -68,13 +66,13 @@ View  →  ViewModel  →  Repository  →  NetworkManager / Settings / Core Dat
 
 ### Repositories
 
-Repositories are Swift `actor`s, usually behind a protocol plus an `*Imp` implementation (`NewsRepository` / `NewsRepositoryImp`). Production code uses a shared instance; tests inject a mock `NetworkManager`.
+Repositories are Swift `actor`s, usually behind a protocol plus an `*Imp` implementation (`ToplistRepository` / `ToplistRepositoryImp`). Production code uses a shared instance; tests inject a mock `NetworkManager`.
 
 A repository is responsible for:
 
-- Loading and refreshing a domain (for example `getNews(type:count:)`)
+- Loading and refreshing a domain (for example `getSmallToplist()`)
 - Holding the cached copy of that data
-- Writing user or session state that belongs to that domain (selected news category, saved coins)
+- Writing user or session state that belongs to that domain (saved coins, portfolio transactions)
 - Talking to `NetworkManager`, `SettingsManager`, and Core Data — not to SwiftUI
 
 Several screens can share the same repository. Home, Market, and Coin Detail all read coin prices from the same source instead of each keeping their own list.
@@ -85,20 +83,20 @@ View models are `@MainActor` and typically `@Observable`. They:
 
 - Ask repositories for data
 - Keep screen-only state (selected tab, hover point, empty/loading)
-- Map repository models into what the view needs (a short home carousel vs a full market list, filtered news, formatted P&L)
+- Map repository models into what the view needs (a short home carousel vs a full market list, formatted P&L)
 - Handle user actions, then write back through the repository when the change should be shared
 
-They do not persist the app-wide cache. If Home and News both show news, the repository cache is what they share; each view model only keeps the slice its screen displays.
+They do not persist the app-wide cache. If Home and Market both show coins, the repository cache is what they share; each view model only keeps the slice its screen displays.
 
 ### Views
 
-SwiftUI screens own a view model (`@State private var viewModel = NewsViewModelImp()`), observe it, and call `async` methods from `Task`s. Shared chrome (charts, list rows, sheets) lives in `SharedUI` so features stay focused on their own flow.
+SwiftUI screens own a view model (`@State private var viewModel = HomeViewModelImp()`), observe it, and call `async` methods from `Task`s. Shared chrome (charts, list rows, sheets) lives in `SharedUI` so features stay focused on their own flow.
 
-### Example: News
+### Example: Home
 
-1. `NewsRepository` fetches and caches `[NewsItem]` per `NewsType`.
-2. `NewsViewModel` loads that cache, then filters it for Articles / Videos / Podcasts and the selected category.
-3. `NewsScreen` binds to those arrays and asks the view model to refresh when the user changes tab or filter.
+1. `ToplistRepository` fetches and caches the coin list.
+2. `HomeViewModel` loads that cache and keeps the slice for the selected carousel.
+3. `HomeScreen` binds to that list and asks the view model to refresh when the user changes filter.
 
 ## File structure
 
@@ -120,7 +118,6 @@ CryptoTracker/
     Market/            Toplist, Heatmap, NFTs, Exchanges, Derivatives, Categories
     CoinDetail/
     Portfolio/
-    News/
     …
 
 CoinCurrentlyTests/    Mirrors Core/ and Features/
@@ -131,20 +128,18 @@ CoinCurrentlyWatch Extension/
 A typical feature looks like:
 
 ```
-Features/News/
-  Screens/             NewsScreen
-  ViewModels/          NewsViewModel
-  Repositories/        NewsRepository
+Features/Home/
+  Screens/             HomeScreen
+  ViewModels/          HomeViewModel
   Models/
   Views/
-  Sheets/
 ```
 
 Smaller features may keep a few files at the feature root. Shared types used by many features belong in `Core/Domain` or `SharedUI`, not in the first feature that happened to need them.
 
 ## Networking
 
-Market data, news, and the fear and greed index each come from a different API. `NetworkManager` and `Endpoint` in `Core/Networking` own the requests; screens never call these APIs directly.
+Market data and the fear and greed index each come from a different API. `NetworkManager` and `Endpoint` in `Core/Networking` own the requests; screens never call these APIs directly.
 
 ### CoinGecko
 
@@ -162,23 +157,15 @@ Most of the proxied endpoints work on the free or Basic plans. These require the
 - `/nfts/{id}/tickers` — NFT floor price and volume per marketplace
 - CGSimplePrice WebSocket — live coin prices
 
-### News
-
-News (articles, videos, and podcasts) is based on [cryptonews-api.com](https://cryptonews-api.com). The app requests it as `{API_BASE_URL}/news`. The news key stays on the backend.
-
 ### Fear and Greed
 
 The fear and greed index is requested directly from [alternative.me](https://alternative.me/crypto/fear-and-greed-index/). It does not use `API_BASE_URL`.
 
 ### CoinCurrently backend
 
-The backend is not in this repo. It proxies CoinGecko and news so third-party keys stay off the client, and it hosts first-party routes for price alerts, big-mover notifications, wallet import, gas fees, referrals, redeem codes, user, and feedback. Those first-party routes send a bearer token.
+The backend is not in this repo. It proxies CoinGecko so third-party keys stay off the client, and it hosts first-party routes for price alerts, big-mover notifications, wallet import, gas fees, user, and feedback. Those first-party routes send a bearer token.
 
-Without that backend, the app can still show coin detail, OHLC, market charts (for users without Pro), and the fear and greed index. Toplists, search, trending, exchanges, categories, derivatives, news, NFTs, gainers and losers, gas fees, and alerts need `API_BASE_URL`.
-
-## Pro
-
-Subscriptions go through RevenueCat and StoreKit. Free users get markets, news, a small portfolio, and widgets. Pro unlocks live prices (WebSocket), extra price alerts, more portfolio transactions, wallet import, portfolio export, and some news filters (coin, exchange, NFT, technical analysis).
+Without that backend, the fear and greed index can still load. Markets, coin detail, charts, search, alerts, and the rest of the app need `API_BASE_URL`.
 
 ## Targets
 
@@ -198,7 +185,7 @@ Subscriptions go through RevenueCat and StoreKit. Free users get markets, news, 
 
 ## Local setup
 
-1. Open `CoinCurrently.xcodeproj` and run the **Cryptocurrently** scheme. The target is CoinCurrently. The first build downloads Swift packages from GitHub, so it needs a network connection. YouTubePlayerKit is already in the repo. The scheme uses `CryptoTracker/Product.storekit` for local purchases.
+1. Open `CoinCurrently.xcodeproj` and run the **Cryptocurrently** scheme. The target is CoinCurrently. The first build downloads Swift packages from GitHub, so it needs a network connection. YouTubePlayerKit is already in the repo.
 2. Set your own Development Team on the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets. Running the iOS app signs the widget and watch targets too. Leave `DEVELOPMENT_TEAM` empty in committed project files. Do not commit a team ID, bundle ID change, or real keys.
 
    The committed bundle IDs are `Cryptium.Cryptocurrently1`, `Cryptium.Cryptocurrently1.Cryptowidget`, and `Cryptium.Cryptocurrently1.watchkitapp`. Another Apple team has to change all three together and keep the widget and watch IDs as suffixes of the app ID.
@@ -213,9 +200,8 @@ Subscriptions go through RevenueCat and StoreKit. Free users get markets, news, 
 
    A free personal team cannot enable push, associated domains, or iCloud.
 3. Copy `Config/Secrets.example.plist` to `Config/Secrets.plist`. The app crashes at launch if this file is missing from the bundle or if any key is empty. Placeholder values are enough to launch. The file is gitignored. Keys:
-   - `API_BASE_URL` — your backend, with no trailing slash. Markets, news, and the first-party routes above need it. A placeholder lets the app launch. Coin detail, OHLC, market charts, and the fear and greed index can still load. Toplists, news, search, and alerts stay empty until it points at a backend.
-   - `BACKEND_API_KEY` — sent as `x-coin-currently-key`. A placeholder is enough for the public CoinGecko and fear-and-greed calls.
-   - `REVENUECAT_PRODUCTION_API_KEY` and `REVENUECAT_TEST_API_KEY` — placeholders are enough unless you are testing purchases through RevenueCat. Debug builds use the test key. Local StoreKit purchases use `Product.storekit`.
+   - `API_BASE_URL` — your backend, with no trailing slash. Markets and the first-party routes above need it. A placeholder lets the app launch. The fear and greed index can still load. Toplists, search, and alerts stay empty until it points at a backend.
+   - `BACKEND_API_KEY` — sent as `x-coin-currently-key`. A placeholder is enough for the fear-and-greed call.
    - `APTABASE_APP_KEY` — a placeholder is enough unless you want analytics.
 4. `Secrets.plist` is already referenced by the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets. Widgets and Watch read the same file. If Xcode does not copy it into the bundle, add it to those targets' Copy Bundle Resources.
 5. Firebase, anonymous sign-in, and price-alert push stay off until a real `GoogleService-Info.plist` is in the bundle. The app launches without that file. `GOOGLE_APP_ID` has to look like `1:<digits>:ios:<hex>`. The placeholders in `Config/GoogleService-Info.example.plist` do not match that, so copying the example file does not turn Firebase on. Put a real plist at `CryptoTracker/GoogleService-Info.plist` for the app and `CryptoWidget/GoogleService-Info.plist` for widgets. Those files are gitignored. The watch app does not use Firebase.

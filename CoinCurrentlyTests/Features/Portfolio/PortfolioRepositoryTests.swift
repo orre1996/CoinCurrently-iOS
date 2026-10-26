@@ -10,7 +10,6 @@ struct PortfolioRepositoryTests {
 
         let repo = PortfolioRepositoryImp(
             networkManager: mock,
-            storeKitManager: MockRepoStoreKitManager()
         )
 
         let result = await repo.getPortfolio()

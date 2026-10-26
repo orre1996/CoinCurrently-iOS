@@ -36,7 +36,6 @@ struct RemainingWidgets: WidgetBundle {
     @WidgetBundleBuilder
     var body: some Widget {
         PortfolioWidget()
-        NewsWidget()
         FearGreedWidget()
         TripleWidget()
     }

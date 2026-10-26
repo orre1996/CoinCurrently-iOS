@@ -1,5 +1,5 @@
 //
-//  NewsCloudLayout.swift
+//  OverflowLayout.swift
 //  CoinCurrently
 //
 //  Created by Oscar Berggren on 2024-02-12.

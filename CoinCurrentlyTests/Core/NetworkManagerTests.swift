@@ -162,7 +162,6 @@ struct NetworkManagerTests {
             let session = URLSession(configuration: config)
 
             let manager = NetworkManagerImp(
-                storeKitManager: MockRepoStoreKitManager(),
                 firebaseManager: MockFirebaseManager(),
                 session: session
             )
@@ -192,7 +191,6 @@ struct NetworkManagerTests {
             let session = URLSession(configuration: config)
 
             let manager = NetworkManagerImp(
-                storeKitManager: MockRepoStoreKitManager(),
                 firebaseManager: MockFirebaseManager(),
                 session: session
             )
@@ -224,7 +222,6 @@ struct NetworkManagerTests {
             let session = URLSession(configuration: config)
 
             let manager = NetworkManagerImp(
-                storeKitManager: MockRepoStoreKitManager(),
                 firebaseManager: MockFirebaseManager(),
                 session: session
             )
@@ -256,7 +253,6 @@ struct NetworkManagerTests {
             let session = URLSession(configuration: config)
 
             let manager = NetworkManagerImp(
-                storeKitManager: MockRepoStoreKitManager(),
                 firebaseManager: MockFirebaseManager(),
                 session: session
             )
@@ -291,7 +287,6 @@ struct NetworkManagerTests {
             let session = URLSession(configuration: config)
 
             let manager = NetworkManagerImp(
-                storeKitManager: MockRepoStoreKitManager(),
                 firebaseManager: MockFirebaseManager(),
                 session: session
             )
@@ -327,7 +322,6 @@ struct NetworkManagerTests {
             let session = URLSession(configuration: config)
 
             let manager = NetworkManagerImp(
-                storeKitManager: MockRepoStoreKitManager(),
                 firebaseManager: MockFirebaseManager(),
                 session: session
             )
@@ -359,7 +353,6 @@ struct NetworkManagerTests {
             let session = URLSession(configuration: config)
 
             let manager = NetworkManagerImp(
-                storeKitManager: MockRepoStoreKitManager(),
                 firebaseManager: MockFirebaseManager(),
                 session: session
             )

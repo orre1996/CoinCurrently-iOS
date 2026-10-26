@@ -11,12 +11,10 @@ struct NFTDetailViewModelTests {
         let viewModel = NFTDetailViewModelImp(
             nftToplist: NFTToplist(id: "punks", name: "CryptoPunks"),
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
-            newsRepository: MockVMNewsRepository(),
             nftDetailsRepository: MockVMNFTDetailRepository(),
             nftsRepository: MockVMNFTRepository(),
             globalRepository: MockVMGlobalMarketRepository(),
             storageManager: emptyStorageManager(),
-            storeKitManager: MockRepoStoreKitManager()
         )
 
         #expect(viewModel.getPricesRangePrefix(priceVolume: nil) == 0)
@@ -29,12 +27,10 @@ struct NFTDetailViewModelTests {
         let viewModel = NFTDetailViewModelImp(
             nftToplist: NFTToplist(id: "punks", name: "CryptoPunks"),
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
-            newsRepository: MockVMNewsRepository(),
             nftDetailsRepository: repo,
             nftsRepository: MockVMNFTRepository(),
             globalRepository: MockVMGlobalMarketRepository(),
             storageManager: emptyStorageManager(),
-            storeKitManager: MockRepoStoreKitManager()
         )
 
         await viewModel.getDetail()

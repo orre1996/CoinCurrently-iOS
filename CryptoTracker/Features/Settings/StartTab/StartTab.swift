@@ -12,6 +12,5 @@ enum StartTab: String, CaseIterable, Codable {
     case home = "Home"
     case portfolio = "Portfolio"
     case market = "Market"
-    case news = "News"
     case more = "Settings"
 }

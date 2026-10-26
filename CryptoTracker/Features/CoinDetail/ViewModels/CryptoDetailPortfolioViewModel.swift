@@ -19,16 +19,13 @@ final class CryptoDetailPortfolioViewModel {
     private var coinId: String?
 
     private let portfolioRepository: PortfolioRepository
-    private let storeKitManager: StoreKitManager
     private let settingsManager: SettingsManager
 
     init(
         portfolioRepository: PortfolioRepository = PortfolioRepositoryImp.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
         settingsManager: SettingsManager = SettingsManager.shared
     ) {
         self.portfolioRepository = portfolioRepository
-        self.storeKitManager = storeKitManager
         self.settingsManager = settingsManager
         self.hidePortfolioData = settingsManager.get(key: AppSettingKey.hidePortfolioValues) ?? false
     }
@@ -108,10 +105,6 @@ final class CryptoDetailPortfolioViewModel {
 
     func findTransaction(transaction: String) async -> ((any PortfolioEvent)?, Toplist?) {
         await portfolioRepository.findTransaction(lookup: transaction)
-    }
-
-    func hasBoughtPro() async -> Bool {
-        await storeKitManager.currentSubscription != nil
     }
 
     func toggleHideData() {

@@ -10,17 +10,7 @@ enum AppSecrets {
 
     static var apiBaseURL: String { requiredString(for: "API_BASE_URL") }
     static var backendAPIKey: String { requiredString(for: "BACKEND_API_KEY") }
-    static var revenueCatProductionAPIKey: String { requiredString(for: "REVENUECAT_PRODUCTION_API_KEY") }
-    static var revenueCatTestAPIKey: String { requiredString(for: "REVENUECAT_TEST_API_KEY") }
     static var aptabaseAppKey: String { requiredString(for: "APTABASE_APP_KEY") }
-
-    static var revenueCatAPIKey: String {
-        #if DEBUG
-        revenueCatTestAPIKey
-        #else
-        revenueCatProductionAPIKey
-        #endif
-    }
 
     private static func loadValues() -> [String: Any] {
         if let url = Bundle.main.url(forResource: "Secrets", withExtension: "plist"),
@@ -51,8 +41,6 @@ enum AppSecrets {
         [
             "API_BASE_URL": "https://api.example.com",
             "BACKEND_API_KEY": "test-backend-api-key",
-            "REVENUECAT_PRODUCTION_API_KEY": "appl_test_production_key",
-            "REVENUECAT_TEST_API_KEY": "test_test_key",
             "APTABASE_APP_KEY": "A-US-0000000000"
         ]
     }

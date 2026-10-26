@@ -16,14 +16,12 @@ struct CryptoDetailAlertsViewModelTests {
         ])
         let viewModel = CryptoDetailAlertsViewModel(
             priceAlertsRepository: repo,
-            storeKitManager: MockRepoStoreKitManager(currentSubscription: "pro")
         )
 
         await viewModel.load(coinId: "Bitcoin")
 
         #expect(viewModel.alerts?.map(\.id) == ["new", "old"])
         #expect(await viewModel.allAlertsCount() == 0)
-        #expect(await viewModel.hasBoughtPro())
     }
 
     @Test("addPriceAlert returns failure when creation fails")
@@ -32,7 +30,6 @@ struct CryptoDetailAlertsViewModelTests {
         await repo.setToken(true)
         let viewModel = CryptoDetailAlertsViewModel(
             priceAlertsRepository: repo,
-            storeKitManager: MockRepoStoreKitManager()
         )
 
         let result = await viewModel.addPriceAlert(alertCoin: PostAlertCoin(
@@ -56,7 +53,6 @@ struct CryptoDetailAlertsViewModelTests {
         await repo.setDeleted([sampleAlert(id: "keep", coinId: "bitcoin", date: "2024-01-02T00:00:00.000Z")])
         let viewModel = CryptoDetailAlertsViewModel(
             priceAlertsRepository: repo,
-            storeKitManager: MockRepoStoreKitManager()
         )
         await viewModel.load(coinId: "bitcoin")
 

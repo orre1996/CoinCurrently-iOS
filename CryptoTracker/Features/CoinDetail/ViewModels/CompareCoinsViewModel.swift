@@ -67,7 +67,6 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel, ChartHoverHosting {
     private let cryptoDetailRepository: CryptoDetailRepository
     private let toplistRepository: ToplistRepository
     private let settingsManager: SettingsManager
-    private let storeKitManager: StoreKitManager
     
     // Main coin
     var cryptoInfo: CurrencyDataModel?
@@ -105,17 +104,14 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel, ChartHoverHosting {
     
     var comparableCoins = [Toplist]()
     
-    private(set) var hasProSubscription = false
-    
     var isWebSocketEnabled: Bool {
-        settingsManager.isWebSocketEnabled(hasPro: hasProSubscription)
+        settingsManager.isWebSocketEnabled()
     }
     
     init(
         cryptoDetailRepository: CryptoDetailRepository = CryptoDetailRepositoryImp.shared,
         toplistRepository: ToplistRepository = ToplistRepositoryImp.shared,
         settingsManager: SettingsManager = SettingsManager.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
         cryptoInfo: CurrencyDataModel?,
         priceVolumeModel: PriceVolumeModel?,
         compareId: String
@@ -123,7 +119,6 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel, ChartHoverHosting {
         self.cryptoDetailRepository = cryptoDetailRepository
         self.toplistRepository = toplistRepository
         self.settingsManager = settingsManager
-        self.storeKitManager = storeKitManager
         self.cryptoInfo = cryptoInfo
         self.priceVolumeModel = priceVolumeModel
         self.comparedCryptoInfo = CurrencyDataModel(id: compareId)
@@ -155,8 +150,6 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel, ChartHoverHosting {
     func setStartData() async {
         await cryptoDetailRepository.ensureCacheLoaded()
         await toplistRepository.ensureCacheLoaded()
-        
-        hasProSubscription = await storeKitManager.currentSubscription != nil
         
         if let priceData = await cryptoDetailRepository.cachedCryptoPrices["\(cryptoInfo?.id ?? "")-\(currentDays)-compare"]?.data {
             self.priceVolumeModel = priceData
@@ -212,8 +205,6 @@ final class CompareCoinsViewModelImp: CompareCoinsViewModel, ChartHoverHosting {
         mainReloading = true
         compareReloading = true
         showComparePriceError = false
-        
-        hasProSubscription = await storeKitManager.currentSubscription != nil
         
         let days = newDays ?? self.currentDays
         let chart = newTimeChart ?? self.selectedTimeFrame

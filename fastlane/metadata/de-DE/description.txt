@@ -18,7 +18,7 @@ BARRIEREFREIHEIT FÜR ALLE
 
 Krypto sollte für alle sein. CoinCurrently unterstützt Bedienungshilfen in der gesamten App.
 
-• VoiceOver — jeder Bildschirm ist beschriftet und vollständig navigierbar, von Home und Markt bis Portfolio, News und Einstellungen
+• VoiceOver — jeder Bildschirm ist beschriftet und vollständig navigierbar, von Home und Markt bis Portfolio und Einstellungen
 • Dynamic Type — der Text skaliert mit den Systemeinstellungen und ist leichter zu lesen
 • Modus für Farbenfehlsichtigkeit — stelle Preisänderungen in den Einstellungen von Grün/Rot auf Blau/Orange um
 • Klare Oberfläche mit hohem Kontrast im hellen und im dunklen Modus
@@ -48,10 +48,9 @@ WÄHRUNGSRECHNER
 
 Rechne sofort zwischen Fiat und Krypto oder zwischen zwei beliebigen Assets um — mit Live-Kursen.
 
-MARKTSTIMMUNG UND NEWS
+MARKTSTIMMUNG
 
 • Fear-and-Greed-Index, um die Stimmung am Markt einzuschätzen
-• Die neuesten Krypto-News direkt in der App
 • Preise über mehrere Börsen vergleichen
 
 WIDGETS FÜR DEN HOME-BILDSCHIRM

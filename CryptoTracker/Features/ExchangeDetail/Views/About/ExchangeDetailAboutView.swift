@@ -10,7 +10,7 @@ import SwiftUI
 struct ExchangeDetailAboutView: View {
     let exchange: Exchange
     
-    @Binding var newsUrl: String?
+    @Binding var webUrl: String?
     
     private var sections: [DetailAboutSection] {
         var result: [DetailAboutSection] = []
@@ -86,7 +86,7 @@ struct ExchangeDetailAboutView: View {
             isLoading: false,
             emptyStateMessage: "When information about this exchange appears, it'll show up here.",
             fromScreen: .exchangeDetail,
-            newsUrl: $newsUrl,
+            webUrl: $webUrl,
             headerContent: hasExchangeInfo ? AnyView(ExchangeInfoCell(exchange: exchange)) : nil
         )
     }

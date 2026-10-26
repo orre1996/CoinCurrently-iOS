@@ -57,7 +57,6 @@ enum FirebaseConfigurator {
 #if IS_APP
 @preconcurrency import FirebaseFirestore
 @preconcurrency import FirebaseMessaging
-import RevenueCat
 import WidgetKit
 #endif
 
@@ -73,7 +72,6 @@ protocol FirebaseManager: Actor {
 
 #if IS_APP
     func login() async -> Bool
-    func syncRevenueCatCustomerInfo() async
     func compareVersions(_ v1: String, _ v2: String) -> ComparisonResult
     func compareAppVersion(with version: String?) async -> ComparisonResult
     func removeUser() async
@@ -85,9 +83,6 @@ protocol FirebaseManager: Actor {
 final actor FirebaseManagerImp: FirebaseManager {
     static let shared = FirebaseManagerImp()
     
-    private let storeKitManager: StoreKitManager
-    private let storageManger: CachedStorageManager
-    
     private var remoteConfig: RemoteConfig?
     private var idToken = ""
     private var uid = ""
@@ -96,13 +91,7 @@ final actor FirebaseManagerImp: FirebaseManager {
     var user: User?
     
     
-    init(
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
-        storageManger: CachedStorageManager = CachedStorageManagerImp.shared
-    ) {
-        self.storeKitManager = storeKitManager
-        self.storageManger = storageManger
-    }
+    init() {}
     
 #if IS_APP
     
@@ -119,10 +108,8 @@ final actor FirebaseManagerImp: FirebaseManager {
             self.user = user
             self.uid = user.uid
             self.idToken = try await user.getIDToken()
-            await syncRevenueCatCustomerInfo()
             
             await getRemoteConfigs()
-            await handlePromotionalOffer()
             await handleFCMToken()
             
             return await checkAppVersion()
@@ -130,19 +117,6 @@ final actor FirebaseManagerImp: FirebaseManager {
         } catch {
             return false
         }
-    }
-    
-    func syncRevenueCatCustomerInfo() async {
-        RevenueCatConfigurator.configureIfNeeded()
-
-        do {
-            if !uid.isEmpty {
-                _ = try await Purchases.shared.logIn(uid)
-            }
-
-            let customerInfo = try await Purchases.shared.customerInfo(fetchPolicy: .fetchCurrent)
-            await storeKitManager.applyCustomerInfo(customerInfo)
-        } catch {}
     }
     
     // MARK: - User
@@ -170,12 +144,6 @@ final actor FirebaseManagerImp: FirebaseManager {
         
         db = Firestore.firestore()
         db?.settings = settings
-    }
-    
-    private func handlePromotionalOffer() async {
-        if let config = await getConfig(key: .showPromotionalOffer)?.boolValue, !config {
-            await CachedStorageManagerImp.shared.save(type: LocalStorageKeys.didClosePromotions, data: false)
-        }
     }
     
     private func handleFCMToken() async {

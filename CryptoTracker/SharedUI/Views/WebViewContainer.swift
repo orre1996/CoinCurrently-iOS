@@ -1,5 +1,5 @@
 //
-//  NewsCollectionView.swift
+//  WebViewContainer.swift
 //  CryptoTracker
 //
 //  Created by Oscar Berggren on 2020-10-31.

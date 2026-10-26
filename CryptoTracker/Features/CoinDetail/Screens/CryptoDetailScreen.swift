@@ -16,7 +16,6 @@ struct CryptoDetailScreen: View {
     @ScaledMetric private var scale: CGFloat = 1
     
     @State var viewModel: CryptoDetailViewModelImp
-    @State private var newsViewModel = CryptoDetailNewsViewModel()
     @State private var portfolioViewModel = CryptoDetailPortfolioViewModel()
     @State private var alertsViewModel = CryptoDetailAlertsViewModel()
     
@@ -33,7 +32,7 @@ struct CryptoDetailScreen: View {
     @State private var showScrollToTopButton = false
     @State private var previousScrollOffset: CGFloat = 0
     
-    private let newsErrorString = "coin"
+    private let listSubject = "coin"
     
     @State private var isSortShowing = false
     @State private var scrollToTop = false
@@ -60,8 +59,8 @@ struct CryptoDetailScreen: View {
     
     var binding: Binding<String?> {
         Binding(
-            get: { navigationViewModel.newsUrl },
-            set: { navigationViewModel.newsUrl = $0 }
+            get: { navigationViewModel.webUrl },
+            set: { navigationViewModel.webUrl = $0 }
         )
     }
     
@@ -240,7 +239,7 @@ struct CryptoDetailScreen: View {
                                     CryptoDetailAboutView(
                                         description: viewModel.cryptoInfo?.description,
                                         links: viewModel.cryptoInfo?.links,
-                                        newsUrl: binding
+                                        webUrl: binding
                                     )
                                 } else if currentPage == 2 {
                                     CryptoDetailPortfolioView(
@@ -291,19 +290,8 @@ struct CryptoDetailScreen: View {
                                         showVolumeOverride: true,
                                         fromScreen: .cryptoDetail,
                                         selectedSortOption: viewModel.selectedSortOption,
-                                        errorMessage: newsErrorString,
+                                        errorMessage: listSubject,
                                         isSortShowing: $isSortShowing
-                                    )
-                                } else if currentPage == 4 {
-                                    DetailNews(
-                                        title: viewModel.cryptoInfo?.name,
-                                        fromScreen: .cryptoDetail,
-                                        news: newsViewModel.news,
-                                        showError: newsViewModel.showNewsError,
-                                        errorMessage: newsErrorString,
-                                        refresh: {
-                                            await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol)
-                                        }
                                     )
                                 }
                             }
@@ -339,7 +327,7 @@ struct CryptoDetailScreen: View {
                                     )
                                     scrollToTop.toggle()
                                 },
-                                isVisible: showScrollToTopButton && (currentPage == 3 || currentPage == 4)
+                                isVisible: showScrollToTopButton && currentPage == 3
                             )
                         }
                     }
@@ -439,7 +427,6 @@ struct CryptoDetailScreen: View {
             await viewModel.setStartData()
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await alertsViewModel.load(coinId: viewModel.cryptoInfo?.id) }
-                group.addTask { await newsViewModel.loadCached(symbol: viewModel.cryptoInfo?.symbol) }
                 group.addTask {
                     await viewModel.refresh(
                         showReload: viewModel.mainReloading
@@ -481,12 +468,6 @@ struct CryptoDetailScreen: View {
                         await portfolioViewModel.load(coinId: viewModel.cryptoInfo?.id)
                     }
                 }
-                
-                if currentPage == 4 {
-                    group.addTask {
-                        await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol)
-                    }
-                }
             }
         }
         .task(id: "\(currentPage ?? -1)-\(viewModel.cryptoInfo?.id ?? "")") {
@@ -496,8 +477,6 @@ struct CryptoDetailScreen: View {
 
             if currentPage == 2 {
                 await portfolioViewModel.load(coinId: viewModel.cryptoInfo?.id)
-            } else if currentPage == 4 {
-                await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol)
             }
         }
         .onDisappear {
@@ -536,7 +515,6 @@ struct CryptoDetailScreen: View {
                             await viewModel.newMainCoin(id: id)
                             await withTaskGroup(of: Void.self) { group in
                                 group.addTask { await alertsViewModel.load(coinId: id) }
-                                group.addTask { await newsViewModel.getNews(symbol: viewModel.cryptoInfo?.symbol) }
                                 group.addTask { await portfolioViewModel.load(coinId: id) }
                             }
                         }
@@ -933,7 +911,7 @@ struct CryptoDetailScreen: View {
     
     @ViewBuilder
     private var pageSelector: some View {
-        let categories = ["Overview", "About", "Portfolio", "Markets", "News"]
+        let categories = ["Overview", "About", "Portfolio", "Markets"]
         
         VStack(spacing: 0) {
             PageSelectorView(currentPage: $currentPage, titles: categories, pageSelected: { page in
@@ -951,20 +929,13 @@ struct CryptoDetailScreen: View {
     }
     
     private func openNewPriceAlertIfAllowed() async {
-        let alerts = await alertsViewModel.allAlertsCount()
         let success = await alertsViewModel.checkIfUserEnabledPush()
-        let hasBoughtPro = await alertsViewModel.hasBoughtPro()
         
         if !success {
             AnalyticsManager.shared.log(
                 Navigate(fromScreen: .cryptoDetail, toScreen: .priceAlerts, coinName: viewModel.cryptoInfo?.name)
             )
             navigationViewModel.deepLink(to: .PriceAlerts)
-        } else if !hasBoughtPro && alerts >= 2 {
-            AnalyticsManager.shared.log(
-                BuyProOpened(fromScreen: .cryptoDetail, action: .PriceAlert)
-            )
-            showBuyPro()
         } else {
             AnalyticsManager.shared.log(
                 SheetOpened(fromScreen: .cryptoDetail, sheet: .newPriceAlert)

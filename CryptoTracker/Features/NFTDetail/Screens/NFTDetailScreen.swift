@@ -44,14 +44,14 @@ struct NFTDetailScreen: View {
     @State private var scrollToTop = false
     @State private var id = UUID()
     
-    private let newsErrorString = "NFT collection"
+    private let listSubject = "NFT collection"
     private let fixedSelectedCurrency: CurrencyModel = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
 
     
     var binding: Binding<String?> {
         Binding(
-            get: { navigationViewModel.newsUrl },
-            set: { navigationViewModel.newsUrl = $0 }
+            get: { navigationViewModel.webUrl },
+            set: { navigationViewModel.webUrl = $0 }
         )
     }
     
@@ -188,7 +188,7 @@ struct NFTDetailScreen: View {
                                 } else if currentPage == 1 {
                                     NFTDetailAboutView(
                                         nftDetail: viewModel.nftDetailInfo,
-                                        newsUrl: binding
+                                        webUrl: binding
                                     )
                                 } else if currentPage == 2 {
                                     CryptoDetailExchangesView(
@@ -198,19 +198,8 @@ struct NFTDetailScreen: View {
                                         useExchangeStyle: true,
                                         fromScreen: .nftDetail,
                                         selectedSortOption: viewModel.selectedSortOption,
-                                        errorMessage: newsErrorString,
+                                        errorMessage: listSubject,
                                         isSortShowing: $isSortShowing
-                                    )
-                                } else if currentPage == 3 {
-                                    DetailNews(
-                                        title: viewModel.nftDetailInfo.name,
-                                        fromScreen: .nftDetail,
-                                        news: viewModel.news,
-                                        showError: viewModel.showNewsError,
-                                        errorMessage: newsErrorString,
-                                        refresh: {
-                                            await viewModel.refresh()
-                                        }
                                     )
                                 }
                             }
@@ -245,7 +234,7 @@ struct NFTDetailScreen: View {
                                     )
                                     scrollToTop.toggle()
                                 },
-                                isVisible: showScrollToTopButton && currentPage == 3
+                                isVisible: showScrollToTopButton && currentPage == 2
                             )
                         }
                     }
@@ -288,15 +277,12 @@ struct NFTDetailScreen: View {
         }
         .refreshable {
             await viewModel.refresh(
-                getNews: currentPage == 3,
                 getTickers: currentPage == 2
             )
         }
         .task(id: currentPage) {
             if currentPage == 2 {
                await viewModel.getTickers()
-           } else if currentPage == 3 {
-                await viewModel.getNews()
             }
         }
         .onChange(of: currentPage) { _, page in
@@ -421,7 +407,7 @@ struct NFTDetailScreen: View {
     
     @ViewBuilder
     private var pageSelector: some View {
-        let categories = ["Overview", "About", "Markets", "News"]
+        let categories = ["Overview", "About", "Markets"]
         
         VStack(spacing: 0) {
             PageSelectorView(currentPage: $currentPage, titles: categories, pageSelected: { page in

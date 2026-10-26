@@ -29,25 +29,6 @@ struct HomeScreen: View {
                 ScrollView {
                     ScrollViewReader { swReader in
                         LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-                            if let title = viewModel.promotionTitle,
-                               let message = viewModel.promotionMessage {
-                                PremiumView(
-                                    title: title,
-                                    message: message,
-                                    accessibleMessage: viewModel.promotionMessageAccessible,
-                                    timeLeft: viewModel.offerTimeLeft,
-                                    timeLeftDate: viewModel.offerTimeLeftDate,
-                                    viewPressed: {
-                                        AnalyticsManager.shared.log(
-                                            BuyProOpened(fromScreen: .home, action: .HomePromotion)
-                                        )
-                                        showBuyPro()
-                                    }, closeAction: { message in
-                                        viewModel.premiumViewClosed(title: title)
-                                    }
-                                )
-                            }
-                            
                             MarketStatsView(
                                 globalMarket: viewModel.globalMarket,
                                 gasFees: viewModel.gasFees,
@@ -87,7 +68,6 @@ struct HomeScreen: View {
                                 .animation(animateHomeFilterSelection ? .default : nil, value: viewModel.selectedFilter)
                             }
                         }
-                        .animation(.default, value: viewModel.promotionTitle)
                         .padding(.top, 16)
                         .id(id)
                         .onReceive(NotificationCenter.default.publisher(for: .tabDoubleTapped, object: nil)) { notification in

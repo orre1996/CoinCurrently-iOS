@@ -65,9 +65,6 @@
             isEnabled = "YES">
          </AdditionalOption>
       </AdditionalOptions>
-      <StoreKitConfigurationFileReference
-         identifier = "../../CryptoTracker/Product.storekit">
-      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

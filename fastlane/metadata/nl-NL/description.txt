@@ -18,7 +18,7 @@ TOEGANKELIJK VOOR IEDEREEN
 
 Crypto zou voor iedereen moeten zijn. CoinCurrently heeft volledige ondersteuning voor toegankelijkheid in de hele app.
 
-• VoiceOver — elk scherm is gelabeld en volledig te navigeren, van Home en Markt tot Portfolio, Nieuws en Instellingen
+• VoiceOver — elk scherm is gelabeld en volledig te navigeren, van Home en Markt tot Portfolio en Instellingen
 • Dynamic Type — tekst schaalt mee met je systeeminstellingen en is makkelijker te lezen
 • Modus voor kleurenblindheid — zet prijsveranderingen in Instellingen van groen/rood naar blauw/oranje
 • Strakke interface met hoog contrast in lichte en donkere modus
@@ -48,10 +48,9 @@ VALUTACONVERTER
 
 Reken direct om tussen fiat en crypto, of tussen twee assets, met live koersen.
 
-MARKTSENTIMENT EN NIEUWS
+MARKTSENTIMENT
 
 • Fear and Greed Index om de stemming van de markt te peilen
-• Het laatste cryptonieuws direct in de app
 • Vergelijk prijzen op meerdere exchanges
 
 WIDGETS VOOR HET BEGINSCHERM

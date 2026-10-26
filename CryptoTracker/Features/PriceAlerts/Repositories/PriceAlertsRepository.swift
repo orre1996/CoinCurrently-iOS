@@ -39,7 +39,6 @@ final actor PriceAlertsRepositoryImp: PriceAlertsRepository {
 
     private let networkManager: NetworkManager
     private let storageManager: CachedStorageManager
-    private let storeKitManager: StoreKitManager
     private let firebaseManager: FirebaseManager
 
     private(set) var cachedPriceAlerts: CachedData<[AlertCoin]>?
@@ -48,12 +47,10 @@ final actor PriceAlertsRepositoryImp: PriceAlertsRepository {
     init(
         networkManager: NetworkManager = NetworkManagerImp.shared,
         storageManager: CachedStorageManager = CachedStorageManagerImp.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
         firebaseManager: FirebaseManager = FirebaseManagerImp.shared
     ) {
         self.networkManager = networkManager
         self.storageManager = storageManager
-        self.storeKitManager = storeKitManager
         self.firebaseManager = firebaseManager
     }
     
@@ -110,7 +107,8 @@ final actor PriceAlertsRepositoryImp: PriceAlertsRepository {
 #endif
         let currency: CurrencyModel = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
         
-        let claims = await ReferralRepositoryImp.shared.getUser()?.user.customClaims
+        let user: UserResponse? = await networkManager.get(endpoint: .user())
+        let claims = user?.user.customClaims
         let fcmMatches = claims?.fcmToken == token
         let currencyMatches = claims?.preferredCurrency?
             .caseInsensitiveCompare(currency.code) == .orderedSame
@@ -129,7 +127,7 @@ final actor PriceAlertsRepositoryImp: PriceAlertsRepository {
         
         if status == 200 {
             SettingsManager.shared.set(data: token, key: AppSettingKey.lastSavedFcmToken)
-            _ = await ReferralRepositoryImp.shared.getUser(ignoreCache: true)
+            let _: UserResponse? = await networkManager.get(endpoint: .user(ignoreCache: true))
             
             let isSubscribed: Bool? = SettingsManager.shared.get(key: AppSettingKey.subscribesToBigMovers)
             if isSubscribed == nil {
@@ -168,11 +166,10 @@ final actor PriceAlertsRepositoryImp: PriceAlertsRepository {
     
     func downloadRemainingCoins(ids: [String], withSparkline: Bool = false) async -> [Toplist]? {
         await ensureCacheLoaded()
-        let hasActiveSubscription = await storeKitManager.currentSubscription != nil
         var cachedCoins: [String: CachedData<[Toplist]>] = await storageManager.load(type: LocalStorageKeys.otherCoins) ?? [:]
         let currency: CurrencyModel = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
         
-        if let cachedCoins = cachedCoins[ids.joined() + "-" + currency.code], !cachedCoins.date.defaultCacheTimer(hasBoughtPro: hasActiveSubscription) {
+        if let cachedCoins = cachedCoins[ids.joined() + "-" + currency.code], !cachedCoins.date.defaultCacheTimer() {
             return cachedCoins.data
         }
         

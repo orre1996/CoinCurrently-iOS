@@ -154,17 +154,6 @@ actor MockVMTrendingRepository: TrendingRepository {
     func updateFromToplist(coins: [Toplist]) {}
 }
 
-actor MockVMNewsRepository: NewsRepository {
-    var selectedNewsType: NewsType = .general
-    var cachedNews: [NewsType: CachedData<NewsModel>] = [:]
-    var news: [NewsItem]?
-    private(set) var updatedType: NewsType?
-
-    func ensureCacheLoaded() async {}
-    func getNews(type: NewsType, count: Int) async -> [NewsItem]? { news }
-    func updateNewsType(_ type: NewsType) async { updatedType = type }
-}
-
 actor MockVMSearchRepository: SearchRepository {
     var cachedSearches: [String: CachedData<SearchModel>] = [:]
     var result: SearchModel?
@@ -275,19 +264,6 @@ actor MockVMGasFeesRepository: GasFeesRepository {
     func ensureCacheLoaded() async {}
     func getGasFees() async -> GasFees? { gasFees }
     func getGasFeePrices() async -> GasFees? { gasFeePrices }
-}
-
-actor MockVMReferralRepository: ReferralRepository {
-    var cachedUser: CachedData<UserResponse>?
-    var cachedReferralCode: CachedData<CachedReferralCodeData>?
-    var referralCode: ReferralCodeResult?
-    var redeemResult: RedeemCodeResult = .failure
-    var user: UserResponse?
-
-    func ensureCacheLoaded() async {}
-    func getReferralCode() async -> ReferralCodeResult? { referralCode }
-    func redeemCode(refCode: String) async -> RedeemCodeResult { redeemResult }
-    func getUser(ignoreCache: Bool) async -> UserResponse? { user }
 }
 
 actor MockVMNFTRepository: NFTRepository {

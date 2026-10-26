@@ -35,20 +35,10 @@ struct CryptoDetailPortfolioView: View {
                     subTitle: Localization.format("Add your %@ transactions to start tracking your portfolio holdings here.", cryptoInfo?.name ?? ""),
                     buttonTitle: Localization.string("Add Transaction"),
                     buttonAction: {
-                        Task {
-                            let hasBoughtPro = await viewModel.hasBoughtPro()
-                            if (viewModel.portfolio?.allTransactionsCount ?? 0) >= 3 && !hasBoughtPro {
-                                AnalyticsManager.shared.log(
-                                    BuyProOpened(fromScreen: .cryptoDetail, action: .AddTransaction)
-                                )
-                                showBuyPro()
-                            } else {
-                                AnalyticsManager.shared.log(
-                                    SheetOpened(fromScreen: .cryptoDetail, sheet: .portfolioAddTransactionType)
-                                )
-                                showAddTransactionSheet = true
-                            }
-                        }
+                        AnalyticsManager.shared.log(
+                            SheetOpened(fromScreen: .cryptoDetail, sheet: .portfolioAddTransactionType)
+                        )
+                        showAddTransactionSheet = true
                     }
                 )
                 .padding(
@@ -306,20 +296,10 @@ struct CryptoDetailPortfolioView: View {
             Spacer(minLength: 16)
             
             Button(action: {
-                Task {
-                    let hasBoughtPro = await viewModel.hasBoughtPro()
-                    if (viewModel.portfolio?.allTransactionsCount ?? 0) >= 3 && !hasBoughtPro {
-                        AnalyticsManager.shared.log(
-                            BuyProOpened(fromScreen: .cryptoDetail, action: .AddTransaction)
-                        )
-                        showBuyPro()
-                    } else {
-                        AnalyticsManager.shared.log(
-                            SheetOpened(fromScreen: .cryptoDetail, sheet: .portfolioAddTransactionType)
-                        )
-                        showAddTransactionSheet = true
-                    }
-                }
+                AnalyticsManager.shared.log(
+                    SheetOpened(fromScreen: .cryptoDetail, sheet: .portfolioAddTransactionType)
+                )
+                showAddTransactionSheet = true
             }, label: {
                 Image.add
                     .resizable()

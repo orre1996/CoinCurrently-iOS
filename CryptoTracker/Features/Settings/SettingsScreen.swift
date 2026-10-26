@@ -7,21 +7,14 @@
 
 import SwiftUI
 import UIKit
-import StoreKit
 import Foundation
 import FirebaseMessaging
 
 struct SettingsScreen: View {
-    private let storeKitManager: StoreKitManager
-    
     @AppStorage("appColorScheme")
     var appColorScheme: AppColorScheme = .dark
     
     @Environment(\.accessibilityVoiceOverEnabled) private var accessibilityVoiceOverEnabled
-    
-    init(storeKitManager: StoreKitManager = StoreKitManagerImp.shared) {
-        self.storeKitManager = storeKitManager
-    }
     @Environment(NavigationViewModel.self) private var navigationViewModel
     @Environment(\.colorScheme) private var scheme
     
@@ -37,7 +30,7 @@ struct SettingsScreen: View {
     @State private var showChangesInPercent: Bool = SettingsManager.shared.get(key: GlobalSettingKey.changesInPercent) ?? true
     @State private var selectedTimeframe: PreferredTimeframe = SettingsManager.shared.get(key: GlobalSettingKey.selectedTimeframe) ?? PreferredTimeframe.weekly
     @State private var selectedStartTab: StartTab = SettingsManager.shared.get(key: AppSettingKey.startTab) ?? .home
-    @State private var webSocketEnabled = false
+    @State private var webSocketEnabled = SettingsManager.shared.isWebSocketEnabled()
     
     // App settings
     @State private var selectedCurrency: CurrencyModel = SettingsManager.shared.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
@@ -54,10 +47,6 @@ struct SettingsScreen: View {
     @State private var isSelectingTheme = false
     @State private var isSelectingCurrency = false
     @State private var isSelectingLanguage = false
-    @State private var currentSubscription: String?
-    @State private var subscriptionExpirationDate: Date?
-    
-    @State private var isManagingSubscription = false
 
     var body: some View {
         ZStack {
@@ -68,8 +57,6 @@ struct SettingsScreen: View {
                 ScrollView(.vertical) {
                     ScrollViewReader { reader in
                         LazyVStack(spacing: 32) {
-                            proView
-                            
                             globalSettingsView
                             
                             toolsSettingsView
@@ -77,6 +64,8 @@ struct SettingsScreen: View {
                             securityView
                             
                             enjoyTheAppView
+                            
+                            repoView
                             
                             legalView
                             
@@ -111,21 +100,13 @@ struct SettingsScreen: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .tabDoubleTapped, object: nil)) { notification in
-            if let index = notification.userInfo?[String.tabIndex] as? Int, index == 4, !resetAppOpen {
+            if let index = notification.userInfo?[String.tabIndex] as? Int, index == 3, !resetAppOpen {
                 AnalyticsManager.shared.log(
                     TabBarDoubleTapped(fromScreen: .settings)
                 )
 
                 scrollToTopActive.toggle()
             }
-        }
-        .syncSubscriptionStatus(
-            $currentSubscription,
-            expirationDate: $subscriptionExpirationDate,
-            storeKitManager: storeKitManager
-        )
-        .onChange(of: currentSubscription, initial: true) { _, subscription in
-            webSocketEnabled = SettingsManager.shared.isWebSocketEnabled(hasPro: subscription != nil)
         }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
@@ -211,7 +192,6 @@ struct SettingsScreen: View {
                 }
             )
         }
-        .manageSubscriptionsSheet(isPresented: $isManagingSubscription)
         .onDisappear {
             resetAppOpen = false
         }
@@ -222,91 +202,6 @@ struct SettingsScreen: View {
         }
     }
 
-    private func abbreviatedDate(_ date: Date) -> String {
-        date.formatted(Date.FormatStyle(date: .abbreviated, time: .omitted).locale(Localization.locale))
-    }
-    
-    private var subscriptionStatusAccessibilityLabel: String {
-        guard currentSubscription != nil else { return Localization.string("Inactive") }
-        guard let expirationDate = subscriptionExpirationDate else { return Localization.string("Active") }
-        return Localization.format("Active · Expires %@", abbreviatedDate(expirationDate))
-    }
-
-    @ViewBuilder
-    private var subscriptionStatusSubtitle: some View {
-        if currentSubscription == nil {
-            Text(Localization.string("Inactive"))
-                .foregroundStyle(Color.onSurfaceDimmer)
-        } else if let expirationDate = subscriptionExpirationDate {
-            Text(Localization.string("Active"))
-                .foregroundStyle(Color.primary)
-            + Text(Localization.format(" · Expires %@", abbreviatedDate(expirationDate)))
-                .foregroundStyle(Color.onSurfaceDimmer)
-        } else {
-            Text(Localization.string("Active"))
-                .foregroundStyle(Color.primary)
-        }
-    }
-    
-    // MARK: - Pro view
-    private var proView: some View {
-        VStack(spacing: 16) {
-            Button(action: {
-                AnalyticsManager.shared.log(
-                    BuyProOpened(fromScreen: .settings, action: .Settings)
-                )
-                navigationViewModel.showBuyPro = true
-            }, label: {
-                HStack(spacing: 16) {
-                    Image.premiumLogo
-                        .resizable()
-                        .frame(width: 48, height: 48)
-                        .accessibilityHidden(true)
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(Localization.string("CoinCurrently Pro"))
-                            .font(.satoshiBold(16))
-                            .foregroundStyle(Color.onSurface)
-                            .multilineTextAlignment(.leading)
-                        
-                        subscriptionStatusSubtitle
-                            .font(.satoshiBold(12))
-                            .multilineTextAlignment(.leading)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .accessibilityLabel(subscriptionStatusAccessibilityLabel)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    Image.chevronRight
-                        .resizable()
-                        .frame(width: 24 * min(scale, 1.5), height: 24 * min(scale, 1.5))
-                        .foregroundStyle(Color.onSurfaceDimmer)
-                }
-            })
-            
-            if currentSubscription != nil {
-                Separator()
-                
-                SettingsNavigationView(title: "Manage Subscription") {
-                    isManagingSubscription = true
-                }
-            }
-            
-            Separator()
-            
-            SettingsNavigationView(
-                title: "Referral Program",
-                accessibilityText: "Navigate to Referral Program"
-            ) {
-                AnalyticsManager.shared.log(
-                    Navigate(fromScreen: .settings, toScreen: .referral)
-                )
-                navigationViewModel.navPath.append(.Referral(referralCode: ""))
-            }
-        }
-        .cardBackground()
-    }
-    
     // MARK: - Global settings
 
     @ViewBuilder
@@ -373,11 +268,6 @@ struct SettingsScreen: View {
                     subTitle: "See prices change on coin pages while you're viewing them",
                     isOn: webSocketEnabled
                 ) {
-                    if !webSocketEnabled && currentSubscription == nil {
-                        navigationViewModel.showBuyPro = true
-                        return
-                    }
-                    
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                     webSocketEnabled.toggle()
                     SettingsManager.shared.set(data: webSocketEnabled, key: AppSettingKey.webSocketEnabled)
@@ -604,6 +494,48 @@ struct SettingsScreen: View {
             }
             .cardBackground()
         }
+    }
+    
+    private var repoView: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            SettingsSectionHeader(title: "Source code")
+                .id(UUID())
+            
+            VStack(alignment: .leading, spacing: 16) {
+                SettingsImageView(
+                    image: .repository,
+                    title: "CoinCurrently iOS",
+                    withExternalIcon: true
+                ) {
+                    openSourceLink(
+                        "https://github.com/orre1996/CoinCurrently-iOS",
+                        platform: .ios
+                    )
+                }
+                
+                Separator()
+                
+                SettingsImageView(
+                    image: .repository,
+                    title: "CoinCurrently Android",
+                    withExternalIcon: true
+                ) {
+                    openSourceLink(
+                        "https://github.com/orre1996/CoinCurrentlyAndroid",
+                        platform: .android
+                    )
+                }
+            }
+            .cardBackground()
+        }
+    }
+
+    private func openSourceLink(_ urlString: String, platform: SourcePlatform) {
+        guard let url = URL(string: urlString) else { return }
+        AnalyticsManager.shared.log(
+            SourceLinkOpened(fromScreen: .settings, platform: platform)
+        )
+        UIApplication.shared.open(url)
     }
     
     private var legalView: some View {

@@ -196191,205 +196191,205 @@
         }
       }
     },
-    "Tax Software (Pro)" : {
+    "Tax Software" : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "برامج الضرائب (Pro)"
+            "value" : "برامج الضرائب"
           }
         },
         "bg" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Данъчен софтуер (Pro)"
+            "value" : "Данъчен софтуер"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Daňový software (Pro)"
+            "value" : "Daňový software"
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skattesoftware (Pro)"
+            "value" : "Skattesoftware"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Steuersoftware (Pro)"
+            "value" : "Steuersoftware"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Φορολογικό λογισμικό (Pro)"
+            "value" : "Φορολογικό λογισμικό"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Software fiscal (Pro)"
+            "value" : "Software fiscal"
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vero-ohjelmisto (Pro)"
+            "value" : "Vero-ohjelmisto"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Logiciel fiscal (Pro)"
+            "value" : "Logiciel fiscal"
           }
         },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "תוכנת מס (Pro)"
+            "value" : "תוכנת מס"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "कर सॉफ़्टवेयर (Pro)"
+            "value" : "कर सॉफ़्टवेयर"
           }
         },
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Porezni softver (Pro)"
+            "value" : "Porezni softver"
           }
         },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adószoftver (Pro)"
+            "value" : "Adószoftver"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Perangkat lunak pajak (Pro)"
+            "value" : "Perangkat lunak pajak"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Software fiscale (Pro)"
+            "value" : "Software fiscale"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "税務ソフト (Pro)"
+            "value" : "税務ソフト"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "세금 소프트웨어 (Pro)"
+            "value" : "세금 소프트웨어"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mokesčių programinė įranga (Pro)"
+            "value" : "Mokesčių programinė įranga"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skatteprogramvare (Pro)"
+            "value" : "Skatteprogramvare"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Belastingsoftware (Pro)"
+            "value" : "Belastingsoftware"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Oprogramowanie podatkowe (Pro)"
+            "value" : "Oprogramowanie podatkowe"
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Software fiscal (Pro)"
+            "value" : "Software fiscal"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Software fiscal (Pro)"
+            "value" : "Software fiscal"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Налоговое ПО (Pro)"
+            "value" : "Налоговое ПО"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Daňový softvér (Pro)"
+            "value" : "Daňový softvér"
           }
         },
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Davčna programska oprema (Pro)"
+            "value" : "Davčna programska oprema"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skatteprogram (Pro)"
+            "value" : "Skatteprogram"
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ซอฟต์แวร์ภาษี (Pro)"
+            "value" : "ซอฟต์แวร์ภาษี"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vergi yazılımı (Pro)"
+            "value" : "Vergi yazılımı"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Податкове ПЗ (Pro)"
+            "value" : "Податкове ПЗ"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Phần mềm thuế (Pro)"
+            "value" : "Phần mềm thuế"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "报税软件 (Pro)"
+            "value" : "报税软件"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "報稅軟體 (Pro)"
+            "value" : "報稅軟體"
           }
         }
       }

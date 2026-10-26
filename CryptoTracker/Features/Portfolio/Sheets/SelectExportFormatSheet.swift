@@ -74,7 +74,7 @@ struct SelectExportFormatSheet: View {
                 format: .plainText
             )
             
-            sectionHeader(Localization.string("Tax Software (Pro)"))
+            sectionHeader(Localization.string("Tax Software"))
                 .padding(.top, 12)
             
             exportOption(

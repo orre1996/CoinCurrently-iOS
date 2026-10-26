@@ -31,7 +31,6 @@ struct PortfolioViewModelTests {
             portfolioRepository: portfolio,
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
             toplistRepository: MockVMToplistRepository(),
-            storeKitManager: MockRepoStoreKitManager(currentSubscription: "pro"),
             settingsManager: SettingsManager.shared
         )
 
@@ -39,7 +38,6 @@ struct PortfolioViewModelTests {
 
         #expect(viewModel.portfolio?.first?.data?.id == "bitcoin")
         #expect(viewModel.allPrices.first?.id == "bitcoin")
-        #expect(await viewModel.hasBoughtPro())
     }
 
     @Test("findTransaction returns the repository match")
@@ -59,7 +57,6 @@ struct PortfolioViewModelTests {
             portfolioRepository: portfolio,
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
             toplistRepository: MockVMToplistRepository(),
-            storeKitManager: MockRepoStoreKitManager(),
             settingsManager: SettingsManager.shared
         )
 
@@ -77,7 +74,6 @@ struct PortfolioViewModelTests {
             portfolioRepository: MockVMPortfolioRepository(),
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
             toplistRepository: toplist,
-            storeKitManager: MockRepoStoreKitManager(),
             settingsManager: SettingsManager.shared
         )
 

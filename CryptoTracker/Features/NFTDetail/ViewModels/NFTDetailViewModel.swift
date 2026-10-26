@@ -18,8 +18,6 @@ protocol NFTDetailViewModel: ChartHoverHosting {
     var selectedTimeFrame: TimeCharts { get set }
     var currentChartType: ChartTypes { get set }
     var isChartFiat: Bool { get set }
-    var news: [NewsItem] { get set }
-    var showNewsError: Bool { get set }
     var multiplier: Double? { get set }
     var selectedCurrency: CurrencyModel { get set }
     var showMainPriceError: Bool { get set }
@@ -47,8 +45,7 @@ protocol NFTDetailViewModel: ChartHoverHosting {
     func getDetail() async
     func getTickers() async
     func getMainCurrencyPrices(days: String) async
-    func getNews() async
-    func refresh(newDays: String?, newTimeChart: TimeCharts?,  getNews: Bool, getTickers: Bool) async
+    func refresh(newDays: String?, newTimeChart: TimeCharts?, getTickers: Bool) async
     func setChartType(type: ChartTypes)
     func getPricesRangePrefix(priceVolume: NFTPriceVolumeModel?) -> Int
     func toggleCurrencyType() async
@@ -71,10 +68,8 @@ final class NFTDetailViewModelImp: NFTDetailViewModel, ChartHoverHosting {
     private let nftDetailsRepository: NFTDetailRepository
     private let nftsRepository: NFTRepository
     private let cryptoDetailRepository: CryptoDetailRepository
-    private let newsRepository: NewsRepository
     private let globalRepository: GlobalMarketRepository
     private let storageManager: CachedStorageManager
-    private let storeKitManager: StoreKitManager
 
     var nftDetailInfo: NFTDetail
     var priceVolumeModel: NFTPriceVolumeModel?
@@ -85,9 +80,6 @@ final class NFTDetailViewModelImp: NFTDetailViewModel, ChartHoverHosting {
     var selectedTimeFrame = TimeCharts.getStartTimeFrame(between: .aDay, and: .aYear)
     var currentChartType: ChartTypes = SettingsManager.shared.get(key: AppSettingKey.graphType) ?? .price
     var isChartFiat = false
-    
-    var news = [NewsItem]()
-    var showNewsError = false
     
     var multiplier: Double?
     var selectedCurrency = CurrencyModel(currency: "", code: "", symbol: "", locale: "", suffix: true)
@@ -107,21 +99,17 @@ final class NFTDetailViewModelImp: NFTDetailViewModel, ChartHoverHosting {
     init(
         nftToplist: NFTToplist,
         cryptoDetailRepository: CryptoDetailRepository = CryptoDetailRepositoryImp.shared,
-        newsRepository: NewsRepository = NewsRepositoryImp.shared,
         nftDetailsRepository: NFTDetailRepository = NFTDetailRepositoryImp.shared,
         nftsRepository: NFTRepository = NFTRepositoryImp.shared,
         globalRepository: GlobalMarketRepository = GlobalMarketRepositoryImp.shared,
-        storageManager: CachedStorageManager = CachedStorageManagerImp.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared
+        storageManager: CachedStorageManager = CachedStorageManagerImp.shared
     ) {
         self.nftDetailInfo = nftToplist.toNFTDetail
         self.cryptoDetailRepository = cryptoDetailRepository
-        self.newsRepository = newsRepository
         self.nftDetailsRepository = nftDetailsRepository
         self.nftsRepository = nftsRepository
         self.globalRepository = globalRepository
         self.storageManager = storageManager
-        self.storeKitManager = storeKitManager
         
         self.isChartFiat = false
     }
@@ -134,7 +122,6 @@ final class NFTDetailViewModelImp: NFTDetailViewModel, ChartHoverHosting {
         
         isChartFiat = await storageManager.load(type: AppSettingKey.isNFTChartFiat.rawValue) ?? false
         selectedSortOption = await storageManager.load(type: AppSettingKey.nftDetailSortOption.rawValue) ?? .priceDesc
-        let name = nftDetailInfo.name
         let id = nftDetailInfo.id ?? ""
         
         if !id.isEmpty {
@@ -156,10 +143,6 @@ final class NFTDetailViewModelImp: NFTDetailViewModel, ChartHoverHosting {
             self.nftTickers = nftTickers
         }
         updateExchangeMarketItems()
-
-        if let news = await newsRepository.cachedNews[NewsType.exchange(id: String(name?.split(separator: " ").first ?? ""))] {
-            self.news = news.data.data
-        }
 
         if let bitcoin = await cryptoDetailRepository.cachedBitcoin?.data {
             self.bitcoin = bitcoin
@@ -256,22 +239,9 @@ final class NFTDetailViewModelImp: NFTDetailViewModel, ChartHoverHosting {
         showMainPriceError = priceVolumeModel == nil
     }
     
-    func getNews() async {
-        guard let id = nftDetailInfo.name?.split(separator: " ").first?.description else { return }
-        
-        showNewsError = false
-
-        if let news = await newsRepository.getNews(type: .exchange(id: id), count: 25), !news.isEmpty {
-            self.news = news
-        } else {
-            showNewsError = true
-        }
-    }
-    
     func refresh(
         newDays: String? = nil,
         newTimeChart: TimeCharts? = nil,
-        getNews: Bool = false,
         getTickers: Bool = false
     ) async {
         mainReloading = true
@@ -280,10 +250,6 @@ final class NFTDetailViewModelImp: NFTDetailViewModel, ChartHoverHosting {
         let chart = newTimeChart ?? self.selectedTimeFrame
         
         await withTaskGroup(of: Void.self) { group in
-            if getNews {
-                group.addTask { await self.getNews() }
-            }
-            
             if getTickers {
                 group.addTask { await self.getTickers() }
             }

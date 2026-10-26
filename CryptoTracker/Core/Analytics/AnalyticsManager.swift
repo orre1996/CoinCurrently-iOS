@@ -266,6 +266,25 @@ struct WebViewOpened: AnalyticsEvent {
     }
 }
 
+enum SourcePlatform: String {
+    case ios
+    case android
+}
+
+struct SourceLinkOpened: AnalyticsEvent {
+    static let eventName = "source_link_opened"
+
+    let fromScreen: ScreenLabel
+    let platform: SourcePlatform
+
+    var parameters: [String: Any]? {
+        [
+            "from_screen": fromScreen.rawValue,
+            "platform": platform.rawValue
+        ]
+    }
+}
+
 struct ScrollToTopPressed: AnalyticsEvent {
     static let eventName = "scroll_to_top"
 
@@ -507,21 +526,6 @@ struct ResetApp: AnalyticsEvent {
     }
 }
 
-struct BuyProOpened: AnalyticsEvent {
-    static let eventName = "buy_pro_opened"
-
-    let fromScreen: ScreenLabel
-    let action: BuyProAction
-
-    var parameters: [String: Any]? {
-        let payload: [String: Any] = [
-            "from_screen": fromScreen.rawValue,
-            "action": action.rawValue
-        ]
-        return payload
-    }
-}
-
 struct ViewAll: AnalyticsEvent {
     static let eventName = "view_all"
 
@@ -729,21 +733,6 @@ struct PriceChangeOptionSelected: AnalyticsEvent {
     }
 }
 
-struct NewsFilterSelected: AnalyticsEvent {
-    static let eventName = "news_filter_selected"
-
-    let fromScreen: ScreenLabel
-    let filter: CarouselFilter
-
-    var parameters: [String: Any]? {
-        let payload: [String: Any] = [
-            "from_screen": fromScreen.rawValue,
-            "filter": filter.rawValue
-        ]
-        return payload
-    }
-}
-
 struct ThemeSelected: AnalyticsEvent {
     static let eventName = "theme_selected"
 
@@ -804,65 +793,6 @@ struct LanguageSelected: AnalyticsEvent {
     }
 }
 
-struct SubscriptionOptionSelected: AnalyticsEvent {
-    static let eventName = "subscription_option_selected"
-
-    let fromScreen: ScreenLabel
-    let subscription: String
-
-    var parameters: [String: Any]? {
-        let payload: [String: Any] = [
-            "from_screen": fromScreen.rawValue,
-            "subscription": subscription
-        ]
-        return payload
-    }
-}
-
-
-struct BuyProPressed: AnalyticsEvent {
-    static let eventName = "buy_pro_pressed"
-
-    let fromScreen: ScreenLabel
-    let subscription: String
-
-    var parameters: [String: Any]? {
-        let payload: [String: Any] = [
-            "from_screen": fromScreen.rawValue,
-            "subscription": subscription
-        ]
-        return payload
-    }
-}
-
-struct NewsOpened: AnalyticsEvent {
-    static let eventName = "news_opened"
-
-    let fromScreen: ScreenLabel
-
-    var parameters: [String: Any]? {
-        let payload: [String: Any] = [
-            "from_screen": fromScreen.rawValue
-        ]
-        return payload
-    }
-}
-
-struct NewsTabSelected: AnalyticsEvent {
-    static let eventName = "news_tab_selected"
-
-    let fromScreen: ScreenLabel
-    let tab: String
-
-    var parameters: [String: Any]? {
-        let payload: [String: Any] = [
-            "from_screen": fromScreen.rawValue,
-            "tab": tab
-        ]
-        return payload
-    }
-}
-
 struct DeeplinkNavigate: AnalyticsEvent {
     static let eventName = "navigate_deeplink"
 
@@ -878,52 +808,6 @@ struct DeeplinkNavigate: AnalyticsEvent {
             payload["coin_name"] = coinName
         }
         return payload
-    }
-}
-
-enum SubscriptionPurchaseOutcome: String {
-    case success
-    case failed
-    case cancelled
-    case pending
-    case renewal
-    case unknown
-}
-
-struct SubscriptionPurchaseCompleted: AnalyticsEvent {
-    static let eventName = "subscription_purchase_completed"
-
-    let fromScreen: ScreenLabel
-    let productId: String
-    let outcome: SubscriptionPurchaseOutcome
-
-    var parameters: [String: Any]? {
-        [
-            "from_screen": fromScreen.rawValue,
-            "product_id": productId,
-            "outcome": outcome.rawValue
-        ]
-    }
-}
-
-enum SubscriptionRestoreOutcome: String {
-    case restored
-    case nothingToRestore
-    case cancelled
-    case failed
-}
-
-struct SubscriptionRestoreCompleted: AnalyticsEvent {
-    static let eventName = "subscription_restore_completed"
-
-    let fromScreen: ScreenLabel
-    let outcome: SubscriptionRestoreOutcome
-
-    var parameters: [String: Any]? {
-        [
-            "from_screen": fromScreen.rawValue,
-            "outcome": outcome.rawValue
-        ]
     }
 }
 

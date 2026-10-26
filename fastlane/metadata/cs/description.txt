@@ -18,7 +18,7 @@ PŘÍSTUPNOST PRO VŠECHNY
 
 Krypto by mělo být pro všechny. CoinCurrently má plnou podporu přístupnosti v celé aplikaci.
 
-• VoiceOver — každá obrazovka je popsaná a dá se celá projít, od Domů a Trhu po Portfolio, Zprávy a Nastavení
+• VoiceOver — každá obrazovka je popsaná a dá se celá projít, od Domů a Trhu po Portfolio a Nastavení
 • Dynamic Type — text se přizpůsobí nastavení systému a lépe se čte
 • Režim pro barvoslepost — v Nastavení přepněte změny cen ze zelené/červené na modrou/oranžovou
 • Čisté rozhraní s vysokým kontrastem ve světlém i tmavém režimu
@@ -48,10 +48,9 @@ PŘEVOD MĚN
 
 Okamžitě převádějte mezi fiatem a kryptem nebo mezi libovolnými dvěma aktivy, s živými kurzy.
 
-NÁLADA TRHU A ZPRÁVY
+NÁLADA TRHU
 
 • Index Fear and Greed pro odhad nálady trhu
-• Nejnovější krypto zprávy přímo v aplikaci
 • Porovnávejte ceny na více burzách
 
 WIDGETY NA PLOCHU

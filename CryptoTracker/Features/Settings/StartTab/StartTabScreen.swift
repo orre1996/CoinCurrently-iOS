@@ -16,7 +16,7 @@ struct StartTabScreen: View {
     @State private var selectedTab: StartTab = SettingsManager.shared.get(key: AppSettingKey.startTab) ?? .home
     @State private var selectedMarketPage: StartMarketPage = SettingsManager.shared.get(key: AppSettingKey.startMarketPage) ?? .currencies
 
-    private let items: [StartTab] = [.lastUsed, .home, .portfolio, .market, .news, .more]
+    private let items: [StartTab] = [.lastUsed, .home, .portfolio, .market, .more]
 
     var body: some View {
         ZStack {

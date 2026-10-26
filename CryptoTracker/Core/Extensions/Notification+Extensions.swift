@@ -9,13 +9,11 @@ import Foundation
 
 extension Notification.Name {
     static let Snackbar = Notification.Name("Snackbar")
-    static let buyPro = Notification.Name("buyPro")
     static let canScroll = Notification.Name("canScroll")
     static let checkForBannedUser = Notification.Name("checkForBannedUser")
     static let downloadNewToplist = Notification.Name("downloadNewToplist")
     static let showRatingView = Notification.Name("showRatingView")
     static let currencySent = Notification.Name("currencySent")
-    static let syncPremiumStatus = Notification.Name("syncPremiumStatus")
     static let closeAllOverlays = Notification.Name("CloseAllOverlays")
     static let reloadViews = Notification.Name("ReloadViews")
     static let tabDoubleTapped = Notification.Name("TabDoubleTapped")
@@ -25,6 +23,5 @@ extension Notification.Name {
     static let sync = Notification.Name("Sync")
     static let sortCategoriesToplist = Notification.Name("sortCategoriesToplist")
     static let newTransaction = Notification.Name("newTransaction")
-    static let subscriptionStatusDidChange = Notification.Name("subscriptionStatusDidChange")
     static let colorBlindnessFilterChanged = Notification.Name("colorBlindnessFilterChanged")
 }

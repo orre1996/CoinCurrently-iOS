@@ -38,7 +38,6 @@ struct AddTransactionViewModelTests {
             transaction: nil,
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
             portfolioRepository: portfolio,
-            storeKitManager: MockRepoStoreKitManager()
         )
         viewModel.amount = 2
 
@@ -60,7 +59,6 @@ struct AddTransactionViewModelTests {
             transaction: nil,
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
             portfolioRepository: portfolio,
-            storeKitManager: MockRepoStoreKitManager()
         )
         await viewModel.setStartData()
         viewModel.amount = 1
@@ -79,7 +77,6 @@ struct AddTransactionViewModelTests {
             transaction: nil,
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
             portfolioRepository: MockVMPortfolioRepository(),
-            storeKitManager: MockRepoStoreKitManager()
         )
     }
 }

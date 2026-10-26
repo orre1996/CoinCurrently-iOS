@@ -11,7 +11,7 @@ struct CryptoDetailAboutView: View {
     let description: Description?
     let links: Links?
     
-    @Binding var newsUrl: String?
+    @Binding var webUrl: String?
     
     private var sections: [DetailAboutSection] {
         var result: [DetailAboutSection] = []
@@ -79,7 +79,7 @@ struct CryptoDetailAboutView: View {
             isLoading: isLoading,
             emptyStateMessage: "When information about this coin appears, it'll show up here.",
             fromScreen: .cryptoDetail,
-            newsUrl: $newsUrl
+            webUrl: $webUrl
         )
     }
 }

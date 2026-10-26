@@ -21,7 +21,6 @@ struct PriceAlertsViewModelTests {
         let viewModel = PriceAlertsViewModelImp(
             priceAlertsRepository: alerts,
             toplistRepository: toplist,
-            storeKitManager: MockRepoStoreKitManager(),
             cryptoDetailRepository: MockVMCryptoDetailRepository()
         )
 
@@ -38,7 +37,6 @@ struct PriceAlertsViewModelTests {
         let viewModel = PriceAlertsViewModelImp(
             priceAlertsRepository: alerts,
             toplistRepository: MockVMToplistRepository(),
-            storeKitManager: MockRepoStoreKitManager(),
             cryptoDetailRepository: MockVMCryptoDetailRepository()
         )
 
@@ -60,14 +58,12 @@ struct PriceAlertsViewModelTests {
         let viewModel = PriceAlertsViewModelImp(
             priceAlertsRepository: alerts,
             toplistRepository: MockVMToplistRepository(),
-            storeKitManager: MockRepoStoreKitManager(currentSubscription: "pro"),
             cryptoDetailRepository: MockVMCryptoDetailRepository()
         )
 
         await viewModel.deleteAlert(alert: sampleAlert(id: "gone", coinId: "bitcoin"))
 
         #expect(viewModel.alerts?.map(\.id) == ["kept"])
-        #expect(await viewModel.hasBoughtPro())
     }
 
     private func sampleAlert(id: String, coinId: String) -> AlertCoin {

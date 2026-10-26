@@ -21,7 +21,6 @@ enum WidgetError: Error {
 protocol WidgetViewModel {
     func getCoinsWithSparkline(ids: [String], completion: @escaping (Result<CryptoEntry, Error>) -> Void)
     func getPortfolio(completion: @escaping (Result<PortfolioEntry, Error>) -> Void)
-    func getNews(type: NewsType, category: NewsWidgetCategory, itemCount: Int, completion: @escaping (Result<NewsEntry, Error>) -> Void)
     func getFearGreed(completion: @escaping (Result<FearGreedEntry, Error>) -> Void)
     func getGasFees(completion: @escaping (Result<GasFeeEntry, Error>) -> Void)
 }
@@ -31,7 +30,6 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
     
     private let portfolioRepository: PortfolioRepository
     private let priceAlertsRepository: PriceAlertsRepository
-    private let newsRepository: NewsRepository
     private let fearGreedRepository: FearGreedRepository
     private let gasFeesRepository: GasFeesRepository
     
@@ -39,14 +37,12 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
         networkManager: NetworkManager = NetworkManagerImp.shared,
         portfolioRepository: PortfolioRepository = PortfolioRepositoryImp.shared,
         priceAlertsRepository: PriceAlertsRepository = PriceAlertsRepositoryImp.shared,
-        newsRepository: NewsRepository = NewsRepositoryImp.shared,
         fearGreedRepository: FearGreedRepository = FearGreedRepositoryImp.shared,
         gasFeesRepository: GasFeesRepository = GasFeesRepositoryImp.shared
     ) {
         self.networkManager = networkManager
         self.portfolioRepository = portfolioRepository
         self.priceAlertsRepository = priceAlertsRepository
-        self.newsRepository = newsRepository
         self.fearGreedRepository = fearGreedRepository
         self.gasFeesRepository = gasFeesRepository
         
@@ -140,38 +136,6 @@ final class WidgetViewModelImp: WidgetViewModel, @unchecked Sendable {
         }
     }
 
-    // MARK: - News
-    
-    func getNews(type: NewsType, category: NewsWidgetCategory = .general, itemCount: Int = 3, completion: @escaping (Result<NewsEntry, Error>) -> Void) {
-        let box = CompletionBox(handler: completion)
-        let newsRepo = newsRepository
-        Task { @MainActor in
-            let fetchCount = NewsWidgetCategoryResolver.fetchCount(for: type, itemCount: itemCount)
-
-            guard var news = await newsRepo.getNews(type: type, count: fetchCount) else {
-                box.call(.failure(WidgetError.fail))
-                return
-            }
-
-            news = Array(NewsWidgetCategoryResolver.filteredNews(news, for: type).prefix(itemCount))
-
-            guard !news.isEmpty else {
-                box.call(.failure(WidgetError.fail))
-                return
-            }
-            
-            box.call(
-                .success(
-                    NewsEntry(
-                        newsModel: news,
-                        selectedCategory: category,
-                        isPlaceholder: false
-                    )
-                )
-            )
-        }
-    }
-    
     // MARK: - Fear and Greed
     
     func getFearGreed(completion: @escaping (Result<FearGreedEntry, Error>) -> Void) {

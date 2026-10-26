@@ -21,12 +21,11 @@ final class NavigationViewModel {
     var showForceUpdate = false
     var isTabBarOverlayShowing = false
     
-    var newsUrl: String?
+    var webUrl: String?
     var showCalculator = false
 
     var allStartingDataDownloaded = false
     var showMoreTip = false
-    var showBuyPro = false
 
     var tabbarDelay = false
 
@@ -45,11 +44,11 @@ final class NavigationViewModel {
                 SettingsManager.shared.set(data: selectedTab, key: AppSettingKey.latestTab)
             }
             
-            if showMoreTip && selectedTab == 4 {
+            if showMoreTip && selectedTab == 3 {
                 showMoreTip = false
             }
             
-            if selectedTab == 4 {
+            if selectedTab == 3 {
                 let nextPopupDate = Calendar.current.date(byAdding: .day, value: 9999, to: Date()) ?? Date()
                 SettingsManager.shared.setHasOnboardedSettings(date: nextPopupDate)
             }
@@ -97,15 +96,6 @@ final class NavigationViewModel {
         }
     }
     
-    func referralUrlOpened(code: String) {
-        AnalyticsManager.shared.log(DeeplinkNavigate(toScreen: .referral))
-        Task { @MainActor in
-            self.resetAllData()
-            self.selectedTab = 4
-            self.navPath = [.MainFlow, .Referral(referralCode: code)]
-        }
-    }
-
     func goToPriceAlerts(delay: Double = 0) {
         AnalyticsManager.shared.log(DeeplinkNavigate(toScreen: .priceAlerts))
         Task { @MainActor in
@@ -118,10 +108,9 @@ final class NavigationViewModel {
     func resetAllData() {
         hideTabBarOverlay()
 
-        newsUrl = nil
+        webUrl = nil
         showCalculator = false
         showMoreTip = false
-        showBuyPro = false
         forceCoverTabbar = false
     }
 
@@ -135,8 +124,7 @@ final class NavigationViewModel {
     }
     
     func hideSheets() {
-        newsUrl = nil
-        showBuyPro = false
+        webUrl = nil
     }
     
     func deepLink(url: String?) {
@@ -153,12 +141,9 @@ final class NavigationViewModel {
         case .marketTab:
             AnalyticsManager.shared.log(DeeplinkNavigate(toScreen: .market))
             navigateToTab(2)
-        case .news:
-            AnalyticsManager.shared.log(DeeplinkNavigate(toScreen: .news))
-            navigateToTab(3)
         case .settings:
             AnalyticsManager.shared.log(DeeplinkNavigate(toScreen: .settings))
-            navigateToTab(4)
+            navigateToTab(3)
         case .fearGreed:
             fearGreedUrlOpened()
         case .priceAlerts:
@@ -176,8 +161,6 @@ final class NavigationViewModel {
         case .feedback:
             AnalyticsManager.shared.log(DeeplinkNavigate(toScreen: .feedback))
             deepLink(to: .Feedback)
-        case .referral(let code):
-            referralUrlOpened(code: code)
         case .cryptoDetail(let id, let symbol):
             let model = CurrencyDataModel(id: id, symbol: symbol)
             AnalyticsManager.shared.log(
@@ -195,12 +178,12 @@ final class NavigationViewModel {
             showCalculator = false
             
             Task { @MainActor in
-                try? await Task.sleep(for: .seconds(showCalculator || newsUrl != nil ? 0.75 : 0))
-                self.newsUrl = url
+                try? await Task.sleep(for: .seconds(showCalculator || webUrl != nil ? 0.75 : 0))
+                self.webUrl = url
             }
             
-            if newsUrl != url {
-                newsUrl = nil
+            if webUrl != url {
+                webUrl = nil
             }
         case .none:
             return

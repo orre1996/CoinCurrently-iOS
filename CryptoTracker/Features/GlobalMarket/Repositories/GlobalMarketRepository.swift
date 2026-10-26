@@ -29,16 +29,13 @@ final actor GlobalMarketRepositoryImp: GlobalMarketRepository {
     var cachedCoinList: CachedData<[CoinsListModel]>?
 
     private let networkManager: NetworkManager
-    private let storeKitManager: StoreKitManager
     
     private let invalidIds = ["binance-", "bridged-", "harry", "mapped", "bridge-", "batcat", "nova", "osmosis-", "department", "open-", "tokamak-", "big-"]
     
     init(
-        networkManager: NetworkManager = NetworkManagerImp.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared
+        networkManager: NetworkManager = NetworkManagerImp.shared
     ) {
         self.networkManager = networkManager
-        self.storeKitManager = storeKitManager
         
         self.cachedGlobalMarket = nil
         self.cachedGlobalChart = nil

@@ -58,19 +58,16 @@ final class AddTransactionViewModelImp: AddTransactionViewModel {
 
     private let cryptoDetailRepository: CryptoDetailRepository
     private let portfolioRepository: PortfolioRepository
-    private let storeKitManager: StoreKitManager
     
     init(
         transactionType: PortfolioTransactionType,
         currencyDetail: CurrencyDataModel?,
         transaction: PortfolioTransaction?,
         cryptoDetailRepository: CryptoDetailRepository = CryptoDetailRepositoryImp.shared,
-        portfolioRepository: PortfolioRepository = PortfolioRepositoryImp.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared
+        portfolioRepository: PortfolioRepository = PortfolioRepositoryImp.shared
     ) {
         self.cryptoDetailRepository = cryptoDetailRepository
         self.portfolioRepository = portfolioRepository
-        self.storeKitManager = storeKitManager
 
         self.transactionType = transactionType
         self.currencyDetail = currencyDetail

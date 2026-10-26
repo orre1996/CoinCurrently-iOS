@@ -39,7 +39,6 @@ protocol PortfolioViewModel: ChartHoverHosting {
     var chartDropCount: Int { get }
 
     func setStartData() async
-    func hasBoughtPro() async -> Bool
     func toggleHideData()
     func setTimestamps()
     func setPrices() async
@@ -103,20 +102,17 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
     private let portfolioRepository: PortfolioRepository
     private let cryptoDetailRepository: CryptoDetailRepository
     private let toplistRepository: ToplistRepository
-    private let storeKitManager: StoreKitManager
     private let settingsManager: SettingsManager
     
     init(
         portfolioRepository: PortfolioRepository = PortfolioRepositoryImp.shared,
         cryptoDetailRepository: CryptoDetailRepository = CryptoDetailRepositoryImp.shared,
         toplistRepository: ToplistRepository = ToplistRepositoryImp.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
         settingsManager: SettingsManager = SettingsManager.shared,
     ) {
         self.portfolioRepository = portfolioRepository
         self.cryptoDetailRepository = cryptoDetailRepository
         self.toplistRepository = toplistRepository
-        self.storeKitManager = storeKitManager
         self.settingsManager = settingsManager
         
         self.hideData = settingsManager.get(key: AppSettingKey.hidePortfolioValues) ?? false
@@ -250,10 +246,6 @@ final class PortfolioViewModelImp: PortfolioViewModel, ObservableObject, ChartHo
     
     func reloadTransactions() async {
         await transactions.setGroupTransactions(portfolio: portfolio)
-    }
-    
-    func hasBoughtPro() async -> Bool {
-        return await storeKitManager.currentSubscription != nil
     }
     
     func toggleHideData() {

@@ -12,7 +12,6 @@ extension Image {
     static let x = Image("x")
     static let meta = Image("meta")
     static let reddit = Image("reddit")
-    static let referral = Image(systemName: "person.2")
     
     // MARK: - Price change
     static let trendUp = Image("trendUp")
@@ -27,8 +26,6 @@ extension Image {
     static let delete = Image("delete")
     static let remove = Image("remove")
     static let list = Image("list")
-    
-    static let premiumLogo = Image("premiumLogo")
     
     static let feedback = Image("feedback")
     static let more = Image("more")
@@ -121,6 +118,5 @@ extension Image {
     static let home = Image("home")
     static let portfolio = Image("portfolio")
     static let market = Image("market")
-    static let news = Image("news")
     static let settings = Image("settings")
 }

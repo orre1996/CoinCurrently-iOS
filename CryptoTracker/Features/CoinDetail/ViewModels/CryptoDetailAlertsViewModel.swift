@@ -16,14 +16,11 @@ final class CryptoDetailAlertsViewModel {
     private var coinId: String?
 
     private let priceAlertsRepository: PriceAlertsRepository
-    private let storeKitManager: StoreKitManager
 
     init(
-        priceAlertsRepository: PriceAlertsRepository = PriceAlertsRepositoryImp.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared
+        priceAlertsRepository: PriceAlertsRepository = PriceAlertsRepositoryImp.shared
     ) {
         self.priceAlertsRepository = priceAlertsRepository
-        self.storeKitManager = storeKitManager
     }
 
     func load(coinId: String?) async {
@@ -46,10 +43,6 @@ final class CryptoDetailAlertsViewModel {
         @unknown default:
             return false
         }
-    }
-
-    func hasBoughtPro() async -> Bool {
-        await storeKitManager.currentSubscription != nil
     }
 
     func getPriceAlerts() async {

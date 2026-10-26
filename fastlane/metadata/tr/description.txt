@@ -18,7 +18,7 @@ HERKES İÇİN ERİŞİLEBİLİRLİK
 
 Kripto herkes için olmalı. CoinCurrently, uygulamanın tamamında erişilebilirlik desteği sunar.
 
-• VoiceOver — her ekran etiketlidir ve baştan sona dolaşılabilir; Ana Sayfa ve Piyasa’dan Portföy, Haberler ve Ayarlar’a kadar
+• VoiceOver — her ekran etiketlidir ve baştan sona dolaşılabilir; Ana Sayfa ve Piyasa’dan Portföy ve Ayarlar’a kadar
 • Dynamic Type — metin sistem ayarlarına göre ölçeklenir ve daha kolay okunur
 • Renk körlüğü modu — Ayarlar’da fiyat değişimini yeşil/kırmızıdan mavi/turuncuya çevir
 • Açık ve koyu modda yüksek kontrastlı, sade arayüz
@@ -48,10 +48,9 @@ DÖVİZ ÇEVİRİCİ
 
 Fiat ile kripto arasında ya da herhangi iki varlık arasında canlı kurlarla anında çevir.
 
-PİYASA DUYGUSU VE HABERLER
+PİYASA DUYGUSU
 
 • Piyasa havasını okumak için Fear and Greed endeksi
-• En yeni kripto haberleri doğrudan uygulamada
 • Fiyatları birden fazla borsada karşılaştır
 
 ANA EKRAN WIDGET’LARI

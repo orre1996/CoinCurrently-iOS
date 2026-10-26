@@ -64,7 +64,6 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
     static let shared = PortfolioRepositoryImp()
     
     private let networkManager: NetworkManager
-    private let storeKitManager: StoreKitManager
     private let coreDataManager: CoreDataManager
 
     private(set) var cachedPortfolioPies: CachedPortfolioPies?
@@ -73,11 +72,9 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
 
     init(
         networkManager: NetworkManager = NetworkManagerImp.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
         coreDataManager: CoreDataManager = CoreDataManager.shared
     ) {
         self.networkManager = networkManager
-        self.storeKitManager = storeKitManager
         self.coreDataManager = coreDataManager
         
         self.cachedPortfolioPies = nil
@@ -138,9 +135,8 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
     
     func getPortfolio() async -> CachedPortfolioPies? {
         await ensureCacheLoaded()
-        let hasActiveSubscription = await storeKitManager.currentSubscription != nil
 
-        if let cachedPortfolioPies, !cachedPortfolioPies.date.defaultCacheTimer(hasBoughtPro: hasActiveSubscription) {
+        if let cachedPortfolioPies, !cachedPortfolioPies.date.defaultCacheTimer() {
             return cachedPortfolioPies
         }
         
@@ -200,8 +196,7 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
     
     func refreshWallets() async -> CachedPortfolioPies?  {
         await ensureCacheLoaded()
-        let hasActiveSubscription = await storeKitManager.currentSubscription != nil
-        if let walletRefreshDate: Date = await coreDataManager.get(forKey: .walletRefreshDate), !walletRefreshDate.defaultCacheTimer(hasBoughtPro: hasActiveSubscription) {
+        if let walletRefreshDate: Date = await coreDataManager.get(forKey: .walletRefreshDate), !walletRefreshDate.defaultCacheTimer() {
             return nil
         }
         
@@ -227,9 +222,8 @@ final actor PortfolioRepositoryImp: PortfolioRepository {
 
     func getPortfolioAllCurrencies() async -> [Cryptocurrency]? {
         await ensureCacheLoaded()
-        let hasActiveSubscription = await storeKitManager.currentSubscription != nil
 
-        if let cached = cachedPortfolioPrices, !cached.date.defaultCacheTimer(hasBoughtPro: hasActiveSubscription) {
+        if let cached = cachedPortfolioPrices, !cached.date.defaultCacheTimer() {
             return cached.data
         }
         

@@ -39,22 +39,6 @@ struct CryptoDetailViewModelTests {
         #expect(viewModel.prices.isEmpty)
     }
 
-    @Test("hasBoughtPro follows the subscription")
-    func hasBoughtProFollowsSubscription() async {
-        let viewModel = CryptoDetailViewModelImp(
-            cryptoInfo: sampleCurrency(),
-            cryptoDetailRepository: MockVMCryptoDetailRepository(),
-            toplistRepository: MockVMToplistRepository(),
-            globalMarketRepository: MockVMGlobalMarketRepository(),
-            storageManager: emptyStorageManager(),
-            storeKitManager: MockRepoStoreKitManager(currentSubscription: "pro"),
-            analyticsManager: AnalyticsManager.shared,
-            settingsManager: SettingsManager.shared
-        )
-
-        #expect(await viewModel.hasBoughtPro())
-    }
-
     private func makeViewModel(crypto: MockVMCryptoDetailRepository) -> CryptoDetailViewModelImp {
         CryptoDetailViewModelImp(
             cryptoInfo: sampleCurrency(),
@@ -62,7 +46,6 @@ struct CryptoDetailViewModelTests {
             toplistRepository: MockVMToplistRepository(),
             globalMarketRepository: MockVMGlobalMarketRepository(),
             storageManager: emptyStorageManager(),
-            storeKitManager: MockRepoStoreKitManager(),
             analyticsManager: AnalyticsManager.shared,
             settingsManager: SettingsManager.shared
         )

@@ -18,7 +18,7 @@ DOSTĘPNOŚĆ DLA KAŻDEGO
 
 Krypto powinno być dla każdego. CoinCurrently ma pełną obsługę dostępności w całej aplikacji.
 
-• VoiceOver — każdy ekran jest opisany i da się go w całości przejść, od Ekranu głównego i Rynku po Portfel, Wiadomości i Ustawienia
+• VoiceOver — każdy ekran jest opisany i da się go w całości przejść, od Ekranu głównego i Rynku po Portfel i Ustawienia
 • Dynamic Type — tekst skaluje się zgodnie z ustawieniami systemu i jest łatwiejszy do czytania
 • Tryb dla daltonistów — w Ustawieniach przełącz kolory zmian cen z zielonego/czerwonego na niebieski/pomarańczowy
 • Czysty interfejs o wysokim kontraście w trybie jasnym i ciemnym
@@ -48,10 +48,9 @@ PRZELICZNIK WALUT
 
 Przeliczaj od razu między fiat a krypto albo między dwoma dowolnymi aktywami, po kursach na żywo.
 
-NASTRÓJ RYNKU I WIADOMOŚCI
+NASTRÓJ RYNKU
 
 • Indeks Fear and Greed, żeby ocenić nastrój rynku
-• Najnowsze wiadomości krypto w aplikacji
 • Porównuj ceny na wielu giełdach
 
 WIDGETY EKRANU GŁÓWNEGO

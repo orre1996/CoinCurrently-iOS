@@ -8,7 +8,6 @@
 import SwiftUI
 import WatchKit
 import ClockKit
-import RevenueCat
 
 @main
 struct CoinCurrentlyApp: App {
@@ -20,11 +19,6 @@ struct CoinCurrentlyApp: App {
     @State private var viewModel = NavigationViewModel()
     
     @WKApplicationDelegateAdaptor(ExtensionDelegate.self) private var extensionDelegate
-    
-    
-    init() {
-        RevenueCatConfigurator.configureIfNeeded()
-    }
     
     @SceneBuilder var body: some Scene {
         WindowGroup {
@@ -54,7 +48,6 @@ struct CoinCurrentlyApp: App {
                     .preferredColorScheme(.dark)
             }
             .task {
-                connectivityVM.sendSyncCall()
                 viewModel.navPath.append(.MainFlow)
                 
                 _ = await extensionDelegate.applicationDidFinishLaunching(refresh: true)

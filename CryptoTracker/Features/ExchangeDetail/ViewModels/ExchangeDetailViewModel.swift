@@ -14,8 +14,6 @@ protocol ExchangeDetailViewModel: ChartHoverHosting {
     var exchangeInfo: Exchange { get set }
     var bitcoin: CurrencyDataModel? { get set }
     var toplist: [Toplist]? { get set }
-    var news: [NewsItem] { get set }
-    var showNewsError: Bool { get set }
     var reloading: Bool { get set }
     var showMainPriceError: Bool { get set }
     var timeChart: TimeCharts { get set }
@@ -40,8 +38,7 @@ protocol ExchangeDetailViewModel: ChartHoverHosting {
     func getExchangeData(id: String?) async
     func getExchangePrices(id: String?, days: String) async
     func getBitcoin() async
-    func getNews() async
-    func refresh(newDays: String?, newTimeChart: TimeCharts?, forceId: String?, getNews: Bool) async
+    func refresh(newDays: String?, newTimeChart: TimeCharts?, forceId: String?) async
     func getPrices() -> [Double]
     func setPrices()
     func getTimestamps() -> [Double]
@@ -65,8 +62,6 @@ final class ExchangeDetailViewModelImp: ExchangeDetailViewModel, ChartHoverHosti
     var exchangeVolume: [ExchangePriceModel]?
     var exchangeInfo: Exchange
     var bitcoin: CurrencyDataModel?
-    var news = [NewsItem]()
-    var showNewsError = false
     var reloading = true
     var showMainPriceError = false
     var timeChart = TimeCharts.getStartTimeFrame(between: .aDay, and: .aYear)
@@ -88,7 +83,6 @@ final class ExchangeDetailViewModelImp: ExchangeDetailViewModel, ChartHoverHosti
     private let exchangeDetailsRepository: ExchangeDetailsRepository
     private let storageManager: CachedStorageManager
     private let cryptoDetailRepository: CryptoDetailRepository
-    private let newsRepository: NewsRepository
     private let toplistRepository: ToplistRepository
 
     var toplist: [Toplist]?
@@ -97,13 +91,11 @@ final class ExchangeDetailViewModelImp: ExchangeDetailViewModel, ChartHoverHosti
         exchangeDetail: Exchange,
         exchangeDetailsRepository: ExchangeDetailsRepository = ExchangeDetailsRepositoryImp.shared,
         cryptoDetailRepository: CryptoDetailRepository = CryptoDetailRepositoryImp.shared,
-        newsRepository: NewsRepository = NewsRepositoryImp.shared,
         toplistRepository: ToplistRepository = ToplistRepositoryImp.shared,
         storageManager: CachedStorageManager = CachedStorageManagerImp.shared
     ) {
         self.exchangeDetailsRepository = exchangeDetailsRepository
         self.cryptoDetailRepository = cryptoDetailRepository
-        self.newsRepository = newsRepository
         self.toplistRepository = toplistRepository
         self.storageManager = storageManager
         
@@ -137,12 +129,6 @@ final class ExchangeDetailViewModelImp: ExchangeDetailViewModel, ChartHoverHosti
         
         if let bitcoin = await cryptoDetailRepository.cachedBitcoin?.data {
             self.bitcoin = bitcoin
-        }
-
-        let newsId = String(exchangeInfo.name?.split(separator: " ").first ?? "")
-        
-        if let news = await newsRepository.cachedNews[.exchange(id: newsId)] {
-            self.news = news.data.data
         }
 
         selectedSortOption = await storageManager.load(type: AppSettingKey.exchangeDetailSortOption.rawValue) ?? .volumeDesc
@@ -275,23 +261,10 @@ final class ExchangeDetailViewModelImp: ExchangeDetailViewModel, ChartHoverHosti
         }
     }
 
-    func getNews() async {
-        showNewsError = false
-
-        let id = String(exchangeInfo.name?.split(separator: " ").first ?? "")
-
-        if let news = await newsRepository.getNews(type: .exchange(id: id), count: 25), !news.isEmpty {
-            self.news = news
-        } else {
-            showNewsError = true
-        }
-    }
-    
     func refresh(
         newDays: String? = nil,
         newTimeChart: TimeCharts? = nil,
-        forceId: String? = nil,
-        getNews: Bool = true,
+        forceId: String? = nil
     ) async {
         reloading = true
         
@@ -300,10 +273,6 @@ final class ExchangeDetailViewModelImp: ExchangeDetailViewModel, ChartHoverHosti
         let id = forceId ?? self.exchangeInfo.id
         
         await withTaskGroup(of: Void.self) { group in
-            if getNews {
-                group.addTask { await self.getNews() }
-            }
-
             group.addTask { await self.getExchangeData(id: id) }
             group.addTask { await self.getExchangePrices(id: id, days: days) }
             group.addTask { await self.getBitcoin() }

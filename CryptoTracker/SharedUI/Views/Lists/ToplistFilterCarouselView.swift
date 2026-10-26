@@ -14,7 +14,6 @@ struct ToplistFilterCarouselView: View {
     
     let filters: [CarouselFilter]
     let selectedFilter: CarouselFilter
-    var hasPro: Bool = true
     var animateSelectionChanges: Bool = true
     let newFilterSelected: (CarouselFilter) -> Void
     
@@ -88,16 +87,7 @@ struct ToplistFilterCarouselView: View {
                         break
                     }
                 }
-                .if(!hasPro) { view in
-                    view.accessibilityAction(.default) {
-                        activateVoiceOverFilter()
-                    }
-                }
         }
-    }
-    
-    private func requiresVoiceOverActivation(for filter: CarouselFilter) -> Bool {
-        filter.requiresPro && !hasPro
     }
     
     private var selectedAccessibilityValue: String {
@@ -109,10 +99,6 @@ struct ToplistFilterCarouselView: View {
             String(filters.count),
             accessibilityTitle(for: title)
         )
-        
-        if requiresVoiceOverActivation(for: filter) {
-            return "\(category) \(Localization.string("Double tap to select this Pro feature."))"
-        }
         
         return category
     }
@@ -126,18 +112,7 @@ struct ToplistFilterCarouselView: View {
         guard filters.indices.contains(newIndex) else { return }
         
         voiceOverFilterIndex = newIndex
-        
-        let filter = filters[newIndex]
-        guard !requiresVoiceOverActivation(for: filter) else { return }
-        
-        newFilterSelected(filter)
-    }
-    
-    private func activateVoiceOverFilter() {
-        guard let filter = filters[safely: voiceOverFilterIndex] else { return }
-        guard requiresVoiceOverActivation(for: filter) else { return }
-        
-        newFilterSelected(filter)
+        newFilterSelected(filters[newIndex])
     }
     
     private func scrollToFilterIndex(_ index: Int, using scrollReader: ScrollViewProxy) {
@@ -151,20 +126,11 @@ struct ToplistFilterCarouselView: View {
     }
     
     private func displayTitle(for title: String) -> String {
-        let suffix = " (Pro)"
-        guard title.hasSuffix(suffix) else {
-            return Localization.string(title)
-        }
-        let base = String(title.dropLast(suffix.count))
-        return "\(Localization.string(base))\(suffix)"
+        Localization.string(title)
     }
 
     private func accessibilityTitle(for title: String) -> String {
-        if title.contains("(Pro)") {
-            let base = title.replacingOccurrences(of: " (Pro)", with: "")
-            return Localization.format("%@, Pro feature", Localization.string(base))
-        }
-        return Localization.string(title)
+        Localization.string(title)
     }
     
     private func carouselChip(

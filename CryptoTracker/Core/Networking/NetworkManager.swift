@@ -28,17 +28,14 @@ actor NetworkManagerImp: NetworkManager {
     private var hasLoadedCache = false
     private let decoder = JSONDecoder()
     private let session: URLSession
-    private let storeKitManager: StoreKitManager
     private let firebaseManager: FirebaseManager
     private let coreDataManager: CoreDataManager
     
     init(
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
         firebaseManager: FirebaseManager = FirebaseManagerImp.shared,
         coreDataManager: CoreDataManager = CoreDataManager.shared,
         session: URLSession = .shared
     ) {
-        self.storeKitManager = storeKitManager
         self.firebaseManager = firebaseManager
         self.coreDataManager = coreDataManager
         self.session = session
@@ -97,8 +94,7 @@ actor NetworkManagerImp: NetworkManager {
     // MARK: - GET
     
     public func getCached<T: Decodable>(endpoint: Endpoint) async -> T? {
-        let hasActiveSubscription = await storeKitManager.currentSubscription != nil
-        let pathComponent = await endpoint.pathComponent(hasBoughtPro: hasActiveSubscription)
+        let pathComponent = await endpoint.pathComponent()
         
         guard let url = buildURL(for: endpoint, pathComponent: pathComponent) else {
             return nil
@@ -125,8 +121,7 @@ actor NetworkManagerImp: NetworkManager {
             return
         }
         
-        let hasActiveSubscription = await storeKitManager.currentSubscription != nil
-        let pathComponent = await endpoint.pathComponent(hasBoughtPro: hasActiveSubscription)
+        let pathComponent = await endpoint.pathComponent()
         
         guard let url = buildURL(for: endpoint, pathComponent: pathComponent) else {
             return
@@ -144,8 +139,7 @@ actor NetworkManagerImp: NetworkManager {
     }
     
     public func getRaw(endpoint: Endpoint) async -> (data: Data, response: HTTPURLResponse)? {
-        let hasActiveSubscription = await storeKitManager.currentSubscription != nil
-        let pathComponent = await endpoint.pathComponent(hasBoughtPro: hasActiveSubscription)
+        let pathComponent = await endpoint.pathComponent()
         
         guard let url = buildURL(for: endpoint, pathComponent: pathComponent) else {
             showErrorIfNeeded(
@@ -185,10 +179,6 @@ actor NetworkManagerImp: NetworkManager {
                let error = NetworkManagerError.resolved(statusCode: httpResponse.statusCode, data: data) {
                 print("🔴 ERROR GETTING \(endpoint) \(error.localizedDescription)")
                 
-                if error == .tooManyRequests, endpoint.shouldTryAgain(hasBoughtPro: hasActiveSubscription) {
-                    return await getRaw(endpoint: endpoint.withPremiumVersion)
-                }
-                
                 showErrorIfNeeded(
                     for: endpoint,
                     date: nil,
@@ -212,8 +202,7 @@ actor NetworkManagerImp: NetworkManager {
     }
     
     public func get<T: Decodable>(endpoint: Endpoint) async -> T? {
-        let hasActiveSubscription = await storeKitManager.currentSubscription != nil
-        let pathComponent = await endpoint.pathComponent(hasBoughtPro: hasActiveSubscription)
+        let pathComponent = await endpoint.pathComponent()
         
         guard let url = buildURL(for: endpoint, pathComponent: pathComponent) else {
             showErrorIfNeeded(
@@ -231,7 +220,7 @@ actor NetworkManagerImp: NetworkManager {
             cache = await coreDataManager.get(forKey: .networkCache) ?? [:]
         }
         
-        let cacheValidMinutes = endpoint.cacheTimeMinutes(hasBoughtPro: hasActiveSubscription)
+        let cacheValidMinutes = endpoint.cacheTimeMinutes()
         let isCacheValid = { (date: Date) in
             Date().timeIntervalSince(date) <= 60 * Double(cacheValidMinutes)
         }
@@ -271,10 +260,6 @@ actor NetworkManagerImp: NetworkManager {
                let error = NetworkManagerError.resolved(statusCode: responseCode, data: data) {
                 print("🔴 ERROR GETTING \(endpoint) \(error.localizedDescription)")
                 
-                if error == .tooManyRequests, endpoint.shouldTryAgain(hasBoughtPro: hasActiveSubscription) {
-                    return await get(endpoint: endpoint.withPremiumVersion)
-                }
-
                 if endpoint.treatsNotFoundAsEmpty, error == .notFound {
                     return await cacheAndDecodeEmpty(cacheKey: cacheKey)
                 }
@@ -318,8 +303,7 @@ actor NetworkManagerImp: NetworkManager {
     // MARK: - POST
     
     public func post<G: Codable, T: Codable>(endpoint: Endpoint, bodyStruct: T) async -> (G?, Int) {
-        let hasActiveSubscription = await storeKitManager.currentSubscription != nil
-        let pathComponent = await endpoint.pathComponent(hasBoughtPro: hasActiveSubscription)
+        let pathComponent = await endpoint.pathComponent()
         
         guard let url = buildURL(for: endpoint, pathComponent: pathComponent) else {
             showErrorIfNeeded(

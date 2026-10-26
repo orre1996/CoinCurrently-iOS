@@ -73,26 +73,15 @@ struct PriceAlertsScreen: View {
                     ActivityIndicator(size: 20)
                 } else if viewModel.hasPush {
                     Button(action: {
-                        Task {
-                            let hasBoughtPro = await viewModel.hasBoughtPro()
-
-                            if (viewModel.alerts?.count ?? 0) >= 2 && !hasBoughtPro {
-                                AnalyticsManager.shared.log(
-                                    BuyProOpened(fromScreen: .priceAlerts, action: .PriceAlert)
-                                )
-                                showBuyPro()
-                            } else {
-                                AnalyticsManager.shared.log(
-                                    SheetOpened(fromScreen: .priceAlerts, sheet: .coinSearch)
-                                )
-                                isAlertByPriceSelected = true
-                                priceInput = 0.0
-                                percentInput = 10.0
-                                isRecurringAlertOn = false
-                                selectedDirection = .up
-                                isSelectingCoin = true
-                            }
-                        }
+                        AnalyticsManager.shared.log(
+                            SheetOpened(fromScreen: .priceAlerts, sheet: .coinSearch)
+                        )
+                        isAlertByPriceSelected = true
+                        priceInput = 0.0
+                        percentInput = 10.0
+                        isRecurringAlertOn = false
+                        selectedDirection = .up
+                        isSelectingCoin = true
                     }, label: {
                         Image.add
                     })

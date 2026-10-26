@@ -18,7 +18,7 @@ TILLGÄNGLIGHET FÖR ALLA
 
 Krypto borde vara för alla. CoinCurrently har fullt stöd för tillgänglighet i hela appen.
 
-• VoiceOver — varje skärm är märkt och går att navigera helt, från Hem och Marknad till Portfölj, Nyheter och Inställningar
+• VoiceOver — varje skärm är märkt och går att navigera helt, från Hem och Marknad till Portfölj och Inställningar
 • Dynamic Type — texten följer systeminställningarna och är lättare att läsa
 • Läge för färgblindhet — byt prisändringar från grönt/rött till blått/orange i Inställningar
 • Rent gränssnitt med hög kontrast i både ljust och mörkt läge
@@ -48,10 +48,9 @@ VALUTAOMRÄKNARE
 
 Räkna om direkt mellan fiat och krypto, eller mellan två tillgångar, med livekurser.
 
-MARKNADSKÄNSLA OCH NYHETER
+MARKNADSKÄNSLA
 
 • Fear and Greed Index för att läsa av marknadens stämning
-• De senaste kryptonyheterna direkt i appen
 • Jämför priser på flera börser
 
 WIDGETAR FÖR HEMSKÄRMEN

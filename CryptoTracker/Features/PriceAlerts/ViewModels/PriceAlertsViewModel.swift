@@ -42,18 +42,15 @@ final class PriceAlertsViewModelImp: PriceAlertsViewModel {
     
     private let priceAlertsRepository: PriceAlertsRepository
     private let toplistRepository: ToplistRepository
-    private let storeKitManager: StoreKitManager
     private let cryptoDetailRepository: CryptoDetailRepository
     
     init(
         priceAlertsRepository: PriceAlertsRepository = PriceAlertsRepositoryImp.shared,
         toplistRepository: ToplistRepository = ToplistRepositoryImp.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
         cryptoDetailRepository: CryptoDetailRepository = CryptoDetailRepositoryImp.shared
     ) {
         self.priceAlertsRepository = priceAlertsRepository
         self.toplistRepository = toplistRepository
-        self.storeKitManager = storeKitManager
         self.cryptoDetailRepository = cryptoDetailRepository
         
         self.isPriceAlertsOn = SettingsManager.shared.get(key: AppSettingKey.subscribesToBigMovers) ?? true
@@ -176,10 +173,6 @@ final class PriceAlertsViewModelImp: PriceAlertsViewModel {
     
     func getSelectedCoin(id: String) async -> CurrencyDataModel? {
         return await cryptoDetailRepository.getCurrencyDetails(id: id)
-    }
-    
-    func hasBoughtPro() async -> Bool {
-        return await storeKitManager.currentSubscription != nil
     }
     
     private func getRemainingItems(ids: [String]) async {

@@ -18,7 +18,7 @@ ACCESIBILITATE PENTRU TOȚI
 
 Cripto ar trebui să fie pentru toți. CoinCurrently are suport complet de accesibilitate în toată aplicația.
 
-• VoiceOver — fiecare ecran este etichetat și poate fi parcurs integral, de la Acasă și Piață la Portofoliu, Știri și Setări
+• VoiceOver — fiecare ecran este etichetat și poate fi parcurs integral, de la Acasă și Piață la Portofoliu și Setări
 • Dynamic Type — textul urmează setările sistemului și este mai ușor de citit
 • Mod pentru daltonism — treci schimbările de preț de la verde/roșu la albastru/portocaliu în Setări
 • Interfață curată, cu contrast ridicat, în modul luminos și în cel întunecat
@@ -48,10 +48,9 @@ CONVERTOR VALUTAR
 
 Convertește instant între fiat și cripto, sau între oricare două active, cu cursuri live.
 
-SENTIMENTUL PIEȚEI ȘI ȘTIRI
+SENTIMENTUL PIEȚEI
 
 • Indicele Fear and Greed pentru a citi starea pieței
-• Cele mai noi știri cripto direct în aplicație
 • Compară prețurile pe mai multe exchange-uri
 
 WIDGETURI PENTRU ECRANUL PRINCIPAL

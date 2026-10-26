@@ -10,7 +10,6 @@ struct GlobalMarketRepositoryTests {
 
         let repo = GlobalMarketRepositoryImp(
             networkManager: mock,
-            storeKitManager: MockRepoStoreKitManager()
         )
 
         let result = await repo.getGlobalMarket()
@@ -23,7 +22,6 @@ struct GlobalMarketRepositoryTests {
 
         let repo = GlobalMarketRepositoryImp(
             networkManager: mock,
-            storeKitManager: MockRepoStoreKitManager()
         )
 
         let result = await repo.getAllCoins()

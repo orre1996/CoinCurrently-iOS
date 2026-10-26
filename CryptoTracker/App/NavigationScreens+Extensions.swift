@@ -49,9 +49,6 @@ extension NavigationScreens {
         case .Feedback:
             FeedbackScreen()
             
-        case .Referral(let referralCode):
-            ReferralScreen(referralCode: referralCode)
-            
         case .FearGreed:
             FearGreedScreen()
             
@@ -121,11 +118,11 @@ extension NavigationScreens {
         case .PriceAlerts:
             PriceAlertsScreen()
             
-        case .BuyPro, .Settings:
+        case .Settings:
             // Used in watch app
             EmptyView()
             
-        case .Home, .Portfolio, .Market, .News:
+        case .Home, .Portfolio, .Market:
             EmptyView()
         }
     }

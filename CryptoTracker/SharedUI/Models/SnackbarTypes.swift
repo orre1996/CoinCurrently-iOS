@@ -25,8 +25,3 @@ func showSnackBar(message: String, type: SnackbarTypes) {
     }
 }
 
-func showBuyPro() {
-    asyncMain {
-        NotificationCenter.default.post(Notification(name: .buyPro, object: nil, userInfo: [:]))
-    }
-}

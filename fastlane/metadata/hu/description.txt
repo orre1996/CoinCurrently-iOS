@@ -18,7 +18,7 @@ AKADÁLYMENTESSÉG MINDENKINEK
 
 A kriptónak mindenkinek szólnia kell. A CoinCurrently a teljes appban támogatja az akadálymentességet.
 
-• VoiceOver — minden képernyő fel van címkézve, és végigjárható, a Kezdőtől és a Piactól a Portfólióig, a Hírekig és a Beállításokig
+• VoiceOver — minden képernyő fel van címkézve, és végigjárható, a Kezdőtől és a Piactól a Portfólióig és a Beállításokig
 • Dynamic Type — a szöveg követi a rendszerbeállításokat, és könnyebben olvasható
 • Színvak mód — a Beállításokban váltsd az árváltozást zöld/pirosról kék/narancsra
 • Tiszta, nagy kontrasztú felület világos és sötét módban
@@ -48,10 +48,9 @@ PÉNZVÁLTÓ
 
 Azonnal válts fiat és kriptó között, vagy bármely két eszköz között, élő árfolyamokkal.
 
-PIACI HANGULAT ÉS HÍREK
+PIACI HANGULAT
 
 • Fear and Greed Index a piaci hangulat felméréséhez
-• A legfrissebb kriptohírek közvetlenül az appban
 • Hasonlítsd össze az árakat több tőzsdén
 
 WIDGETEK A KEZDŐKÉPERNYŐRE

@@ -22,8 +22,6 @@ extension Int {
         case 2:
             return "Market"
         case 3:
-            return "News"
-        case 4:
             return "Settings"
         default:
             return "Error"
@@ -39,24 +37,9 @@ extension Int {
         case 2:
             return .market
         case 3:
-            return .news
-        case 4:
             return .settings
         default:
             return nil
-        }
-    }
-
-    var newsTab: String {
-        switch self {
-        case 0:
-            return "Articles"
-        case 1:
-            return "Video"
-        case 2:
-            return "Podcasts"
-        default:
-            return "Invalid"
         }
     }
 
@@ -67,7 +50,6 @@ extension Int {
         case 1: return "About"
         case 2: return "Portfolio"
         case 3: return "Markets"
-        case 4: return "News"
         default: return "Unknown"
         }
     }
@@ -78,7 +60,6 @@ extension Int {
         case 0: return "Overview"
         case 1: return "About"
         case 2: return "Markets"
-        case 3: return "News"
         default: return "Unknown"
         }
     }
@@ -88,7 +69,6 @@ extension Int {
         switch self {
         case 0: return "Markets"
         case 1: return "About"
-        case 2: return "News"
         default: return "Unknown"
         }
     }

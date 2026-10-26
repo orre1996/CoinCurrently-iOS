@@ -14,7 +14,6 @@ enum NavigationScreens: Codable, Equatable, Hashable {
     case Home
     case Portfolio
     case Market
-    case News
     case Settings
     
     // For app use
@@ -39,7 +38,6 @@ enum NavigationScreens: Codable, Equatable, Hashable {
     )
     case ImportWalletTransaction
     case Feedback
-    case Referral(referralCode: String)
     
     // Home
     case FearGreed
@@ -84,9 +82,6 @@ enum NavigationScreens: Codable, Equatable, Hashable {
     case Converter
     case PriceAlerts
     
-    // General
-    case BuyPro
-    
     func rawValue(currentTab: String) -> String {
         switch self {
         case .MainFlow:
@@ -103,8 +98,6 @@ enum NavigationScreens: Codable, Equatable, Hashable {
             "NewImportTransaction"
         case .Feedback:
             "Feedback"
-        case .Referral(_):
-            "Referral"
         case .FearGreed:
             "FearGreed"
         case .GlobalMarket:
@@ -135,8 +128,6 @@ enum NavigationScreens: Codable, Equatable, Hashable {
             "Converter"
         case .PriceAlerts:
             "PriceAlerts"
-        case .BuyPro:
-            "Settings"
             
         // For analytics
         case .Home:
@@ -145,8 +136,6 @@ enum NavigationScreens: Codable, Equatable, Hashable {
             "Portfolio"
         case .Market:
             "Market"
-        case .News:
-            "News"
         case .Settings:
             "Settings"
             
@@ -163,7 +152,6 @@ enum ScreenLabel: String {
     case newSwapTransaction = "PortfolioSwapTransaction"
     case newImportTransaction = "NewImportTransaction"
     case feedback = "Feedback"
-    case referral = "Referral"
     case fearGreed = "FearGreed"
     case globalMarket = "GlobalMarket"
     case gasFees = "GasFees"
@@ -182,8 +170,6 @@ enum ScreenLabel: String {
     case home = "Home"
     case portfolio = "Portfolio"
     case market = "Market"
-    case news = "News"
-    case buyPro = "BuyPro"
     case toplist = "Toplist"
     case nfts = "NFTs"
     case treasuries = "Treasuries"

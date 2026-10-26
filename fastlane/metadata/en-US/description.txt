@@ -18,7 +18,7 @@ ACCESSIBILITY FOR EVERYONE
 
 Crypto should be for everyone. CoinCurrently has full accessibility support across the entire app.
 
-• VoiceOver — every screen is labeled and fully navigable, from Home and Market to Portfolio, News, and Settings
+• VoiceOver — every screen is labeled and fully navigable, from Home and Market to Portfolio and Settings
 • Dynamic Type — text scales with your system settings for easier reading
 • Color-blind mode — switch price changes from green/red to blue/orange in Settings
 • High-contrast, clean UI in both light and dark mode
@@ -48,10 +48,9 @@ CURRENCY CONVERTER
 
 Instantly convert between fiat and crypto, or between any two assets, with live rates.
 
-MARKET SENTIMENT & NEWS
+MARKET SENTIMENT
 
 • Fear and Greed Index to gauge market mood
-• Latest crypto news directly in the app
 • Compare prices across multiple exchanges
 
 HOME SCREEN WIDGETS

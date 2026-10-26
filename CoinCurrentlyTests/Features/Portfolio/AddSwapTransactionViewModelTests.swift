@@ -37,7 +37,6 @@ struct AddSwapTransactionViewModelTests {
             transaction: nil,
             cryptoDetailRepository: crypto,
             portfolioRepository: portfolio,
-            storeKitManager: MockRepoStoreKitManager()
         )
         viewModel.fromAmount = 1
         viewModel.toAmount = 15
@@ -55,7 +54,6 @@ struct AddSwapTransactionViewModelTests {
             transaction: nil,
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
             portfolioRepository: MockVMPortfolioRepository(),
-            storeKitManager: MockRepoStoreKitManager()
         )
     }
 }

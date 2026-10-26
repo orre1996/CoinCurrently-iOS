@@ -36,7 +36,6 @@ struct ExchangeDetailViewModelTests {
             exchangeDetail: Exchange(id: "binance", name: "Old"),
             exchangeDetailsRepository: repo,
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
-            newsRepository: MockVMNewsRepository(),
             toplistRepository: MockVMToplistRepository(),
             storageManager: emptyStorageManager()
         )
@@ -51,7 +50,6 @@ struct ExchangeDetailViewModelTests {
             exchangeDetail: exchange,
             exchangeDetailsRepository: MockVMExchangeDetailsRepository(),
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
-            newsRepository: MockVMNewsRepository(),
             toplistRepository: MockVMToplistRepository(),
             storageManager: emptyStorageManager()
         )

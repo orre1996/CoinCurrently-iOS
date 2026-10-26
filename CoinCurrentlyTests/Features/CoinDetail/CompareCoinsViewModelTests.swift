@@ -38,7 +38,6 @@ struct CompareCoinsViewModelTests {
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
             toplistRepository: toplist,
             settingsManager: SettingsManager.shared,
-            storeKitManager: MockRepoStoreKitManager(),
             cryptoInfo: sampleCurrency(),
             priceVolumeModel: nil,
             compareId: "ethereum"
@@ -54,7 +53,6 @@ struct CompareCoinsViewModelTests {
             cryptoDetailRepository: crypto,
             toplistRepository: MockVMToplistRepository(),
             settingsManager: SettingsManager.shared,
-            storeKitManager: MockRepoStoreKitManager(),
             cryptoInfo: sampleCurrency(),
             priceVolumeModel: nil,
             compareId: "ethereum"

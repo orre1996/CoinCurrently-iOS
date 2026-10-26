@@ -158,11 +158,6 @@ struct CoinCurrentlyApp: View {
             await CryptoDetailRepositoryImp.shared.migrateSavedCoins()
 
             Task {
-                await StoreKitManagerImp.shared.setStartData()
-                await StoreKitManagerImp.shared.fetchStoreProducts()
-            }
-
-            Task {
                 let needsToUpdate = await FirebaseManagerImp.shared.login()
                 _ = GlobalMarketRepositoryImp.shared
                 
@@ -187,17 +182,14 @@ struct CoinCurrentlyApp: View {
             await allDataDownloaded()
         }
         .if(isPhone) { view in
-            view.sheet(item: $viewModel.newsUrl) { url in
+            view.sheet(item: $viewModel.webUrl) { url in
                 WebViewContainer(url: url)
             }
         }
         .if(!isPhone) { view in
-            view.fullScreenCover(item: $viewModel.newsUrl) { url in
+            view.fullScreenCover(item: $viewModel.webUrl) { url in
                 WebViewContainer(url: url)
             }
-        }
-        .fullScreenCover(isPresented: $viewModel.showBuyPro) {
-            PaywallScreen()
         }
         .sheet(isPresented: $showWhatsNew) {
             WhatsNewSheet()
@@ -219,11 +211,6 @@ struct CoinCurrentlyApp: View {
                 }
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .syncPremiumStatus, object: nil)) { notification in
-            if let _ = notification.userInfo?["syncPremiumStatus"] as? String {
-                WatchConnectivityViewModel.shared.sendPremiumStatusToWatch()
-            }
-        }
         .onReceive(NotificationCenter.default.publisher(for: .Snackbar, object: nil)) { notification in
             viewModel.showSnackbar(
                 message: notification.userInfo?["message"] as? String ?? "",
@@ -231,9 +218,6 @@ struct CoinCurrentlyApp: View {
                 snackBarType: notification.userInfo?["type"] as? SnackbarTypes ?? .success,
                 buttonCallback: { }
             )
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .buyPro, object: nil)) { notification in
-            viewModel.showBuyPro = true
         }
         .onOpenURL { url in
             deeplinkHelper.deepLinkUrl = url.absoluteString

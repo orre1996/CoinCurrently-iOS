@@ -18,7 +18,6 @@ struct ToplistViewModelTests {
             trendingRepository: MockVMTrendingRepository(),
             winnersLosersRepository: MockVMWinnersLosersRepository(),
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
-            storeKitManager: MockRepoStoreKitManager(),
             storageManager: emptyStorageManager(),
             analyticsManager: AnalyticsManager.shared
         )
@@ -43,7 +42,6 @@ struct ToplistViewModelTests {
             trendingRepository: MockVMTrendingRepository(),
             winnersLosersRepository: MockVMWinnersLosersRepository(),
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
-            storeKitManager: MockRepoStoreKitManager(),
             storageManager: emptyStorageManager(),
             analyticsManager: AnalyticsManager.shared
         )
@@ -64,7 +62,6 @@ struct ToplistViewModelTests {
             trendingRepository: MockVMTrendingRepository(),
             winnersLosersRepository: MockVMWinnersLosersRepository(),
             cryptoDetailRepository: MockVMCryptoDetailRepository(),
-            storeKitManager: MockRepoStoreKitManager(),
             storageManager: emptyStorageManager(),
             analyticsManager: AnalyticsManager.shared
         )

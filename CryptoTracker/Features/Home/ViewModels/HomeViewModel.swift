@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 import Combine
-import StoreKit
 
 @MainActor
 protocol HomeViewModel {
@@ -21,7 +20,6 @@ protocol HomeViewModel {
     
     func getList(filter: CarouselFilter) -> [Toplist]?
     func toplistSeeAll() async
-    func premiumViewClosed(title: String)
     
     var globalMarket: GlobalMarketModel? { get }
     var trendingCoins: [Toplist]? { get }
@@ -34,13 +32,6 @@ protocol HomeViewModel {
     var favoritesList: [Toplist] { get }
     var winnersList: [Toplist]? { get }
     var losersList: [Toplist]? { get }
-
-    var promotionTitle: String? { get }
-    var promotionMessage: String? { get }
-    var promotionMessageAccessible: String? { get }
-    var offerTimeLeft: String? { get }
-    var offerTimeLeftDate: Date? { get }
-    
 }
 
 @Observable @MainActor
@@ -58,8 +49,6 @@ class HomeViewModelImp: HomeViewModel {
     private let gasFeesRepository: GasFeesRepository
     private let trendingRepository: TrendingRepository
     private let newCoinsRepository: NewCoinsRepository
-    private let firebaseManger: FirebaseManager
-    private let storeKitManager: StoreKitManager
     private let cachedStorageManager: CachedStorageManager
     private let settingsManager: SettingsManager
     private let analyticsManager: AnalyticsManager
@@ -75,18 +64,6 @@ class HomeViewModelImp: HomeViewModel {
     var fearGreed: FearGreed?
     var gasFees: GasFees?
     
-    // Promotions
-    var promotionTitle: String?
-    var promotionMessage: String?
-    var promotionMessageAccessible: String?
-    var offerTimeLeft: String?
-    var offerTimeLeftDate: Date?
-    
-    private var timer: Timer?
-    private var didClosePromotions = false
-    private var didCloseWelcome = false
-    private var showFreeTrial = false
-    
     private(set) var scrollToTopActive = false
     
     init(
@@ -98,8 +75,6 @@ class HomeViewModelImp: HomeViewModel {
         newCoinsRepository: NewCoinsRepository = NewCoinsRepositoryImp.shared,
         fearGreedRepository: FearGreedRepository = FearGreedRepositoryImp.shared,
         gasFeesRepository: GasFeesRepository = GasFeesRepositoryImp.shared,
-        firebaseManger: FirebaseManager = FirebaseManagerImp.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
         cachedStorageManager: CachedStorageManager = CachedStorageManagerImp.shared,
         settingsManager: SettingsManager = SettingsManager.shared,
         analyticsManager: AnalyticsManager = AnalyticsManager.shared
@@ -112,8 +87,6 @@ class HomeViewModelImp: HomeViewModel {
         self.newCoinsRepository = newCoinsRepository
         self.fearGreedRepository = fearGreedRepository
         self.gasFeesRepository = gasFeesRepository
-        self.firebaseManger = firebaseManger
-        self.storeKitManager = storeKitManager
         self.cachedStorageManager = cachedStorageManager
         self.settingsManager = settingsManager
         self.analyticsManager = analyticsManager
@@ -136,22 +109,6 @@ class HomeViewModelImp: HomeViewModel {
         }
 
         await favorites
-        
-        self.didClosePromotions = await cachedStorageManager.load(type: LocalStorageKeys.didClosePromotions) ?? false
-        self.didCloseWelcome = await cachedStorageManager.load(type: LocalStorageKeys.didCloseWelcome) ?? false
-        if SettingsManager.shared.get(key: AppSettingKey.hasClosedApp) ?? false {
-            await setShowWelcomeMessage()
-        }
-        await setShowFreeTrial()
-
-        let products = await storeKitManager.requestProducts()
-        let isEligibleForTrial = await storeKitManager.isEligableForTrial(using: products)
-        
-        await setPremiumOffer(
-            products: await storeKitManager.requestProducts(),
-            isEligableForTrial: isEligibleForTrial,
-            hasBoughtPro: await storeKitManager.currentSubscription != nil
-        )
     }
     
     func getList(filter: CarouselFilter) -> [Toplist]? {
@@ -219,32 +176,6 @@ class HomeViewModelImp: HomeViewModel {
             object: nil,
             userInfo: ["page": 0, "sortOption": newSort.rawValue]
         )
-    }
-
-    func premiumViewClosed(title: String) {
-        if title == "Free trial" {
-            Task { await cachedStorageManager.save(type: LocalStorageKeys.homeShowFreeTrial, data: false) }
-            Task { await cachedStorageManager.save(type: LocalStorageKeys.homeNextFreeTrialDate, data: Date()) }
-            showFreeTrial = false
-        } else if title == "Limited Time Offer!" {
-            Task { await cachedStorageManager.save(type: LocalStorageKeys.didClosePromotions, data: true) }
-            didClosePromotions = true
-        } else {
-            Task { await cachedStorageManager.save(type: LocalStorageKeys.didCloseWelcome, data: true) }
-            didCloseWelcome = true
-        }
-
-        withAnimation {
-            promotionTitle = nil
-        }
-        
-        promotionMessage = nil
-        promotionMessageAccessible = nil
-        offerTimeLeft = nil
-        offerTimeLeftDate = nil
-        
-        timer?.invalidate()
-        timer = nil
     }
 
     // MARK: - Toplist
@@ -351,16 +282,6 @@ class HomeViewModelImp: HomeViewModel {
     func favouriteButtonPressed(toplistItem: Toplist?) async {
         guard let toplistItem else { return }
 
-        let hasActiveSubscription = await storeKitManager.currentSubscription != nil
-        
-        if !hasActiveSubscription && !favoritesList.contains(where: { $0.id == toplistItem.id }) && favoritesList.count >= 2 {
-            analyticsManager.log(
-                BuyProOpened(fromScreen: .home, action: .Favorite)
-            )
-            showBuyPro()
-            return
-        }
-        
         if favoritesList.contains(where: { $0.id == toplistItem.id }) {
             analyticsManager.log(FavoriteRemoved(coinName: toplistItem.name ?? "", fromScreen: .home, carouselFilter: selectedFilter))
         } else {
@@ -428,124 +349,5 @@ class HomeViewModelImp: HomeViewModel {
             coins.first(where: { $0.id == id })
         }
     }
-
-    private func setShowFreeTrial() async {
-        let date: Date? = await cachedStorageManager.load(type: LocalStorageKeys.homeNextFreeTrialDate)
-
-        if let date, date.moreThanAMonth() {
-            await cachedStorageManager.save(type: LocalStorageKeys.homeShowFreeTrial, data: true)
-        } else if date == nil {
-            await cachedStorageManager.save(type: LocalStorageKeys.homeNextFreeTrialDate, data: Date.futureDate(byAddingDays: 7))
-            await cachedStorageManager.save(type: LocalStorageKeys.homeShowFreeTrial, data: false)
-        }
-
-        showFreeTrial = await cachedStorageManager.load(type: LocalStorageKeys.homeShowFreeTrial) ?? false
-    }
-    
-    private func setShowWelcomeMessage() async {
-        var date: Date? = await cachedStorageManager.load(type: LocalStorageKeys.homeWelcomeOfferDate)
-
-        if date == nil {
-            date = Date.futureDate(byAddingDays: 3)
-            await cachedStorageManager.save(type: LocalStorageKeys.homeWelcomeOfferDate, data: date)
-        }
-
-        offerTimeLeftDate = date
-
-        guard let date, date > Date() else { return }
-
-        setWelcomeTimerDate()
-        await MainActor.run {
-            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(setWelcomeTimerDate), userInfo: nil, repeats: true)
-        }
-    }
-    
-    @objc private func setWelcomeTimerDate() {
-        Task { @MainActor in
-            guard let endDate: Date = await cachedStorageManager.load(type: LocalStorageKeys.homeWelcomeOfferDate), endDate > Date() else {
-                timer?.invalidate()
-                timer = nil
-                offerTimeLeft = nil
-                didCloseWelcome = true
-                await cachedStorageManager.save(type: LocalStorageKeys.didCloseWelcome, data: true)
-
-                if promotionTitle == "Welcome Offer!" {
-                    promotionTitle = nil
-                    promotionMessage = nil
-                }
-
-                return
-            }
-
-            let components = Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: endDate)
-            offerTimeLeft = Localization.format(
-                "Expires in %@d %@h %@m %@s",
-                String(components.day ?? 0),
-                String(components.hour ?? 0),
-                String(components.minute ?? 0),
-                String(components.second ?? 0)
-            )
-        }
-    }
-    
-    private func setPremiumOffer(products: [Product]?, isEligableForTrial: Bool, hasBoughtPro: Bool) async {
-        guard !hasBoughtPro, isEligableForTrial, let products, !products.isEmpty else { return }
-
-        let offerProduct = products.first(where: { $0.id == promotionalName })
-        let welcomeProduct = products.first(where: { $0.id == welcomeName })
-
-        let offer = offerProduct?.subscription?.introductoryOffer
-        let welcomeOffer = welcomeProduct?.subscription?.introductoryOffer
-        let welcomeEndDate: Date? = await cachedStorageManager.load(type: LocalStorageKeys.homeWelcomeOfferDate)
-
-        if !didClosePromotions, let showOffer = await firebaseManger.getConfigBool(key: .showPromotionalOffer), showOffer, let offer {
-
-            let currency = offerProduct?.getCurrency() ?? settingsManager.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
-            let priceAccessible = offer.price.doubleValue.currencyAccessible(currency: currency)
-
-            let description = localizedPeriodUnit(count: offer.periodCount, unit: offer.period.unit)
-            promotionTitle = "Limited Time Offer!"
-            promotionMessage = formattedOfferMessage(period: offer.periodCount, description: description, price: offer.displayPrice)
-            promotionMessageAccessible = formattedOfferMessage(period: offer.periodCount, description: description, price: priceAccessible)
-
-        } else if !didCloseWelcome, let welcomeOffer, let endDate = welcomeEndDate, endDate > Date() {
-
-            let currency = welcomeProduct?.getCurrency() ?? settingsManager.get(key: GlobalSettingKey.selectedCurrency) ?? CurrencyModel()
-            let priceAccessible = welcomeOffer.price.doubleValue.currencyAccessible(currency: currency)
-
-            let description = localizedPeriodUnit(count: welcomeOffer.periodCount, unit: welcomeOffer.period.unit)
-            promotionTitle = "Welcome Offer!"
-            promotionMessage = formattedOfferMessage(period: welcomeOffer.periodCount, description: description, price: welcomeOffer.displayPrice)
-            promotionMessageAccessible = formattedOfferMessage(period: welcomeOffer.periodCount, description: description, price: priceAccessible)
-
-        } else if showFreeTrial {
-            promotionTitle = "Free trial"
-            promotionMessage = "Try CoinCurrently Pro for free"
-            promotionMessageAccessible = "Try CoinCurrently Pro for free"
-        }
-    }
-
-    private func formattedOfferMessage(period: Int, description: String, price: String) -> String {
-        Localization.format(
-            "Get %@ %@ of CoinCurrently Pro for only %@!",
-            String(period),
-            description,
-            price
-        )
-    }
-
-    private func localizedPeriodUnit(count: Int, unit: Product.SubscriptionPeriod.Unit) -> String {
-        switch unit {
-        case .day:
-            return Localization.string(count == 1 ? "day" : "days")
-        case .week:
-            return Localization.string(count == 1 ? "week" : "weeks")
-        case .month:
-            return Localization.string(count == 1 ? "month" : "months")
-        case .year:
-            return Localization.string(count == 1 ? "year" : "years")
-        @unknown default:
-            return Localization.string(count == 1 ? "period" : "periods")
-        }
-    }
 }
+

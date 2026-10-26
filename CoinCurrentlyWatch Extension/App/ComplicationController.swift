@@ -50,12 +50,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             return
         }
         
-        Task {
-            let currentSubscription: String? = await CachedStorageManagerImp.shared.load(type: LocalStorageKeys.proStatus)
-            let hasPro = currentSubscription != nil
-            let entry = CLKComplicationTimelineEntry(date: Date().addingTimeInterval(60 * (hasPro ? 3 : 15)), complicationTemplate: template)
-            handler(entry)
-        }
+        let entry = CLKComplicationTimelineEntry(date: Date().addingTimeInterval(60 * 3), complicationTemplate: template)
+        handler(entry)
     }
     
     // MARK: - Sample Templates

@@ -502,16 +502,7 @@ struct PortfolioScreen: View {
         pendingExportFormat = nil
         
         if format.isTaxSoftware {
-            Task {
-                if await viewModel.hasBoughtPro() {
-                    runExport(format: format)
-                } else {
-                    AnalyticsManager.shared.log(
-                        BuyProOpened(fromScreen: .portfolio, action: .ExportPortfolio)
-                    )
-                    navigationViewModel.showBuyPro = true
-                }
-            }
+            runExport(format: format)
             return
         }
         

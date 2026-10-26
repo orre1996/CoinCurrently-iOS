@@ -18,7 +18,7 @@ ACESSIBILIDADE PARA TODO MUNDO
 
 Cripto deveria ser para todo mundo. O CoinCurrently tem suporte completo de acessibilidade em todo o app.
 
-• VoiceOver — cada tela é identificada e pode ser percorrida por inteiro, do Início e do Mercado à Carteira, às Notícias e aos Ajustes
+• VoiceOver — cada tela é identificada e pode ser percorrida por inteiro, do Início e do Mercado à Carteira e aos Ajustes
 • Dynamic Type — o texto acompanha os ajustes do sistema para facilitar a leitura
 • Modo para daltonismo — troque as variações de preço de verde/vermelho para azul/laranja em Ajustes
 • Interface limpa e de alto contraste nos modos claro e escuro
@@ -48,10 +48,9 @@ CONVERSOR DE MOEDAS
 
 Converta na hora entre fiat e cripto, ou entre dois ativos, com cotações ao vivo.
 
-SENTIMENTO DO MERCADO E NOTÍCIAS
+SENTIMENTO DO MERCADO
 
 • Índice Fear and Greed para ler o humor do mercado
-• As últimas notícias de cripto dentro do app
 • Compare preços em várias exchanges
 
 WIDGETS DA TELA DE INÍCIO

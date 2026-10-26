@@ -8,6 +8,5 @@
 import Foundation
 
 enum RemoteConfigKeys: String {
-    case showPromotionalOffer
     case minimumVersion
 }

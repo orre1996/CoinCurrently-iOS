@@ -27,7 +27,7 @@ struct DetailAboutView: View {
     let isLoading: Bool
     let emptyStateMessage: String
     let fromScreen: ScreenLabel
-    @Binding var newsUrl: String?
+    @Binding var webUrl: String?
     var headerContent: AnyView?
 
     init(
@@ -35,14 +35,14 @@ struct DetailAboutView: View {
         isLoading: Bool,
         emptyStateMessage: String,
         fromScreen: ScreenLabel,
-        newsUrl: Binding<String?>,
+        webUrl: Binding<String?>,
         headerContent: AnyView? = nil
     ) {
         self.sections = sections
         self.isLoading = isLoading
         self.emptyStateMessage = emptyStateMessage
         self.fromScreen = fromScreen
-        self._newsUrl = newsUrl
+        self._webUrl = webUrl
         self.headerContent = headerContent
     }
 
@@ -68,7 +68,7 @@ struct DetailAboutView: View {
                     contents: $0.contents,
                     icons: $0.icons,
                     fromScreen: fromScreen,
-                    infoUrl: $newsUrl
+                    infoUrl: $webUrl
                 )
                 .accessibilityElement(children: .contain)
             }
@@ -97,7 +97,7 @@ struct DetailAboutView: View {
                 icons: [],
                 downloading: true,
                 fromScreen: fromScreen,
-                infoUrl: $newsUrl
+                infoUrl: $webUrl
             )
         }
     }

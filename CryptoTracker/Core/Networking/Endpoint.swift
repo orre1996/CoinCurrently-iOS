@@ -33,7 +33,6 @@ enum Endpoint: Sendable {
     case coin(id: String, sparkline: Bool = false, useFreeEndpoint: Bool = false)
     case coinPriceVolume(id: String, days: String, useFreeEndpoint: Bool = false, interval: String?, currency: CurrencyModel)
     case multipleCoins(ids: [String], withSparkline: Bool = false, currency: CurrencyModel)
-    case news(type: NewsType, count: Int)
     case newCoins
     case nftToplist(platform: NFTPlatform, sortOption: SortOption)
     case nftPlatforms
@@ -52,8 +51,6 @@ enum Endpoint: Sendable {
     case ubsubBigMover
     case walletImport
     case feedback
-    case referralCode
-    case redeemCode
     case subCoin
     case publicTreasury(entity: TreasuryEntity, coinId: String, page: Int = 1, perPage: Int = 250)
     case entitiesList(entity: TreasuryEntity, page: Int = 1, perPage: Int = 250)
@@ -62,7 +59,7 @@ enum Endpoint: Sendable {
     case treasuryTransactionHistory(entityId: String, coinIds: String? = nil, page: Int = 1, perPage: Int = 100)
     case user(ignoreCache: Bool = false)
     
-    func pathComponent(hasBoughtPro: Bool) async -> String {
+    func pathComponent() async -> String {
         let cryptoBaseURL = "\(serverBaseUrl)/crypto"
 
         switch self {
@@ -105,11 +102,9 @@ enum Endpoint: Sendable {
         case .coinsWithCurrencies:
             return "\(cryptoBaseURL)/api/v3/simple/price"
             
-        case .candleStick(let id, let days, let useFreeEndpoint, _):
+        case .candleStick(let id, let days, _, _):
             if days == "max" {
                 return "\(serverBaseUrl)/crypto/api/v3/coins/\(id)/ohlc"
-            } else if useFreeEndpoint && !hasBoughtPro {
-                return "https://api.coingecko.com/api/v3/coins/\(id)/ohlc"
             } else {
                 return "\(cryptoBaseURL)/api/v3/coins/\(id)/ohlc"
             }
@@ -123,29 +118,20 @@ enum Endpoint: Sendable {
         case .exchanges:
             return "\(cryptoBaseURL)/api/v3/exchanges"
             
-        case .coin(let id, _, let useFreeEndpoint):
+        case .coin(let id, _, _):
             let sanitizedId = id.lowercased().trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "-")
-            if useFreeEndpoint && !hasBoughtPro {
-                return "https://api.coingecko.com/api/v3/coins/\(sanitizedId)"
-            } else {
-                return "\(cryptoBaseURL)/api/v3/coins/\(sanitizedId)"
-            }
+            return "\(cryptoBaseURL)/api/v3/coins/\(sanitizedId)"
             
-        case .coinPriceVolume(let id, let days, let useFreeEndpoint, _, _):
+        case .coinPriceVolume(let id, let days, _, _, _):
             let sanitizedId = id.lowercased().trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "-")
             if days == "max" {
                 return "\(serverBaseUrl)/crypto/api/v3/coins/\(sanitizedId)/market_chart"
-            } else if useFreeEndpoint && !hasBoughtPro {
-                return "https://api.coingecko.com/api/v3/coins/\(sanitizedId)/market_chart"
             } else {
                 return "\(cryptoBaseURL)/api/v3/coins/\(sanitizedId)/market_chart"
             }
 
         case .multipleCoins:
             return "\(cryptoBaseURL)/api/v3/coins/markets"
-            
-        case .news(let type, _):
-            return type.basePath
             
         case .newCoins:
             return "\(serverBaseUrl)/crypto/api/v3/coins/list/new"
@@ -200,12 +186,6 @@ enum Endpoint: Sendable {
             
         case .feedback:
             return "\(serverBaseUrl)/feedback"
-            
-        case .referralCode:
-            return "\(serverBaseUrl)/referral-code"
-            
-        case .redeemCode:
-            return "\(serverBaseUrl)/redeem-code"
             
         case .subCoin:
             return "\(serverBaseUrl)/premium/sub-coin"
@@ -315,11 +295,6 @@ enum Endpoint: Sendable {
                 URLQueryItem(name: "price_change_percentage", value: "1h,24h,7d,30d")
             ]
             
-        case .news(let type, let count):
-            var items = type.queryItems
-            items.append(URLQueryItem(name: "items", value: "\(count)"))
-            return items
-            
         case .nftToplist(let platform, let sortOption):
             var items = [
                 URLQueryItem(name: "order", value: sortOption.nftApiValue),
@@ -375,8 +350,8 @@ enum Endpoint: Sendable {
         case .global, .allCoins, .allExchanges, .trending, .image, .exchange, .newCoins,
              .nftDetail, .nftTickers, .getAlerts, .createPriceAlert,
              .deleteAlert, .updateUser, .triggerPriceAlert, .triggerBigMover,
-             .subBigMover, .ubsubBigMover, .walletImport, .feedback, .referralCode,
-             .redeemCode, .subCoin, .treasuryDetail, .user:
+             .subBigMover, .ubsubBigMover, .walletImport, .feedback,
+             .subCoin, .treasuryDetail, .user:
             return []
         }
     }
@@ -384,7 +359,7 @@ enum Endpoint: Sendable {
     var shouldShowSnackbar: Bool {
         switch self {
         case .allCoins, .image(_), .walletImport, .createPriceAlert,
-             .redeemCode, .subCoin:
+             .subCoin:
             return false
             
         default:
@@ -405,7 +380,7 @@ enum Endpoint: Sendable {
     func shouldAddBearerToken() -> Bool {
         switch self {
         case .deleteAlert, .getAlerts, .createPriceAlert, .subBigMover, .ubsubBigMover,
-                .updateUser, .walletImport, .referralCode, .redeemCode, .subCoin, .user:
+                .updateUser, .walletImport, .subCoin, .user:
             return true
         default:
             return false
@@ -414,7 +389,7 @@ enum Endpoint: Sendable {
     
     var shouldReturnRawData: Bool {
         switch self {
-            case .image, .referralCode:
+            case .image:
                 return true
 
             default:
@@ -422,37 +397,11 @@ enum Endpoint: Sendable {
         }
     }
 
-    func shouldTryAgain(hasBoughtPro: Bool) -> Bool {
-        switch self {
-        case .coin(_, _, let useFreeEndpoint), .coinPriceVolume(_, _, let useFreeEndpoint, _, _), .candleStick(_, _, let useFreeEndpoint, _):
-            return useFreeEndpoint && !hasBoughtPro
-            
-        default:
-            return false
-        }
-    }
-    
-    var withPremiumVersion: Endpoint {
-        switch self {
-            case .coin(let id, let sparkline, _):
-                return .coin(id: id, sparkline: sparkline, useFreeEndpoint: false)
-            
-            case .coinPriceVolume(let id, let days, _, let interval, let currency):
-                return .coinPriceVolume(id: id, days: days, useFreeEndpoint: false, interval: interval, currency: currency)
-                
-            case .candleStick(let id, let days, _, let currency):
-                return .candleStick(id: id, days: days, useFreeEndpoint: false, currency: currency)
-                
-            default:
-                return self
-        }
-    }
-    
     /// Cache duration in minutes. Used to determine if cached data is still valid.
-    func cacheTimeMinutes(hasBoughtPro: Bool) -> Int {
-        let defaultMinutes = hasBoughtPro ? 3 : 15
+    func cacheTimeMinutes() -> Int {
+        let defaultMinutes = 3
         switch self {
-        case .allCoins, .allExchanges, .nftPlatforms, .entitiesList, .referralCode:
+        case .allCoins, .allExchanges, .nftPlatforms, .entitiesList:
             return 60 * 24 * 1 // 1 days
         case .trending, .search:
             return 60 // 1 hour

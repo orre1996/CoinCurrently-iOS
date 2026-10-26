@@ -37,7 +37,6 @@ final class ToplistViewModelImp: ToplistViewModel, ObservableObject {
     private let trendingRepository: TrendingRepository
     private let winnersLosersRepository: WinnersLosersRepository
     private let cryptoDetailRepository: CryptoDetailRepository
-    private let storeKitManager: StoreKitManager
     private let storageManager: CachedStorageManager
     private let analyticsManager: AnalyticsManager
     
@@ -47,7 +46,6 @@ final class ToplistViewModelImp: ToplistViewModel, ObservableObject {
         trendingRepository: TrendingRepository = TrendingRepositoryImp.shared,
         winnersLosersRepository: WinnersLosersRepository = WinnersLosersRepositoryImp.shared,
         cryptoDetailRepository: CryptoDetailRepository = CryptoDetailRepositoryImp.shared,
-        storeKitManager: StoreKitManager = StoreKitManagerImp.shared,
         storageManager: CachedStorageManager = CachedStorageManagerImp.shared,
         analyticsManager: AnalyticsManager = AnalyticsManager.shared
     ) {
@@ -56,7 +54,6 @@ final class ToplistViewModelImp: ToplistViewModel, ObservableObject {
         self.trendingRepository = trendingRepository
         self.winnersLosersRepository = winnersLosersRepository
         self.cryptoDetailRepository = cryptoDetailRepository
-        self.storeKitManager = storeKitManager
         self.storageManager = storageManager
         self.analyticsManager = analyticsManager
         
@@ -129,16 +126,7 @@ final class ToplistViewModelImp: ToplistViewModel, ObservableObject {
     func favouriteButtonPressed(toplistItem: Toplist?) async {
         guard let toplistItem = toplistItem else { return }
 
-        let hasActiveSubscription = await storeKitManager.currentSubscription != nil
         let fromScreen: ScreenLabel = category != nil ? .categoryDetail : .market
-        
-        if !hasActiveSubscription && !favoritesList.contains(where: { $0.id == toplistItem.id }) && favoritesList.count >= 2 {
-            analyticsManager.log(
-                BuyProOpened(fromScreen: fromScreen, action: .Favorite)
-            )
-            showBuyPro()
-            return
-        }
         
         if favoritesList.contains(where: { $0.id == toplistItem.id }) {
             analyticsManager.log(FavoriteRemoved(coinName: toplistItem.name ?? "", fromScreen: fromScreen))

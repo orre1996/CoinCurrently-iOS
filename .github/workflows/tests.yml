@@ -81,19 +81,32 @@ jobs:
           # and consumes the rest of a clean build. Package targets compile faster
           # without it.
           defaults write com.apple.dt.XCBuild EnableSwiftExplicitModules -bool NO
-          xcodebuild build-for-testing \
-            -project CoinCurrently.xcodeproj \
-            -scheme CoinCurrentlyTests \
-            -destination "platform=iOS Simulator,id=$UDID" \
-            -derivedDataPath "$PWD/DerivedData" \
-            -clonedSourcePackagesDirPath "$PWD/SourcePackages" \
-            -skipPackagePluginValidation \
-            -skipMacroValidation \
-            CODE_SIGN_IDENTITY="-" \
-            CODE_SIGNING_REQUIRED=NO \
-            DEVELOPMENT_TEAM="" \
-            COMPILER_INDEX_STORE_ENABLE=NO \
-            SWIFT_ENABLE_EXPLICIT_MODULES=NO
+          # Exit 74 means Swift package resolution failed. Hosted runners sometimes
+          # cannot reach github.com:443 while cloning Firebase and its dependencies.
+          for attempt in 1 2 3; do
+            if xcodebuild build-for-testing \
+              -project CoinCurrently.xcodeproj \
+              -scheme CoinCurrentlyTests \
+              -destination "platform=iOS Simulator,id=$UDID" \
+              -derivedDataPath "$PWD/DerivedData" \
+              -clonedSourcePackagesDirPath "$PWD/SourcePackages" \
+              -skipPackagePluginValidation \
+              -skipMacroValidation \
+              CODE_SIGN_IDENTITY="-" \
+              CODE_SIGNING_REQUIRED=NO \
+              DEVELOPMENT_TEAM="" \
+              COMPILER_INDEX_STORE_ENABLE=NO \
+              SWIFT_ENABLE_EXPLICIT_MODULES=NO
+            then
+              break
+            fi
+            status=$?
+            if [[ "$status" -ne 74 || "$attempt" -eq 3 ]]; then
+              exit "$status"
+            fi
+            echo "Package resolution could not reach GitHub (attempt ${attempt}). Retrying."
+            sleep $((attempt * 10))
+          done
           wait "$BOOT_PID" || true
           xcrun simctl bootstatus "$UDID" -b
           xcodebuild test-without-building \

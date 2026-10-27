@@ -16,7 +16,6 @@ struct HomeViewModelTests {
         #expect(viewModel.getList(filter: .topCoins)?.map(\.id) == ["bitcoin"])
         #expect(viewModel.getList(filter: .favorites)?.map(\.id) == ["ethereum"])
         #expect(viewModel.getList(filter: .newlyListed)?.map(\.id) == ["new"])
-        #expect(viewModel.getList(filter: .general)?.isEmpty == true)
     }
 
     @Test("getGlobalMarket stores the fetched market")

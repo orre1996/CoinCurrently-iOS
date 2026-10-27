@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 jobs:
   tests:
@@ -19,6 +20,12 @@ jobs:
 
       - name: Add placeholder secrets
         run: cp Config/Secrets.example.plist Config/Secrets.plist
+
+      - name: Cache Swift packages
+        uses: actions/cache@v4
+        with:
+          path: SourcePackages
+          key: ${{ runner.os }}-spm-${{ hashFiles('CoinCurrently.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
 
       - name: Run tests
         run: |
@@ -34,19 +41,17 @@ jobs:
               return tuple(int(part) for part in match.groups())
 
           phones = []
-          watches = []
           for runtime, devices in data.get("devices", {}).items():
               ios = runtime_version(runtime, "iOS")
-              watch_os = runtime_version(runtime, "watchOS")
+              if not ios:
+                  continue
               for device in devices:
                   if not device.get("isAvailable"):
                       continue
                   name = device.get("name", "")
                   udid = device.get("udid")
-                  if ios and name.startswith("iPhone"):
+                  if name.startswith("iPhone"):
                       phones.append((ios, name, udid))
-                  elif watch_os and "Watch" in name:
-                      watches.append((watch_os, name, udid))
           if not phones:
               sys.exit("No available iPhone simulator")
           numbered = [phone for phone in phones if re.match(r"iPhone \d", phone[1])]
@@ -56,29 +61,37 @@ jobs:
           print(f"Using simulator {name} (iOS {version[0]}.{version[1]})", file=sys.stderr)
           with open("simulator-id.txt", "w", encoding="utf-8") as handle:
               handle.write(udid)
-          if watches:
-              watches.sort()
-              watch_version, watch_name, watch_udid = watches[-1]
-              print(
-                  f"Using watch {watch_name} (watchOS {watch_version[0]}.{watch_version[1]})",
-                  file=sys.stderr,
-              )
-              with open("watch-id.txt", "w", encoding="utf-8") as handle:
-                  handle.write(watch_udid)
           PY
           UDID="$(cat simulator-id.txt)"
           xcrun simctl shutdown all || true
-          if [[ -f watch-id.txt ]]; then
-            # The host app embeds a watch app. An unpaired phone simulator can stall the install.
-            xcrun simctl pair "$(cat watch-id.txt)" "$UDID" || true
-            xcrun simctl boot "$(cat watch-id.txt)" || true
-          fi
-          xcrun simctl boot "$UDID" || true
-          xcrun simctl bootstatus "$UDID" -b
-          xcodebuild test \
+          # The runner image already pairs this phone with a watch. Booting another
+          # watch hits the pairing limit and competes with the phone during migration.
+          # Boot in the background so CoreLocation migration overlaps the compile.
+          # The simulator is only required once the test host is installed.
+          xcrun simctl boot "$UDID" >/tmp/sim-boot.log 2>&1 || true &
+          BOOT_PID=$!
+          # Drop restored workspace state so checkouts are reused without stale paths.
+          rm -f SourcePackages/workspace-state.json
+          xcodebuild build-for-testing \
             -project CoinCurrently.xcodeproj \
             -scheme CoinCurrentlyTests \
             -destination "platform=iOS Simulator,id=$UDID" \
+            -derivedDataPath "$PWD/DerivedData" \
+            -clonedSourcePackagesDirPath "$PWD/SourcePackages" \
+            -skipPackagePluginValidation \
+            -skipMacroValidation \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            DEVELOPMENT_TEAM="" \
+            COMPILER_INDEX_STORE_ENABLE=NO
+          wait "$BOOT_PID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcodebuild test-without-building \
+            -project CoinCurrently.xcodeproj \
+            -scheme CoinCurrentlyTests \
+            -destination "platform=iOS Simulator,id=$UDID" \
+            -derivedDataPath "$PWD/DerivedData" \
+            -clonedSourcePackagesDirPath "$PWD/SourcePackages" \
             -parallel-testing-enabled NO \
             -maximum-concurrent-test-simulator-destinations 1 \
             -resultBundlePath TestResults.xcresult \

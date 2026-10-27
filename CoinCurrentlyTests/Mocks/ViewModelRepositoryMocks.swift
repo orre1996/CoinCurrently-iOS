@@ -49,7 +49,6 @@ actor MockVMToplistRepository: ToplistRepository {
     var favorites: [Toplist]?
     var coin: Toplist?
     var favouriteResult: [Toplist] = []
-    private(set) var favouritePressCount = 0
 
     func ensureCacheLoaded() async {}
     func ensureFavoritesLoaded() async {}
@@ -58,8 +57,7 @@ actor MockVMToplistRepository: ToplistRepository {
     func getMarketToplist(sortOption: SortOption, priceChange: PriceChange, platformId: String?) async -> [Toplist]? { marketToplist }
     func getFavorites() async -> [Toplist]? { favorites }
     func favouriteButtonPressed(toplist: Toplist) async -> [Toplist] {
-        favouritePressCount += 1
-        return favouriteResult
+        favouriteResult
     }
     func updateFromToplist(coins: [Toplist]) async {}
     func refreshForCurrencyChange(sortOption: SortOption, priceChange: PriceChange) async {}

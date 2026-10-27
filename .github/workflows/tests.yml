@@ -15,6 +15,10 @@ jobs:
     name: CoinCurrentlyTests
     runs-on: macos-latest
     timeout-minutes: 25
+    env:
+      # xcodebuild block-buffers when GitHub Actions is not a terminal, so the
+      # log sits on the last short line while the build continues.
+      NSUnbufferedIO: YES
     steps:
       - uses: actions/checkout@v4
 
@@ -72,6 +76,11 @@ jobs:
           BOOT_PID=$!
           # Drop restored workspace state so checkouts are reused without stale paths.
           rm -f SourcePackages/workspace-state.json
+          # Xcode 26 precompiles explicit Clang modules right after the package
+          # Info.plist steps. That phase is what follows GoogleUtilities-Environment
+          # and consumes the rest of a clean build. Package targets compile faster
+          # without it.
+          defaults write com.apple.dt.XCBuild EnableSwiftExplicitModules -bool NO
           xcodebuild build-for-testing \
             -project CoinCurrently.xcodeproj \
             -scheme CoinCurrentlyTests \
@@ -83,7 +92,8 @@ jobs:
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
             DEVELOPMENT_TEAM="" \
-            COMPILER_INDEX_STORE_ENABLE=NO
+            COMPILER_INDEX_STORE_ENABLE=NO \
+            SWIFT_ENABLE_EXPLICIT_MODULES=NO
           wait "$BOOT_PID" || true
           xcrun simctl bootstatus "$UDID" -b
           xcodebuild test-without-building \
@@ -99,7 +109,8 @@ jobs:
             -skipMacroValidation \
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
-            DEVELOPMENT_TEAM=""
+            DEVELOPMENT_TEAM="" \
+            SWIFT_ENABLE_EXPLICIT_MODULES=NO
 
       - name: Upload test results
         if: failure()

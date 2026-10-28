@@ -1,4 +1,5 @@
-• Prevedite aplikacijo v 36 jezikov.
-• Povabite prijatelje in družino ter prejmite nagrado.
-• Pripomočki imajo svež videz. Prilagodite jih na začetnem zaslonu.
-• Oglejte si trg kot barvno toplotno karto priljubljenih, portfelja ali lestvice.
+CoinCurrently je zdaj popolnoma brezplačen, izvorna koda pa je javna.
+
+• Plačilni zid je odstranjen. Vse funkcije so vključene in ni ničesar za kupiti, podaljšati ali obnoviti.
+• Projekt je zdaj odprtokoden, zato lahko preberete kodo in vidite, kaj aplikacija počne z vašimi podatki.
+• Repozitorija za iOS in Android sta pod Source code v Nastavitvah.

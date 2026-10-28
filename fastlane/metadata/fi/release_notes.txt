@@ -1,4 +1,5 @@
-• Käännä sovellus 36 kielelle.
-• Kutsu ystäviä ja perhettä ja saat palkinnon.
-• Widgeteillä on uusi ilme. Muokkaa niitä kotinäytöltä.
-• Näe markkina suosikkien, salkun tai listan värikarttana.
+CoinCurrently on nyt täysin ilmainen, ja lähdekoodi on julkinen.
+
+• Maksuseinä on poistettu. Kaikki ominaisuudet sisältyvät, eikä mitään tarvitse ostaa, uusia tai palauttaa.
+• Projekti on nyt avointa lähdekoodia, joten voit lukea koodin ja nähdä, mitä sovellus tekee tiedoillasi.
+• iOS- ja Android-arkistot löytyvät kohdasta Source code Asetuksissa.

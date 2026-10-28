@@ -1,4 +1,5 @@
-• Terjemahkan aplikasi ke 36 bahasa.
-• Undang teman dan keluarga, lalu dapatkan hadiah.
-• Widget tampil baru. Atur dari Layar Utama.
-• Lihat pasar sebagai peta panas favorit, portofolio, atau daftar teratas.
+CoinCurrently sekarang sepenuhnya gratis, dan kode sumbernya terbuka untuk umum.
+
+• Paywall telah dihapus. Semua fitur disertakan, dan tidak ada yang perlu dibeli, diperpanjang, atau dipulihkan.
+• Proyek ini sekarang open source, jadi kamu bisa membaca kodenya dan melihat apa yang aplikasi lakukan dengan datamu.
+• Repositori iOS dan Android ada di bagian Source code pada Pengaturan.

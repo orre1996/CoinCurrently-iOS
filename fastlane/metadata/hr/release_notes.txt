@@ -1,4 +1,5 @@
-• Prevedite aplikaciju na 36 jezika.
-• Pozovite prijatelje i obitelj i osvojite nagradu.
-• Widgeti imaju novi izgled. Uredite ih s početnog zaslona.
-• Pogledajte tržište kao obojenu toplinsku kartu favorita, portfelja ili ljestvice.
+CoinCurrently je sada potpuno besplatan, a izvorni kod je javan.
+
+• Paywall je uklonjen. Sve značajke su uključene i nema ništa za kupiti, obnoviti ili vratiti.
+• Projekt je sada otvorenog koda, pa možete pročitati kod i vidjeti što aplikacija radi s vašim podacima.
+• iOS i Android repozitoriji nalaze se pod Source code u Postavkama.

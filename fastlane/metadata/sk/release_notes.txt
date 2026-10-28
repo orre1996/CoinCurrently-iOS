@@ -1,4 +1,5 @@
-• Preložte aplikáciu do 36 jazykov.
-• Pozvite priateľov a rodinu a získajte odmenu.
-• Widgety majú nový vzhľad. Upravíte ich na ploche.
-• Pozrite si trh ako farebnú heatmapu obľúbených, portfólia alebo rebríčka.
+CoinCurrently je teraz úplne zadarmo a zdrojový kód je verejný.
+
+• Platobná stena bola odstránená. Všetky funkcie sú zahrnuté a nie je čo kúpiť, predĺžiť ani obnoviť.
+• Projekt je teraz open source, takže si môžete prečítať kód a vidieť, čo aplikácia robí s vašimi údajmi.
+• Repozitáre pre iOS a Android nájdete v časti Source code v Nastaveniach.

@@ -21,8 +21,9 @@ enum AptabaseConfigurator {
     static func configureIfNeeded() {
 #if os(iOS)
         guard !isRunningTests, !isConfigured else { return }
+        guard let appKey = AppSecrets.aptabaseAppKey else { return }
         isConfigured = true
-        Aptabase.shared.initialize(appKey: AppSecrets.aptabaseAppKey)
+        Aptabase.shared.initialize(appKey: appKey)
         AnalyticsManager.shared.log(AppStarted())
 #endif
     }
@@ -41,7 +42,7 @@ final class AnalyticsManager: @unchecked Sendable {
 
     func log<E: AnalyticsEvent>(_ event: E) {
 #if os(iOS)
-        guard !isRunningTests else { return }
+        guard !isRunningTests, AppSecrets.aptabaseAppKey != nil else { return }
         Aptabase.shared.trackEvent(E.eventName, with: event.parameters ?? [:])
 #endif
     }

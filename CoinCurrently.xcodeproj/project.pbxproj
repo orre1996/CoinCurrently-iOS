@@ -365,9 +365,6 @@
 		A7C3E1E12F60000100ACBCD1 /* CryptoTracker/Features/GlobalMarket/ViewModels/GlobalMarketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C3E1E22F60000100ACBCD1 /* CryptoTracker/Features/GlobalMarket/ViewModels/GlobalMarketViewModel.swift */; };
 		CC0A00172F6000000000007 /* CryptoTracker/Core/Config/AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0A00142F6000000000004 /* CryptoTracker/Core/Config/AppSecrets.swift */; };
 		CC0A00182F6000000000008 /* CryptoTracker/Core/Config/AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0A00142F6000000000004 /* CryptoTracker/Core/Config/AppSecrets.swift */; };
-		CC0A00192F6000000000009 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC0A00112F6000000000001 /* Secrets.plist */; };
-		CC0A001A2F600000000000A /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC0A00112F6000000000001 /* Secrets.plist */; };
-		CC0A001B2F600000000000B /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC0A00112F6000000000001 /* Secrets.plist */; };
 		CCSEARCHCASE000000000002 /* CryptoTracker/Features/Search/Models/SearchCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCSEARCHCASE000000000001 /* CryptoTracker/Features/Search/Models/SearchCase.swift */; };
 		CCSEARCHCASE000000000003 /* CryptoTracker/Features/Search/Models/SearchCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCSEARCHCASE000000000001 /* CryptoTracker/Features/Search/Models/SearchCase.swift */; };
 /* End PBXBuildFile section */
@@ -670,7 +667,6 @@
 		A7C3E1D22F60000100ACBCD1 /* CryptoTracker/SharedUI/Views/Adaptive/AdaptiveStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/SharedUI/Views/Adaptive/AdaptiveStack.swift; sourceTree = SOURCE_ROOT; };
 		A7C3E1D42F60000100ACBCD1 /* CryptoTracker/SharedUI/Views/CustomProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/SharedUI/Views/CustomProgressBarView.swift; sourceTree = SOURCE_ROOT; };
 		A7C3E1E22F60000100ACBCD1 /* CryptoTracker/Features/GlobalMarket/ViewModels/GlobalMarketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/Features/GlobalMarket/ViewModels/GlobalMarketViewModel.swift; sourceTree = SOURCE_ROOT; };
-		CC0A00112F6000000000001 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
 		CC0A00122F6000000000002 /* Secrets.example.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.example.plist; sourceTree = "<group>"; };
 		CC0A00132F6000000000003 /* GoogleService-Info.example.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.example.plist"; sourceTree = "<group>"; };
 		CC0A00142F6000000000004 /* CryptoTracker/Core/Config/AppSecrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTracker/Core/Config/AppSecrets.swift; sourceTree = SOURCE_ROOT; };
@@ -1013,7 +1009,6 @@
 		CC0A00102F6000000000001 /* Config */ = {
 			isa = PBXGroup;
 			children = (
-				CC0A00112F6000000000001 /* Secrets.plist */,
 				CC0A00122F6000000000002 /* Secrets.example.plist */,
 				CC0A00132F6000000000003 /* GoogleService-Info.example.plist */,
 			);
@@ -1217,6 +1212,7 @@
 				100193BE26D3CAC700ACBCD9 /* Resources */,
 				866CA33BEF8613B0B6E57340 /* Frameworks */,
 				100193C526D3CAD800ACBCD9 /* Sources */,
+				CC0A00222F6000000000003 /* Copy Secrets.plist if present */,
 			);
 			buildRules = (
 			);
@@ -1239,6 +1235,7 @@
 				10347AF2254344A400BCC77E /* Sources */,
 				10347AF3254344A400BCC77E /* Frameworks */,
 				10347AF4254344A400BCC77E /* Resources */,
+				CC0A00202F6000000000001 /* Copy Secrets.plist if present */,
 				109647F6265AA2D400DD7EE0 /* ShellScript */,
 			);
 			buildRules = (
@@ -1280,6 +1277,7 @@
 				10347B182543489100BCC77E /* Frameworks */,
 				10347B192543489100BCC77E /* Resources */,
 				FBCOPYPLIST000000000001 /* Copy GoogleService-Info.plist if present */,
+				CC0A00212F6000000000002 /* Copy Secrets.plist if present */,
 			);
 			buildRules = (
 			);
@@ -1383,7 +1381,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EAE879C28284BB200946181 /* CryptoTracker/Fonts/Poppins-Light.ttf in Resources */,
-				CC0A001B2F600000000000B /* Secrets.plist in Resources */,
 				100193DC26D3CADF00ACBCD9 /* Preview Assets.xcassets in Resources */,
 				8E6DCA1C2DAD65AC00F23DF5 /* CryptoTracker/Fonts/Satoshi-Black.otf in Resources */,
 				8E6DCA1D2DAD65AC00F23DF5 /* CryptoTracker/Fonts/Satoshi-Italic.otf in Resources */,
@@ -1404,7 +1401,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC0A00192F6000000000009 /* Secrets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1412,7 +1408,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC0A001A2F600000000000A /* Secrets.plist in Resources */,
 				9F0C3A00288F3CDC007C4D68 /* Assets.xcassets in Resources */,
 				8EWGFT012F6000000095B111 /* Satoshi-Black.otf in Resources */,
 				8EWGFT012F6000000095B112 /* Satoshi-Bold.otf in Resources */,
@@ -1459,6 +1454,60 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "PLIST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleService-Info.plist\"\nif [ ! -f \"$PLIST\" ]; then\n  touch \"${DERIVED_FILE_DIR}/crashlytics-run-complete\"\n  exit 0\nfi\n\"${BUILD_DIR%Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\ntouch \"${DERIVED_FILE_DIR}/crashlytics-run-complete\"\n";
+		};
+		CC0A00202F6000000000001 /* Copy Secrets.plist if present */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Secrets.plist if present";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "PLIST=\"${SRCROOT}/Config/Secrets.plist\"\nDEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Secrets.plist\"\nif [ -f \"$PLIST\" ]; then\n  cp \"$PLIST\" \"$DEST\"\nfi\n";
+		};
+		CC0A00212F6000000000002 /* Copy Secrets.plist if present */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Secrets.plist if present";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "PLIST=\"${SRCROOT}/Config/Secrets.plist\"\nDEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Secrets.plist\"\nif [ -f \"$PLIST\" ]; then\n  cp \"$PLIST\" \"$DEST\"\nfi\n";
+		};
+		CC0A00222F6000000000003 /* Copy Secrets.plist if present */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Secrets.plist if present";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "PLIST=\"${SRCROOT}/Config/Secrets.plist\"\nDEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Secrets.plist\"\nif [ -f \"$PLIST\" ]; then\n  cp \"$PLIST\" \"$DEST\"\nfi\n";
 		};
 		FBCOPYPLIST000000000001 /* Copy GoogleService-Info.plist if present */ = {
 			isa = PBXShellScriptBuildPhase;

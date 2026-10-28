@@ -7,9 +7,8 @@
 
 import Foundation
 
-// Market routes are "{API_BASE_URL}/crypto/api/v3/...". API_BASE_URL is your backend.
-// Coin detail, OHLC, and market charts for users without Pro call
-// https://api.coingecko.com/api/v3 directly.
+// With a backend, market routes are "{API_BASE_URL}/crypto/api/v3/...".
+// With no backend URL, those routes call https://api.coingecko.com/api/v3 directly.
 var serverBaseUrl: String { AppSecrets.apiBaseURL }
 
 enum Endpoint: Sendable {
@@ -58,101 +57,105 @@ enum Endpoint: Sendable {
     case treasuryHoldingChart(entityId: String, coinId: String, days: String)
     case treasuryTransactionHistory(entityId: String, coinIds: String? = nil, page: Int = 1, perPage: Int = 100)
     case user(ignoreCache: Bool = false)
+
+    private var marketAPIRoot: String {
+        Self.marketAPIRoot(
+            usesPublicCoinGecko: AppSecrets.usesPublicCoinGecko,
+            serverBaseURL: serverBaseUrl
+        )
+    }
+
+    static func marketAPIRoot(usesPublicCoinGecko: Bool, serverBaseURL: String) -> String {
+        if usesPublicCoinGecko {
+            return AppSecrets.publicCoinGeckoAPIRoot
+        }
+        return "\(serverBaseURL)/crypto/api/v3"
+    }
     
     func pathComponent() async -> String {
-        let cryptoBaseURL = "\(serverBaseUrl)/crypto"
-
         switch self {
         case .toplist:
-            return "\(cryptoBaseURL)/api/v3/coins/markets"
+            return "\(marketAPIRoot)/coins/markets"
             
         case .global:
-            return "\(cryptoBaseURL)/api/v3/global"
+            return "\(marketAPIRoot)/global"
             
         case .globalChart:
-            return "\(cryptoBaseURL)/api/v3/global/market_cap_chart"
+            return "\(marketAPIRoot)/global/market_cap_chart"
             
         case .allCoins:
-            return "\(cryptoBaseURL)/api/v3/coins/list"
+            return "\(marketAPIRoot)/coins/list"
             
         case .allExchanges:
-            return "\(cryptoBaseURL)/api/v3/exchanges/list"
+            return "\(marketAPIRoot)/exchanges/list"
             
         case .trending:
-            return "\(cryptoBaseURL)/api/v3/search/trending"
+            return "\(marketAPIRoot)/search/trending"
             
         case .search:
-            return "\(cryptoBaseURL)/api/v3/search"
+            return "\(marketAPIRoot)/search"
             
         case .fearAndGreed:
             return "https://api.alternative.me/fng/"
             
         case .allCategories:
-            return "\(cryptoBaseURL)/api/v3/coins/categories"
+            return "\(marketAPIRoot)/coins/categories"
             
         case .allDerivatives(_):
-            return "\(cryptoBaseURL)/api/v3/derivatives/exchanges"
+            return "\(marketAPIRoot)/derivatives/exchanges"
             
         case .image(let url):
             return url
 
         case .exchangeDerivatives(let exchange):
-            return "\(cryptoBaseURL)/api/v3/derivatives/exchanges/\(exchange)"
+            return "\(marketAPIRoot)/derivatives/exchanges/\(exchange)"
             
         case .coinsWithCurrencies:
-            return "\(cryptoBaseURL)/api/v3/simple/price"
+            return "\(marketAPIRoot)/simple/price"
             
-        case .candleStick(let id, let days, _, _):
-            if days == "max" {
-                return "\(serverBaseUrl)/crypto/api/v3/coins/\(id)/ohlc"
-            } else {
-                return "\(cryptoBaseURL)/api/v3/coins/\(id)/ohlc"
-            }
+        case .candleStick(let id, _, _, _):
+            return "\(marketAPIRoot)/coins/\(id)/ohlc"
             
         case .exchangeVolume(let id, _):
-            return "\(cryptoBaseURL)/api/v3/exchanges/\(id)/volume_chart"
+            return "\(marketAPIRoot)/exchanges/\(id)/volume_chart"
             
         case .exchange(let id):
-            return "\(cryptoBaseURL)/api/v3/exchanges/\(id)"
+            return "\(marketAPIRoot)/exchanges/\(id)"
             
         case .exchanges:
-            return "\(cryptoBaseURL)/api/v3/exchanges"
+            return "\(marketAPIRoot)/exchanges"
             
         case .coin(let id, _, _):
             let sanitizedId = id.lowercased().trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "-")
-            return "\(cryptoBaseURL)/api/v3/coins/\(sanitizedId)"
+            return "\(marketAPIRoot)/coins/\(sanitizedId)"
             
-        case .coinPriceVolume(let id, let days, _, _, _):
+        case .coinPriceVolume(let id, _, _, _, _):
             let sanitizedId = id.lowercased().trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "-")
-            if days == "max" {
-                return "\(serverBaseUrl)/crypto/api/v3/coins/\(sanitizedId)/market_chart"
-            } else {
-                return "\(cryptoBaseURL)/api/v3/coins/\(sanitizedId)/market_chart"
-            }
+            return "\(marketAPIRoot)/coins/\(sanitizedId)/market_chart"
 
         case .multipleCoins:
-            return "\(cryptoBaseURL)/api/v3/coins/markets"
+            return "\(marketAPIRoot)/coins/markets"
             
         case .newCoins:
-            return "\(serverBaseUrl)/crypto/api/v3/coins/list/new"
+            return "\(marketAPIRoot)/coins/list/new"
             
         case .nftToplist:
-            return "\(serverBaseUrl)/crypto/api/v3/nfts/markets"
+            return "\(marketAPIRoot)/nfts/markets"
             
         case .nftPlatforms:
-            return "\(serverBaseUrl)/crypto/api/v3/asset_platforms"
+            return "\(marketAPIRoot)/asset_platforms"
             
         case .nftPriceVolume(let id, _):
-            return "\(serverBaseUrl)/crypto/api/v3/nfts/\(id)/market_chart"
+            return "\(marketAPIRoot)/nfts/\(id)/market_chart"
             
         case .nftDetail(let id):
-            return "\(cryptoBaseURL)/api/v3/nfts/\(id)"
+            return "\(marketAPIRoot)/nfts/\(id)"
             
         case .nftTickers(let id):
-            return "\(cryptoBaseURL)/api/v3/nfts/\(id)/tickers"
+            return "\(marketAPIRoot)/nfts/\(id)/tickers"
             
         case .winnersLosers:
-            return "\(serverBaseUrl)/crypto/api/v3/coins/top_gainers_losers"
+            return "\(marketAPIRoot)/coins/top_gainers_losers"
             
         case .gasFees:
             return "\(serverBaseUrl)/gas"
@@ -191,19 +194,19 @@ enum Endpoint: Sendable {
             return "\(serverBaseUrl)/premium/sub-coin"
             
         case .publicTreasury(let entity, let coinId, _, _):
-            return "\(cryptoBaseURL)/api/v3/\(entity.rawValue)/public_treasury/\(coinId)"
+            return "\(marketAPIRoot)/\(entity.rawValue)/public_treasury/\(coinId)"
 
         case .entitiesList:
-            return "\(cryptoBaseURL)/api/v3/entities/list"
+            return "\(marketAPIRoot)/entities/list"
 
         case .treasuryDetail(let entityId):
-            return "\(cryptoBaseURL)/api/v3/public_treasury/\(entityId)"
+            return "\(marketAPIRoot)/public_treasury/\(entityId)"
 
         case .treasuryHoldingChart(let entityId, let coinId, _):
-            return "\(cryptoBaseURL)/api/v3/public_treasury/\(entityId)/\(coinId)/holding_chart"
+            return "\(marketAPIRoot)/public_treasury/\(entityId)/\(coinId)/holding_chart"
 
         case .treasuryTransactionHistory(let entityId, _, _, _):
-            return "\(cryptoBaseURL)/api/v3/public_treasury/\(entityId)/transaction_history"
+            return "\(marketAPIRoot)/public_treasury/\(entityId)/transaction_history"
             
         case .user:
             return "\(serverBaseUrl)/user"
@@ -381,6 +384,18 @@ enum Endpoint: Sendable {
         switch self {
         case .deleteAlert, .getAlerts, .createPriceAlert, .subBigMover, .ubsubBigMover,
                 .updateUser, .walletImport, .subCoin, .user:
+            return true
+        default:
+            return false
+        }
+    }
+
+    /// Price alerts, gas, wallet import, and the other routes this repo's backend owns.
+    var requiresBackend: Bool {
+        switch self {
+        case .gasFees, .getAlerts, .createPriceAlert, .deleteAlert, .updateUser,
+                .triggerPriceAlert, .triggerBigMover, .subBigMover, .ubsubBigMover,
+                .walletImport, .feedback, .subCoin, .user:
             return true
         default:
             return false

@@ -139,6 +139,10 @@ actor NetworkManagerImp: NetworkManager {
     }
     
     public func getRaw(endpoint: Endpoint) async -> (data: Data, response: HTTPURLResponse)? {
+        if skipBecauseBackendMissing(endpoint) {
+            return nil
+        }
+
         let pathComponent = await endpoint.pathComponent()
         
         guard let url = buildURL(for: endpoint, pathComponent: pathComponent) else {
@@ -153,7 +157,7 @@ actor NetworkManagerImp: NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("\(String.platformSource)\(currentScreen)", forHTTPHeaderField: "x-source")
-        request.addValue(AppSecrets.backendAPIKey, forHTTPHeaderField: "x-coin-currently-key")
+        addBackendKeyHeader(to: &request)
         
         if endpoint.shouldAddBearerToken() {
             guard let token = await firebaseManager.getUserToken() else {
@@ -202,6 +206,10 @@ actor NetworkManagerImp: NetworkManager {
     }
     
     public func get<T: Decodable>(endpoint: Endpoint) async -> T? {
+        if skipBecauseBackendMissing(endpoint) {
+            return nil
+        }
+
         let pathComponent = await endpoint.pathComponent()
         
         guard let url = buildURL(for: endpoint, pathComponent: pathComponent) else {
@@ -236,7 +244,7 @@ actor NetworkManagerImp: NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("\(String.platformSource)\(currentScreen)", forHTTPHeaderField: "x-source")
-        request.addValue(AppSecrets.backendAPIKey, forHTTPHeaderField: "x-coin-currently-key")
+        addBackendKeyHeader(to: &request)
         
         if endpoint.shouldAddBearerToken() {
             guard let token = await firebaseManager.getUserToken() else {
@@ -303,6 +311,10 @@ actor NetworkManagerImp: NetworkManager {
     // MARK: - POST
     
     public func post<G: Codable, T: Codable>(endpoint: Endpoint, bodyStruct: T) async -> (G?, Int) {
+        if skipBecauseBackendMissing(endpoint) {
+            return (nil, NetworkManagerError.invalidUrl.rawValue)
+        }
+
         let pathComponent = await endpoint.pathComponent()
         
         guard let url = buildURL(for: endpoint, pathComponent: pathComponent) else {
@@ -320,7 +332,7 @@ actor NetworkManagerImp: NetworkManager {
             request.httpMethod = "POST"
             request.httpBody = try? JSONEncoder().encode(bodyStruct)
             request.addValue("\(String.platformSource)\(currentScreen)", forHTTPHeaderField: "x-source")
-            request.addValue(AppSecrets.backendAPIKey, forHTTPHeaderField: "x-coin-currently-key")
+            addBackendKeyHeader(to: &request)
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             
             if endpoint.shouldAddBearerToken() {
@@ -361,5 +373,14 @@ actor NetworkManagerImp: NetworkManager {
             )
             return (nil, managerError.rawValue)
         }
+    }
+
+    private func skipBecauseBackendMissing(_ endpoint: Endpoint) -> Bool {
+        endpoint.requiresBackend && AppSecrets.usesPublicCoinGecko
+    }
+
+    private func addBackendKeyHeader(to request: inout URLRequest) {
+        guard let backendAPIKey = AppSecrets.backendAPIKey else { return }
+        request.addValue(backendAPIKey, forHTTPHeaderField: "x-coin-currently-key")
     }
 }

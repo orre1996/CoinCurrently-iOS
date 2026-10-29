@@ -143,11 +143,13 @@ Market data and the fear and greed index each come from a different API. `Networ
 
 ### CoinGecko
 
-Crypto market data is based on [CoinGecko's API](https://www.coingecko.com/en/api). Without Pro, coin detail, OHLC, and market charts call the public API directly at `https://api.coingecko.com/api/v3` (`/coins/{id}`, `/coins/{id}/ohlc`, and `/coins/{id}/market_chart`). Those three calls do not use `API_BASE_URL`.
+Crypto market data is based on [CoinGecko's API](https://www.coingecko.com/en/api).
 
-Every other market route is `{API_BASE_URL}/crypto/api/v3/...`. `API_BASE_URL` is your own backend. CoinGecko's public host does not serve the `/crypto` prefix, so `https://api.coingecko.com` cannot be used as `API_BASE_URL`.
+If `Secrets.plist` is missing, or `API_BASE_URL` is empty or still `https://api.example.com`, market routes call CoinGecko's [keyless public API](https://docs.coingecko.com/docs/keyless-public-api) at `https://api.coingecko.com/api/v3`. No API key and no `/crypto` prefix. That is enough to open the project and load toplists, search, coin detail, OHLC, and market charts. The keyless API is shared and limited to about 5 calls per minute, so refreshing several screens in a row can return HTTP 429. It is for local development, not production.
 
-Most of the proxied endpoints work on the free or Basic plans. These require the [Analyst plan](https://www.coingecko.com/en/api/pricing) (or higher):
+Set `API_BASE_URL` to your own backend to proxy markets as `{API_BASE_URL}/crypto/api/v3/...`. CoinGecko's public host does not serve the `/crypto` prefix, so `https://api.coingecko.com` cannot be used as `API_BASE_URL`.
+
+On a keyed Demo or Basic plan, most market routes work. These require the [Analyst plan](https://www.coingecko.com/en/api/pricing) (or higher), and they also fail on the keyless API:
 
 - `/coins/list/new` — recently listed coins
 - `/coins/top_gainers_losers` — top gainers and losers
@@ -165,7 +167,7 @@ The fear and greed index is requested directly from [alternative.me](https://alt
 
 The backend is not in this repo. It proxies CoinGecko so third-party keys stay off the client, and it hosts first-party routes for price alerts, big-mover notifications, wallet import, gas fees, user, and feedback. Those first-party routes send a bearer token.
 
-Without that backend, the fear and greed index can still load. Markets, coin detail, charts, search, alerts, and the rest of the app need `API_BASE_URL`.
+Without that backend, markets still load from the keyless CoinGecko API, and the fear and greed index still loads from alternative.me. Price alerts, big-mover notifications, wallet import, gas fees, user, and feedback stay empty until `API_BASE_URL` points at a backend.
 
 ## Targets
 
@@ -199,11 +201,11 @@ Without that backend, the fear and greed index can still load. Markets, coin det
    - App Attest
 
    A free personal team cannot enable push, associated domains, or iCloud.
-3. Copy `Config/Secrets.example.plist` to `Config/Secrets.plist`. The app crashes at launch if this file is missing from the bundle or if any key is empty. Placeholder values are enough to launch. The file is gitignored. Keys:
-   - `API_BASE_URL` — your backend, with no trailing slash. Markets and the first-party routes above need it. A placeholder lets the app launch. The fear and greed index can still load. Toplists, search, and alerts stay empty until it points at a backend.
-   - `BACKEND_API_KEY` — sent as `x-coin-currently-key`. A placeholder is enough for the fear-and-greed call.
-   - `APTABASE_APP_KEY` — a placeholder is enough unless you want analytics.
-4. `Secrets.plist` is already referenced by the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets. Widgets and Watch read the same file. If Xcode does not copy it into the bundle, add it to those targets' Copy Bundle Resources.
+3. `Config/Secrets.plist` is optional and gitignored. With no file, or with the example placeholders, the app calls CoinGecko's keyless API and skips analytics. Copy `Config/Secrets.example.plist` to `Config/Secrets.plist` when you have a backend or an Aptabase key:
+   - `API_BASE_URL` — your backend, with no trailing slash. Leave `https://api.example.com` to keep the keyless CoinGecko API. A real URL proxies markets through `{API_BASE_URL}/crypto/api/v3/...` and enables the first-party routes above.
+   - `BACKEND_API_KEY` — sent as `x-coin-currently-key` when it is not the example placeholder. The keyless CoinGecko calls do not send it.
+   - `APTABASE_APP_KEY` — analytics stay off while this is empty or `A-XX-0000000000`.
+4. When `Config/Secrets.plist` exists, the CoinCurrently, CryptoWidgetExtension, and CoinCurrentlyWatch targets copy it into the bundle. Widgets and Watch read the same file.
 5. Firebase, anonymous sign-in, and price-alert push stay off until a real `GoogleService-Info.plist` is in the bundle. The app launches without that file. `GOOGLE_APP_ID` has to look like `1:<digits>:ios:<hex>`. The placeholders in `Config/GoogleService-Info.example.plist` do not match that, so copying the example file does not turn Firebase on. Put a real plist at `CryptoTracker/GoogleService-Info.plist` for the app and `CryptoWidget/GoogleService-Info.plist` for widgets. Those files are gitignored. The watch app does not use Firebase.
 
 ## Tests

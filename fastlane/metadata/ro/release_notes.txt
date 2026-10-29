@@ -1,4 +1,5 @@
-• Tradu aplicația în 36 de limbi.
-• Invită prieteni și familie și primești o recompensă.
-• Widgeturile au un aspect nou. Le personalizezi din ecranul principal.
-• Vezi piața ca o hartă termică a favoritelor, portofoliului sau topului.
+CoinCurrently este acum complet gratuit, iar codul sursă este public.
+
+• Paywall-ul a fost eliminat. Toate funcțiile sunt incluse și nu există nimic de cumpărat, reînnoit sau restaurat.
+• Proiectul este acum open source, ca să poți citi codul și vedea ce face aplicația cu datele tale.
+• Depozitele iOS și Android se află la Source code în Setări.

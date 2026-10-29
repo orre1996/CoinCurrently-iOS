@@ -1,4 +1,5 @@
-• Uygulamayı 36 dile çevirin.
-• Arkadaşlarını ve aileni davet et, ödül kazan.
-• Widget’lar yenilendi. Ana ekrandan düzenle.
-• Piyasayı favorilerin, portföyün veya listenin ısı haritası olarak gör.
+CoinCurrently artık tamamen ücretsiz ve kaynak kodu herkese açık.
+
+• Ödeme duvarı kaldırıldı. Tüm özellikler dahil ve satın alınacak, yenilenecek veya geri yüklenecek bir şey yok.
+• Proje artık açık kaynak, böylece kodu okuyabilir ve uygulamanın verilerinizle ne yaptığını görebilirsiniz.
+• iOS ve Android depoları, Ayarlar içindeki Source code bölümünde.

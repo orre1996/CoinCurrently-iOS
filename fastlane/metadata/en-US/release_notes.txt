@@ -1,0 +1,5 @@
+CoinCurrently is now completely free, and the source is public.
+
+• The paywall has been removed. Every feature is included, and there is nothing to buy, renew, or restore.
+• The project is now open source, so you can read the code and see what the app does with your data.
+• The iOS and Android repositories are linked under Source code in Settings.

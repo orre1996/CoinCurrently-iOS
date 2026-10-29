@@ -1,4 +1,5 @@
-• Översätt appen till 36 språk.
-• Bjud in vänner och familj och få en belöning.
-• Widgetarna har ett nytt utseende. Anpassa dem från hemskärmen.
-• Se marknaden som en färgkodad heatmap över favoriter, portfölj eller topplistan.
+CoinCurrently är nu helt gratis, och källkoden är offentlig.
+
+• Betalväggen är borttagen. Alla funktioner ingår, och det finns inget att köpa, förnya eller återställa.
+• Projektet är nu öppen källkod, så du kan läsa koden och se vad appen gör med dina data.
+• iOS- och Android-arkiven finns under Source code i Inställningar.

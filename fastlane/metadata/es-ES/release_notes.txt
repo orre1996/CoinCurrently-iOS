@@ -1,4 +1,5 @@
-• Traduce la app a 36 idiomas.
-• Invita a amigos y familia y consigue una recompensa.
-• Los widgets tienen un aspecto nuevo. Personalízalos desde la pantalla de inicio.
-• Mira el mercado como un mapa de calor de tus favoritos, tu cartera o la lista.
+CoinCurrently ahora es completamente gratis y el código fuente es público.
+
+• Se ha eliminado el muro de pago. Todas las funciones están incluidas y no hay nada que comprar, renovar ni restaurar.
+• El proyecto ahora es de código abierto, para que puedas leer el código y ver qué hace la app con tus datos.
+• Los repositorios de iOS y Android están en Source code, dentro de Ajustes.

@@ -42,8 +42,36 @@ STORE_LOCALES = %w[
   zh-Hant
 ].freeze
 
+# The API key lives with the other app on this App Store Connect account.
+def load_store_api_env
+  steven_dir = File.expand_path("~/Desktop/MoodApp/fastlane")
+  steven_env = File.join(steven_dir, ".env")
+
+  if File.file?(steven_env)
+    File.readlines(steven_env).each do |line|
+      line = line.strip
+      next if line.empty? || line.start_with?("#")
+
+      key, value = line.split("=", 2)
+      next if key.nil? || value.nil?
+
+      if key == "APP_STORE_CONNECT_API_KEY_KEY_FILEPATH" && !File.file?(value)
+        value = File.join(steven_dir, File.basename(value))
+      end
+      ENV[key] ||= value
+    end
+  end
+
+  key_path = ENV["APP_STORE_CONNECT_API_KEY_KEY_FILEPATH"].to_s
+  if key_path.empty? || !File.file?(key_path)
+    matches = Dir[File.join(steven_dir, "AuthKey_*.p8")]
+    ENV["APP_STORE_CONNECT_API_KEY_KEY_FILEPATH"] = matches.first unless matches.empty?
+  end
+end
+
 platform :ios do
   before_all do
+    load_store_api_env
     app_store_connect_api_key
   end
 
@@ -59,5 +87,41 @@ platform :ios do
       metadata_path: "./fastlane/metadata",
       languages: STORE_LOCALES
     )
+  end
+
+  desc "Create App Store version 3.6.0 and upload What's New for every store locale"
+  lane :push_whats_new do
+    app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
+    UI.user_error!("Could not find #{BUNDLE_ID}") unless app
+
+    platform = Spaceship::ConnectAPI::Platform::IOS
+    previous = app.get_edit_app_store_version(platform: platform)
+    if previous
+      UI.message("Editable version is #{previous.version_string} (#{previous.app_version_state})")
+    else
+      UI.message("No editable version yet")
+    end
+
+    app.ensure_version!("3.6.0", platform: platform)
+    version = app.get_edit_app_store_version(platform: platform)
+    UI.user_error!("Version 3.6.0 is not editable") unless version&.version_string == "3.6.0"
+
+    localizations = version.get_app_store_version_localizations
+    by_locale = localizations.each_with_object({}) { |loc, map| map[loc.locale] = loc }
+    metadata_dir = File.expand_path("metadata", __dir__)
+
+    STORE_LOCALES.each do |locale|
+      notes_path = File.join(metadata_dir, locale, "release_notes.txt")
+      UI.user_error!("Missing #{notes_path}") unless File.file?(notes_path)
+      notes = File.read(notes_path).strip
+      UI.user_error!("#{locale} What's New is empty") if notes.empty?
+      UI.user_error!("#{locale} What's New is longer than 4000 characters") if notes.length > 4000
+
+      localization = by_locale[locale] || by_locale[locale == "no" ? "nb" : nil]
+      UI.user_error!("App Store version 3.6.0 has no #{locale} localization") unless localization
+
+      localization.update(attributes: { whatsNew: notes })
+      UI.success("#{locale} What's New updated")
+    end
   end
 end

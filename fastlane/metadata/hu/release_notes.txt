@@ -1,4 +1,5 @@
-• Fordítsd le az appot 36 nyelvre.
-• Hívd meg barátaidat és a családod, és jutalmat kapsz.
-• A widgetek új külsőt kaptak. A Főképernyőn módosíthatod őket.
-• Nézd a piacot a kedvencek, a portfólió vagy a toplista hőtérképeként.
+A CoinCurrently mostantól teljesen ingyenes, a forráskód pedig nyilvános.
+
+• A fizetős fal eltűnt. Minden funkció benne van, és nincs mit megvásárolni, megújítani vagy visszaállítani.
+• A projekt mostantól nyílt forráskódú, így elolvashatod a kódot, és láthatod, mit csinál az alkalmazás az adataiddal.
+• Az iOS- és Android-tárolók a Beállítások Source code része alatt találhatók.

@@ -1,1 +1,1 @@
-krypto,bitcoin,portfölj,kurser,ethereum,aviseringar,widget,heatmap,btc,eth
+bitcoin,ethereum,btc,eth,widget,heatmap,plånbok,gas,rädsla,girighet,omvandlare,kryptovaluta,altcoin

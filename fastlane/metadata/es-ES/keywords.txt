@@ -1,1 +1,1 @@
-cripto,bitcoin,cartera,precio,ethereum,alertas,widget,mapa,btc,eth,cotización
+bitcoin,ethereum,btc,eth,criptomonedas,mapa,calor,monedero,gas,miedo,codicia,conversor,cotización

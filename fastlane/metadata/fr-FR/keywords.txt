@@ -1,1 +1,1 @@
-crypto,bitcoin,portefeuille,cours,ethereum,alertes,widget,heatmap,btc,eth
+bitcoin,ethereum,btc,eth,widget,heatmap,wallet,gas,peur,avidité,convertisseur,altcoin,cryptomonnaie

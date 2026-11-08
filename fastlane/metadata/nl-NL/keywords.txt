@@ -1,1 +1,1 @@
-crypto,bitcoin,portfolio,koers,ethereum,alerts,widget,heatmap,btc,eth,wallet
+bitcoin,ethereum,btc,eth,widget,heatmap,wallet,gas,angst,hebzucht,omrekenen,altcoin,koers,privé

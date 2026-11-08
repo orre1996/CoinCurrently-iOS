@@ -1,1 +1,1 @@
-κρυπτο,bitcoin,χαρτοφυλάκιο,τιμή,ethereum,ειδοποιήσεις,widget,heatmap,btc
+κρυπτο,bitcoin,ethereum,btc,eth,ειδοποιήσεις,heatmap,πορτοφόλι,gas,φόβος,απληστία,μετατροπέας,τιμή

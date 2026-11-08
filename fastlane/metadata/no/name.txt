@@ -1,1 +1,1 @@
-CoinCurrently: Privat krypto
+CoinCurrently: Krypto-tracker

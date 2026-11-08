@@ -1,0 +1,1 @@
+bitcoin,btc,ethereum,eth,widget,heatmap,wallet,coin,gas,fear,greed,converter,altcoin,market,private

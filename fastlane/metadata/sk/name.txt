@@ -1,1 +1,1 @@
-CoinCurrently: Súkromné krypto
+CoinCurrently: Krypto tracker

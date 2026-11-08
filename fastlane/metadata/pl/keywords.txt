@@ -1,1 +1,1 @@
-krypto,bitcoin,portfel,kursy,ethereum,alerty,widget,heatmapa,btc,eth,ceny
+bitcoin,ethereum,btc,eth,krypto,widget,heatmapa,gas,strach,chciwość,przelicznik,altcoin,rynek,ceny

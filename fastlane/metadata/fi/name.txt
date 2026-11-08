@@ -1,1 +1,1 @@
-CoinCurrently: Yksityiskrypto
+CoinCurrently: Kryptoseuranta

@@ -1,1 +1,1 @@
-kripto,bitcoin,portfólió,árfolyam,ethereum,riasztás,widget,hőtérkép,btc,eth
+bitcoin,ethereum,btc,eth,widget,hőtérkép,tárca,gas,díj,félelem,átváltó,kriptovaluta,altcoin,piac,ár

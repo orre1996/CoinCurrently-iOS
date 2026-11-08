@@ -1,1 +1,1 @@
-krypto,bitcoin,portfolio,kurse,ethereum,alarme,widget,heatmap,btc,eth,wallet
+bitcoin,ethereum,btc,eth,widget,heatmap,wallet,gas,angst,gier,umrechner,kryptowährung,altcoin,markt

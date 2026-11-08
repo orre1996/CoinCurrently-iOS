@@ -1,1 +1,1 @@
-CoinCurrently: Приватне крипто
+CoinCurrently: Крипто-трекер

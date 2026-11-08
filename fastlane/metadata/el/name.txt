@@ -1,1 +1,1 @@
-CoinCurrently: Ιδιωτικό crypto
+CoinCurrently: Crypto tracker

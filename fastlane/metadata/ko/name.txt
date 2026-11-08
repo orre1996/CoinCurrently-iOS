@@ -1,1 +1,1 @@
-CoinCurrently: 프라이빗 암호화폐
+CoinCurrently: 암호화폐 트래커

@@ -512,19 +512,6 @@ struct SettingsScreen: View {
                         platform: .ios
                     )
                 }
-                
-                Separator()
-                
-                SettingsImageView(
-                    image: .repository,
-                    title: "CoinCurrently Android",
-                    withExternalIcon: true
-                ) {
-                    openSourceLink(
-                        "https://github.com/orre1996/CoinCurrentlyAndroid",
-                        platform: .android
-                    )
-                }
             }
             .cardBackground()
         }

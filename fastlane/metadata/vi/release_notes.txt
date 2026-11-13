@@ -2,4 +2,4 @@ CoinCurrently giờ hoàn toàn miễn phí và mã nguồn được công khai.
 
 • Đã gỡ tường thanh toán. Mọi tính năng đều được bao gồm và không có gì để mua, gia hạn hay khôi phục.
 • Dự án hiện là mã nguồn mở, để bạn đọc mã và thấy ứng dụng làm gì với dữ liệu của bạn.
-• Kho iOS và Android nằm trong mục Source code ở Cài đặt.
+• Kho iOS nằm trong mục Source code ở Cài đặt.

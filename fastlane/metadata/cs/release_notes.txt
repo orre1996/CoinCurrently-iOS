@@ -2,4 +2,4 @@ CoinCurrently je teď zcela zdarma a zdrojový kód je veřejný.
 
 • Platební zeď byla odstraněna. Všechny funkce jsou součástí aplikace a není co kupovat, prodlužovat ani obnovovat.
 • Projekt je teď open source, takže si můžete přečíst kód a vidět, co aplikace dělá s vašimi daty.
-• Repozitáře pro iOS a Android najdete v části Source code v Nastavení.
+• Repozitář pro iOS najdete v části Source code v Nastavení.

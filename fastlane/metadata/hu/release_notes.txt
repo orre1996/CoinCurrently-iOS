@@ -2,4 +2,4 @@ A CoinCurrently mostantól teljesen ingyenes, a forráskód pedig nyilvános.
 
 • A fizetős fal eltűnt. Minden funkció benne van, és nincs mit megvásárolni, megújítani vagy visszaállítani.
 • A projekt mostantól nyílt forráskódú, így elolvashatod a kódot, és láthatod, mit csinál az alkalmazás az adataiddal.
-• Az iOS- és Android-tárolók a Beállítások Source code része alatt találhatók.
+• Az iOS-tároló a Beállítások Source code része alatt található.

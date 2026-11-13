@@ -2,4 +2,4 @@ CoinCurrently jest teraz całkowicie bezpłatne, a kod źródłowy jest publiczn
 
 • Paywall został usunięty. Wszystkie funkcje są w zestawie i nie ma nic do kupienia, odnowienia ani przywrócenia.
 • Projekt jest teraz open source, więc możesz przeczytać kod i zobaczyć, co aplikacja robi z Twoimi danymi.
-• Repozytoria iOS i Androida znajdziesz w sekcji Source code w Ustawieniach.
+• Repozytorium iOS znajdziesz w sekcji Source code w Ustawieniach.

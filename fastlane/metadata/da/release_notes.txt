@@ -2,4 +2,4 @@ CoinCurrently er nu helt gratis, og kildekoden er offentlig.
 
 • Betalingsmuren er fjernet. Alle funktioner er inkluderet, og der er intet at købe, forny eller gendanne.
 • Projektet er nu open source, så du kan læse koden og se, hvad appen gør med dine data.
-• iOS- og Android-arkiverne ligger under Source code i Indstillinger.
+• iOS-arkivet ligger under Source code i Indstillinger.

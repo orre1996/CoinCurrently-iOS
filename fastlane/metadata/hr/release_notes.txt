@@ -2,4 +2,4 @@ CoinCurrently je sada potpuno besplatan, a izvorni kod je javan.
 
 • Paywall je uklonjen. Sve značajke su uključene i nema ništa za kupiti, obnoviti ili vratiti.
 • Projekt je sada otvorenog koda, pa možete pročitati kod i vidjeti što aplikacija radi s vašim podacima.
-• iOS i Android repozitoriji nalaze se pod Source code u Postavkama.
+• iOS repozitorij nalazi se pod Source code u Postavkama.

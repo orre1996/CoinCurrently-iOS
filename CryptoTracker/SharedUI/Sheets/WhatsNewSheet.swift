@@ -44,7 +44,7 @@ struct WhatsNewSheet: View {
             icon: .repository,
             bulletPoints: [
                 "The project is now open source, so you can read the code and see what the app does with your data",
-                "Want to contribute? The iOS and Android repositories are linked under Source code in Settings"
+                "Want to contribute? The iOS repository is linked under Source code in Settings"
             ]
         )
     ]
